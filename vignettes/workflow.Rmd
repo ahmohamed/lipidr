@@ -1,0 +1,162 @@
+---
+title: "Workflow"
+author: "Ahmed Mohamed"
+date: "`r Sys.Date()`"
+output: html_vignette
+vignette: >
+  %\VignetteIndexEntry{lipidr_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8)
+library(lipidr)
+library(ggplot2)
+```
+
+This Vignette provides a step by step guide to analyzing targeted lipidomics data, exported from Skyline.
+
+## Example Study
+
+In this workflow, we will use lipidomics data for murine serum on normal and high-fat diet.
+
+## Exporting files from Skyline
+
+Integrated peaks should be exported from each Skyline file thourgh File => Export => Report. Selecting `Transition Results` ensures that necessary information is exported from Skyline. Otherwise, you should ensure that peak `Area` or `Height` or a similar measure is exported. Regardless on the `measure` you choose for intensity, you can use `lipidr` workflow.
+
+`Replicates` should either be exported, or `Pivot Replicate Name` option is used.
+
+## Reading file into R
+
+`lipidr` can read multiple CSV files for different analysis methods together. Using our example dataset, 3 Skyline CSV files are used as input to `read.skyline`
+
+```{r}
+datadir = system.file("extdata", package="lipidr")
+filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+
+d = read_skyline(filelist)
+print(d)
+```
+
+### Adding sample annotation
+
+Sample annotation can be prepared in Excel and saved as csv. The table should have at least 2 columns, first indicating sample names and other columns indicating clinical variables.
+
+```{r}
+clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+
+d = add_sample_annotation(d, clinical_file)
+colData(d)
+```
+
+## Visualization of raw data
+
+To ensure data quality, we can look at total intensity (TIC) and distribution for samples.
+
+```{r, fig.height=6}
+plot_sample_tic(d, log=TRUE)
+plot_sample_boxplot(d, log=TRUE)
+```
+
+We can also look at intensity and retention time distribution for each lipid molecule.
+
+```{r, fig.width=10, fig.height=6}
+plot_molecule_boxplot(d, measure = "Area")
+plot_molecule_sd(d, measure = "Retention.Time", log=FALSE)
+plot_molecule_sd(d, measure = "Area")
+```
+
+Or intensity distribution within the lipid classes
+
+```{r, fig.height=5}
+plot_class_sd(d)
+plot_class_boxplot(d)
+```
+
+## Summarizing transitions
+
+This step is important when more than one transition is meaasured per lipid molecule. Multiple transitions are summarized into a single value by either taking the average or the one with highest intensity.
+
+```{r}
+d_summarized = summarize_transitions(d, method = "average")
+```
+
+
+## Normalization
+
+### Probabilistic Quotient Normalization (PQN)
+PQN corrects for dilution errors, etc.
+
+```{r, fig.height=6}
+d_normalized = normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
+plot_sample_boxplot(d_normalized)
+```
+
+### ITSD
+
+Internal stadard normalization corrects class-specific variations between samples.
+
+```{r, fig.height=6}
+d_normalized_itsd = normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
+plot_sample_boxplot(d_normalized_itsd)
+```
+
+## Sample clustering
+
+You can investigate sample variation using either PCA or PCoA (classical MDS).
+
+```{r, fig.width=6, fig.height=5}
+mvaresults = mva(d_normalized, measure="Area", method="PCA")
+plot_mva(mvaresults, color_by="group")
+
+# plot 2nd, 3rd components.
+plot_mva(mvaresults, color_by="Vehicle", components = c(2,3))
+```
+
+## Multivariate analysis
+
+```{r}
+mvaresults = mva(d_normalized, method = "OPLS-DA", group_col = "Diet", groups=c("HighFat", "Normal"))
+plot_mva(mvaresults, color_by="group")
+```
+
+
+## Differential analysis
+This step of the workflow requires `limma` package to be installed.
+
+Normalized logged data should be used.
+
+```{r}
+de_results = de_analysis(
+  HighFat_water - NormalDiet_water, NormalDiet_DCA - NormalDiet_water, 
+  data=d_normalized, measure="Area"
+)
+head(de_results)
+significant_molecules(de_results)
+```
+
+We can visualize differential analysis using volcano plots. In this instance we turn off labeling, because of the large number of significantly changed lipids between conditions.
+
+```{r, fig.height=6}
+plot_results_volcano(de_results, show.labels = FALSE)
+```
+
+## Enrichment analysis
+
+`lipidr` automatically generates sets of lipids based on class chain length and saturation. Measured lipids are then ranked by their fold change, or p value using results from differential analysis.
+
+```{r}
+enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+significant_lipidsets(enrich_results)
+```
+
+Visualization of enrichment.
+
+```{r, fig.width=6, fig.height=5}
+plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
+```
+
+```{r, fig.height=8}
+plot_chain_distribution(de_results)
+```
