@@ -164,6 +164,7 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' plot_mva(mvaresults, color_by="group")
 #' 
 plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL, ...){
+  stopifnot(inherits(mvaresults, "mvaResults"))
   if(inherits(mvaresults, "opls")) {
     return (plot_opls(mvaresults, components, color_by))
   }
@@ -197,6 +198,8 @@ plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL, ...){
 #'
 #' @examples
 plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.n=nrow(mvaresults$loadings)) {
+  stopifnot(inherits(mvaresults, "mvaResults"))
+  stopifnot(inherits(mvaresults, "opls"))
   ret = .get_loading_matrix(mvaresults, components, color_by)
   mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
   View(mds_matrix %>% mutate(top = molrank <= top.n))
