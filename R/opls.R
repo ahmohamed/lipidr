@@ -164,6 +164,7 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' plot_mva(mvaresults, color_by="group")
 #' 
 plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL, ...){
+  stopifnot(inherits(mvaresults, "mvaResults"))
   if(inherits(mvaresults, "opls")) {
     return (plot_opls(mvaresults, components, color_by))
   }
@@ -183,6 +184,72 @@ plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL, ...){
     p = p + xlab(xlabel) + ylab(ylabel)
   }
   return (p)
+}
+
+#' Plot a multivariate scatterplot of feature loadings to investigate feature importance
+#'
+#' @param mvaresults Results obtained from \code{\link{mva}}
+#' @param components which components to plot. Ignored for PCoA, OPLS-DA results
+#' @param color_by Sample annotation to use as color
+#' @param top.n Number of top ranked features to highlight on the plot 
+#'
+#' @return A plot
+#' @export
+#'
+#' @examples
+plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.n=nrow(mvaresults$loadings)) {
+  stopifnot(inherits(mvaresults, "mvaResults"))
+  stopifnot(inherits(mvaresults, "opls"))
+  ret = .get_loading_matrix(mvaresults, components, color_by)
+  mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
+  View(mds_matrix %>% mutate(top = molrank <= top.n))
+  
+  color_by = ret$color_by
+  
+  p = ggplot(mds_matrix, aes_string(
+    colnames(mds_matrix)[[2]], colnames(mds_matrix)[[3]], color=color_by)
+  ) + 
+    geom_hline(yintercept = 0, color = "gray") +
+    geom_vline(xintercept = 0, color = "gray") +
+    xlab(paste("p1:", mvaresults$summary["p1","R2X"]*100, "%")) +
+    ylab(paste("o1:", mvaresults$summary["o1","R2X"]*100, "%")) +
+    theme_grey(base_size = 10) + 
+    geom_point(size=3, pch=16,  aes(alpha = molrank > top.n)) + 
+    scale_alpha_manual(values=c(1, 0.5))
+    
+  if ("ggrepel" %in% rownames(installed.packages())) {
+    xlim = max(abs(mds_matrix[,2])) * 1.25
+    ylim = max(abs(mds_matrix[,3])) * 1.1
+    
+    p = p + ggrepel::geom_label_repel(
+      aes(label=ifelse(molrank > top.n , '', Molecule)),
+      size = 2.4, direction = "both", segment.alpha = 0.6, 
+      label.padding = 0.15, force = 0.5
+    ) + xlim(-xlim, xlim) + ylim(-ylim, ylim)
+      
+  } else {
+    p = p + geom_text(vjust=-.5, size=3, color="black", 
+      aes(label=ifelse(molrank > top.n , '', Molecule)))
+  }
+  
+  return(p)
+}
+
+#' Extract top lipids from OPLS-DA results
+#'
+#' @param mvaresults Results obtained from \code{\link{mva}}
+#' @param top.n Number of lipids to return 
+#'
+#' @return A dataframe of \code{top.n} lipids with their annotations
+#' @export
+#'
+#' @examples
+topImportantLipids <- function(mvaresults, top.n=10) {
+  ret = .get_loading_matrix(mvaresults, c(1,2), "Molecule")
+  mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
+  mds_matrix = mds_matrix[, -c(1:3)]
+  mds_matrix %>% filter(molrank <= top.n) %>%
+    arrange(molrank)
 }
 
 gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
@@ -212,6 +279,26 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   return(lam)
 }
 
+.get_loading_matrix <- function(mvaresults, components=c(1,2), color_by=NULL) {
+  stopifnot(inherits(mvaresults, "mvaResults"))
+  mds_matrix = mvaresults$loadings[, components]
+  # if(mvaresults$method == "PCA") {
+  #   mds_matrix = mds_matrix[, components]
+  # }
+  
+  mds_matrix = mds_matrix %>% as.data.frame() %>%
+    tibble::rownames_to_column("LipidID")
+  
+  if(! is.null(color_by)) {
+    row_data = mvaresults$row_data %>% as.data.frame() %>%
+      tibble::rownames_to_column("LipidID")
+    
+    mds_matrix = mds_matrix %>%
+      .left_join.silent(row_data)
+  }
+  return(list(mds_matrix=mds_matrix, color_by=color_by))
+}
+
 .get_mds_matrix <- function(mvaresults, components=c(1,2), color_by=NULL) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   mds_matrix = mvaresults$scores
@@ -238,7 +325,6 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   }
   return(list(mds_matrix=mds_matrix, color_by=color_by))
 }
-
 
 # xLimVn <- c(-1, 1) * max( sqrt(var(pscores) * hotFisN), 
 #                           max(abs(pscores))
