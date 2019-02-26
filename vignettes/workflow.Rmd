@@ -111,7 +111,7 @@ mvaresults = mva(d_normalized, measure="Area", method="PCA")
 plot_mva(mvaresults, color_by="group")
 
 # plot 2nd, 3rd components.
-plot_mva(mvaresults, color_by="Vehicle", components = c(2,3))
+plot_mva(mvaresults, color_by="BileAcid", components = c(2,3))
 ```
 
 ## Multivariate analysis
