@@ -218,11 +218,15 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
     scale_alpha_manual(values=c(1, 0.5))
     
   if ("ggrepel" %in% rownames(installed.packages())) {
+    xlim = max(abs(mds_matrix[,2])) * 1.25
+    ylim = max(abs(mds_matrix[,3])) * 1.1
+    
     p = p + ggrepel::geom_label_repel(
       aes(label=ifelse(molrank > top.n , '', Molecule)),
       size = 2.4, direction = "both", segment.alpha = 0.6, 
       label.padding = 0.15, force = 0.5
-    )
+    ) + xlim(-xlim, xlim) + ylim(-ylim, ylim)
+      
   } else {
     p = p + geom_text(vjust=-.5, size=3, color="black", 
       aes(label=ifelse(molrank > top.n , '', Molecule)))
