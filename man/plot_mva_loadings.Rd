@@ -2,7 +2,7 @@
 % Please edit documentation in R/opls.R
 \name{plot_mva_loadings}
 \alias{plot_mva_loadings}
-\title{Title}
+\title{Plot a multivariate scatterplot of feature loadings to investigate feature importance}
 \usage{
 plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
   top.n = nrow(mvaresults$loadings))
@@ -20,5 +20,5 @@ plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
 A plot
 }
 \description{
-Title
+Plot a multivariate scatterplot of feature loadings to investigate feature importance
 }
