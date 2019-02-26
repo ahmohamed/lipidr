@@ -228,6 +228,22 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
   return(p)
 }
 
+#' Extract top lipids from OPLS-DA results
+#'
+#' @param mvaresults Results obtained from \code{\link{mva}}
+#' @param top.n Number of lipids to return 
+#'
+#' @return A dataframe of \code{top.n} lipids with their annotations
+#' @export
+#'
+#' @examples
+topImportantLipids <- function(mvaresults, top.n=10) {
+  ret = .get_loading_matrix(mvaresults, c(1,2), "Molecule")
+  mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
+  mds_matrix = mds_matrix[, -c(1:3)]
+  mds_matrix %>% filter(molrank <= top.n) %>%
+    arrange(molrank)
+}
 
 gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   x <- xc + rx*cos(seq(0, pi, length.out=100))
