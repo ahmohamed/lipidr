@@ -214,8 +214,8 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
     geom_point(size=3, pch=16,  aes(alpha = molrank > top.n)) + 
     scale_alpha_manual(values=c(1, 0.5))
     
-  if ("ggprepel" %in% rownames(installed.packages())) {
-    p = p + geom_label_repel(
+  if ("ggrepel" %in% rownames(installed.packages())) {
+    p = p + ggrepel::geom_label_repel(
       aes(label=ifelse(molrank > top.n , '', Molecule)),
       size = 2.4, direction = "both", segment.alpha = 0.6, 
       label.padding = 0.15, force = 0.5
