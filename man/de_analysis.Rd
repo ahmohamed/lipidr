@@ -7,7 +7,8 @@
 de_analysis(..., data, measure = "Area", group_col = NULL)
 }
 \arguments{
-\item{...}{expressions, or character strings which can be parsed to expressions, specifying contrasts}
+\item{...}{expressions, or character strings which can be parsed to expressions, specifying contrasts. 
+These are passed to \code{limma::makeContrasts}.}
 
 \item{data}{Skyline data.frame created by \code{\link{read.skyline}}, should be normalized and log2 transformed}
 
