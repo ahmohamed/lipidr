@@ -1,5 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$     # Used for continuous integration testing with travis
+^\.travis\.yml*
 ^\.git*
 ^\.BBSoptions*
