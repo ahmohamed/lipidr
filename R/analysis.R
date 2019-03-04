@@ -41,7 +41,7 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
 #' @param ... expressions, or character strings which can be parsed to expressions, specifying contrasts.
 #' These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provided.
 #' @param coef column number or column name specifying which coefficient of the linear model is of interest.
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed
+#' @param data Skyline data.frame created by \code{\link{read.skyline}}, should be normalized and log2 transformed
 #' @param measure name of the column indicating sample names
 #' 
 #' @importFrom rlang is_formula
