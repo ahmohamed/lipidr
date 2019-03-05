@@ -1,6 +1,3 @@
-library(rlang)
-library(SummarizedExperiment)
-
 #' @export
 #' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
@@ -37,101 +34,6 @@ SkylineExperiment <- function(assay_list, attrs, colData=NULL, rowData=NULL, ...
   SkylineExperiment(assay_list, colData=col_data, rowData=row_data, attrs=attrs)
 }
 
-de_join <- function(df, variable) {
-  .summarise_fun = function(x) {
-    u = unique(x)
-    if(length(u) == 1) {
-      return(u)
-    }
-    return(list(u))
-  }
-  df %>% group_by(!!sym(variable)) %>% 
-    summarise_all(function(x) list(unique(x))) %>% 
-    select_if(function(x) all(sapply(x, length) == 1)) %>%
-    group_by(!!sym(variable)) %>% summarise_all(unlist)
-}
-group_by.SummarizedExperiment <- function(.data, ..., add=FALSE, rowgroups=FALSE) {
-  if(rowgroups) {
-    metadata(.data)$rowgroupvars <- group_by_prepare(.data, ..., add=add)$group_names
-  }else {
-    metadata(.data)$colgroupvars <- group_by_prepare(.data, ..., add=add)$group_names
-  }
-  return(.data)
-}
-
-#' @export
-filter.SummarizedExperiment <- function(.data, ...) {
-  dots <- rlang::quos(...)
-  if (any(rlang::have_name(dots))) {
-    bad <- dots[rlang::have_name(dots)]
-    bad_eq_ops(bad, "must not be named, do you need `==`?")
-  } else if (rlang:::is_empty(dots)) {
-    return(.data)
-  }
-  
-  quo <- dplyr:::all_exprs(!!!dots, .vectorised = TRUE)
-  d = DataFrame(colData(.data), rowid=c(1:ncol(.data)))
-  if(!is.null(metadata(.data)$colgroupvars)) {
-    d = group_by_impl(d, metadata(.data)$colgroupvars)
-  }
-  out <- dplyr:::filter_impl(d, quo)
-  .data[, out$rowid]
-}
-
-#' @export
-select.SummarizedExperiment <- function(.data, ..., .dots = list()) {
-  .names = c(as.list(colData(.data)), as.list(rowData(.data)), as.list(assays(.data)))
-  select2(.names, ..., .dots)
-}
-
-
-#' @export
-select.DataFrame <- function(.data, ..., .dots = list()) {
-  vars <- dplyr:::select_vars(names(.data), !!!quos(...))
-  dplyr:::select_impl(.data, vars)
-}
-
-select2 <- function(.data, ..., .dots = list()) {
-  vars <- dplyr:::select_vars(names(.data), !!!quos(...))
-  dplyr:::select_impl(.data, vars)
-}
-
-summarise.SummarizedExperiment <- function(.data, .assays=vars(), .cols=vars(), .rows=vars()) {
-  col_data = DataFrame(colData(.data), rowid=c(1:ncol(.data)))
-  if(!is_empty(metadata(.data)$colgroupvars)) {
-    col_data = group_by_impl(col_data, metadata(.data)$colgroupvars)
-    colgroups = attr(col_data, "indices")
-    col_data_sum = dplyr:::summarise_impl(col_data, .cols)
-  }else {
-    colgroups = TRUE
-  }
-  
-  row_data = DataFrame(rowData(.data), rowid=c(1:nrow(.data)))
-  if(!is_empty(metadata(.data)$rowgroupvars)) {
-    row_data = group_by_impl(row_data, metadata(.data)$rowgroupvars)
-    rowgroups = attr(row_data, "indices")
-    row_data_sum = dplyr:::summarise_impl(row_data, .rows)
-  } else {
-    rowgroups = TRUE
-  }
-  
-  
-  
-}
-group_by_impl <- function(.data, symbols) {
-  fun = dplyr:::grouped_df_impl
-  if ( length(formals(fun)) == 3) {
-    return (fun(.data, symbols, TRUE))
-  }
-  return (fun(.data, symbols))
-}
-get_data_mask <- function(ds) {
-  assay_env = env(assays(ds) %>% as.list())
-  row_env = child_env(assay_env, rowData(ds) %>% as.data.frame())
-  col_env = child_env(row_env, colData(ds) %>% as.data.frame())
-  
-  return(col_env)
-}
 #' @importFrom SummarizedExperiment assay
 #' @importFrom tidyr gather
 to_long_format <- function(ds, measure="Area") {
