@@ -1,7 +1,7 @@
 #' Read Skyline exported files
 #'
 #' @param files list of Skyline exported files in CSV format
-#' @importFrom dplyr %>% arrange mutate
+#' @importFrom dplyr %>% arrange mutate n
 #' @importFrom forcats fct_inorder
 #' @return SummarizedExperiment object.
 #' @export
