@@ -202,7 +202,6 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
   stopifnot(inherits(mvaresults, "opls"))
   ret = .get_loading_matrix(mvaresults, components, color_by)
   mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
-  View(mds_matrix %>% mutate(top = molrank <= top.n))
   
   color_by = ret$color_by
   
