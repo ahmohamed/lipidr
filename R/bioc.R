@@ -74,9 +74,15 @@ to_df <- function(d, dim="row") {
 }
 
 #' @export
-colData.SkylineExperiment <- SummarizedExperiment::colData
+setMethod("colData",
+  c(x = "SkylineExperiment"),
+  selectMethod("colData", list("SummarizedExperiment"))
+)
 #' @export
-rowData.SkylineExperiment <- SummarizedExperiment::rowData
+setMethod("rowData",
+  c(x = "SkylineExperiment"),
+  selectMethod("rowData", list("SummarizedExperiment"))
+)
 
 #' @export
 left_join.DataFrame <- .join_wrapper(dplyr::left_join)
