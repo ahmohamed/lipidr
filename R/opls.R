@@ -17,6 +17,8 @@
 #' datadir = system.file("extdata", package="lipidr")
 #' filelist = list.files(datadir, "data.csv", full.names = TRUE)
 #' d = read_skyline(filelist)
+#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+#' d = add_sample_annotation(d, clinical_file)
 #' 
 #' # PCA
 #' mvaresults = mva(d, measure="Area", method="PCA")
