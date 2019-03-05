@@ -14,7 +14,8 @@ Imports:
     forcats,
     ggplot2,
     limma,
-    fgsea
+    fgsea,
+    ropls
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
