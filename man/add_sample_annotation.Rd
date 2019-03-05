@@ -9,7 +9,7 @@ add_sample_annotation(ds, annot_file)
 \arguments{
 \item{annot_file}{CSV file with at least 2 columns, sample names and group(s).}
 
-\item{data}{Skyline data.frame created by \code{\link{read.skyline}}.}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
 }
 \value{
 Skyline data.frame with sample group information.

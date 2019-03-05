@@ -162,7 +162,7 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' plot_mva(mvaresults, color_by="group")
 #' 
 #' # OPLS-DA
-#' mvaresults = mva(d, method = "OPLS-DA", group_col = "Vehicle", groups=c("water", "DCA"))
+#' mvaresults = mva(d, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
 #' plot_mva(mvaresults, color_by="group")
 #' 
 plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL, ...){

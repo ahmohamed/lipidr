@@ -24,5 +24,5 @@ filelist = list.files(datadir, "data.csv", full.names = TRUE)
 d = read_skyline(filelist)
 
 plot_molecule_sd(d)
-plot_molecule_sdt(d, "Retention.Time", log=FALSE)
+plot_molecule_sd(d, "Retention.Time", log=FALSE)
 }

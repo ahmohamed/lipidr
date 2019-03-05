@@ -23,12 +23,12 @@ SkylineExperiment <- function(assay_list, attrs, colData=NULL, rowData=NULL, ...
   mcols(assay_list) = list(logged=FALSE, normalized=FALSE)
   
   col_data = d %>% distinct(!!!(syms(c("Sample", attr(d, "skyline")$annot_cols))))
-  col_data = toDataFrame(col_data, row.names = "Sample")
+  col_data = toDataFrame(col_data, row.names.col = "Sample")
   
   row_data = d %>% 
     select(TransitionId, matches("filename|^Class|^Molecule|^Precursor|^Product")) %>%
     distinct()
-  row_data = toDataFrame(row_data, row.names = "TransitionId")
+  row_data = toDataFrame(row_data, row.names.col = "TransitionId")
   row_data = row_data[ row.names(assay_list[[1]]), ]
   attrs = list(summarized = FALSE, dimnames=c("TransitionId", "Sample"))
   SkylineExperiment(assay_list, colData=col_data, rowData=row_data, attrs=attrs)
@@ -74,9 +74,9 @@ to_df <- function(d, dim="row") {
 }
 
 #' @export
-colData <- SummarizedExperiment::colData
+colData.SkylineExperiment <- SummarizedExperiment::colData
 #' @export
-rowData <- SummarizedExperiment::rowData
+rowData.SkylineExperiment <- SummarizedExperiment::rowData
 
 #' @export
 left_join.DataFrame <- .join_wrapper(dplyr::left_join)
