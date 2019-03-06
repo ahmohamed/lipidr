@@ -9,9 +9,14 @@
 
 #' Constructor for Skyline experiment from list of Assays
 #' 
+#' @param assay_list A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to \code{\link{SummarizedExperiment}}
+#' @param attrs A list of extra attributes to be save to SkylineExperiment object
+#' @param colData A DataFrame object describing the rows (Contains geenerated lipid annotations). Row names, if present, become the row names of the SummarizedExperiment object. The number of rows of the DataFrame must equal the number of rows of the matrices in assays.
+#' @param rowData An optional DataFrame describing the samples (Conatains clinical information). Row names, if present, become the column names of the SkylineExperiment.
+#'
 #' @export
 #' @importFrom SummarizedExperiment SummarizedExperiment
-SkylineExperiment <- function(assay_list, attrs, colData=NULL, rowData=NULL, ...) {
+SkylineExperiment <- function(assay_list, attrs, colData=NULL, rowData=NULL) {
   se = SummarizedExperiment(assay_list, colData=colData, rowData=rowData)
   ret = .SkylineExperiment(se)
   ret@attrs = attrs
