@@ -22,3 +22,9 @@
 #' @docType package
 #' 
 NULL
+
+.myDataEnv <- new.env(parent=emptyenv()) # not exported
+
+.onAttach <- function(lib, pkg) {
+   data(lipidannotation, envir=.myDataEnv)
+}

@@ -8,7 +8,7 @@
 #'
 #' @examples
 annotate_lipids <- function(data){
-  def = lipidDefaults$clean_mols
+  def = .myDataEnv$lipidDefaults$clean_mols
   mols = unique(data$Molecule)
   not_in_db = mols[!mols %in% def$Molecule]
   
@@ -25,7 +25,7 @@ annotate_lipids <- function(data){
   }
   
   clean_ %>% filter(!not_matched) %>% .parse_lipid_info() %>%
-    .left_join.silent(lipidDefaults$class_info) %>%
+    .left_join.silent(.myDataEnv$lipidDefaults$class_info) %>%
     .full_join.silent(def %>% filter(Molecule %in% mols)) %>%
     return()
 }
