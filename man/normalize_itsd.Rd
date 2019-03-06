@@ -4,8 +4,7 @@
 \alias{normalize_itsd}
 \title{Normalize each class by its corresponding internal standard(s).}
 \usage{
-normalize_itsd(data, measure = "Area", exclude = "blank", log = TRUE,
-  plot = FALSE)
+normalize_itsd(data, measure = "Area", exclude = "blank", log = TRUE)
 }
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
