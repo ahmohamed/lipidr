@@ -23,8 +23,18 @@
 #' 
 NULL
 
+
+#' lipidDefaults.
+#'
+#' @docType data
+#' @name lipidDefaults
+#' @examples
+#' data(lipidannotation)
+#'
+NULL
+
 .myDataEnv <- new.env(parent=emptyenv()) # not exported
 
 .onAttach <- function(lib, pkg) {
-   utils::data(lipidannotation, envir=.myDataEnv)
+   utils::data(lipidDefaults, envir=.myDataEnv)
 }
