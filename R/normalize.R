@@ -87,7 +87,7 @@ normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE) {
   
   # per class: 
   itsd_list = to_df(data) %>% group_by(filename, Class) %>% 
-    mutate(itsd_list=list(MoleculeId[itsd])) %>% .$itsd_list
+    mutate(itsd_list=list(as.character(MoleculeId[itsd]))) %>% .$itsd_list
   
   assay(data, measure) = laply(seq_along(itsd_list), function(i) {
     if(length(itsd_list[[i]]) == 0) {

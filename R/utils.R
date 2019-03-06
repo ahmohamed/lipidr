@@ -100,7 +100,8 @@ to_num_matrix <- function(data, sample, feature, measure){
 
 rownames_to_column <- function(df, var="rowname") {
     stopifnot(is.data.frame(df))
-    df[[var]] = rownames(df)
+    df = cbind(data.frame(rownames(df)), df)
+    colnames(df)[[1]] = var
     rownames(df) <- NULL
     df
 }
