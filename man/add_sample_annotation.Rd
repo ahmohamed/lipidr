@@ -4,12 +4,12 @@
 \alias{add_sample_annotation}
 \title{Add sample annotation to Skyline data frame}
 \usage{
-add_sample_annotation(ds, annot_file)
+add_sample_annotation(data, annot_file)
 }
 \arguments{
-\item{annot_file}{CSV file with at least 2 columns, sample names and group(s).}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
 
-\item{data}{Skyline data.frame created by \code{\link{read.skyline}}.}
+\item{annot_file}{CSV file with at least 2 columns, sample names and group(s).}
 }
 \value{
 Skyline data.frame with sample group information.

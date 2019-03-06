@@ -8,6 +8,8 @@ plot_results_volcano(de_results, show.labels = TRUE)
 }
 \arguments{
 \item{de_results}{output of \code{\link{de_analysis}}}
+
+\item{show.labels}{whether labels show be displayed for significant lipids}
 }
 \description{
 Plot a volcano chart for differential analysis results.

@@ -8,7 +8,7 @@ enrich_lipidsets(de.results, rank.by = c("logFC", "P.Value",
   "Adj.P.Val"))
 }
 \arguments{
-\item{de.results}{output of \code{\link{de.analysis}}}
+\item{de.results}{output of \code{\link{de_analysis}}}
 
 \item{rank.by}{statistic used to rank the lipid list}
 }

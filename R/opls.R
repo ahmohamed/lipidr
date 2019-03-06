@@ -3,10 +3,13 @@
 #' Blank samples are automatically detected (using TIC) and excluded. Missing data
 #' are imputed using average lipid itensity across all samples.
 #' 
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized
 #' @param method either PCA, PCoA or OPLS-DA
 #' @param group_col Sample annotation to use as grouping column
+#' @param groups two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
+#' @param ... Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.
+#' 
 #' 
 #' @importFrom stats cmdscale prcomp
 #' @importFrom ropls opls
@@ -17,6 +20,8 @@
 #' datadir = system.file("extdata", package="lipidr")
 #' filelist = list.files(datadir, "data.csv", full.names = TRUE)
 #' d = read_skyline(filelist)
+#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+#' d = add_sample_annotation(d, clinical_file)
 #' 
 #' # PCA
 #' mvaresults = mva(d, measure="Area", method="PCA")
@@ -149,7 +154,9 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' datadir = system.file("extdata", package="lipidr")
 #' filelist = list.files(datadir, "data.csv", full.names = TRUE)
 #' d = read_skyline(filelist)
-#' 
+#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+#' d = add_sample_annotation(d, clinical_file)
+#'
 #' # PCA
 #' mvaresults = mva(d, measure="Area", method="PCA")
 #' plot_mva(mvaresults, color_by="group")
@@ -160,10 +167,10 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' plot_mva(mvaresults, color_by="group")
 #' 
 #' # OPLS-DA
-#' mvaresults = mva(d, method = "OPLS-DA", group_col = "Vehicle", groups=c("water", "DCA"))
+#' mvaresults = mva(d, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
 #' plot_mva(mvaresults, color_by="group")
 #' 
-plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL, ...){
+plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
   stopifnot(inherits(mvaresults, "mvaResults"))
   if(inherits(mvaresults, "opls")) {
     return (plot_opls(mvaresults, components, color_by))
@@ -202,7 +209,6 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
   stopifnot(inherits(mvaresults, "opls"))
   ret = .get_loading_matrix(mvaresults, components, color_by)
   mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
-  View(mds_matrix %>% mutate(top = molrank <= top.n))
   
   color_by = ret$color_by
   
@@ -287,11 +293,11 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   # }
   
   mds_matrix = mds_matrix %>% as.data.frame() %>%
-    tibble::rownames_to_column("LipidID")
+    rownames_to_column("LipidID")
   
   if(! is.null(color_by)) {
     row_data = mvaresults$row_data %>% as.data.frame() %>%
-      tibble::rownames_to_column("LipidID")
+      rownames_to_column("LipidID")
     
     mds_matrix = mds_matrix %>%
       .left_join.silent(row_data)
@@ -307,7 +313,7 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   }
   
   mds_matrix = mds_matrix %>% as.data.frame() %>%
-    tibble::rownames_to_column("Sample")
+    rownames_to_column("Sample")
   
   if(is.null(color_by)) {
     if(!is.null(mvaresults$group_col)) {
@@ -318,7 +324,7 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   }
   if(color_by != "Sample") {
     col_data = mvaresults$col_data %>% as.data.frame() %>%
-      tibble::rownames_to_column("Sample")
+      rownames_to_column("Sample")
     
     mds_matrix = mds_matrix %>%
       .left_join.silent(col_data)

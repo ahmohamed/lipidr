@@ -1,6 +1,6 @@
 #' Perform Probabilistic Quotient Normalization for intensities.
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height
 #' @param exclude Samples to exclude, can be either: \cr 
 #' "blank" - automatically detected blank samples and exclude them
@@ -46,7 +46,7 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
 
 #' Normalize each class by its corresponding internal standard(s).
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height
 #' @param exclude Samples to exclude, can be either: \cr 
 #' "blank" - automatically detected blank samples and exclude them
@@ -60,7 +60,7 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
 #' @export
 #'
 #' @examples
-normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE, plot=FALSE) {
+normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE) {
   if(mcols(assays(data), use.names = T)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
@@ -87,9 +87,9 @@ normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE, plot
   
   # per class: 
   itsd_list = to_df(data) %>% group_by(filename, Class) %>% 
-    mutate(itsd_list=list(MoleculeId[itsd])) %>% .$itsd_list
+    mutate(itsd_list=list(as.character(MoleculeId[itsd]))) %>% .$itsd_list
   
-  assay(data, measure) = plyr::laply(seq_along(itsd_list), function(i) {
+  assay(data, measure) = laply(seq_along(itsd_list), function(i) {
     if(length(itsd_list[[i]]) == 0) {
       f = 1
     } else if (length(itsd_list[[i]]) == 1){

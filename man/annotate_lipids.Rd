@@ -7,7 +7,7 @@
 annotate_lipids(data)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read.skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 }
 \value{
 
