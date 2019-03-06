@@ -8,13 +8,17 @@ mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS-DA"),
   group_col = NULL, groups = NULL, ...)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read.skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 
 \item{measure}{which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized}
 
 \item{method}{either PCA, PCoA or OPLS-DA}
 
 \item{group_col}{Sample annotation to use as grouping column}
+
+\item{groups}{two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.}
+
+\item{...}{Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.}
 }
 \description{
 Blank samples are automatically detected (using TIC) and excluded. Missing data

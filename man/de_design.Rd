@@ -12,7 +12,9 @@ These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provi
 
 \item{coef}{column number or column name specifying which coefficient of the linear model is of interest.}
 
-\item{data}{Skyline data.frame created by \code{\link{read.skyline}}, should be normalized and log2 transformed}
+\item{design}{Design matrix generated from \code{\link{model.matrix}}, or a design formula .}
+
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed}
 
 \item{measure}{name of the column indicating sample names}
 }

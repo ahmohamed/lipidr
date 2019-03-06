@@ -3,10 +3,13 @@
 #' Blank samples are automatically detected (using TIC) and excluded. Missing data
 #' are imputed using average lipid itensity across all samples.
 #' 
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized
 #' @param method either PCA, PCoA or OPLS-DA
 #' @param group_col Sample annotation to use as grouping column
+#' @param groups two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
+#' @param ... Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.
+#' 
 #' 
 #' @importFrom stats cmdscale prcomp
 #' @importFrom ropls opls
@@ -167,7 +170,7 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' mvaresults = mva(d, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
 #' plot_mva(mvaresults, color_by="group")
 #' 
-plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL, ...){
+plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
   stopifnot(inherits(mvaresults, "mvaResults"))
   if(inherits(mvaresults, "opls")) {
     return (plot_opls(mvaresults, components, color_by))

@@ -2,7 +2,7 @@
 #' 
 #' Calculate a single intensity for molecules with multiple transitions
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param method choose to summarize multiple transitions by taking average or max intensity
 #'
 #' @importFrom dplyr %>% vars matches arrange group_by_at ungroup group_indices summarise first

@@ -50,7 +50,7 @@ read_skyline <- function(files) {
 #' @export
 #'
 #' @examples
-add_sample_annotation = function(ds, annot_file) {
+add_sample_annotation = function(data, annot_file) {
   annot = read.csv(annot_file)
   stopifnot(ncol(annot) > 1)
   
@@ -63,21 +63,21 @@ add_sample_annotation = function(ds, annot_file) {
     sample_col = colnames(annot)[[1]]
   }
   annot_cols = colnames(annot)[colnames(annot) != sample_col]
-  col_data = colData(ds)
+  col_data = colData(data)
   
   if (any (annot_cols %in% colnames(col_data)) ) {
     annot_cols_exist = annot_cols[annot_cols %in% colnames(col_data)]
     warning("These annotation columns already exist in data: ", paste(annot_cols_exist, collapse = ", "))
     annot_cols = annot_cols[!annot_cols %in% annot_cols_exist]
     
-    if(length(annot_cols) == 0) return(ds)
+    if(length(annot_cols) == 0) return(data)
     
     annot = annot[, !colnames(annot) %in% annot_cols_exist]
   }
   
-  colData(ds) <- col_data %>% left_join(annot, by=c(rowname=sample_col))
+  colData(data) <- col_data %>% left_join(annot, by=c(rowname=sample_col))
   
-  return(ds)
+  return(data)
 }
 
 ####################################################################################################

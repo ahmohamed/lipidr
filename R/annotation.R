@@ -1,6 +1,6 @@
 #' Parse Molecule names to extract class and chain information.
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @return
 #' 
 #' @importFrom dplyr %>% filter left_join full_join

@@ -7,7 +7,7 @@
 plot_class_enrichment(de_results, significant.sets, measure = "logFC")
 }
 \arguments{
-\item{de_results}{output of \code{\link{de.analysis}}}
+\item{de_results}{output of \code{\link{de_analysis}}}
 
 \item{significant.sets}{list of significantly changed lipid sets (output of \code{\link{significant.lipid.sets}})}
 

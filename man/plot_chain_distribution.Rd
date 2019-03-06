@@ -7,7 +7,7 @@
 plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 }
 \arguments{
-\item{de_results}{output of \code{\link{de.analysis}}}
+\item{de_results}{output of \code{\link{de_analysis}}}
 
 \item{contrast}{which comparison to plot.}
 

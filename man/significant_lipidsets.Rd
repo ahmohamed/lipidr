@@ -7,11 +7,11 @@
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 }
 \arguments{
-\item{enrich.results}{output of \code{\link{enrich.lipid.set}}}
+\item{enrich.results}{output of \code{\link{enrich_lipidsets}}}
 
-\item{p.cutoff}{}
+\item{p.cutoff}{Sigificance threshold}
 
-\item{size.cutoff}{}
+\item{logFC.cutoff}{Cut off for log Fold change}
 }
 \description{
 Get a list of significantly changed lipid sets

@@ -4,7 +4,7 @@
 \alias{plot_mva}
 \title{Plot a multivariate scatterplot of sample scores to investigate sample clustering}
 \usage{
-plot_mva(mvaresults, components = c(1, 2), color_by = NULL, ...)
+plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
 }
 \arguments{
 \item{mvaresults}{Results obtained from \code{\link{mva}}}

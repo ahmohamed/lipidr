@@ -7,7 +7,7 @@
 
 #' Plot a bar chart for total sample intensity
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
 #'
@@ -37,7 +37,7 @@ plot_sample_tic <- function(data, measure="Area", log=TRUE){
 #' ensuring they are normalized. It can also be used to look at different measures 
 #' such as  `Retention.Time` or `Background`.
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
 #'
@@ -69,7 +69,7 @@ plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
 #' but can also be used to look at different measures such as  `Retention.Time`,
 #' to ensure all lipids are eluted within expected range.
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed (Set FALSE for retention time).
 #'
@@ -100,7 +100,7 @@ plot_class_sd <- function(data, measure="Area", log=TRUE){
 #' The functions is usually used to look at intensity distribution in each class,
 #' but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
 #'
@@ -131,7 +131,7 @@ plot_class_boxplot <- function(data, measure="Area", log=TRUE){
 #' The functions is usually used to look at logFC distribution of lipids in each class,
 #' marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`
 #'
-#' @param de_results output of \code{\link{de.analysis}}
+#' @param de_results output of \code{\link{de_analysis}}
 #' @param significant.sets list of significantly changed lipid sets (output of \code{\link{significant.lipid.sets}})
 #' @param measure which measure to plot the distribution of: logFC, P.Value, Adj.P.Val
 #'
@@ -155,7 +155,7 @@ plot_class_enrichment <- function(de_results, significant.sets, measure="logFC")
 
 #' Plot a chart for log fold changes of lipids per class showing chain lengths and saturations
 #'
-#' @param de_results output of \code{\link{de.analysis}}
+#' @param de_results output of \code{\link{de_analysis}}
 #' @param measure which measure to plot the distribution of: logFC, P.Value, Adj.P.Val
 #' @param contrast which comparison to plot.
 #'
@@ -189,7 +189,7 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
 #' but can also be used to look at different measures such as  `Retention.Time`,
 #' to ensure all lipids are eluted within expected range.
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed (Set FALSE for retention time).
 #'
@@ -232,7 +232,7 @@ plot_molecule_cv <- function(data, measure="Area", log=TRUE){
 #' The functions is usually used to look at intensity distribution for each lipid,
 #' but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
 #'
@@ -259,6 +259,7 @@ plot_molecule_boxplot <- function(data, measure="Area", log=TRUE){
 #' Plot a volcano chart for differential analysis results.
 #'
 #' @param de_results output of \code{\link{de_analysis}}
+#' @param show.labels whether labels show be displayed for significant lipids
 #' 
 #' @export
 plot_results_volcano <- function(de_results, show.labels=TRUE) {
