@@ -98,6 +98,13 @@ to_num_matrix <- function(data, sample, feature, measure){
   return ( median(tic)/tic > 50 )
 }
 
+rownames_to_column <- function(df, var="rowname") {
+    stopifnot(is.data.frame(df))
+    df[[var]] = rownames(df)
+    rownames(df) <- NULL
+    df
+}
+
 
 .quos_syms <- function(x) {
   ret = list()

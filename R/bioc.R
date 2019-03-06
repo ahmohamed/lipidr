@@ -39,7 +39,7 @@ SkylineExperiment <- function(assay_list, attrs, colData=NULL, rowData=NULL, ...
 to_long_format <- function(ds, measure="Area") {
   dims = ds@attrs$dimnames
   assay(ds, measure) %>% as.data.frame() %>% 
-    tibble::rownames_to_column(dims[[1]]) %>% 
+    rownames_to_column(dims[[1]]) %>% 
     gather(key=!!dims[[2]], value=!!measure, -!!dims[[1]]) %>%
     left_join(to_df(ds, "row")) %>%
     left_join(to_df(ds, "col"))
@@ -58,16 +58,16 @@ to_df <- function(d, dim="row") {
     row_data = rowData(d)
     rownames(row_data) = rownames(d)
     row_data %>% as.data.frame() %>%
-      tibble::rownames_to_column(d@attrs$dimnames[[1]])
+      rownames_to_column(d@attrs$dimnames[[1]])
   } else {
     colData(d) %>% as.data.frame() %>%
-      tibble::rownames_to_column(d@attrs$dimnames[[2]])
+      rownames_to_column(d@attrs$dimnames[[2]])
   }
 }
 .join_wrapper <- function(f) {
   return (function(r, l, by=NULL) {
     r %>% as.data.frame %>%
-      tibble::rownames_to_column() %>%
+      rownames_to_column() %>%
       f(l, by) %>%
       toDataFrame()
   })

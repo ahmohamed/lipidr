@@ -293,11 +293,11 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   # }
   
   mds_matrix = mds_matrix %>% as.data.frame() %>%
-    tibble::rownames_to_column("LipidID")
+    rownames_to_column("LipidID")
   
   if(! is.null(color_by)) {
     row_data = mvaresults$row_data %>% as.data.frame() %>%
-      tibble::rownames_to_column("LipidID")
+      rownames_to_column("LipidID")
     
     mds_matrix = mds_matrix %>%
       .left_join.silent(row_data)
@@ -313,7 +313,7 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   }
   
   mds_matrix = mds_matrix %>% as.data.frame() %>%
-    tibble::rownames_to_column("Sample")
+    rownames_to_column("Sample")
   
   if(is.null(color_by)) {
     if(!is.null(mvaresults$group_col)) {
@@ -324,7 +324,7 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   }
   if(color_by != "Sample") {
     col_data = mvaresults$col_data %>% as.data.frame() %>%
-      tibble::rownames_to_column("Sample")
+      rownames_to_column("Sample")
     
     mds_matrix = mds_matrix %>%
       .left_join.silent(col_data)

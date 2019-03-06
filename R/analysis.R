@@ -70,7 +70,7 @@ de_design <- function(..., coef=NULL, design, data, measure="Area") {
   dimname_x = data@attrs$dimnames[[1]]
   
   top = lapply(coef, function(x) 
-    limma::topTable(efit, number = Inf, coef = x) %>% tibble::rownames_to_column(dimname_x)) %>%
+    limma::topTable(efit, number = Inf, coef = x) %>% rownames_to_column(dimname_x)) %>%
     bind_rows(.id="contrast")
   
   top = to_df(data, dim="row") %>% select(one_of("Molecule", "Class", "total_cl", "total_cs", "itsd", dimname_x)) %>% 
