@@ -1,3 +1,7 @@
+#' SkylineExperiment object 
+#' 
+#' @slot attrs Extra slot to hold the workflow stage for the data, whether normalized, summarized, logged.
+#'
 #' @export
 #' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
