@@ -132,7 +132,7 @@ plot_class_boxplot <- function(data, measure="Area", log=TRUE){
 #' marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`
 #'
 #' @param de_results output of \code{\link{de_analysis}}
-#' @param significant.sets list of significantly changed lipid sets (output of \code{\link{significant.lipid.sets}})
+#' @param significant.sets list of significantly changed lipid sets (output of \code{\link{significant_lipidsets}})
 #' @param measure which measure to plot the distribution of: logFC, P.Value, Adj.P.Val
 #'
 #' @export

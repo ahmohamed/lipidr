@@ -138,7 +138,7 @@ enrich_lipidsets <- function(de.results, rank.by=c("logFC", "P.Value", "Adj.P.Va
 #'
 #' @param enrich.results output of \code{\link{enrich_lipidsets}}
 #' @param p.cutoff Sigificance threshold
-#' @param logFC.cutoff Cut off for log Fold change
+#' @param size.cutoff Minimum number of lipids in a set tested for enrichment
 #'
 #' @return
 #' @importFrom dplyr %>% filter

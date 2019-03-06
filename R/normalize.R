@@ -60,7 +60,7 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
 #' @export
 #'
 #' @examples
-normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE, plot=FALSE) {
+normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE) {
   if(mcols(assays(data), use.names = T)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
