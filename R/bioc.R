@@ -5,8 +5,10 @@
 #' @export
 #' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
-.SkylineExperiment <- setClass("SkylineExperiment", slots=list(attrs="list"),contains = "SummarizedExperiment")
+.SkylineExperiment <- setClass("SkylineExperiment", slots=list(attrs="list"), contains = "SummarizedExperiment")
 
+#' Constructor for Skyline experiment from list of Assays
+#' 
 #' @export
 #' @importFrom SummarizedExperiment SummarizedExperiment
 SkylineExperiment <- function(assay_list, attrs, colData=NULL, rowData=NULL, ...) {
