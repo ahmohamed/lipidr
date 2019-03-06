@@ -22,7 +22,7 @@ summarize_transitions <- function(data, method=c("max", "average")) {
   sum_fun = ifelse(method == "average", mean, max)
   
   assay_list = lapply(assays(data), function(m) {
-    mret = plyr::laply(transition_gps, function(x) { 
+    mret = laply(transition_gps, function(x) { 
       if(length(x) == 1) {
         return(m[x,])
       } else {
