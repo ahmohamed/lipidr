@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/ahmohamed/lipidr.svg?branch=master)](https://travis-ci.org/ahmohamed/lipidr)
+
 # Analysis workflow for targeted lipidomics.
 
 `lipidr` implements a series of functions to facilitate inspection,
