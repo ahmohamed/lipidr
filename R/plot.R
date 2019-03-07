@@ -63,14 +63,15 @@ plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
 
 
 
-#' Plot a bar chart for standard deviation if a certain measure in each class
+#' Plot a bar chart for standard deviation of a certain measure in each class
 #'
-#' The functions is usually used to look at SD of intensity in each class,
+#' The functions is usually used to look at standard deviations of intensity in each class,
 #' but can also be used to look at different measures such as  `Retention.Time`,
-#' to ensure all lipids are eluted within expected range.
+#' to ensure all lipids are eluted within expected range. 
+#' To assess instrumental variation apply the function to technical quality control samples.
 #'
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
-#' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
+#' @param measure which measure to plot the distribution of: usually Area, Area.Normalized, Height or Retention.Time
 #' @param log whether values should be log2 transformed (Set FALSE for retention time).
 #'
 #' @export
