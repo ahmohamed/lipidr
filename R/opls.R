@@ -1,7 +1,10 @@
-#' Plot a PCA plot to investigate sample clustering
+#' Perform multivariate analyses to investigate sample clustering
 #'
 #' Blank samples are automatically detected (using TIC) and excluded. Missing data
-#' are imputed using average lipid itensity across all samples.
+#' are imputed using average lipid itensity across all samples. The available methods
+#' are PCA, PCoA, OPLS and OPLS-DA. The OPLS variable requires a numeric y-variable, 
+#' whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the 
+#' predictive and orthogonal components are set to 1. 
 #' 
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized
@@ -27,7 +30,7 @@
 #' mvaresults = mva(d, measure="Area", method="PCA")
 #' plot_mva(mvaresults, color_by="group")
 #' 
-mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS-DA"), group_col=NULL, groups=NULL,  ...) {
+mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS", "OPLS-DA"), group_col=NULL, groups=NULL,  ...) {
   stopifnot(inherits(data, "SkylineExperiment"))
   data_f = data[!rowData(data)$itsd, !.is_blank(data)]
   d =  data_f %>%
@@ -67,6 +70,37 @@ mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS-DA"), group_c
       class=c("mvaResults", "pcoa")
     ))
   }
+  
+  if(method == "OPLS") {
+    if(is.null(group_col)) {
+      stop('Please add clinical data or specify a group column')
+    }
+    if(is.numeric(group_col)) {
+      group_vector = colData(data_f)[[group_col]]
+    }
+    if(!is.numeric(group_vector)) {
+      if(!is.numeric(groups)) {
+        stop('Please provide a numeric y-variable for comparison in OPLS')
+      }
+      data_f = data_f[, group_vector %in% groups]
+      d = d[group_vector %in% groups, ]
+      group_vector = group_col
+    }
+      object = run_opls(d, y = group_vector, ...)
+    
+    return (structure( list(
+      scores=data.frame(object@scoreMN[,1], object@orthoScoreMN[,1]), 
+      loadings=data.frame(object@loadingMN[,1], object@orthoLoadingMN[,1]), 
+      summary=object@modelDF,
+      method="OPLS", 
+      row_data=rowData(data_f),
+      col_data=colData(data_f),
+      group_col=group_col),
+      class=c("mvaResults", "opls"),
+      original_object=object
+    ))
+  }
+    
   if(method == "OPLS-DA") {
     if(is.null(group_col)) {
       stop('Please add clinical data or specify a group column')
