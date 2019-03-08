@@ -33,7 +33,7 @@ plot_sample_tic <- function(data, measure="Area", log=TRUE){
 
 #' Plot a boxplot chart to examine distribution of values per sample
 #'
-#' The functions is usually used to look at intensity distribution in each sample
+#' The function is usually used to look at intensity distribution in each sample
 #' ensuring they are normalized. It can also be used to look at different measures 
 #' such as  `Retention.Time` or `Background`.
 #'
@@ -65,7 +65,7 @@ plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
 
 #' Plot a bar chart for standard deviation of a certain measure in each class
 #'
-#' The functions is usually used to look at standard deviations of intensity in each class,
+#' The function is usually used to look at standard deviations of intensity in each class,
 #' but can also be used to look at different measures such as  `Retention.Time`,
 #' to ensure all lipids are eluted within expected range. 
 #' To assess instrumental variation apply the function to technical quality control samples.
@@ -98,7 +98,7 @@ plot_class_sd <- function(data, measure="Area", log=TRUE){
 
 #' Plot a boxplot chart to examine distribution of values per class
 #'
-#' The functions is usually used to look at intensity distribution in each class,
+#' The function is usually used to look at intensity distribution in each class,
 #' but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
 #'
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
@@ -129,7 +129,7 @@ plot_class_boxplot <- function(data, measure="Area", log=TRUE){
 
 #' Plot a boxplot chart to log fold changes of lipids per class
 #'
-#' The functions is usually used to look at logFC distribution of lipids in each class,
+#' The function is usually used to look at logFC distribution of lipids in each class,
 #' marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`
 #'
 #' @param de_results output of \code{\link{de_analysis}}
@@ -186,13 +186,13 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
 
 #' Plot a bar chart for standard deviation if a certain measure in each lipid
 #'
-#' The functions is usually used to look at SD of intensity for each lipid,
+#' The function is usually used to look at standard deviation of intensity for each lipid,
 #' but can also be used to look at different measures such as  `Retention.Time`,
-#' to ensure all lipids are eluted within expected range.
+#' to ensure all lipids elute within expected range.
 #'
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
-#' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
-#' @param log whether values should be log2 transformed (Set FALSE for retention time).
+#' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized or Height
+#' @param log Whether values should be log2 transformed (Set FALSE for retention time).
 #'
 #' @export
 #' @examples 
@@ -230,7 +230,7 @@ plot_molecule_cv <- function(data, measure="Area", log=TRUE){
 
 #' Plot a boxplot chart to examine distribution of values per lipid
 #'
-#' The functions is usually used to look at intensity distribution for each lipid,
+#' The function is usually used to look at intensity distribution for each lipid,
 #' but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
 #'
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
