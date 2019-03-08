@@ -9,16 +9,21 @@ normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 
-\item{measure}{which measure to use as intensity, usually Area, Area.Normalized or Height}
+\item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height}
 
 \item{exclude}{Samples to exclude, can be either: \cr 
 "blank" - automatically detected blank samples and exclude them
 logical vector with the same length as samples}
 
-\item{log}{whether the normalized values should be log2 transformed}
+\item{log}{Whether the normalized values should be log2 transformed}
 }
 \description{
-Perform Probabilistic Quotient Normalization for intensities.
+Perform Probabilistic Quotient Normalization (PQN) for sample intensities.
+The PQN method determines a dilution factor for each sample by comparing
+the distibution of quotients between samples and a reference spectrum, followed
+by sample normalization using this dilution factor.
+The reference spectrum in this method is the average lipid abundance of all 
+samples (exluding blanks).
 }
 \references{
 Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006). 

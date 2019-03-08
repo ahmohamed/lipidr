@@ -2,21 +2,22 @@
 % Please edit documentation in R/plot.R
 \name{plot_class_sd}
 \alias{plot_class_sd}
-\title{Plot a bar chart for standard deviation if a certain measure in each class}
+\title{Plot a bar chart for standard deviation of a certain measure in each class}
 \usage{
 plot_class_sd(data, measure = "Area", log = TRUE)
 }
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 
-\item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized or Height}
+\item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized, Height or Retention.Time}
 
 \item{log}{whether values should be log2 transformed (Set FALSE for retention time).}
 }
 \description{
-The functions is usually used to look at SD of intensity in each class,
+The function is usually used to look at standard deviations of intensity in each class,
 but can also be used to look at different measures such as  `Retention.Time`,
-to ensure all lipids are eluted within expected range.
+to ensure all lipids are eluted within expected range. 
+To assess instrumental variation apply the function to technical quality control samples.
 }
 \examples{
 datadir = system.file("extdata", package="lipidr")

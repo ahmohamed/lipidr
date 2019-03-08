@@ -9,14 +9,14 @@ plot_molecule_sd(data, measure = "Area", log = TRUE)
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 
-\item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized or Height}
+\item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized or Height}
 
-\item{log}{whether values should be log2 transformed (Set FALSE for retention time).}
+\item{log}{Whether values should be log2 transformed (Set FALSE for retention time).}
 }
 \description{
-The functions is usually used to look at SD of intensity for each lipid,
+The function is usually used to look at standard deviation of intensity for each lipid,
 but can also be used to look at different measures such as  `Retention.Time`,
-to ensure all lipids are eluted within expected range.
+to ensure all lipids elute within expected range.
 }
 \examples{
 datadir = system.file("extdata", package="lipidr")

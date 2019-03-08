@@ -14,6 +14,6 @@ plot_class_enrichment(de_results, significant.sets, measure = "logFC")
 \item{measure}{which measure to plot the distribution of: logFC, P.Value, Adj.P.Val}
 }
 \description{
-The functions is usually used to look at logFC distribution of lipids in each class,
+The function is usually used to look at logFC distribution of lipids in each class,
 marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`
 }

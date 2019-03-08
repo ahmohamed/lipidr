@@ -14,7 +14,7 @@ plot_molecule_boxplot(data, measure = "Area", log = TRUE)
 \item{log}{whether values should be log2 transformed}
 }
 \description{
-The functions is usually used to look at intensity distribution for each lipid,
+The function is usually used to look at intensity distribution for each lipid,
 but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
 }
 \examples{
