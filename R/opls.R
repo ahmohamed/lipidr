@@ -10,7 +10,7 @@
 #' @param measure which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized
 #' @param method either PCA, PCoA or OPLS-DA
 #' @param group_col Sample annotation to use as grouping column
-#' @param groups two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
+#' @param groups a numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
 #' @param ... Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.
 #' 
 #' 
