@@ -70,62 +70,57 @@ mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS", "OPLS-DA"),
       class=c("mvaResults", "pcoa")
     ))
   }
-  
-  if(method == "OPLS") {
+    
+  if(method %in% c("OPLS","OPLS-DA")) {
     if(is.null(group_col)) {
       stop('Please add clinical data or specify a group column')
     }
-    if(is.numeric(group_col)) {
+    if(length(group_col) == 1) { #group_col is the name of the grouping column
       group_vector = colData(data_f)[[group_col]]
-    }
-    if(!is.numeric(group_vector)) {
-      if(!is.numeric(groups)) {
-        stop('Please provide a numeric y-variable for comparison in OPLS')
-      }
-      data_f = data_f[, group_vector %in% groups]
-      d = d[group_vector %in% groups, ]
+    } else { # group_col is a vector with grouping
       group_vector = group_col
     }
-      object = run_opls(d, y = group_vector, ...)
     
-    return (structure( list(
-      scores=data.frame(object@scoreMN[,1], object@orthoScoreMN[,1]), 
-      loadings=data.frame(object@loadingMN[,1], object@orthoLoadingMN[,1]), 
-      summary=object@modelDF,
-      method="OPLS", 
-      row_data=rowData(data_f),
-      col_data=colData(data_f),
-      group_col=group_col),
-      class=c("mvaResults", "opls"),
-      original_object=object
-    ))
-  }
-    
-  if(method == "OPLS-DA") {
-    if(is.null(group_col)) {
-      stop('Please add clinical data or specify a group column')
-    }
-    if(is.character(group_col)) {
-      group_vector = colData(data_f)[[group_col]]
-    }
-    if(length(unique(group_vector)) != 2) {
-      if(length(unique(groups)) != 2) {
-        stop('Please provide 2 groups for comparison in OPLS-DA')
+    if(method == "OPLS-DA") {
+      # group_vector should either have 2 values, or a subset should be provided in groups
+      if(length(unique(group_vector)) != 2) {
+        if(length(unique(groups)) != 2) {
+          stop('Please provide 2 groups for comparison in OPLS-DA')
+        }
+        # all groups in the subset should be present in the vector
+        if(! all(groups %in% group_vector)) {
+          stop('Provided groups are not in the grouping column.')
+        }
+      }
+    } else { # This is OPLS
+      # group_vector should be numeric
+      if(!is.numeric(group_vector)) {
+        stop('Please provide a numeric y-variable for comparison in OPLS')
+      }
+      # if group subset is provided, it should be numeric, and values should be present in group_vector
+      if(!is.null(groups)) {
+        if(!is.numeric(groups)) {
+          stop('Please provide a numeric groups variable for comparison in OPLS')
+        }
       }
       if(! all(groups %in% group_vector)) {
         stop('Provided groups are not in the grouping column.')
       }
+    }
+    # By now we know that group_vector is of correct type
+    # groups, if provided, have correct type and values.
+    if(!is.null(groups)) {
       data_f = data_f[, group_vector %in% groups]
       d = d[group_vector %in% groups, ]
       group_vector = fct_drop(group_vector[group_vector %in% groups])
-    }
+    }    
     object = run_opls(d, y = group_vector, ...)
     
     return (structure( list(
       scores=data.frame(object@scoreMN[,1], object@orthoScoreMN[,1]), 
       loadings=data.frame(object@loadingMN[,1], object@orthoLoadingMN[,1]), 
       summary=object@modelDF,
-      method="OPLS-DA", 
+      method=method, 
       row_data=rowData(data_f),
       col_data=colData(data_f),
       group_col=group_col),
