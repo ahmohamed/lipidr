@@ -1,7 +1,8 @@
 #' Differential analysis of lipids between sample groups
 #'
-#' @param ... expressions, or character strings which can be parsed to expressions, specifying contrasts
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}, should be normalized and log2 transformed
+#' @param ... expressions, or character strings which can be parsed to expressions, specifying contrasts. 
+#' These are passed to \code{limma::makeContrasts}.
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed
 #' @param measure name of the column indicating sample names
 #' @param group_col name of the column indicating sample groups
 #'
@@ -24,21 +25,52 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
   symbols = as.character(.quos_syms(quos(...)))
   
   group = colData(data)[[group_col]]
+  if (!all(symbols %in% as.character(group))) {
+    stop("Some of the constrasts variables are not present in group_col")
+  }
   data = data[, group %in% symbols]
   
   group = fct_drop(colData(data)[[group_col]])
   design = model.matrix(~ 0 + group)
   colnames(design) <- gsub("group", "", colnames(design))
-  contr.matrix = limma::makeContrasts(..., levels=colnames(design))
-  
+  return(de_design(..., design=design, data=data, measure=measure))
+}
+
+#' Differential analysis of lipids between sample groups
+#' 
+#' @param ... expressions, or character strings which can be parsed to expressions, specifying contrasts.
+#' These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provided.
+#' @param design Design matrix generated from \code{\link{model.matrix}}, or a design formula .
+#' @param coef column number or column name specifying which coefficient of the linear model is of interest.
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed
+#' @param measure name of the column indicating sample names
+#' 
+#' @importFrom rlang is_formula
+#' @export
+de_design <- function(..., coef=NULL, design, data, measure="Area") {
+  if (is_formula(design)) {
+    design = model.matrix(design, data=colData(data))
+  } else if (! is.matrix(design)) {
+    stop("design should be a matrix or formula")
+  }
   vfit <- limma::lmFit(assay(data, measure), design)
-  vfit <- limma::contrasts.fit(vfit, contrasts=contr.matrix)
-  efit <- limma::eBayes(vfit)
   
+  if (is.null(coef)) {
+    contr.matrix = limma::makeContrasts(..., levels=colnames(design))
+    vfit <- limma::contrasts.fit(vfit, contrasts=contr.matrix)
+    coef = setNames(c(1:ncol(contr.matrix)), colnames(contr.matrix))
+  } else {
+    if (! coef %in% colnames(design)) {
+      stop("One or more coefficients is not in the design matrix. Allowed values are ", colnames(design))
+    }
+    names(coef) = coef
+  }
+  
+  efit <- limma::eBayes(vfit)
   dimname_x = data@attrs$dimnames[[1]]
-  contrast.list = setNames(c(1:ncol(contr.matrix)), colnames(contr.matrix))
-  top = lapply(contrast.list, function(x) 
-    limma::topTable(efit, number = Inf, coef = x) %>% tibble::rownames_to_column(dimname_x)) %>%
+  
+  top = lapply(coef, function(x) 
+    limma::topTable(efit, number = Inf, coef = x) %>% rownames_to_column(dimname_x)) %>%
     bind_rows(.id="contrast")
   
   top = to_df(data, dim="row") %>% select(one_of("Molecule", "Class", "total_cl", "total_cs", "itsd", dimname_x)) %>% 
@@ -48,9 +80,9 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
 
 #' Get a list of significantly changed molecules
 #'
-#' @param de.results output of \code{\link{de.analysis}}
-#' @param p.cutoff 
-#' @param logFC.cutoff 
+#' @param de.results output of \code{\link{de_analysis}}
+#' @param p.cutoff Sigificance threshold
+#' @param logFC.cutoff Cut off for log Fold change
 #'
 #' @return
 #' @importFrom dplyr %>% filter
@@ -65,7 +97,7 @@ significant_molecules = function(de.results, p.cutoff=0.05, logFC.cutoff=1) {
 
 #' Lipid set enrichment analysis
 #'
-#' @param de.results output of \code{\link{de.analysis}}
+#' @param de.results output of \code{\link{de_analysis}}
 #' @param rank.by statistic used to rank the lipid list
 #'
 #' @return
@@ -104,9 +136,9 @@ enrich_lipidsets <- function(de.results, rank.by=c("logFC", "P.Value", "Adj.P.Va
 
 #' Get a list of significantly changed lipid sets
 #'
-#' @param enrich.results output of \code{\link{enrich.lipid.set}}
-#' @param p.cutoff 
-#' @param size.cutoff 
+#' @param enrich.results output of \code{\link{enrich_lipidsets}}
+#' @param p.cutoff Sigificance threshold
+#' @param size.cutoff Minimum number of lipids in a set tested for enrichment
 #'
 #' @return
 #' @importFrom dplyr %>% filter

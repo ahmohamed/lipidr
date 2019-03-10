@@ -111,7 +111,7 @@ mvaresults = mva(d_normalized, measure="Area", method="PCA")
 plot_mva(mvaresults, color_by="group")
 
 # plot 2nd, 3rd components.
-plot_mva(mvaresults, color_by="Vehicle", components = c(2,3))
+plot_mva(mvaresults, color_by="BileAcid", components = c(2,3))
 ```
 
 ## Multivariate analysis
@@ -121,6 +121,17 @@ mvaresults = mva(d_normalized, method = "OPLS-DA", group_col = "Diet", groups=c(
 plot_mva(mvaresults, color_by="group")
 ```
 
+We can also plot the loadings and display important lipids contributing to the separation between different (Diet) groups.
+
+```{r}
+plot_mva_loadings(mvaresults, color_by="Class", top.n=30)
+```
+
+Alternatively, we can extract top *N* lipids along with their annotations.
+
+```{r}
+topImportantLipids(mvaresults, top.n=10)
+```
 
 ## Differential analysis
 This step of the workflow requires `limma` package to be installed.
@@ -141,6 +152,20 @@ We can visualize differential analysis using volcano plots. In this instance we 
 ```{r, fig.height=6}
 plot_results_volcano(de_results, show.labels = FALSE)
 ```
+
+### Complex experimental designs
+For more complex experimental designs, where one might deal with factor adjustment or interactions, it is recommended to use `de_design` function. Users can either provide a design matrix, or a formula to create one.
+
+```{r, eval=FALSE}
+# Using formula
+de_results = de_design(coef="groupHighFat_water", design = ~ group, data=d_normalized, measure="Area")
+
+# Using design matrix
+model.matrix(~ group, data=colData(d_normalized))
+de_results = de_design(coef="groupHighFat_water", design = design, data=d_normalized, measure="Area")
+```
+
+For more details on creating design matrices for different experimental designs, refer to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].
 
 ## Enrichment analysis
 

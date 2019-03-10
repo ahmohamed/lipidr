@@ -7,7 +7,7 @@
 plot_molecule_sd(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read.skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 
 \item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized or Height}
 
@@ -24,5 +24,5 @@ filelist = list.files(datadir, "data.csv", full.names = TRUE)
 d = read_skyline(filelist)
 
 plot_molecule_sd(d)
-plot_molecule_sdt(d, "Retention.Time", log=FALSE)
+plot_molecule_sd(d, "Retention.Time", log=FALSE)
 }

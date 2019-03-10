@@ -98,7 +98,21 @@ to_num_matrix <- function(data, sample, feature, measure){
   return ( median(tic)/tic > 50 )
 }
 
+rownames_to_column <- function(df, var="rowname") {
+    stopifnot(is.data.frame(df))
+    df = cbind(data.frame(rownames(df)), df)
+    colnames(df)[[1]] = var
+    rownames(df) <- NULL
+    df
+}
 
+
+laply <- function(l, fun) {
+  ret = lapply(l, fun)
+  ret.mat = ret %>% unlist() %>% matrix(nrow = length(l), byrow = TRUE)
+  colnames(ret.mat) = names(ret[[1]])
+  ret.mat
+}
 .quos_syms <- function(x) {
   ret = list()
   if (rlang::is_syntactic_literal(x)) {

@@ -4,7 +4,7 @@
 \alias{plot_mva}
 \title{Plot a multivariate scatterplot of sample scores to investigate sample clustering}
 \usage{
-plot_mva(mvaresults, components = c(1, 2), color_by = NULL, ...)
+plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
 }
 \arguments{
 \item{mvaresults}{Results obtained from \code{\link{mva}}}
@@ -20,6 +20,8 @@ Plot a multivariate scatterplot of sample scores to investigate sample clusterin
 datadir = system.file("extdata", package="lipidr")
 filelist = list.files(datadir, "data.csv", full.names = TRUE)
 d = read_skyline(filelist)
+clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+d = add_sample_annotation(d, clinical_file)
 
 # PCA
 mvaresults = mva(d, measure="Area", method="PCA")
@@ -31,7 +33,7 @@ mvaresults = mva(d, measure="Area", method="PCoA")
 plot_mva(mvaresults, color_by="group")
 
 # OPLS-DA
-mvaresults = mva(d, method = "OPLS-DA", group_col = "Vehicle", groups=c("water", "DCA"))
+mvaresults = mva(d, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
 plot_mva(mvaresults, color_by="group")
 
 }

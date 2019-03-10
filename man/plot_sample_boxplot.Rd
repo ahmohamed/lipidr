@@ -7,7 +7,7 @@
 plot_sample_boxplot(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read.skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 
 \item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized or Height}
 

@@ -2,7 +2,7 @@
 #' 
 #' Calculate a single intensity for molecules with multiple transitions
 #'
-#' @param data Skyline data.frame created by \code{\link{read.skyline}}
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param method choose to summarize multiple transitions by taking average or max intensity
 #'
 #' @importFrom dplyr %>% vars matches arrange group_by_at ungroup group_indices summarise first
@@ -22,7 +22,7 @@ summarize_transitions <- function(data, method=c("max", "average")) {
   sum_fun = ifelse(method == "average", mean, max)
   
   assay_list = lapply(assays(data), function(m) {
-    mret = plyr::laply(transition_gps, function(x) { 
+    mret = laply(transition_gps, function(x) { 
       if(length(x) == 1) {
         return(m[x,])
       } else {

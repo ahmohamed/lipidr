@@ -7,11 +7,11 @@
 significant_molecules(de.results, p.cutoff = 0.05, logFC.cutoff = 1)
 }
 \arguments{
-\item{de.results}{output of \code{\link{de.analysis}}}
+\item{de.results}{output of \code{\link{de_analysis}}}
 
-\item{p.cutoff}{}
+\item{p.cutoff}{Sigificance threshold}
 
-\item{logFC.cutoff}{}
+\item{logFC.cutoff}{Cut off for log Fold change}
 }
 \description{
 Get a list of significantly changed molecules
