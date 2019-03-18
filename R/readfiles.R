@@ -7,6 +7,12 @@
 #' @export
 #'
 #' @examples
+#' datadir = system.file("extdata", package="lipidr")
+#' filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#' d = read_skyline(filelist)
+#' 
+#' View automatically generated lipid annotations
+#' rowData(d)
 read_skyline <- function(files) {
   names(files) = basename(files)
   datalist = lapply(files, .read_skyline_file) %>% .uniform.attrs()
@@ -50,6 +56,23 @@ read_skyline <- function(files) {
 #' @export
 #'
 #' @examples
+#' datadir = system.file("extdata", package="lipidr")
+#' filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#' d = read_skyline(filelist)
+#' 
+#' # Add clinical info to existing SkylineExperiment object
+#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+#' d = add_sample_annotation(d, clinical_file)
+#' colData(d)
+#' d$group
+#' 
+#' # Subset samples using clinical information
+#' # Note we are subsetting columns
+#' d[, d$group == "QC"]
+#' 
+#' # Subset lipids using lipid annotation
+#' # Note we are subsetting rows
+#' d[rowData(d)$itsd,]
 add_sample_annotation = function(data, annot_file) {
   annot = read.csv(annot_file)
   stopifnot(ncol(annot) > 1)
