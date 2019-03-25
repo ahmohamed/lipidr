@@ -11,7 +11,7 @@
 #' filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
 #' d = read_skyline(filelist)
 #' 
-#' View automatically generated lipid annotations
+#' # View automatically generated lipid annotations
 #' rowData(d)
 read_skyline <- function(files) {
   names(files) = basename(files)
