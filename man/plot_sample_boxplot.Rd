@@ -19,10 +19,8 @@ ensuring they are normalized. It can also be used to look at different measures
 such as  `Retention.Time` or `Background`.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_sample_boxplot(d, "Area", log=TRUE)
-plot_sample_boxplot(d, "Retention.Time", log=FALSE)
+plot_sample_boxplot(data_normalized, "Area", log=TRUE)
+plot_sample_boxplot(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log=FALSE)
 }

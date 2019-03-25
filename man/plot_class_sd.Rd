@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_class_sd}
 \alias{plot_class_sd}
-\title{Plot a bar chart for standard deviation if a certain measure in each class}
+\title{Plot a bar chart for standard deviation of a certain measure in each class}
 \usage{
 plot_class_sd(data, measure = "Area", log = TRUE)
 }
@@ -19,10 +19,8 @@ but can also be used to look at different measures such as  `Retention.Time`,
 to ensure all lipids are eluted within expected range.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_class_sd(d, "Area", log=TRUE)
-plot_class_sd(d, "Retention.Time", log=FALSE)
+plot_class_sd(data_normalized, "Area", log=TRUE)
+plot_class_sd(data_normalized, "Retention.Time", log=FALSE)
 }

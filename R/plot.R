@@ -128,6 +128,7 @@ plot_class_boxplot <- function(data, measure="Area", log=TRUE){
 #' @param measure which measure to plot the distribution of: logFC, P.Value, Adj.P.Val
 #'
 #' @export
+#' @examples
 #' data(data_normalized)
 #' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
 #' enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
@@ -156,6 +157,7 @@ plot_class_enrichment <- function(de_results, significant.sets, measure="logFC")
 #' @param contrast which comparison to plot.
 #'
 #' @export
+#' @examples 
 #' data(data_normalized)
 #' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
 #' plot_chain_distribution(de_results)
@@ -279,6 +281,7 @@ plot_molecule_boxplot <- function(data, measure="Area", log=TRUE){
 #' @param show.labels whether labels show be displayed for significant lipids
 #' 
 #' @export
+#' @examples
 #' data(data_normalized)
 #' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
 #' plot_results_volcano(de_results, show.labels = FALSE)
