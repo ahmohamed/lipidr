@@ -1,7 +1,7 @@
 #' @importFrom ggplot2 ggplot aes_string aes facet_wrap theme theme_dark theme_grey guides coord_flip
 #' @importFrom ggplot2 stat_sum stat_summary scale_fill_gradient2 scale_color_gradient2 element_text
 #' @importFrom ggplot2 geom_point geom_boxplot geom_bar geom_text geom_tile geom_vline geom_hline xlab ylab labs
-#' @importFrom ggplot2 scale_color_manual scale_alpha_manual stat_ellipse annotate
+#' @importFrom ggplot2 scale_color_manual scale_alpha_manual stat_ellipse annotate xlim ylim
 {} 
 
 

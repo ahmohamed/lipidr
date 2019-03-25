@@ -18,6 +18,9 @@ These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provi
 
 \item{measure}{name of the column indicating sample names}
 }
+\value{
+TopTable as returned by limma package
+}
 \description{
 Differential analysis of lipids between sample groups
 }
