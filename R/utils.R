@@ -133,6 +133,7 @@ laply <- function(l, fun) {
 .full_join.silent <- .silent(dplyr::full_join)
 .inner_join.silent <- .silent(dplyr::inner_join)
 
+#' @importFrom stats sd
 .cv <- function(a) {
   (sd(a, na.rm = TRUE) / mean(a, na.rm = TRUE)) *100
 }

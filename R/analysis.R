@@ -124,6 +124,7 @@ significant_molecules = function(de.results, p.cutoff=0.05, logFC.cutoff=1) {
 #'   }
 #' 
 #' @importFrom dplyr %>% bind_rows arrange rename
+#' @importFrom rlang :=
 #' @export
 #'
 #' @examples
