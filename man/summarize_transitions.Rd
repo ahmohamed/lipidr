@@ -11,6 +11,17 @@ summarize_transitions(data, method = c("max", "average"))
 
 \item{method}{choose to summarize multiple transitions by taking average or max intensity}
 }
+\value{
+A SkylineExperiment object with single intensities per lipid molecule
+}
 \description{
 Calculate a single intensity for molecules with multiple transitions
+}
+\examples{
+datadir = system.file("extdata", package="lipidr")
+filelist = list.files(datadir, "data.csv", full.names = TRUE)
+d = read_skyline(filelist)
+clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+d = add_sample_annotation(d, clinical_file)
+d_summarized = summarize_transitions(d, method = "average")
 }
