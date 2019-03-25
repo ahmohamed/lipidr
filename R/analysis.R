@@ -151,21 +151,21 @@ significant_lipidsets = function(enrich.results, p.cutoff=0.05, size.cutoff=2) {
 }
 
 
-#' Generate lipid sets
+#' Generate lipid sets from lipid molecule names
 #'
-#' @param data data.frame with a column named Molecule
+#' @param molecules A character vector containing lipid molecule names
 #'
 #' @return list of lipid sets
 #' @export
 #' @importFrom dplyr %>% filter distinct
 #' @importFrom tidyr gather unite
 #' @examples
-gen_lipidsets <- function(data) {
+gen_lipidsets <- function(molecules) {
   if (!all( c("itsd", "Class", "total_cl", "total_cs") %in% colnames(data))) {
     #data = annotate_lipids(data)
   }
   
-  data_ = annotate_lipids(data) %>%
+  data_ = annotate_lipids(molecules) %>%
     filter(!itsd) %>%
     distinct(Molecule, Class, total_cl, total_cs) %>%
     gather("collection", "value", Class, total_cl, total_cs) %>%

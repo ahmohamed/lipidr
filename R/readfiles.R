@@ -27,7 +27,7 @@ read_skyline <- function(files) {
   
   
   rowData(original_data) <- rowData(original_data) %>% 
-    left_join(annotate_lipids(rowData(original_data)))
+    left_join(annotate_lipids(rowData(original_data)$Molecule))
   
   message("Successfully read ", length(files), " methods.\n",
           "Your data contain ",  ncol(original_data)," samples, ",

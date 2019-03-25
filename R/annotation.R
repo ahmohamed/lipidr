@@ -1,19 +1,20 @@
 #' Parse Molecule names to extract class and chain information.
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}
-#' @return
+#' @param molecules A character vector containing lipid molecule names
+#' @return a data.frame with lipid annotations as columns. Input lipid names
+#' are given in a column named "Molecule"
 #' 
 #' @importFrom dplyr %>% filter left_join full_join
 #' @export
 #'
 #' @examples
-annotate_lipids <- function(data){
-  def = .myDataEnv$lipidDefaults$clean_mols
-  mols = unique(data$Molecule)
-  not_in_db = mols[!mols %in% def$Molecule]
+annotate_lipids <- function(molecules){
+  def = .myDataEnv$lipidDefaults$clean_molecules
+  molecules = unique(data$Molecule)
+  not_in_db = molecules[!molecules %in% def$Molecule]
   
   if(length(not_in_db) == 0) {
-    def %>% filter(Molecule %in% mols) %>% 
+    def %>% filter(Molecule %in% molecules) %>% 
       return ()
   }
   
@@ -26,7 +27,7 @@ annotate_lipids <- function(data){
   
   clean_ %>% filter(!not_matched) %>% .parse_lipid_info() %>%
     .left_join.silent(.myDataEnv$lipidDefaults$class_info) %>%
-    .full_join.silent(def %>% filter(Molecule %in% mols)) %>%
+    .full_join.silent(def %>% filter(Molecule %in% molecules)) %>%
     return()
 }
 

@@ -4,13 +4,14 @@
 \alias{annotate_lipids}
 \title{Parse Molecule names to extract class and chain information.}
 \usage{
-annotate_lipids(data)
+annotate_lipids(molecules)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{molecules}{A character vector containing lipid molecule names}
 }
 \value{
-
+a data.frame with lipid annotations as columns. Input lipid names
+are given in a column named "Molecule"
 }
 \description{
 Parse Molecule names to extract class and chain information.
