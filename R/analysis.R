@@ -110,6 +110,7 @@ enrich_lipidsets <- function(de.results, rank.by=c("logFC", "P.Value", "Adj.P.Va
   rank.by.sym = rlang::sym(rank.by)
   
   sets = gen_lipidsets(de.results)
+  sets = gen_lipidsets(de.results$Molecule)
   
   de.results = de.results %>% 
     arrange(-!!rank.by.sym) %>% 
