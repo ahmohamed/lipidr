@@ -39,7 +39,7 @@ NULL
 #' Please see \link{normalize_pqn} for details on how to generate this dataset.
 #' 
 #' @docType data
-#' @name data_nomalized
+#' @name data_normalized
 #' @examples
 #' data(data_nomalized)
 NULL
