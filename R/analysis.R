@@ -56,7 +56,7 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
 #' 
 #' # Using formula
 #' de_results = de_design(coef="groupHighFat_water", design = ~ group, data=d_normalized, measure="Area")
-
+#' 
 # Using design matrix
 #' model.matrix(~ group, data=colData(d_normalized))
 #' de_results = de_design(coef="groupHighFat_water", design = design, data=d_normalized, measure="Area")
