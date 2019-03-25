@@ -20,10 +20,8 @@ to ensure all lipids are eluted within expected range.
 To assess instrumental variation apply the function to technical quality control samples.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_class_sd(d, "Area", log=TRUE)
-plot_class_sd(d, "Retention.Time", log=FALSE)
+plot_class_sd(data_normalized, "Area", log=TRUE)
+plot_class_sd(data_normalized, "Retention.Time", log=FALSE)
 }

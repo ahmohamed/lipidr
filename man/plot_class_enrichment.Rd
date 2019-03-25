@@ -17,3 +17,9 @@ plot_class_enrichment(de_results, significant.sets, measure = "logFC")
 The function is usually used to look at logFC distribution of lipids in each class,
 marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`
 }
+\examples{
+data(data_normalized)
+de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
+}

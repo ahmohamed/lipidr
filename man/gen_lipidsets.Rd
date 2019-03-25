@@ -2,16 +2,21 @@
 % Please edit documentation in R/analysis.R
 \name{gen_lipidsets}
 \alias{gen_lipidsets}
-\title{Generate lipid sets}
+\title{Generate lipid sets from lipid molecule names}
 \usage{
-gen_lipidsets(data)
+gen_lipidsets(molecules)
 }
 \arguments{
-\item{data}{data.frame with a column named Molecule}
+\item{molecules}{A character vector containing lipid molecule names}
 }
 \value{
 list of lipid sets
 }
 \description{
-Generate lipid sets
+Generate lipid sets from lipid molecule names
+}
+\examples{
+data(data_normalized)
+molecules = rowData(data_normalized)$Molecule
+gen_lipidsets(molecules)
 }

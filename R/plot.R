@@ -14,12 +14,10 @@
 #' @export
 #'
 #' @examples
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
+#' data(data_normalized)
 #' 
-#' plot_sample_tic(d, "Area", log=TRUE)
-#' plot_sample_tic(d, "Background", log=FALSE)
+#' plot_sample_tic(data_normalized, "Area", log=TRUE)
+#' plot_sample_tic(data_normalized, "Background", log=FALSE)
 plot_sample_tic <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -43,12 +41,10 @@ plot_sample_tic <- function(data, measure="Area", log=TRUE){
 #'
 #' @export
 #' @examples
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
+#' data(data_normalized)
 #' 
-#' plot_sample_boxplot(d, "Area", log=TRUE)
-#' plot_sample_boxplot(d, "Retention.Time", log=FALSE)
+#' plot_sample_boxplot(data_normalized, "Area", log=TRUE)
+#' plot_sample_boxplot(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log=FALSE)
 plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -76,12 +72,10 @@ plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
 #'
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
+#' data(data_normalized)
 #' 
-#' plot_class_sd(d, "Area", log=TRUE)
-#' plot_class_sd(d, "Retention.Time", log=FALSE)
+#' plot_class_sd(data_normalized, "Area", log=TRUE)
+#' plot_class_sd(data_normalized, "Retention.Time", log=FALSE)
 plot_class_sd <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -107,12 +101,10 @@ plot_class_sd <- function(data, measure="Area", log=TRUE){
 #'
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
+#' data(data_normalized)
 #' 
-#' plot_class_boxplot(d, "Area", log=TRUE)
-#' plot_class_boxplot(d, "Retention.Time", log=FALSE)
+#' plot_class_boxplot(data_normalized, "Area", log=TRUE)
+#' plot_class_boxplot(data_normalized, "Retention.Time", log=FALSE)
 plot_class_boxplot <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -137,11 +129,16 @@ plot_class_boxplot <- function(data, measure="Area", log=TRUE){
 #' @param measure which measure to plot the distribution of: logFC, P.Value, Adj.P.Val
 #'
 #' @export
+#' @examples
+#' data(data_normalized)
+#' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+#' enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+#' plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 plot_class_enrichment <- function(de_results, significant.sets, measure="logFC"){
   significant.sets = lapply(significant.sets,
     function(c) sub("^Class_", "", c[grep("^Class_", c)] )
   )
-  de_results = de_results %>% annotate_lipids() %>% 
+  de_results = de_results$Molecule %>% annotate_lipids() %>% 
     .left_join.silent(de_results) %>%
     group_by(contrast) %>%
     mutate(Significant=Class %in% significant.sets[[ contrast[[1]] ]]) %>%
@@ -161,15 +158,17 @@ plot_class_enrichment <- function(de_results, significant.sets, measure="logFC")
 #' @param contrast which comparison to plot.
 #'
 #' @export
+#' @examples 
+#' data(data_normalized)
+#' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+#' plot_chain_distribution(de_results)
 plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
   if(is.null(contrast)) {
     contrast = de_results$contrast[[1]]
   }
   measure = sym(measure)
   
-  de_results = de_results %>% 
-    select(Molecule, !!measure) %>%
-    annotate_lipids() %>% 
+  de_results = de_results$Molecule %>% annotate_lipids() %>% 
     filter(!itsd) %>%
     .left_join.silent(de_results) %>%
     group_by(clean_name) %>%
@@ -184,7 +183,7 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
     scale_fill_gradient2(midpoint = 0)
 }
 
-#' Plot a bar chart for standard deviation if a certain measure in each lipid
+#' Plot a bar chart for standard deviation of a certain measure in each lipid
 #'
 #' The function is usually used to look at standard deviation of intensity for each lipid,
 #' but can also be used to look at different measures such as  `Retention.Time`,
@@ -196,12 +195,15 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
 #'
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
+#' data(data_normalized)
 #' 
-#' plot_molecule_sd(d)
-#' plot_molecule_sd(d, "Retention.Time", log=FALSE)
+#' # plot the variation in intensity of ITSD (internal standards) in QC samples
+#' d_itsd_qc = data_normalized[rowData(data_normalized)$itsd, data_normalized$group == "QC"]
+#' plot_molecule_sd(d_itsd_qc, "Area")
+#' 
+#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
+#' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log=FALSE)
 plot_molecule_sd <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -215,6 +217,23 @@ plot_molecule_sd <- function(data, measure="Area", log=TRUE){
     ylab(paste("SD of", measure))
 }
 
+#' Plot a bar chart for coefficient of variation (CV) of a certain measure in each lipid
+#'
+#' The functions is usually used to investigate the CV in lipid intensity or retention time,
+#' in QC samples.
+#'
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
+#' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
+#' @param log whether values should be log2 transformed (Set FALSE for retention time).
+#'
+#' @export
+#' @examples 
+#' data(data_normalized)
+#' 
+#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#' d_qc = data_normalized[, data_normalized$group == "QC"]
+#' plot_molecule_cv(d_qc, "Area")
+#' plot_molecule_cv(d_qc, "Retention.Time", log=FALSE)
 plot_molecule_cv <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -239,12 +258,10 @@ plot_molecule_cv <- function(data, measure="Area", log=TRUE){
 #'
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
+#' data(data_normalized)
 #' 
-#' plot_molecule_boxplot(d)
-#' plot_molecule_boxplot(d, "Retention.Time", log=FALSE)
+#' plot_molecule_boxplot(data_normalized)
+#' plot_molecule_boxplot(data_normalized, "Retention.Time", log=FALSE)
 plot_molecule_boxplot <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -263,6 +280,10 @@ plot_molecule_boxplot <- function(data, measure="Area", log=TRUE){
 #' @param show.labels whether labels show be displayed for significant lipids
 #' 
 #' @export
+#' @examples
+#' data(data_normalized)
+#' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+#' plot_results_volcano(de_results, show.labels = FALSE)
 plot_results_volcano <- function(de_results, show.labels=TRUE) {
   de_results %>%
     mutate_at(vars(matches("P.Val")), log10) %>%

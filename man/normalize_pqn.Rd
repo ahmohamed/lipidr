@@ -7,7 +7,7 @@
 normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{SkylineExperiment object created by \code{\link{read_skyline}}}
 
 \item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height}
 
@@ -17,6 +17,9 @@ logical vector with the same length as samples}
 
 \item{log}{Whether the normalized values should be log2 transformed}
 }
+\value{
+A SkylineExperiment object with normalized values
+}
 \description{
 Perform Probabilistic Quotient Normalization (PQN) for sample intensities.
 The PQN method determines a dilution factor for each sample by comparing
@@ -24,6 +27,17 @@ the distibution of quotients between samples and a reference spectrum, followed
 by sample normalization using this dilution factor.
 The reference spectrum in this method is the average lipid abundance of all 
 samples (exluding blanks).
+}
+\examples{
+datadir = system.file("extdata", package="lipidr")
+filelist = list.files(datadir, "data.csv", full.names = TRUE)
+d = read_skyline(filelist)
+clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+d = add_sample_annotation(d, clinical_file)
+d_summarized = summarize_transitions(d, method = "average")
+
+# Normalize data that have been summarized (single value per molecule).
+data_normalized = normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 }
 \references{
 Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006). 

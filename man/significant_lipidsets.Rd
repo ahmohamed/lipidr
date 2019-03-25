@@ -13,6 +13,15 @@ significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 
 \item{size.cutoff}{Minimum number of lipids in a set tested for enrichment}
 }
+\value{
+a list of character vectors of significantly enriched sets for each contrast.
+}
 \description{
 Get a list of significantly changed lipid sets
+}
+\examples{
+data(data_normalized)
+de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+significant_lipidsets(enrich_results)
 }
