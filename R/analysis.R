@@ -58,7 +58,7 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
 #' de_results = de_design(coef="groupHighFat_water", design = ~ group, data=data_normalized, measure="Area")
 #' 
 #' # Using design matrix
-#' model.matrix(~ group, data=colData(data_normalized))
+#' design = model.matrix(~ group, data=colData(data_normalized))
 #' de_results = de_design(coef="groupHighFat_water", design = design, data=data_normalized, measure="Area")
 de_design <- function(..., coef=NULL, design, data, measure="Area") {
   if (is_formula(design)) {

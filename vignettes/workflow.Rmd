@@ -161,7 +161,7 @@ For more complex experimental designs, where one might deal with factor adjustme
 de_results = de_design(coef="groupHighFat_water", design = ~ group, data=d_normalized, measure="Area")
 
 # Using design matrix
-model.matrix(~ group, data=colData(d_normalized))
+design = model.matrix(~ group, data=colData(d_normalized))
 de_results = de_design(coef="groupHighFat_water", design = design, data=d_normalized, measure="Area")
 ```
 
