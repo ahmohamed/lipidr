@@ -258,6 +258,9 @@ topImportantLipids <- function(mvaresults, top.n=10) {
     arrange(molrank)
 }
 
+# Function to plot Hotelling circle
+# Adapted from https://github.com/tyrannomark/bldR/blob/master/R/L2017.R
+# GPL-3 license
 gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   x <- xc + rx*cos(seq(0, pi, length.out=100))
   ymax <- yc + ry*sin(seq(0, pi, length.out=100))
