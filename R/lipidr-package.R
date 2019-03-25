@@ -25,12 +25,13 @@ NULL
 
 
 #' lipidDefaults.
+#' A set of defualt mappings and annoataion used internally to correctly parse
+#' lipid molecule names.
 #'
 #' @docType data
 #' @name lipidDefaults
 #' @examples
-#' data(lipidannotation)
-#'
+#' data(lipidDefaults)
 NULL
 
 .myDataEnv <- new.env(parent=emptyenv()) # not exported
