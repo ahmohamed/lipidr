@@ -48,7 +48,7 @@ plot_sample_tic <- function(data, measure="Area", log=TRUE){
 #' d = read_skyline(filelist)
 #' 
 #' plot_sample_boxplot(d, "Area", log=TRUE)
-#' plot_sample_boxplot(d, "Retention.Time", log=FALSE)
+#' plot_sample_boxplot(d[, d$group == "QC"], "Retention.Time", log=FALSE)
 plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -63,7 +63,7 @@ plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
 
 
 
-#' Plot a bar chart for standard deviation if a certain measure in each class
+#' Plot a bar chart for standard deviation of a certain measure in each class
 #'
 #' The functions is usually used to look at SD of intensity in each class,
 #' but can also be used to look at different measures such as  `Retention.Time`,
@@ -183,7 +183,7 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
     scale_fill_gradient2(midpoint = 0)
 }
 
-#' Plot a bar chart for standard deviation if a certain measure in each lipid
+#' Plot a bar chart for standard deviation of a certain measure in each lipid
 #'
 #' The functions is usually used to look at SD of intensity for each lipid,
 #' but can also be used to look at different measures such as  `Retention.Time`,
@@ -199,8 +199,13 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
 #' filelist = list.files(datadir, "data.csv", full.names = TRUE)
 #' d = read_skyline(filelist)
 #' 
-#' plot_molecule_sd(d)
-#' plot_molecule_sd(d, "Retention.Time", log=FALSE)
+#' # plot the variation in intensity of ITSD (internal standards) in QC samples
+#' d_itsd_qc = d[rowData(d)$itsd, d$group == "QC"]
+#' plot_molecule_sd(d_itsd_qc, "Area")
+#' 
+#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#' plot_molecule_sd(d[, d$group == "QC"], "Area")
+#' plot_molecule_sd(d[, d$group == "QC"], "Retention.Time", log=FALSE)
 plot_molecule_sd <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
@@ -214,6 +219,25 @@ plot_molecule_sd <- function(data, measure="Area", log=TRUE){
     ylab(paste("SD of", measure))
 }
 
+#' Plot a bar chart for coefficient of variation (CV) of a certain measure in each lipid
+#'
+#' The functions is usually used to investigate the CV in lipid intensity or retention time,
+#' in QC samples.
+#'
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}
+#' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
+#' @param log whether values should be log2 transformed (Set FALSE for retention time).
+#'
+#' @export
+#' @examples 
+#' datadir = system.file("extdata", package="lipidr")
+#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
+#' d = read_skyline(filelist)
+#' 
+#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#' d_qc = d[, d$group == "QC"]
+#' plot_molecule_cv(d_qc, "Area")
+#' plot_molecule_cv(d_qc, "Retention.Time", log=FALSE)
 plot_molecule_cv <- function(data, measure="Area", log=TRUE){
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong = to_long_format(data, measure)
