@@ -108,12 +108,12 @@ itsd = paste0("^", mol_p, ".*", isotope_p)#"^([[:alnum:]]{2,7}) (\\d{2}:\\d{1,2}
                     "\\1#$#\\2#$#\\4#$#\\6", first_mol)
   ) %>% 
     separate(first_mol, c("class_stub", "chain1", "chain2", "chain3"), sep="#\\$#") %>%
-    separate(chain1, c("l_1", "s_1"), sep="\\:", remove = F, convert=T) %>% 
-    separate(chain2, c("l_2", "s_2"), sep="\\:", remove = F, convert=T, fill="right") %>% 
-    separate(chain3, c("l_3", "s_3"), sep="\\:", remove = F, convert=T, fill="right") %>% 
+    separate(chain1, c("l_1", "s_1"), sep="\\:", remove = FALSE, convert=TRUE) %>% 
+    separate(chain2, c("l_2", "s_2"), sep="\\:", remove = FALSE, convert=TRUE, fill="right") %>% 
+    separate(chain3, c("l_3", "s_3"), sep="\\:", remove = FALSE, convert=TRUE, fill="right") %>% 
     rowwise() %>%
     mutate(
-      total_cl = sum(l_1, l_2, l_3, na.rm=T),
-      total_cs = sum(s_1, s_2, s_3, na.rm=T)
+      total_cl = sum(l_1, l_2, l_3, na.rm=TRUE),
+      total_cs = sum(s_1, s_2, s_3, na.rm=TRUE)
     ) %>% ungroup
 }

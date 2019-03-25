@@ -36,7 +36,7 @@
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_normalized = normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
-  if(mcols(assays(data), use.names = T)[measure, "normalized"]) {
+  if(mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
   if(!is.null(exclude)) {
@@ -50,11 +50,11 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
   
   # factor_n = median ( lipid_i_n/ avg(lipid_i) )
   assay(data, measure) = m / apply(m / rowMeans(m, na.rm=TRUE), 2, median, na.rm=TRUE)
-  mcols(assays(data), use.names = T)[measure, "normalized"] = TRUE
+  mcols(assays(data), use.names = TRUE)[measure, "normalized"] = TRUE
   
   if (log && !mcols(assays(data), use.names = T)[measure, "logged"]) {
     assay(data, measure) = log2(assay(data, measure))
-    mcols(assays(data), use.names = T)[measure, "logged"] = TRUE
+    mcols(assays(data), use.names = TRUE)[measure, "logged"] = TRUE
   }
   
   return(data)
@@ -92,7 +92,7 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_norm_itsd = normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE) {
-  if(mcols(assays(data), use.names = T)[measure, "normalized"]) {
+  if(mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
   if(!data@attrs$summarized){
@@ -132,9 +132,9 @@ normalize_itsd <- function(data, measure="Area", exclude="blank", log=TRUE) {
     return (m[i, ] / f)
   })
   
-  if (log && !mcols(assays(data), use.names = T)[measure, "logged"]) {
+  if (log && !mcols(assays(data), use.names = TRUE)[measure, "logged"]) {
     assay(data, measure) = log2(assay(data, measure))
-    mcols(assays(data), use.names = T)[measure, "logged"] = TRUE
+    mcols(assays(data), use.names = TRUE)[measure, "logged"] = TRUE
   }
   
   return(data)

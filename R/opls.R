@@ -49,7 +49,7 @@ mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS", "OPLS-DA"),
   }
   
   if(method == "PCA") {
-    object = prcomp(d, scale=T)
+    object = prcomp(d, scale=TRUE)
     return (structure( list(
       scores=object$x, 
       loadings=object$rotation, 

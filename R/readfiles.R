@@ -71,7 +71,7 @@ add_sample_annotation = function(data, annot_file) {
   stopifnot(ncol(annot) > 1)
   
   # check if any column is named "sample", otherwise take the first column
-  sample_col = grep("Sample", colnames(annot), ignore.case = T)
+  sample_col = grep("Sample", colnames(annot), ignore.case = TRUE)
   if(length(sample_col) > 0) {
     sample_col = colnames(annot)[sample_col][[1]]
   } else {
