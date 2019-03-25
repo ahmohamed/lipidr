@@ -1,12 +1,19 @@
 #' Perform Probabilistic Quotient Normalization for intensities.
 #'
+#' Perform Probabilistic Quotient Normalization (PQN) for sample intensities.
+#' The PQN method determines a dilution factor for each sample by comparing
+#' the distibution of quotients between samples and a reference spectrum, followed
+#' by sample normalization using this dilution factor.
+#' The reference spectrum in this method is the average lipid abundance of all 
+#' samples (exluding blanks).
+#'
 #' @param data SkylineExperiment object created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height
 #' @param exclude Samples to exclude, can be either: \cr 
 #' "blank" - automatically detected blank samples and exclude them
 #' logical vector with the same length as samples
 #' 
-#' @param log whether the normalized values should be log2 transformed
+#' @param log Whether the normalized values should be log2 transformed
 #'
 #' @return A SkylineExperiment object with normalized values
 #' @importFrom SummarizedExperiment assay<- assays<-
@@ -54,6 +61,11 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
 }
 
 #' Normalize each class by its corresponding internal standard(s).
+#'
+#' Normalize each class by its corresponding internal standard(s).
+#' Lipid classes are normalized using corresponding internal standard(s)
+#' of the same lipid class. If no corresponding internal standard is found
+#' the average of all measured internal standards is used instead.
 #'
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height

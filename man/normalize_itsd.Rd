@@ -23,6 +23,9 @@ A SkylineExperiment object with normalized values. Each molecule
 }
 \description{
 Normalize each class by its corresponding internal standard(s).
+Lipid classes are normalized using corresponding internal standard(s)
+of the same lipid class. If no corresponding internal standard is found
+the average of all measured internal standards is used instead.
 }
 \examples{
 datadir = system.file("extdata", package="lipidr")
