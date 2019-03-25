@@ -9,8 +9,6 @@ matrix:
       r: bioc-devel
     - os: osx
       r: bioc-release
-  allow_failures:
-    - os: linux
 
 env:
  global:
