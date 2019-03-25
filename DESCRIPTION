@@ -24,3 +24,5 @@ Suggests:
     knitr, rmarkdown, BiocStyle,
     ggrepel
 VignetteBuilder: knitr
+biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
+    Visualization
