@@ -13,6 +13,14 @@ plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 
 \item{measure}{which measure to plot the distribution of: logFC, P.Value, Adj.P.Val}
 }
+\value{
+A ggplot object.
+}
 \description{
 Plot a chart for log fold changes of lipids per class showing chain lengths and saturations
+}
+\examples{
+data(data_normalized)
+de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+plot_chain_distribution(de_results)
 }

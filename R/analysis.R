@@ -9,10 +9,14 @@
 #' @importFrom forcats fct_drop
 #' @importFrom dplyr one_of
 #' @importFrom rlang quos
+#' @importFrom stats model.matrix setNames
 #' @return TopTable as returned by limma package
 #' @export
 #'
 #' @examples
+#' # type ?normalize_pqn to see how to normalize and log-transfome your data
+#' data(data_normalized)
+#' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
 de_analysis = function(..., data, measure="Area", group_col=NULL){
   if(is.null(group_col)) {
     if(ncol(colData(data)) > 0) {
@@ -45,8 +49,19 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed
 #' @param measure name of the column indicating sample names
 #' 
+#' @return TopTable as returned by limma package
 #' @importFrom rlang is_formula
 #' @export
+#' @examples
+#' # type ?normalize_pqn to see how to normalize and log-transfome your data
+#' data(data_normalized)
+#' 
+#' # Using formula
+#' de_results = de_design(coef="groupHighFat_water", design = ~ group, data=data_normalized, measure="Area")
+#' 
+#' # Using design matrix
+#' design = model.matrix(~ group, data=colData(data_normalized))
+#' de_results = de_design(coef="groupHighFat_water", design = design, data=data_normalized, measure="Area")
 de_design <- function(..., coef=NULL, design, data, measure="Area") {
   if (is_formula(design)) {
     design = model.matrix(design, data=colData(data))
@@ -58,7 +73,7 @@ de_design <- function(..., coef=NULL, design, data, measure="Area") {
   if (is.null(coef)) {
     contr.matrix = limma::makeContrasts(..., levels=colnames(design))
     vfit <- limma::contrasts.fit(vfit, contrasts=contr.matrix)
-    coef = setNames(c(1:ncol(contr.matrix)), colnames(contr.matrix))
+    coef = setNames(seq_len(ncol(contr.matrix)), colnames(contr.matrix))
   } else {
     if (! coef %in% colnames(design)) {
       stop("One or more coefficients is not in the design matrix. Allowed values are ", colnames(design))
@@ -84,11 +99,14 @@ de_design <- function(..., coef=NULL, design, data, measure="Area") {
 #' @param p.cutoff Sigificance threshold
 #' @param logFC.cutoff Cut off for log Fold change
 #'
-#' @return
+#' @return a character vector with names of singificantly differentially changed lipids
 #' @importFrom dplyr %>% filter
 #' @export
 #'
 #' @examples
+#' data(data_normalized)
+#' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+#' significant_molecules(de_results)
 significant_molecules = function(de.results, p.cutoff=0.05, logFC.cutoff=1) {
   de.results %>% filter(adj.P.Val < p.cutoff, abs(logFC) > logFC.cutoff) %>% 
     (function(x) split(x$Molecule, x$contrast))
@@ -100,16 +118,26 @@ significant_molecules = function(de.results, p.cutoff=0.05, logFC.cutoff=1) {
 #' @param de.results output of \code{\link{de_analysis}}
 #' @param rank.by statistic used to rank the lipid list
 #'
-#' @return
+#' @return a data.frame with enrichment results as obtained from \code{\link[fgsea]{fgsea}}. 
+#'   The results also contain the following attributes:#' \itemize{
+#'     \item de.results    original de.results input
+#'     \item rank.by   measure used to rank lipid molcules
+#'     \item sets   lipid sets tested, with their member molecules
+#'   }
+#' 
 #' @importFrom dplyr %>% bind_rows arrange rename
+#' @importFrom rlang :=
 #' @export
 #'
 #' @examples
+#' data(data_normalized)
+#' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+#' enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
 enrich_lipidsets <- function(de.results, rank.by=c("logFC", "P.Value", "Adj.P.Val")) {
   rank.by = match.arg(rank.by)
   rank.by.sym = rlang::sym(rank.by)
   
-  sets = gen_lipidsets(de.results)
+  sets = gen_lipidsets(de.results$Molecule)
   
   de.results = de.results %>% 
     arrange(-!!rank.by.sym) %>% 
@@ -140,32 +168,39 @@ enrich_lipidsets <- function(de.results, rank.by=c("logFC", "P.Value", "Adj.P.Va
 #' @param p.cutoff Sigificance threshold
 #' @param size.cutoff Minimum number of lipids in a set tested for enrichment
 #'
-#' @return
+#' @return a list of character vectors of significantly enriched sets for each contrast.
 #' @importFrom dplyr %>% filter
 #' @export
 #'
 #' @examples
+#' data(data_normalized)
+#' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+#' enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+#' significant_lipidsets(enrich_results)
 significant_lipidsets = function(enrich.results, p.cutoff=0.05, size.cutoff=2) {
   enrich.results %>% filter(padj < p.cutoff, size > size.cutoff) %>% 
     (function(x) split(x$set, x$contrast))
 }
 
 
-#' Generate lipid sets
+#' Generate lipid sets from lipid molecule names
 #'
-#' @param data data.frame with a column named Molecule
+#' @param molecules A character vector containing lipid molecule names
 #'
 #' @return list of lipid sets
 #' @export
 #' @importFrom dplyr %>% filter distinct
 #' @importFrom tidyr gather unite
 #' @examples
-gen_lipidsets <- function(data) {
+#' data(data_normalized)
+#' molecules = rowData(data_normalized)$Molecule
+#' gen_lipidsets(molecules)
+gen_lipidsets <- function(molecules) {
   if (!all( c("itsd", "Class", "total_cl", "total_cs") %in% colnames(data))) {
     #data = annotate_lipids(data)
   }
   
-  data_ = annotate_lipids(data) %>%
+  data_ = annotate_lipids(molecules) %>%
     filter(!itsd) %>%
     distinct(Molecule, Class, total_cl, total_cs) %>%
     gather("collection", "value", Class, total_cl, total_cs) %>%

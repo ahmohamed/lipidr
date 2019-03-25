@@ -15,6 +15,9 @@ SkylineExperiment(assay_list, attrs, colData = NULL, rowData = NULL)
 
 \item{rowData}{An optional DataFrame describing the samples (Conatains clinical information). Row names, if present, become the column names of the SkylineExperiment.}
 }
+\value{
+SkylineExperiment object
+}
 \description{
 Constructor for Skyline experiment from list of Assays
 }

@@ -13,15 +13,16 @@ plot_class_boxplot(data, measure = "Area", log = TRUE)
 
 \item{log}{whether values should be log2 transformed}
 }
+\value{
+A ggplot object.
+}
 \description{
-The functions is usually used to look at intensity distribution in each class,
+The function is usually used to look at intensity distribution in each class,
 but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_class_boxplot(d, "Area", log=TRUE)
-plot_class_boxplot(d, "Retention.Time", log=FALSE)
+plot_class_boxplot(data_normalized, "Area", log=TRUE)
+plot_class_boxplot(data_normalized, "Retention.Time", log=FALSE)
 }

@@ -5,6 +5,7 @@ Authors@R: person("Ahmed", "Mohamed", email = "ahmed.mohamed@qimrberghofer.edu.a
 Description: What the package does (one paragraph).
 Imports:
     methods,
+    stats,
     S4Vectors,
     SummarizedExperiment,
     rlang,
@@ -23,3 +24,5 @@ Suggests:
     knitr, rmarkdown, BiocStyle,
     ggrepel
 VignetteBuilder: knitr
+biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
+    Visualization

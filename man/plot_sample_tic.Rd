@@ -13,14 +13,15 @@ plot_sample_tic(data, measure = "Area", log = TRUE)
 
 \item{log}{whether values should be log2 transformed}
 }
+\value{
+A ggplot object.
+}
 \description{
 Plot a bar chart for total sample intensity
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_sample_tic(d, "Area", log=TRUE)
-plot_sample_tic(d, "Background", log=FALSE)
+plot_sample_tic(data_normalized, "Area", log=TRUE)
+plot_sample_tic(data_normalized, "Background", log=FALSE)
 }
