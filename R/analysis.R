@@ -48,6 +48,7 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed
 #' @param measure name of the column indicating sample names
 #' 
+#' @return TopTable as returned by limma package
 #' @importFrom rlang is_formula
 #' @export
 #' @examples
@@ -71,7 +72,7 @@ de_design <- function(..., coef=NULL, design, data, measure="Area") {
   if (is.null(coef)) {
     contr.matrix = limma::makeContrasts(..., levels=colnames(design))
     vfit <- limma::contrasts.fit(vfit, contrasts=contr.matrix)
-    coef = setNames(c(1:ncol(contr.matrix)), colnames(contr.matrix))
+    coef = setNames(seq_len(ncol(contr.matrix)), colnames(contr.matrix))
   } else {
     if (! coef %in% colnames(design)) {
       stop("One or more coefficients is not in the design matrix. Allowed values are ", colnames(design))

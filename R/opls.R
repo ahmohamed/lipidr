@@ -293,7 +293,7 @@ topImportantLipids <- function(mvaresults, top.n=10) {
   
   ret = .get_loading_matrix(mvaresults, c(1,2), "Molecule")
   mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
-  mds_matrix = mds_matrix[, -c(1:3)]
+  mds_matrix = mds_matrix[, -c(1,2,3)]
   mds_matrix %>% filter(molrank <= top.n) %>%
     arrange(molrank)
 }
@@ -308,7 +308,7 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   annotate("ribbon", x=x, ymin=ymin, ymax=ymax, color=color, fill=fill, ...)
 }
 
-.process_prcomp <- function(x, choices=1:2, scale=1) {
+.process_prcomp <- function(x, choices=c(1,2), scale=1) {
   if (length(choices) != 2L) 
     stop("length of choices must be 2")
   if (!length(scores <- x$x)) 

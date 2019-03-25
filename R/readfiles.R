@@ -20,7 +20,7 @@ read_skyline <- function(files) {
   original_data = datalist %>%
     mutate(Sample = fct_inorder(Sample)) %>%
     group_by(Sample) %>%
-    mutate(TransitionId=c(1:n())) %>%
+    mutate(TransitionId=seq_len(n())) %>%
     ungroup() %>%
     .copy.attr(datalist) %>%
     .to_summarized_experiment()
