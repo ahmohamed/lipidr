@@ -50,6 +50,35 @@ d = add_sample_annotation(d, clinical_file)
 colData(d)
 ```
 
+## Data subsetting
+
+It is helpful to imagine SkylineExperiment object as a table with lipid molecules as rows and samples as columns. We can then easily subset this table by selecting to specific rows and columns. The general syntax is `d[rows, cols]`.
+
+The example below we select the first 10 transitions and 10 samples. We can check the `rowData` and `colData`
+
+```{r}
+d_subset = d[1:10, 1:10]
+rowData(d_subset)
+colData(d)
+```
+
+We can also apply conditional selections (*indexing*). For example, we can select only QC samples.
+
+```{r}
+d_qc = d[, d$group == "QC"]
+rowData(d_qc)
+colData(d_qc)
+```
+
+Note that we leave rows index empty (`d[,cols]`) to select all lipids. We can also subset based on lipid annotations, selecting a specific class for example.
+
+```{r}
+pc_lipids = rowData(d)$Class %in% c("PC", "PCO", "PCP")
+d_pc = d[pc_lipids,]
+rowData(d_pc)
+colData(d_pc)
+```
+
 ## Visualization of raw data
 
 To ensure data quality, we can look at total intensity (TIC) and distribution for samples.
@@ -59,15 +88,15 @@ plot_sample_tic(d, log=TRUE)
 plot_sample_boxplot(d, log=TRUE)
 ```
 
-We can also look at intensity and retention time distribution for each lipid molecule.
+We can also look at intensity and retention time distribution for each lipid molecule. It is usually helpful for check the variation across QC samples.
 
 ```{r, fig.width=10, fig.height=6}
-plot_molecule_boxplot(d, measure = "Area")
-plot_molecule_sd(d, measure = "Retention.Time", log=FALSE)
-plot_molecule_sd(d, measure = "Area")
+plot_molecule_boxplot(d_qc, measure = "Area")
+plot_molecule_sd(d_qc, measure = "Retention.Time", log=FALSE)
+plot_molecule_sd(d_qc, measure = "Area")
 ```
 
-Or intensity distribution within the lipid classes.
+Or intensity distribution within different lipid classes.
 
 ```{r, fig.height=5}
 plot_class_sd(d)
