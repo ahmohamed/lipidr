@@ -32,6 +32,6 @@ clinical_file = system.file("extdata", "clin.csv", package="lipidr")
 d = add_sample_annotation(d, clinical_file)
 d_summarized = summarize_transitions(d, method = "average")
 
-Normalize data that have been summarized (single value per molecule).
+# Normalize data that have been summarized (single value per molecule).
 data_norm_itsd = normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 }
