@@ -13,6 +13,9 @@ plot_molecule_sd(data, measure = "Area", log = TRUE)
 
 \item{log}{Whether values should be log2 transformed (Set FALSE for retention time).}
 }
+\value{
+A ggplot object.
+}
 \description{
 The function is usually used to look at standard deviation of intensity for each lipid,
 but can also be used to look at different measures such as  `Retention.Time`,

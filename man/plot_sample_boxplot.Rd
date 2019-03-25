@@ -13,6 +13,9 @@ plot_sample_boxplot(data, measure = "Area", log = TRUE)
 
 \item{log}{whether values should be log2 transformed}
 }
+\value{
+A ggplot object.
+}
 \description{
 The function is usually used to look at intensity distribution in each sample
 ensuring they are normalized. It can also be used to look at different measures 

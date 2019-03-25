@@ -10,9 +10,9 @@
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
-#'
+#' 
+#' @return A ggplot object.
 #' @export
-#'
 #' @examples
 #' data(data_normalized)
 #' 
@@ -38,7 +38,8 @@ plot_sample_tic <- function(data, measure="Area", log=TRUE){
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
-#'
+#' 
+#' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
@@ -70,6 +71,7 @@ plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized, Height or Retention.Time
 #' @param log whether values should be log2 transformed (Set FALSE for retention time).
 #'
+#' @return A ggplot object.
 #' @export
 #' @examples 
 #' data(data_normalized)
@@ -99,6 +101,7 @@ plot_class_sd <- function(data, measure="Area", log=TRUE){
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
 #'
+#' @return A ggplot object.
 #' @export
 #' @examples 
 #' data(data_normalized)
@@ -128,6 +131,7 @@ plot_class_boxplot <- function(data, measure="Area", log=TRUE){
 #' @param significant.sets list of significantly changed lipid sets (output of \code{\link{significant_lipidsets}})
 #' @param measure which measure to plot the distribution of: logFC, P.Value, Adj.P.Val
 #'
+#' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
@@ -157,6 +161,7 @@ plot_class_enrichment <- function(de_results, significant.sets, measure="logFC")
 #' @param measure which measure to plot the distribution of: logFC, P.Value, Adj.P.Val
 #' @param contrast which comparison to plot.
 #'
+#' @return A ggplot object.
 #' @export
 #' @examples 
 #' data(data_normalized)
@@ -193,6 +198,7 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
 #' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log Whether values should be log2 transformed (Set FALSE for retention time).
 #'
+#' @return A ggplot object.
 #' @export
 #' @examples 
 #' data(data_normalized)
@@ -226,6 +232,7 @@ plot_molecule_sd <- function(data, measure="Area", log=TRUE){
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed (Set FALSE for retention time).
 #'
+#' @return A ggplot object.
 #' @export
 #' @examples 
 #' data(data_normalized)
@@ -256,6 +263,7 @@ plot_molecule_cv <- function(data, measure="Area", log=TRUE){
 #' @param measure which measure to plot the distribution of: usually Area, Area.Normalized or Height
 #' @param log whether values should be log2 transformed
 #'
+#' @return A ggplot object.
 #' @export
 #' @examples 
 #' data(data_normalized)
@@ -279,6 +287,7 @@ plot_molecule_boxplot <- function(data, measure="Area", log=TRUE){
 #' @param de_results output of \code{\link{de_analysis}}
 #' @param show.labels whether labels show be displayed for significant lipids
 #' 
+#' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)

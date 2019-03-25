@@ -14,8 +14,9 @@
 #' @param colData A DataFrame object describing the rows (Contains geenerated lipid annotations). Row names, if present, become the row names of the SummarizedExperiment object. The number of rows of the DataFrame must equal the number of rows of the matrices in assays.
 #' @param rowData An optional DataFrame describing the samples (Conatains clinical information). Row names, if present, become the column names of the SkylineExperiment.
 #'
-#' @export
+#' @return SkylineExperiment object
 #' @importFrom SummarizedExperiment SummarizedExperiment
+#' @export
 SkylineExperiment <- function(assay_list, attrs, colData=NULL, rowData=NULL) {
   se = SummarizedExperiment(assay_list, colData=colData, rowData=rowData)
   ret = .SkylineExperiment(se)

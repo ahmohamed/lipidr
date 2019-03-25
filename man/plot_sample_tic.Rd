@@ -13,6 +13,9 @@ plot_sample_tic(data, measure = "Area", log = TRUE)
 
 \item{log}{whether values should be log2 transformed}
 }
+\value{
+A ggplot object.
+}
 \description{
 Plot a bar chart for total sample intensity
 }

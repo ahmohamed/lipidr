@@ -13,6 +13,9 @@ plot_class_sd(data, measure = "Area", log = TRUE)
 
 \item{log}{whether values should be log2 transformed (Set FALSE for retention time).}
 }
+\value{
+A ggplot object.
+}
 \description{
 The function is usually used to look at standard deviations of intensity in each class,
 but can also be used to look at different measures such as  `Retention.Time`,

@@ -13,6 +13,9 @@ plot_molecule_cv(data, measure = "Area", log = TRUE)
 
 \item{log}{whether values should be log2 transformed (Set FALSE for retention time).}
 }
+\value{
+A ggplot object.
+}
 \description{
 The functions is usually used to investigate the CV in lipid intensity or retention time,
 in QC samples.
