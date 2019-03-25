@@ -26,8 +26,8 @@ Differential analysis of lipids between sample groups
 data(data_normalized)
 
 # Using formula
-de_results = de_design(coef="groupHighFat_water", design = ~ group, data=d_normalized, measure="Area")
+de_results = de_design(coef="groupHighFat_water", design = ~ group, data=data_normalized, measure="Area")
 
-model.matrix(~ group, data=colData(d_normalized))
-de_results = de_design(coef="groupHighFat_water", design = design, data=d_normalized, measure="Area")
+model.matrix(~ group, data=colData(data_normalized))
+de_results = de_design(coef="groupHighFat_water", design = design, data=data_normalized, measure="Area")
 }
