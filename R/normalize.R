@@ -52,7 +52,7 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
   assay(data, measure) = m / apply(m / rowMeans(m, na.rm=TRUE), 2, median, na.rm=TRUE)
   mcols(assays(data), use.names = TRUE)[measure, "normalized"] = TRUE
   
-  if (log && !mcols(assays(data), use.names = T)[measure, "logged"]) {
+  if (log && !mcols(assays(data), use.names = TRUE)[measure, "logged"]) {
     assay(data, measure) = log2(assay(data, measure))
     mcols(assays(data), use.names = TRUE)[measure, "logged"] = TRUE
   }
