@@ -9,6 +9,7 @@
 #' @importFrom forcats fct_drop
 #' @importFrom dplyr one_of
 #' @importFrom rlang quos
+#' @importFrom stats model.matrix setNames
 #' @return TopTable as returned by limma package
 #' @export
 #'

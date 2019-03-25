@@ -137,7 +137,7 @@ run_opls <- function(data, y, predI = 1, orthoI = 1, scaleC = "standard", plotL 
   opls(data, y = y, predI = predI, orthoI = orthoI, scaleC = scaleC, plotL = plotL, ...)
 }
 
-#' @importFrom stats var
+#' @importFrom stats var qf median dist
 plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotelling = TRUE) {
   ret = .get_mds_matrix(mvaresults, components, color_by)
   d = ret$mds_matrix
