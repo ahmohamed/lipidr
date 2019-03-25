@@ -9,7 +9,7 @@ normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 \arguments{
 \item{data}{SkylineExperiment object created by \code{\link{read_skyline}}}
 
-\item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height}
+\item{measure}{which measure to use as intensity, usually Area, Area.Normalized or Height}
 
 \item{exclude}{Samples to exclude, can be either: \cr 
 "blank" - automatically detected blank samples and exclude them

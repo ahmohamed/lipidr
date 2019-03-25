@@ -17,3 +17,9 @@ A dataframe of \code{top.n} lipids with their annotations
 \description{
 Extract top lipids from OPLS-DA results
 }
+\examples{
+data(data_normalized)
+
+mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+topImportantLipids(mvaresults, top.n=10)
+}

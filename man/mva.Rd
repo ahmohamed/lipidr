@@ -20,6 +20,18 @@ mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS",
 
 \item{...}{Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.}
 }
+\value{
+multivariate analysis results in \code{mvaresults} object.
+  The object contains the following:\itemize{
+    \item scores    sample socres
+    \item loadings   feature or component loadings (not for PCoA)
+    \item method   multivariate method that was used
+    \item row_data   lipid molecule annotations
+    \item col_data   samples annotation
+    \item original_object   original output object as returned by 
+        corresponding analyses methods
+  }
+}
 \description{
 Blank samples are automatically detected (using TIC) and excluded. Missing data
 are imputed using average lipid itensity across all samples. The available methods
@@ -28,14 +40,7 @@ whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS
 predictive and orthogonal components are set to 1.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
-clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-d = add_sample_annotation(d, clinical_file)
+data(data_normalized)
 
-# PCA
-mvaresults = mva(d, measure="Area", method="PCA")
-plot_mva(mvaresults, color_by="group")
-
+mvaresults = mva(data_normalized, measure="Area", method="PCA")
 }

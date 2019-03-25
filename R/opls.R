@@ -13,6 +13,16 @@
 #' @param groups a numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
 #' @param ... Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.
 #' 
+#' @return multivariate analysis results in \code{mvaresults} object.
+#'   The object contains the following:\itemize{
+#'     \item scores    sample socres
+#'     \item loadings   feature or component loadings (not for PCoA)
+#'     \item method   multivariate method that was used
+#'     \item row_data   lipid molecule annotations
+#'     \item col_data   samples annotation
+#'     \item original_object   original output object as returned by 
+#'         corresponding analyses methods
+#'   }
 #' 
 #' @importFrom stats cmdscale prcomp
 #' @importFrom ropls opls
@@ -20,16 +30,9 @@
 #' 
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
-#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-#' d = add_sample_annotation(d, clinical_file)
+#' data(data_normalized)
 #' 
-#' # PCA
-#' mvaresults = mva(d, measure="Area", method="PCA")
-#' plot_mva(mvaresults, color_by="group")
-#' 
+#' mvaresults = mva(data_normalized, measure="Area", method="PCA")
 mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS", "OPLS-DA"), group_col=NULL, groups=NULL,  ...) {
   stopifnot(inherits(data, "SkylineExperiment"))
   data_f = data[!rowData(data)$itsd, !.is_blank(data)]
@@ -178,27 +181,23 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' @param components which components to plot. Ignored for PCoA, OPLS-DA results
 #' @param color_by Sample annotation to use as color
 #'
+#' @return A ggplot of the sample scores
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
-#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-#' d = add_sample_annotation(d, clinical_file)
+#' data(data_normalized)
 #'
 #' # PCA
-#' mvaresults = mva(d, measure="Area", method="PCA")
+#' mvaresults = mva(data_normalized, measure="Area", method="PCA")
 #' plot_mva(mvaresults, color_by="group")
 #' plot_mva(mvaresults, color_by="Diet", components = c(2,3))
 #' 
 #' # PCoA
-#' mvaresults = mva(d, measure="Area", method="PCoA")
+#' mvaresults = mva(data_normalized, measure="Area", method="PCoA")
 #' plot_mva(mvaresults, color_by="group")
 #' 
 #' # OPLS-DA
-#' mvaresults = mva(d, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+#' mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
 #' plot_mva(mvaresults, color_by="group")
-#' 
 plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
   stopifnot(inherits(mvaresults, "mvaResults"))
   if(inherits(mvaresults, "opls")) {
@@ -229,10 +228,14 @@ plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
 #' @param color_by Sample annotation to use as color
 #' @param top.n Number of top ranked features to highlight on the plot 
 #'
-#' @return A plot
+#' @return A ggplot of the loading scores
 #' @export
 #'
 #' @examples
+#' data(data_normalized)
+#'
+#' mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+#' plot_mva_loadings(mvaresults, color_by="Class", top.n=30)
 plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.n=nrow(mvaresults$loadings)) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   stopifnot(inherits(mvaresults, "opls"))
@@ -279,7 +282,14 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
 #' @export
 #'
 #' @examples
+#' data(data_normalized)
+#'
+#' mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+#' topImportantLipids(mvaresults, top.n=10)
 topImportantLipids <- function(mvaresults, top.n=10) {
+  stopifnot(inherits(mvaresults, "mvaResults"))
+  stopifnot(inherits(mvaresults, "opls"))
+  
   ret = .get_loading_matrix(mvaresults, c(1,2), "Molecule")
   mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
   mds_matrix = mds_matrix[, -c(1:3)]
@@ -363,10 +373,3 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   }
   return(list(mds_matrix=mds_matrix, color_by=color_by))
 }
-
-# xLimVn <- c(-1, 1) * max( sqrt(var(pscores) * hotFisN), 
-#                           max(abs(pscores))
-#                         )
-# yLimVn <- c(-1, 1) * max( sqrt(var(oscores) * hotFisN), 
-#                           max(abs(oscores))
-#                         )

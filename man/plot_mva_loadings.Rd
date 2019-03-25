@@ -17,8 +17,14 @@ plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
 \item{top.n}{Number of top ranked features to highlight on the plot}
 }
 \value{
-A plot
+A ggplot of the loading scores
 }
 \description{
 Plot a multivariate scatterplot of feature loadings to investigate feature importance
+}
+\examples{
+data(data_normalized)
+
+mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+plot_mva_loadings(mvaresults, color_by="Class", top.n=30)
 }
