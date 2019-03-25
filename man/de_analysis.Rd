@@ -22,3 +22,8 @@ TopTable as returned by limma package
 \description{
 Differential analysis of lipids between sample groups
 }
+\examples{
+# type ?normalize_pqn to see how to normalize and log-transfome your data
+data(data_normalized)
+de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+}

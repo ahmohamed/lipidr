@@ -21,3 +21,12 @@ These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provi
 \description{
 Differential analysis of lipids between sample groups
 }
+\examples{
+# type ?normalize_pqn to see how to normalize and log-transfome your data
+data(data_normalized)
+
+# Using formula
+de_results = de_design(coef="groupHighFat_water", design = ~ group, data=d_normalized, measure="Area")
+model.matrix(~ group, data=colData(d_normalized))
+de_results = de_design(coef="groupHighFat_water", design = design, data=d_normalized, measure="Area")
+}
