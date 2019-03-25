@@ -16,3 +16,7 @@ are given in a column named "Molecule"
 \description{
 Parse Molecule names to extract class and chain information.
 }
+\examples{
+lipid_list = c("Lyso PE 18:1(d7)" , "PE(32:0)", "Cer(d18:0/C22:0)", "PG 16:0/18:1", "TG(16:0/18:1/18:1)")
+annotate_lipids(lipid_list)
+}
