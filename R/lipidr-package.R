@@ -34,6 +34,17 @@ NULL
 #' data(lipidDefaults)
 NULL
 
+#' Example dataset (normalized and log transformed)
+#' 
+#' Please see \link{normalize_pqn} for details on how to generate this dataset.
+#' 
+#' @docType data
+#' @name data_nomalized
+#' @examples
+#' data(data_nomalized)
+NULL
+
+
 .myDataEnv <- new.env(parent=emptyenv()) # not exported
 
 .onAttach <- function(lib, pkg) {
