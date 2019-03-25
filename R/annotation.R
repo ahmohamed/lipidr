@@ -9,8 +9,7 @@
 #'
 #' @examples
 annotate_lipids <- function(molecules){
-  def = .myDataEnv$lipidDefaults$clean_molecules
-  molecules = unique(data$Molecule)
+  def = .myDataEnv$lipidDefaults$clean_mols
   not_in_db = molecules[!molecules %in% def$Molecule]
   
   if(length(not_in_db) == 0) {
