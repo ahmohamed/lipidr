@@ -7,13 +7,13 @@
 #' The reference spectrum in this method is the average lipid abundance of all 
 #' samples (exluding blanks).
 #'
-#' @param data SkylineExperiment object created by \code{\link{read_skyline}}
-#' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height
+#' @param data SkylineExperiment object created by \code{\link{read_skyline}}.
+#' @param measure Which measure to use as intensity, usually Area, Area.Normalized or Height.
 #' @param exclude Samples to exclude, can be either: \cr 
 #' "blank" - automatically detected blank samples and exclude them
-#' logical vector with the same length as samples
+#' logical vector with the same length as samples.
 #' 
-#' @param log Whether the normalized values should be log2 transformed
+#' @param log Whether the normalized values should be log2 transformed.
 #'
 #' @return A SkylineExperiment object with normalized values
 #' @importFrom SummarizedExperiment assay<- assays<-
@@ -67,15 +67,15 @@ normalize_pqn <- function(data, measure="Area", exclude="blank", log=TRUE) {
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}
-#' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
+#' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height.
 #' @param exclude Samples to exclude, can be either: \cr 
 #' "blank" - automatically detected blank samples and exclude them
-#' logical vector with the same length as samples
-#' @param log whether the normalized values should be log2 transformed
+#' logical vector with the same length as samples.
+#' @param log whether the normalized values should be log2 transformed.
 #'
 #' @return A SkylineExperiment object with normalized values. Each molecule 
-#'     is normalized against the internal standard with the same class.
+#'     is normalized against the internal standard from the same class.
 #' 
 #' @importFrom dplyr %>% select group_by mutate filter ungroup left_join inner_join
 #' @importFrom rlang sym UQ
