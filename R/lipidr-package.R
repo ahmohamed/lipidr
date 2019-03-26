@@ -3,11 +3,11 @@
 #' \code{lipidr} implements a series of functions to facilitate inspection,
 #' analysis and visualization of targeted lipidomics datasets. \code{lipidr}
 #' takes exported Skyline CSV as input, allowing for multiple methods to
-#' be analyzed togther.
+#' be analyzed together.
 #' 
 #' \code{lipidr} represents Skyline files as annotated data.frames, which can
 #' be easily manipulated by a wide variety of R packages. Sample annotations, such 
-#' as sample group or other clinical information can be easily loaded. \code{lipidr} 
+#' as sample group or other clinical information can be loaded. \code{lipidr} 
 #' generates various plots, such as PCA score plots and box plots, for quality control of samples 
 #' and measured lipids. Normalization methods with and without internal standards are also supported.
 #' 
@@ -25,7 +25,7 @@ NULL
 
 
 #' lipidDefaults.
-#' A set of defualt mappings and annoataion used internally to correctly parse
+#' A set of default mappings and annotation used internally to correctly parse 
 #' lipid molecule names.
 #'
 #' @docType data
