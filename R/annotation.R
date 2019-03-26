@@ -1,6 +1,11 @@
 #' Parse molecule names to extract lipidclass and chain information.
 #'
-#' @param molecules A character vector containing lipid molecule names
+#' Parse lipid names to return a data.frame containing lipidclass, chain length and unsaturation. 
+#' Lipids should follow the pattern 'class xx:x/yy:y', with class referring to the abbreviated lipidclass,
+#' xx:x as the composition of the first chain and yy:y as the second chain. Alternatively, lipids can be supplied following the
+#' the pattern 'class zz:z', where zz:z indicates the combined chain length and unsaturation information.
+#'
+#' @param molecules A character vector containing lipid molecule names.
 #' @return A data.frame with lipid annotations as columns. Input lipid names
 #' are given in a column named "Molecule".
 #' 
