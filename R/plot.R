@@ -247,11 +247,13 @@ plot_molecule_cv <- function(data, measure="Area", log=TRUE){
   if (log == TRUE) {
     measure = .check_log(data, measure)
   }
-  ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
+  p = ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
     stat_summary(fun.y = .cv, geom="bar") + coord_flip() +
     facet_wrap(~filename, scales="free_y") + 
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + 
     ylab(paste("SD of", measure))
+  
+  .display_plot(p)
 }
 
 #' Plot a boxplot chart to examine distribution of values per lipid
@@ -307,5 +309,12 @@ plot_results_volcano <- function(de_results, show.labels=TRUE) {
      }
      return(p)
     })
+}
+
+.display_plot <- function(p) {
+  if (.myDataEnv$interactive) {
+    p = plotly::ggplotly(p)
+  }
+  return(p)
 }
 

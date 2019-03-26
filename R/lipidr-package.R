@@ -49,6 +49,33 @@ NULL
 
 .onAttach <- function(lib, pkg) {
    utils::data(lipidDefaults, envir=.myDataEnv)
+  .myDataEnv$interactive = FALSE
+}
+
+#' Activate interactive graphics
+#'
+#' Use this function to turn on/off interactive graphics
+#' plotting. Interactive plots require \code{\link{plotly}}
+#' to be installed. Interactive graphics are disabled by default.
+#' 
+#' @param interactive Should interactive plots be displayed? Default is TRUE.
+#'
+#' @return None
+#' @export
+#'
+#' @examples
+#' data(data_normalized)
+#' 
+#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#' d_qc = data_normalized[, data_normalized$group == "QC"]
+#' plot_molecule_cv(d_qc, "Area")
+use_interactive_graphics <- function(interactive=TRUE) {
+  if (interactive) {
+    if (!requireNamespace("plotly", quietly = TRUE)) {
+      stop("Package 'plotly' must be installed for interactive graphics")
+    }
+  }
+  .myDataEnv$interactive = interactive
 }
 
 # Internal function to update the dataset, in case of future changes.
