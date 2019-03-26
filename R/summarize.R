@@ -1,9 +1,10 @@
-#' Collapse transitions 
+#' Summarize transitions 
 #' 
-#' Calculate a single intensity for molecules with multiple transitions
+#' Calculate a single intensity for molecules with multiple transitions, by determining the 
+#' average or maximum intensity.
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}
-#' @param method choose to summarize multiple transitions by taking average or max intensity
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
+#' @param method Choose to summarize multiple transitions by taking the average or maximum intensity.
 #'
 #' @importFrom dplyr %>% vars matches arrange group_by_at ungroup group_indices summarise first
 #' @return A SkylineExperiment object with single intensities per lipid molecule
