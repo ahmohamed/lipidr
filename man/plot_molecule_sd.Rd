@@ -2,27 +2,33 @@
 % Please edit documentation in R/plot.R
 \name{plot_molecule_sd}
 \alias{plot_molecule_sd}
-\title{Plot a bar chart for standard deviation if a certain measure in each lipid}
+\title{Plot a bar chart for standard deviation of a certain measure in each lipid}
 \usage{
 plot_molecule_sd(data, measure = "Area", log = TRUE)
 }
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
 
-\item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized or Height}
+\item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized or Height}
 
-\item{log}{whether values should be log2 transformed (Set FALSE for retention time).}
+\item{log}{Whether values should be log2 transformed (Set FALSE for retention time).}
+}
+\value{
+A ggplot object.
 }
 \description{
-The functions is usually used to look at SD of intensity for each lipid,
+The function is usually used to look at standard deviation of intensity for each lipid,
 but can also be used to look at different measures such as  `Retention.Time`,
-to ensure all lipids are eluted within expected range.
+to ensure all lipids elute within expected range.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_molecule_sd(d)
-plot_molecule_sd(d, "Retention.Time", log=FALSE)
+# plot the variation in intensity of ITSD (internal standards) in QC samples
+d_itsd_qc = data_normalized[rowData(data_normalized)$itsd, data_normalized$group == "QC"]
+plot_molecule_sd(d_itsd_qc, "Area")
+
+# plot the variation in intensity and retention time of all measured lipids in QC samples
+plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
+plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log=FALSE)
 }

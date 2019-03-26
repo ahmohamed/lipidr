@@ -7,6 +7,12 @@
 #' @export
 #'
 #' @examples
+#' datadir = system.file("extdata", package="lipidr")
+#' filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#' d = read_skyline(filelist)
+#' 
+#' # View automatically generated lipid annotations
+#' rowData(d)
 read_skyline <- function(files) {
   names(files) = basename(files)
   datalist = lapply(files, .read_skyline_file) %>% .uniform.attrs()
@@ -14,22 +20,15 @@ read_skyline <- function(files) {
   original_data = datalist %>%
     mutate(Sample = fct_inorder(Sample)) %>%
     group_by(Sample) %>%
-    mutate(TransitionId=c(1:n())) %>%
+    mutate(TransitionId=seq_len(n())) %>%
     ungroup() %>%
     .copy.attr(datalist) %>%
     .to_summarized_experiment()
   
   
   rowData(original_data) <- rowData(original_data) %>% 
-    left_join(annotate_lipids(rowData(original_data)))
+    left_join(annotate_lipids(rowData(original_data)$Molecule))
   
-    # 
-    # 
-    # 
-    # arrange(Class, filename) %>% 
-    # mutate(Molecule=fct_inorder(Molecule)) %>%
-    # .copy.attr(datalist)
-    # 
   message("Successfully read ", length(files), " methods.\n",
           "Your data contain ",  ncol(original_data)," samples, ",
           length(unique(rowData(original_data)$Class))," lipid classes, ",
@@ -50,12 +49,29 @@ read_skyline <- function(files) {
 #' @export
 #'
 #' @examples
+#' datadir = system.file("extdata", package="lipidr")
+#' filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#' d = read_skyline(filelist)
+#' 
+#' # Add clinical info to existing SkylineExperiment object
+#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+#' d = add_sample_annotation(d, clinical_file)
+#' colData(d)
+#' d$group
+#' 
+#' # Subset samples using clinical information
+#' # Note we are subsetting columns
+#' d[, d$group == "QC"]
+#' 
+#' # Subset lipids using lipid annotation
+#' # Note we are subsetting rows
+#' d[rowData(d)$itsd,]
 add_sample_annotation = function(data, annot_file) {
   annot = read.csv(annot_file)
   stopifnot(ncol(annot) > 1)
   
   # check if any column is named "sample", otherwise take the first column
-  sample_col = grep("Sample", colnames(annot), ignore.case = T)
+  sample_col = grep("Sample", colnames(annot), ignore.case = TRUE)
   if(length(sample_col) > 0) {
     sample_col = colnames(annot)[sample_col][[1]]
   } else {

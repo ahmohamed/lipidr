@@ -1,15 +1,28 @@
-#' Plot a PCA plot to investigate sample clustering
+#' Perform multivariate analyses to investigate sample clustering
 #'
 #' Blank samples are automatically detected (using TIC) and excluded. Missing data
-#' are imputed using average lipid itensity across all samples.
+#' are imputed using average lipid itensity across all samples. The available methods
+#' are PCA, PCoA, OPLS and OPLS-DA. The OPLS variable requires a numeric y-variable, 
+#' whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the 
+#' predictive and orthogonal components are set to 1. 
 #' 
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}
 #' @param measure which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized
 #' @param method either PCA, PCoA or OPLS-DA
 #' @param group_col Sample annotation to use as grouping column
-#' @param groups two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
+#' @param groups a numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
 #' @param ... Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.
 #' 
+#' @return multivariate analysis results in \code{mvaresults} object.
+#'   The object contains the following:\itemize{
+#'     \item scores    sample socres
+#'     \item loadings   feature or component loadings (not for PCoA)
+#'     \item method   multivariate method that was used
+#'     \item row_data   lipid molecule annotations
+#'     \item col_data   samples annotation
+#'     \item original_object   original output object as returned by 
+#'         corresponding analyses methods
+#'   }
 #' 
 #' @importFrom stats cmdscale prcomp
 #' @importFrom ropls opls
@@ -17,17 +30,10 @@
 #' 
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
-#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-#' d = add_sample_annotation(d, clinical_file)
+#' data(data_normalized)
 #' 
-#' # PCA
-#' mvaresults = mva(d, measure="Area", method="PCA")
-#' plot_mva(mvaresults, color_by="group")
-#' 
-mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS-DA"), group_col=NULL, groups=NULL,  ...) {
+#' mvaresults = mva(data_normalized, measure="Area", method="PCA")
+mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS", "OPLS-DA"), group_col=NULL, groups=NULL,  ...) {
   stopifnot(inherits(data, "SkylineExperiment"))
   data_f = data[!rowData(data)$itsd, !.is_blank(data)]
   d =  data_f %>%
@@ -43,7 +49,7 @@ mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS-DA"), group_c
   }
   
   if(method == "PCA") {
-    object = prcomp(d, scale=T)
+    object = prcomp(d, scale=TRUE)
     return (structure( list(
       scores=object$x, 
       loadings=object$rotation, 
@@ -67,31 +73,57 @@ mva = function(data, measure="Area", method=c("PCA", "PCoA", "OPLS-DA"), group_c
       class=c("mvaResults", "pcoa")
     ))
   }
-  if(method == "OPLS-DA") {
+    
+  if(method %in% c("OPLS","OPLS-DA")) {
     if(is.null(group_col)) {
       stop('Please add clinical data or specify a group column')
     }
-    if(is.character(group_col)) {
+    if(length(group_col) == 1) { #group_col is the name of the grouping column
       group_vector = colData(data_f)[[group_col]]
+    } else { # group_col is a vector with grouping
+      group_vector = group_col
     }
-    if(length(unique(group_vector)) != 2) {
-      if(length(unique(groups)) != 2) {
-        stop('Please provide 2 groups for comparison in OPLS-DA')
+    
+    if(method == "OPLS-DA") {
+      # group_vector should either have 2 values, or a subset should be provided in groups
+      if(length(unique(group_vector)) != 2) {
+        if(length(unique(groups)) != 2) {
+          stop('Please provide 2 groups for comparison in OPLS-DA')
+        }
+        # all groups in the subset should be present in the vector
+        if(! all(groups %in% group_vector)) {
+          stop('Provided groups are not in the grouping column.')
+        }
+      }
+    } else { # This is OPLS
+      # group_vector should be numeric
+      if(!is.numeric(group_vector)) {
+        stop('Please provide a numeric y-variable for comparison in OPLS')
+      }
+      # if group subset is provided, it should be numeric, and values should be present in group_vector
+      if(!is.null(groups)) {
+        if(!is.numeric(groups)) {
+          stop('Please provide a numeric groups variable for comparison in OPLS')
+        }
       }
       if(! all(groups %in% group_vector)) {
         stop('Provided groups are not in the grouping column.')
       }
+    }
+    # By now we know that group_vector is of correct type
+    # groups, if provided, have correct type and values.
+    if(!is.null(groups)) {
       data_f = data_f[, group_vector %in% groups]
       d = d[group_vector %in% groups, ]
       group_vector = fct_drop(group_vector[group_vector %in% groups])
-    }
+    }    
     object = run_opls(d, y = group_vector, ...)
     
     return (structure( list(
       scores=data.frame(object@scoreMN[,1], object@orthoScoreMN[,1]), 
       loadings=data.frame(object@loadingMN[,1], object@orthoLoadingMN[,1]), 
       summary=object@modelDF,
-      method="OPLS-DA", 
+      method=method, 
       row_data=rowData(data_f),
       col_data=colData(data_f),
       group_col=group_col),
@@ -105,6 +137,7 @@ run_opls <- function(data, y, predI = 1, orthoI = 1, scaleC = "standard", plotL 
   opls(data, y = y, predI = predI, orthoI = orthoI, scaleC = scaleC, plotL = plotL, ...)
 }
 
+#' @importFrom stats var qf median dist
 plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotelling = TRUE) {
   ret = .get_mds_matrix(mvaresults, components, color_by)
   d = ret$mds_matrix
@@ -149,27 +182,23 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 #' @param components which components to plot. Ignored for PCoA, OPLS-DA results
 #' @param color_by Sample annotation to use as color
 #'
+#' @return A ggplot of the sample scores
 #' @export
 #' @examples 
-#' datadir = system.file("extdata", package="lipidr")
-#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
-#' d = read_skyline(filelist)
-#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-#' d = add_sample_annotation(d, clinical_file)
+#' data(data_normalized)
 #'
 #' # PCA
-#' mvaresults = mva(d, measure="Area", method="PCA")
+#' mvaresults = mva(data_normalized, measure="Area", method="PCA")
 #' plot_mva(mvaresults, color_by="group")
 #' plot_mva(mvaresults, color_by="Diet", components = c(2,3))
 #' 
 #' # PCoA
-#' mvaresults = mva(d, measure="Area", method="PCoA")
+#' mvaresults = mva(data_normalized, measure="Area", method="PCoA")
 #' plot_mva(mvaresults, color_by="group")
 #' 
 #' # OPLS-DA
-#' mvaresults = mva(d, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+#' mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
 #' plot_mva(mvaresults, color_by="group")
-#' 
 plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
   stopifnot(inherits(mvaresults, "mvaResults"))
   if(inherits(mvaresults, "opls")) {
@@ -200,10 +229,14 @@ plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
 #' @param color_by Sample annotation to use as color
 #' @param top.n Number of top ranked features to highlight on the plot 
 #'
-#' @return A plot
+#' @return A ggplot of the loading scores
 #' @export
 #'
 #' @examples
+#' data(data_normalized)
+#'
+#' mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+#' plot_mva_loadings(mvaresults, color_by="Class", top.n=30)
 plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.n=nrow(mvaresults$loadings)) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   stopifnot(inherits(mvaresults, "opls"))
@@ -224,14 +257,14 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
     scale_alpha_manual(values=c(1, 0.5))
     
   if ("ggrepel" %in% rownames(installed.packages())) {
-    xlim = max(abs(mds_matrix[,2])) * 1.25
-    ylim = max(abs(mds_matrix[,3])) * 1.1
+    xlimits = max(abs(mds_matrix[,2])) * 1.25
+    ylimits = max(abs(mds_matrix[,3])) * 1.1
     
     p = p + ggrepel::geom_label_repel(
       aes(label=ifelse(molrank > top.n , '', Molecule)),
       size = 2.4, direction = "both", segment.alpha = 0.6, 
       label.padding = 0.15, force = 0.5
-    ) + xlim(-xlim, xlim) + ylim(-ylim, ylim)
+    ) + xlim(-xlimits, xlimits) + ylim(-ylimits, ylimits)
       
   } else {
     p = p + geom_text(vjust=-.5, size=3, color="black", 
@@ -250,14 +283,24 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
 #' @export
 #'
 #' @examples
+#' data(data_normalized)
+#'
+#' mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
+#' topImportantLipids(mvaresults, top.n=10)
 topImportantLipids <- function(mvaresults, top.n=10) {
+  stopifnot(inherits(mvaresults, "mvaResults"))
+  stopifnot(inherits(mvaresults, "opls"))
+  
   ret = .get_loading_matrix(mvaresults, c(1,2), "Molecule")
   mds_matrix = ret$mds_matrix %>% mutate(molrank=rank(-abs(!! sym(colnames(.)[[2]]) )))
-  mds_matrix = mds_matrix[, -c(1:3)]
+  mds_matrix = mds_matrix[, -c(1,2,3)]
   mds_matrix %>% filter(molrank <= top.n) %>%
     arrange(molrank)
 }
 
+# Function to plot Hotelling circle
+# Adapted from https://github.com/tyrannomark/bldR/blob/master/R/L2017.R
+# GPL-3 license
 gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   x <- xc + rx*cos(seq(0, pi, length.out=100))
   ymax <- yc + ry*sin(seq(0, pi, length.out=100))
@@ -265,7 +308,7 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   annotate("ribbon", x=x, ymin=ymin, ymax=ymax, color=color, fill=fill, ...)
 }
 
-.process_prcomp <- function(x, choices=1:2, scale=1) {
+.process_prcomp <- function(x, choices=c(1,2), scale=1) {
   if (length(choices) != 2L) 
     stop("length of choices must be 2")
   if (!length(scores <- x$x)) 
@@ -331,10 +374,3 @@ gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {
   }
   return(list(mds_matrix=mds_matrix, color_by=color_by))
 }
-
-# xLimVn <- c(-1, 1) * max( sqrt(var(pscores) * hotFisN), 
-#                           max(abs(pscores))
-#                         )
-# yLimVn <- c(-1, 1) * max( sqrt(var(oscores) * hotFisN), 
-#                           max(abs(oscores))
-#                         )

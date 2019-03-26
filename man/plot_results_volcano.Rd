@@ -11,6 +11,14 @@ plot_results_volcano(de_results, show.labels = TRUE)
 
 \item{show.labels}{whether labels show be displayed for significant lipids}
 }
+\value{
+A ggplot object.
+}
 \description{
 Plot a volcano chart for differential analysis results.
+}
+\examples{
+data(data_normalized)
+de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+plot_results_volcano(de_results, show.labels = FALSE)
 }

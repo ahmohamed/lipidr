@@ -6,10 +6,16 @@
 #' @param method choose to summarize multiple transitions by taking average or max intensity
 #'
 #' @importFrom dplyr %>% vars matches arrange group_by_at ungroup group_indices summarise first
-#' @return
+#' @return A SkylineExperiment object with single intensities per lipid molecule
 #' @export
 #'
 #' @examples
+#' datadir = system.file("extdata", package="lipidr")
+#' filelist = list.files(datadir, "data.csv", full.names = TRUE)
+#' d = read_skyline(filelist)
+#' clinical_file = system.file("extdata", "clin.csv", package="lipidr")
+#' d = add_sample_annotation(d, clinical_file)
+#' d_summarized = summarize_transitions(d, method = "average")
 summarize_transitions <- function(data, method=c("max", "average")) {
   stopifnot(inherits(data, "SkylineExperiment"))
   if(data@attrs$summarized){

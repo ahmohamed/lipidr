@@ -1,19 +1,21 @@
 #' Parse Molecule names to extract class and chain information.
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}
-#' @return
+#' @param molecules A character vector containing lipid molecule names
+#' @return a data.frame with lipid annotations as columns. Input lipid names
+#' are given in a column named "Molecule"
 #' 
 #' @importFrom dplyr %>% filter left_join full_join
 #' @export
 #'
 #' @examples
-annotate_lipids <- function(data){
+#' lipid_list = c("Lyso PE 18:1(d7)" , "PE(32:0)", "Cer(d18:0/C22:0)", "PG 16:0/18:1", "TG(16:0/18:1/18:1)")
+#' annotate_lipids(lipid_list)
+annotate_lipids <- function(molecules){
   def = .myDataEnv$lipidDefaults$clean_mols
-  mols = unique(data$Molecule)
-  not_in_db = mols[!mols %in% def$Molecule]
+  not_in_db = molecules[!molecules %in% def$Molecule]
   
   if(length(not_in_db) == 0) {
-    def %>% filter(Molecule %in% mols) %>% 
+    def %>% filter(Molecule %in% molecules) %>% 
       return ()
   }
   
@@ -26,7 +28,7 @@ annotate_lipids <- function(data){
   
   clean_ %>% filter(!not_matched) %>% .parse_lipid_info() %>%
     .left_join.silent(.myDataEnv$lipidDefaults$class_info) %>%
-    .full_join.silent(def %>% filter(Molecule %in% mols)) %>%
+    .full_join.silent(def %>% filter(Molecule %in% molecules)) %>%
     return()
 }
 
@@ -106,12 +108,12 @@ itsd = paste0("^", mol_p, ".*", isotope_p)#"^([[:alnum:]]{2,7}) (\\d{2}:\\d{1,2}
                     "\\1#$#\\2#$#\\4#$#\\6", first_mol)
   ) %>% 
     separate(first_mol, c("class_stub", "chain1", "chain2", "chain3"), sep="#\\$#") %>%
-    separate(chain1, c("l_1", "s_1"), sep="\\:", remove = F, convert=T) %>% 
-    separate(chain2, c("l_2", "s_2"), sep="\\:", remove = F, convert=T, fill="right") %>% 
-    separate(chain3, c("l_3", "s_3"), sep="\\:", remove = F, convert=T, fill="right") %>% 
+    separate(chain1, c("l_1", "s_1"), sep="\\:", remove = FALSE, convert=TRUE) %>% 
+    separate(chain2, c("l_2", "s_2"), sep="\\:", remove = FALSE, convert=TRUE, fill="right") %>% 
+    separate(chain3, c("l_3", "s_3"), sep="\\:", remove = FALSE, convert=TRUE, fill="right") %>% 
     rowwise() %>%
     mutate(
-      total_cl = sum(l_1, l_2, l_3, na.rm=T),
-      total_cs = sum(s_1, s_2, s_3, na.rm=T)
+      total_cl = sum(l_1, l_2, l_3, na.rm=TRUE),
+      total_cs = sum(s_1, s_2, s_3, na.rm=TRUE)
     ) %>% ungroup
 }
