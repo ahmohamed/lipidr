@@ -22,7 +22,7 @@ LazyData: true
 RoxygenNote: 6.1.1
 Suggests: 
     knitr, rmarkdown, BiocStyle,
-    ggrepel
+    ggrepel, plotly
 VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization

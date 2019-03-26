@@ -14,11 +14,11 @@ None
 }
 \description{
 Use this function to turn on/off interactive graphics
-plotting. Interactive plots require \code{\link{plotly}}
+plotting. Interactive plots require \code{plotly}
 to be installed. Interactive graphics are disabled by default.
 }
 \examples{
-#' data(data_normalized)
+data(data_normalized)
 
 # plot the variation in intensity and retention time of all measured lipids in QC samples
 d_qc = data_normalized[, data_normalized$group == "QC"]

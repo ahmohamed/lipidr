@@ -55,7 +55,7 @@ NULL
 #' Activate interactive graphics
 #'
 #' Use this function to turn on/off interactive graphics
-#' plotting. Interactive plots require \code{\link{plotly}}
+#' plotting. Interactive plots require \code{plotly}
 #' to be installed. Interactive graphics are disabled by default.
 #' 
 #' @param interactive Should interactive plots be displayed? Default is TRUE.
