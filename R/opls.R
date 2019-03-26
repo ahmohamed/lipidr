@@ -173,7 +173,7 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
     annotate("text",  x=Inf, y = Inf, label = paste("Q2:",mvaresults$summary["sum","Q2(cum)"]), vjust=4, hjust=1, size = 3)  
     #scale_color_manual(values = c("firebrick1", "dodgerblue3"))
   
-  return(p)
+  .display_plot(p)
 }
 
 #' Plot a multivariate scatterplot of sample scores to investigate sample clustering
@@ -219,7 +219,7 @@ plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
     ylabel = paste(colnames(mds_matrix)[[3]], "(", mvaresults$var.pct[[ components[[2]] ]],"%)" )
     p = p + xlab(xlabel) + ylab(ylabel)
   }
-  return (p)
+  .display_plot(p)
 }
 
 #' Plot a multivariate scatterplot of feature loadings to investigate feature importance
@@ -271,7 +271,7 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
       aes(label=ifelse(molrank > top.n , '', Molecule)))
   }
   
-  return(p)
+  .display_plot(p)
 }
 
 #' Extract top lipids from OPLS-DA results
