@@ -1,8 +1,8 @@
-#' Parse Molecule names to extract class and chain information.
+#' Parse molecule names to extract lipidclass and chain information.
 #'
 #' @param molecules A character vector containing lipid molecule names
-#' @return a data.frame with lipid annotations as columns. Input lipid names
-#' are given in a column named "Molecule"
+#' @return A data.frame with lipid annotations as columns. Input lipid names
+#' are given in a column named "Molecule".
 #' 
 #' @importFrom dplyr %>% filter left_join full_join
 #' @export
