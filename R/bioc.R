@@ -1,18 +1,18 @@
 #' SkylineExperiment object 
 #' 
-#' @slot attrs Extra slot to hold the workflow stage for the data, whether normalized, summarized, logged.
+#' @slot attrs Extra slot to hold the workflow stage for the data, whether normalized, summarized or log transformed.
 #'
 #' @export
 #' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 .SkylineExperiment <- setClass("SkylineExperiment", slots=list(attrs="list"), contains = "SummarizedExperiment")
 
-#' Constructor for Skyline experiment from list of Assays
+#' Constructor for Skyline experiment from list of assays
 #' 
-#' @param assay_list A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to \code{\link{SummarizedExperiment}}
-#' @param attrs A list of extra attributes to be save to SkylineExperiment object
-#' @param colData A DataFrame object describing the rows (Contains geenerated lipid annotations). Row names, if present, become the row names of the SummarizedExperiment object. The number of rows of the DataFrame must equal the number of rows of the matrices in assays.
-#' @param rowData An optional DataFrame describing the samples (Conatains clinical information). Row names, if present, become the column names of the SkylineExperiment.
+#' @param assay_list A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to \code{\link{SummarizedExperiment}}.
+#' @param attrs A list of extra attributes to be saved to SkylineExperiment object.
+#' @param colData A DataFrame object describing the rows (contains generated lipid annotations). Row names, if present, become the row names of the SummarizedExperiment object. The number of rows of the DataFrame must be equal to the number of rows of the matrices in assays.
+#' @param rowData An optional data.frame describing the samples (contains clinical information). Row names, if present, become the column names of the SkylineExperiment.
 #'
 #' @return SkylineExperiment object
 #' @importFrom SummarizedExperiment SummarizedExperiment
