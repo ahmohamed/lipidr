@@ -1,10 +1,10 @@
 #' Differential analysis of lipids between sample groups
 #'
-#' @param ... expressions, or character strings which can be parsed to expressions, specifying contrasts. 
+#' @param ... Expressions, or character strings which can be parsed to expressions, specifying contrasts. 
 #' These are passed to \code{limma::makeContrasts}.
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed
-#' @param measure name of the column indicating sample names
-#' @param group_col name of the column indicating sample groups
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed.
+#' @param measure Name of the column containing sample names.
+#' @param group_col Name of the column containing sample groups.
 #'
 #' @importFrom forcats fct_drop
 #' @importFrom dplyr one_of
@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @examples
-#' # type ?normalize_pqn to see how to normalize and log-transfome your data
+#' # type ?normalize_pqn to see how to normalize and log2-transform your data
 #' data(data_normalized)
 #' de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
 de_analysis = function(..., data, measure="Area", group_col=NULL){
@@ -42,12 +42,12 @@ de_analysis = function(..., data, measure="Area", group_col=NULL){
 
 #' Differential analysis of lipids between sample groups
 #' 
-#' @param ... expressions, or character strings which can be parsed to expressions, specifying contrasts.
+#' @param ... Expressions, or character strings which can be parsed to expressions, specifying contrasts.
 #' These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provided.
 #' @param design Design matrix generated from \code{\link{model.matrix}}, or a design formula .
-#' @param coef column number or column name specifying which coefficient of the linear model is of interest.
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed
-#' @param measure name of the column indicating sample names
+#' @param coef Column number or column name specifying which coefficient of the linear model is of interest.
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed.
+#' @param measure Name of the column containing sample names.
 #' 
 #' @return TopTable as returned by limma package
 #' @importFrom rlang is_formula
@@ -95,11 +95,11 @@ de_design <- function(..., coef=NULL, design, data, measure="Area") {
 
 #' Get a list of significantly changed molecules
 #'
-#' @param de.results output of \code{\link{de_analysis}}
-#' @param p.cutoff Sigificance threshold
-#' @param logFC.cutoff Cut off for log Fold change
+#' @param de.results Output of \code{\link{de_analysis}}.
+#' @param p.cutoff Sigificance threshold.
+#' @param logFC.cutoff Cutoff limit for log2 fold change.
 #'
-#' @return a character vector with names of singificantly differentially changed lipids
+#' @return A character vector with names of significantly differentially changed lipids.
 #' @importFrom dplyr %>% filter
 #' @export
 #'
@@ -115,14 +115,14 @@ significant_molecules = function(de.results, p.cutoff=0.05, logFC.cutoff=1) {
 
 #' Lipid set enrichment analysis
 #'
-#' @param de.results output of \code{\link{de_analysis}}
-#' @param rank.by statistic used to rank the lipid list
+#' @param de.results Output of \code{\link{de_analysis}}.
+#' @param rank.by Statistic used to rank the lipid list.
 #'
 #' @return a data.frame with enrichment results as obtained from \code{\link[fgsea]{fgsea}}. 
 #'   The results also contain the following attributes:#' \itemize{
-#'     \item de.results    original de.results input
-#'     \item rank.by   measure used to rank lipid molcules
-#'     \item sets   lipid sets tested, with their member molecules
+#'     \item de.results    Original de.results input.
+#'     \item rank.by   Measure used to rank lipid molcules.
+#'     \item sets   Lipid sets tested, with their member molecules.
 #'   }
 #' 
 #' @importFrom dplyr %>% bind_rows arrange rename
@@ -164,11 +164,11 @@ enrich_lipidsets <- function(de.results, rank.by=c("logFC", "P.Value", "Adj.P.Va
 
 #' Get a list of significantly changed lipid sets
 #'
-#' @param enrich.results output of \code{\link{enrich_lipidsets}}
-#' @param p.cutoff Sigificance threshold
-#' @param size.cutoff Minimum number of lipids in a set tested for enrichment
+#' @param enrich.results Output of \code{\link{enrich_lipidsets}}.
+#' @param p.cutoff Significance threshold.
+#' @param size.cutoff Minimum number of lipids in a set tested for enrichment.
 #'
-#' @return a list of character vectors of significantly enriched sets for each contrast.
+#' @return A list of character vectors of significantly enriched sets for each contrast.
 #' @importFrom dplyr %>% filter
 #' @export
 #'
@@ -185,9 +185,9 @@ significant_lipidsets = function(enrich.results, p.cutoff=0.05, size.cutoff=2) {
 
 #' Generate lipid sets from lipid molecule names
 #'
-#' @param molecules A character vector containing lipid molecule names
+#' @param molecules A character vector containing lipid molecule names.
 #'
-#' @return list of lipid sets
+#' @return List of lipid sets
 #' @export
 #' @importFrom dplyr %>% filter distinct
 #' @importFrom tidyr gather unite
