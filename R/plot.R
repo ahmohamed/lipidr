@@ -24,9 +24,11 @@ plot_sample_tic <- function(data, measure="Area", log=TRUE){
   if (log == TRUE) {
     measure = .check_log(data, measure)
   }
-  ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom="bar") + 
+  p = ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom="bar") + 
     facet_wrap(~filename, ncol=1, scales="free_y") + 
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + guides(size=FALSE)
+  
+  .display_plot(p)
 }
 
 #' Plot a boxplot chart to examine distribution of values per sample
@@ -53,9 +55,11 @@ plot_sample_boxplot <- function(data, measure="Area", log=TRUE){
     measure = .check_log(data, measure)
   }
   
-  ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() + 
+  p = ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() + 
     facet_wrap(~filename, ncol=1, scales="free_y") + 
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + guides(size=FALSE)
+  
+  .display_plot(p)
 }
 
 
@@ -85,11 +89,13 @@ plot_class_sd <- function(data, measure="Area", log=TRUE){
     measure = .check_log(data, measure)
   }
   
-  ggplot(dlong, aes_string("Class", measure, fill="Class")) + 
+  p = ggplot(dlong, aes_string("Class", measure, fill="Class")) + 
     stat_summary(fun.y = sd, geom="bar")  + 
     facet_wrap(~filename, scales="free_x") + 
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + 
     ylab(paste("SD of", measure))
+  
+  .display_plot(p)
 }
 
 #' Plot a boxplot chart to examine distribution of values per class
@@ -115,10 +121,12 @@ plot_class_boxplot <- function(data, measure="Area", log=TRUE){
     measure = .check_log(data, measure)
   }
   
-  ggplot(dlong, aes_string("Class", measure, fill="Class")) + 
+  p = ggplot(dlong, aes_string("Class", measure, fill="Class")) + 
     geom_boxplot()  + 
     facet_wrap(~filename, scales="free_x") + 
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
+  
+  .display_plot(p)
 }
 
 
@@ -148,11 +156,13 @@ plot_class_enrichment <- function(de_results, significant.sets, measure="logFC")
     mutate(Significant=Class %in% significant.sets[[ contrast[[1]] ]]) %>%
     ungroup()
   
-  ggplot(de_results, aes_string("Class", measure, color="Significant")) + 
+  p = ggplot(de_results, aes_string("Class", measure, color="Significant")) + 
     geom_boxplot()  + geom_hline(yintercept=0, lty=2) + 
     facet_wrap(~contrast, scales="free_x") + 
     scale_color_manual(values=c("black", "red"))+
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
+  
+  .display_plot(p)
 }
 
 #' Plot a chart for log fold changes of lipids per class showing chain lengths and saturations
@@ -182,10 +192,12 @@ plot_chain_distribution <- function(de_results, contrast=NULL, measure="logFC"){
   de_results = de_results[de_results$contrast==contrast, ] %>%
     mutate_at(vars(total_cl:total_cs), factor)
   
-  ggplot(de_results, aes(total_cs, total_cl, fill=logFC)) + geom_tile() + 
+  p = ggplot(de_results, aes(total_cs, total_cl, fill=logFC)) + geom_tile() + 
     facet_wrap(~Class) + 
     xlab("Total chain unsaturation") + ylab("Total chain length") +
     scale_fill_gradient2(midpoint = 0)
+  
+  .display_plot(p)
 }
 
 #' Plot a bar chart for standard deviation of a certain measure in each lipid
@@ -216,11 +228,13 @@ plot_molecule_sd <- function(data, measure="Area", log=TRUE){
   if (log == TRUE) {
     measure = .check_log(data, measure)
   }
-  ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
+  p = ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
     stat_summary(fun.y = sd, geom="bar") +
     facet_wrap(~filename, scales="free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + 
     ylab(paste("SD of", measure))
+  
+  .display_plot(p)
 }
 
 #' Plot a bar chart for coefficient of variation (CV) of a certain measure in each lipid
@@ -247,11 +261,13 @@ plot_molecule_cv <- function(data, measure="Area", log=TRUE){
   if (log == TRUE) {
     measure = .check_log(data, measure)
   }
-  ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
+  p = ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
     stat_summary(fun.y = .cv, geom="bar") + coord_flip() +
     facet_wrap(~filename, scales="free_y") + 
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + 
     ylab(paste("SD of", measure))
+  
+  .display_plot(p)
 }
 
 #' Plot a boxplot chart to examine distribution of values per lipid
@@ -276,10 +292,12 @@ plot_molecule_boxplot <- function(data, measure="Area", log=TRUE){
   if (log == TRUE) {
     measure = .check_log(data, measure)
   }
-  ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
+  p = ggplot(dlong, aes_string("Molecule", measure, fill="Class", color="Class")) + 
     geom_boxplot(outlier.size=0.5, outlier.alpha=0.3)  + coord_flip() + 
     facet_wrap(~filename, scales="free_y") + 
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) 
+  
+  .display_plot(p)
 }
 
 #' Plot a volcano chart for differential analysis results.
@@ -305,7 +323,14 @@ plot_results_volcano <- function(de_results, show.labels=TRUE) {
      if (show.labels) {
        p + geom_text(aes(label=ifelse(adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, "")), vjust=-.5, size=3, color="black")
      }
-     return(p)
+     return(.display_plot(p))
     })
+}
+
+.display_plot <- function(p) {
+  if (.myDataEnv$interactive) {
+    p = plotly::ggplotly(p)
+  }
+  return(p)
 }
 
