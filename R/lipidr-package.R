@@ -34,8 +34,11 @@ NULL
 #' data(lipidDefaults)
 NULL
 
-#' Example dataset (normalized and log transformed)
+#' Example dataset (normalized and log2 transformed)
 #' 
+#' A dataset containing MRM mass spectrometry-based lipidomics data from murine serum samples. Mice were fed a normal or high-fat diet and
+#' had access to normal drinking water or drinking water containing the bile acid deoxycholic acid. Lipid peaks were integrated using
+#' Skyline and exported results were imported into R using \code{lipidr}. The dataset has been normalized and log2 transformed.
 #' Please see \link{normalize_pqn} for details on how to generate this dataset.
 #' 
 #' @docType data
