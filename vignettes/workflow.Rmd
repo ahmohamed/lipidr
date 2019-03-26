@@ -103,6 +103,10 @@ plot_class_sd(d)
 plot_class_boxplot(d)
 ```
 
+### Interactive plots
+
+All `lipidr` plots can be displayed interactive mode if `plotly` package is installed. Plot interactivity is disabled by default. To enable interactivity, simple call `use_interactive_graphics()`. You can turn interactivity back off by `use_interactive_graphics(interactive=FALSE)`.
+
 ## Summarizing transitions
 
 This step is important when more than one transition is meaasured per lipid molecule. Multiple transitions are summarized into a single value by either taking the average or the one with highest intensity.
