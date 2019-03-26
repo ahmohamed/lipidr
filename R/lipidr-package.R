@@ -1,4 +1,4 @@
-#' Analysis workflow for targeted lipidomics.
+#' Analysis workflow for targeted lipidomics
 #'
 #' \code{lipidr} implements a series of functions to facilitate inspection,
 #' analysis and visualization of targeted lipidomics datasets. \code{lipidr}
