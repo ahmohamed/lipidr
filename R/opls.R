@@ -2,26 +2,26 @@
 #'
 #' Blank samples are automatically detected (using TIC) and excluded. Missing data
 #' are imputed using average lipid itensity across all samples. The available methods
-#' are PCA, PCoA, OPLS and OPLS-DA. The OPLS variable requires a numeric y-variable, 
-#' whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the 
+#' are PCA, PCoA, OPLS and OPLS-DA. The OPLS method requires a numeric y-variable, 
+#' whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the number of
 #' predictive and orthogonal components are set to 1. 
 #' 
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}
-#' @param measure which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized
-#' @param method either PCA, PCoA or OPLS-DA
-#' @param group_col Sample annotation to use as grouping column
-#' @param groups a numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
+#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
+#' @param measure Which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized.
+#' @param method Either PCA, PCoA, OPLS or OPLS-DA.
+#' @param group_col Sample annotation to use as grouping column.
+#' @param groups A numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
 #' @param ... Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.
 #' 
-#' @return multivariate analysis results in \code{mvaresults} object.
+#' @return Multivariate analysis results in \code{mvaresults} object.
 #'   The object contains the following:\itemize{
-#'     \item scores    sample socres
-#'     \item loadings   feature or component loadings (not for PCoA)
-#'     \item method   multivariate method that was used
-#'     \item row_data   lipid molecule annotations
-#'     \item col_data   samples annotation
-#'     \item original_object   original output object as returned by 
-#'         corresponding analyses methods
+#'     \item scores    Sample scores
+#'     \item loadings   Feature or component loadings (not for PCoA)
+#'     \item method   Multivariate method that was used
+#'     \item row_data   Lipid molecule annotations
+#'     \item col_data   Sample annotations
+#'     \item original_object   Original output object as returned by 
+#'         corresponding analysis methods
 #'   }
 #' 
 #' @importFrom stats cmdscale prcomp
@@ -178,11 +178,11 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 
 #' Plot a multivariate scatterplot of sample scores to investigate sample clustering
 #'
-#' @param mvaresults Results obtained from \code{\link{mva}}
-#' @param components which components to plot. Ignored for PCoA, OPLS-DA results
-#' @param color_by Sample annotation to use as color
+#' @param mvaresults Results obtained from \code{\link{mva}}.
+#' @param components Which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.
+#' @param color_by Sample annotation to use as color.
 #'
-#' @return A ggplot of the sample scores
+#' @return A ggplot of the sample scores.
 #' @export
 #' @examples 
 #' data(data_normalized)
@@ -224,12 +224,12 @@ plot_mva <- function(mvaresults, components=c(1,2), color_by=NULL){
 
 #' Plot a multivariate scatterplot of feature loadings to investigate feature importance
 #'
-#' @param mvaresults Results obtained from \code{\link{mva}}
-#' @param components which components to plot. Ignored for PCoA, OPLS-DA results
-#' @param color_by Sample annotation to use as color
-#' @param top.n Number of top ranked features to highlight on the plot 
+#' @param mvaresults Results obtained from \code{\link{mva}}.
+#' @param components which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.
+#' @param color_by Sample annotation to use as color.
+#' @param top.n Number of top ranked features to highlight in the plot .
 #'
-#' @return A ggplot of the loading scores
+#' @return A ggplot of the loadings.
 #' @export
 #'
 #' @examples
@@ -276,10 +276,10 @@ plot_mva_loadings <- function(mvaresults, components=c(1,2), color_by=NULL, top.
 
 #' Extract top lipids from OPLS-DA results
 #'
-#' @param mvaresults Results obtained from \code{\link{mva}}
-#' @param top.n Number of lipids to return 
+#' @param mvaresults Results obtained from \code{\link{mva}}.
+#' @param top.n Number of lipids to return. 
 #'
-#' @return A dataframe of \code{top.n} lipids with their annotations
+#' @return A dataframe of \code{top.n} lipids with their annotations.
 #' @export
 #'
 #' @examples
@@ -298,7 +298,7 @@ topImportantLipids <- function(mvaresults, top.n=10) {
     arrange(molrank)
 }
 
-# Function to plot Hotelling circle
+# Function to plot Hotelling's T-squared ellipse
 # Adapted from https://github.com/tyrannomark/bldR/blob/master/R/L2017.R
 # GPL-3 license
 gg_circle <- function(rx, ry, xc, yc, color="black", fill=NA, ...) {

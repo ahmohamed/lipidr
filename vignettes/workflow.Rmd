@@ -19,17 +19,17 @@ This vignette provides a step by step guide to analyzing targeted lipidomics dat
 
 ## Example Study
 
-In this workflow, we will use lipidomics data for murine serum fed a normal or high-fat diet.
+In this workflow, we will use serum lipidomics data from mice fed a normal or high-fat diet.
 
 ## Exporting files from Skyline
 
 Integrated peaks should be exported from each Skyline file through File => Export => Report. Selecting `Transition Results` ensures that necessary information is exported from Skyline. Otherwise, you should ensure that peak `Area` or `Height` or a similar measure is exported. Regardless of the `measure` you choose for intensity, you can use `lipidr` workflow.
 
-`Replicates` should either be exported, or `Pivot Replicate Name` option is used.
+`Replicates` should either be exported, or the `Pivot Replicate Name` option must be used.
 
 ## Reading files into R
 
-`lipidr` can read multiple CSV files from different analysis methods together. Using our example dataset, three Skyline CSV files are used as input to `read.skyline`
+`lipidr` can read multiple CSV files from different analysis methods together. Using our example dataset, three Skyline CSV files are used as input to `read.skyline`.
 
 ```{r}
 datadir = system.file("extdata", package="lipidr")
@@ -52,9 +52,9 @@ colData(d)
 
 ## Data subsetting
 
-It is helpful to imagine SkylineExperiment object as a table with lipid molecules as rows and samples as columns. We can then easily subset this table by selecting to specific rows and columns. The general syntax is `d[rows, cols]`.
+It is helpful to imagine SkylineExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is `d[rows, cols]`.
 
-The example below we select the first 10 transitions and 10 samples. We can check the `rowData` and `colData`
+In the example below we select the first 10 transitions and 10 samples. We can check the `rowData` and `colData`.
 
 ```{r}
 d_subset = d[1:10, 1:10]
@@ -62,7 +62,7 @@ rowData(d_subset)
 colData(d)
 ```
 
-We can also apply conditional selections (*indexing*). For example, we can select only QC samples.
+We can also apply conditional selections (*indexing*). For example, we can select all quality control samples.
 
 ```{r}
 d_qc = d[, d$group == "QC"]
@@ -81,14 +81,14 @@ colData(d_pc)
 
 ## Visualization of raw data
 
-To ensure data quality, we can look at total intensity (TIC) and distribution for samples.
+To ensure data quality, we can look at total lipid intensity and distribution of samples.
 
 ```{r, fig.height=6}
 plot_sample_tic(d, log=TRUE)
 plot_sample_boxplot(d, log=TRUE)
 ```
 
-We can also look at intensity and retention time distribution for each lipid molecule. It is usually helpful for check the variation across QC samples.
+We can also look at intensity and retention time distributions for each lipid molecule. It is recommended to assess the variation across quality control samples.
 
 ```{r, fig.width=10, fig.height=6}
 plot_molecule_boxplot(d_qc, measure = "Area")
@@ -105,7 +105,7 @@ plot_class_boxplot(d)
 
 ## Summarizing transitions
 
-This step is important when more than one transition is meaasured per lipid molecule. Multiple transitions are summarized into a single value by either taking the average or the one with highest intensity.
+This step is important when more than one transition is meaasured per lipid molecule. Multiple transitions are summarized into a single value by either taking the average intensity or the one with highest intensity.
 
 ```{r}
 d_summarized = summarize_transitions(d, method = "average")
@@ -131,7 +131,7 @@ d_normalized_itsd = normalize_itsd(d_summarized, measure = "Area", exclude = "bl
 plot_sample_boxplot(d_normalized_itsd)
 ```
 
-## Sample clustering
+## Multivariate analysis
 
 You can investigate sample variation using either PCA or PCoA (classical MDS).
 
@@ -143,7 +143,9 @@ plot_mva(mvaresults, color_by="group")
 plot_mva(mvaresults, color_by="BileAcid", components = c(2,3))
 ```
 
-## Multivariate analysis
+## Supervised multivariate analysis
+
+Supervised multivariate analyses, such as OPLS and OPLS-DA can be performed to determine which lipids are associated with a group (y-variable) of interest. In this example we use "Diet" as grouping, and display the results in a scores plot.
 
 ```{r}
 mvaresults = mva(d_normalized, method = "OPLS-DA", group_col = "Diet", groups=c("HighFat", "Normal"))
@@ -176,7 +178,7 @@ head(de_results)
 significant_molecules(de_results)
 ```
 
-We can visualize differential analysis results using volcano plots. In this instance we turn off labeling, due to the large number of significantly changed lipids between conditions.
+We can visualize differential analysis results using volcano plots. In this instance we turn off labeling, due to the large number of significantly altered lipids between conditions.
 
 ```{r, fig.height=6}
 plot_results_volcano(de_results, show.labels = FALSE)
@@ -198,14 +200,14 @@ For more details on creating design matrices for different experimental designs,
 
 ## Enrichment analysis
 
-`lipidr` automatically generates sets of lipids based on class chain length and saturation. Measured lipids are then ranked by their fold change, or p-value using results from differential analysis.
+`lipidr` automatically generates sets of lipids based on lipid class, chain length and saturation. Measured lipids are then ranked by their fold change, or p-value using results from differential analysis.
 
 ```{r}
 enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
 significant_lipidsets(enrich_results)
 ```
 
-Visualization of enrichment.
+Visualization of enrichment analysis results. The enriched lipid classes and chain lengths are highlighted. 
 
 ```{r, fig.width=6, fig.height=5}
 plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
