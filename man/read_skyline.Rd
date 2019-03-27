@@ -7,7 +7,7 @@
 read_skyline(files)
 }
 \arguments{
-\item{files}{list of Skyline exported files in CSV format}
+\item{files}{List of Skyline exported files in CSV format.}
 }
 \value{
 SummarizedExperiment object.
@@ -16,9 +16,9 @@ SummarizedExperiment object.
 Read Skyline exported files
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
-d = read_skyline(filelist)
+datadir <- system.file("extdata", package = "lipidr")
+filelist <- list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+d <- read_skyline(filelist)
 
 # View automatically generated lipid annotations
 rowData(d)

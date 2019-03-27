@@ -2,27 +2,27 @@
 % Please edit documentation in R/plot.R
 \name{plot_class_enrichment}
 \alias{plot_class_enrichment}
-\title{Plot a boxplot chart to log fold changes of lipids per class}
+\title{Plot a boxplot chart to examine (log2) fold changes of lipids per class}
 \usage{
 plot_class_enrichment(de_results, significant.sets, measure = "logFC")
 }
 \arguments{
-\item{de_results}{output of \code{\link{de_analysis}}}
+\item{de_results}{Output of \code{\link{de_analysis}}.}
 
-\item{significant.sets}{list of significantly changed lipid sets (output of \code{\link{significant_lipidsets}})}
+\item{significant.sets}{List of significantly changed lipid sets (output of \code{\link{significant_lipidsets}}).}
 
-\item{measure}{which measure to plot the distribution of: logFC, P.Value, Adj.P.Val}
+\item{measure}{Which measure to plot the distribution of: logFC, P.Value, Adj.P.Val.}
 }
 \value{
 A ggplot object.
 }
 \description{
-The function is usually used to look at logFC distribution of lipids in each class,
-marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`
+The function is usually used to look at log2 fold change distribution of lipids in each class,
+marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`.
 }
 \examples{
 data(data_normalized)
-de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
-enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 }

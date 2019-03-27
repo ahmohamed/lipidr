@@ -7,14 +7,14 @@
 de_analysis(..., data, measure = "Area", group_col = NULL)
 }
 \arguments{
-\item{...}{expressions, or character strings which can be parsed to expressions, specifying contrasts. 
+\item{...}{Expressions, or character strings which can be parsed to expressions, specifying contrasts.
 These are passed to \code{limma::makeContrasts}.}
 
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed.}
 
-\item{measure}{name of the column indicating sample names}
+\item{measure}{Name of the column containing sample names.}
 
-\item{group_col}{name of the column indicating sample groups}
+\item{group_col}{Name of the column containing sample groups.}
 }
 \value{
 TopTable as returned by limma package
@@ -23,7 +23,7 @@ TopTable as returned by limma package
 Differential analysis of lipids between sample groups
 }
 \examples{
-# type ?normalize_pqn to see how to normalize and log-transfome your data
+# type ?normalize_pqn to see how to normalize and log2-transform your data
 data(data_normalized)
-de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 }

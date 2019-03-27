@@ -8,39 +8,39 @@ mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS",
   "OPLS-DA"), group_col = NULL, groups = NULL, ...)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
 
-\item{measure}{which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized}
+\item{measure}{Which measure to use as intensity, usually Area_norm. The measure should be already summarized and normalized.}
 
-\item{method}{either PCA, PCoA or OPLS-DA}
+\item{method}{Either PCA, PCoA, OPLS or OPLS-DA.}
 
-\item{group_col}{Sample annotation to use as grouping column}
+\item{group_col}{Sample annotation to use as grouping column.}
 
-\item{groups}{a numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.}
+\item{groups}{A numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.}
 
 \item{...}{Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.}
 }
 \value{
-multivariate analysis results in \code{mvaresults} object.
+Multivariate analysis results in \code{mvaresults} object.
   The object contains the following:\itemize{
-    \item scores    sample socres
-    \item loadings   feature or component loadings (not for PCoA)
-    \item method   multivariate method that was used
-    \item row_data   lipid molecule annotations
-    \item col_data   samples annotation
-    \item original_object   original output object as returned by 
-        corresponding analyses methods
+    \item scores    Sample scores
+    \item loadings   Feature or component loadings (not for PCoA)
+    \item method   Multivariate method that was used
+    \item row_data   Lipid molecule annotations
+    \item col_data   Sample annotations
+    \item original_object   Original output object as returned by
+        corresponding analysis methods
   }
 }
 \description{
 Blank samples are automatically detected (using TIC) and excluded. Missing data
-are imputed using average lipid itensity across all samples. The available methods
-are PCA, PCoA, OPLS and OPLS-DA. The OPLS variable requires a numeric y-variable, 
-whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the 
+are imputed using average lipid intensity across all samples. The available methods
+are PCA, PCoA, OPLS and OPLS-DA. The OPLS method requires a numeric y-variable,
+whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the number of
 predictive and orthogonal components are set to 1.
 }
 \examples{
 data(data_normalized)
 
-mvaresults = mva(data_normalized, measure="Area", method="PCA")
+mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 }

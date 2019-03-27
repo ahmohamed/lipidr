@@ -7,12 +7,12 @@
 topImportantLipids(mvaresults, top.n = 10)
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}}
+\item{mvaresults}{Results obtained from \code{\link{mva}}.}
 
-\item{top.n}{Number of lipids to return}
+\item{top.n}{Number of lipids to return.}
 }
 \value{
-A dataframe of \code{top.n} lipids with their annotations
+A dataframe of \code{top.n} lipids with their annotations.
 }
 \description{
 Extract top lipids from OPLS-DA results
@@ -20,6 +20,6 @@ Extract top lipids from OPLS-DA results
 \examples{
 data(data_normalized)
 
-mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
-topImportantLipids(mvaresults, top.n=10)
+mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+topImportantLipids(mvaresults, top.n = 10)
 }

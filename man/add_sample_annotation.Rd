@@ -18,13 +18,13 @@ Skyline data.frame with sample group information.
 Add sample annotation to Skyline data frame
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
-d = read_skyline(filelist)
+datadir <- system.file("extdata", package = "lipidr")
+filelist <- list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+d <- read_skyline(filelist)
 
 # Add clinical info to existing SkylineExperiment object
-clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-d = add_sample_annotation(d, clinical_file)
+clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
+d <- add_sample_annotation(d, clinical_file)
 colData(d)
 d$group
 
@@ -34,5 +34,5 @@ d[, d$group == "QC"]
 
 # Subset lipids using lipid annotation
 # Note we are subsetting rows
-d[rowData(d)$itsd,]
+d[rowData(d)$itsd, ]
 }

@@ -7,11 +7,11 @@
 plot_sample_tic(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
 
-\item{measure}{which measure to use as intensity, usually Area, Area.Normalized or Height}
+\item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height.}
 
-\item{log}{whether values should be log2 transformed}
+\item{log}{Whether values should be log2 transformed.}
 }
 \value{
 A ggplot object.
@@ -22,6 +22,6 @@ Plot a bar chart for total sample intensity
 \examples{
 data(data_normalized)
 
-plot_sample_tic(data_normalized, "Area", log=TRUE)
-plot_sample_tic(data_normalized, "Background", log=FALSE)
+plot_sample_tic(data_normalized, "Area", log = TRUE)
+plot_sample_tic(data_normalized, "Background", log = FALSE)
 }
