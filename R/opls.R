@@ -1,13 +1,13 @@
 #' Perform multivariate analyses to investigate sample clustering
 #'
 #' Blank samples are automatically detected (using TIC) and excluded. Missing data
-#' are imputed using average lipid itensity across all samples. The available methods
+#' are imputed using average lipid intensity across all samples. The available methods
 #' are PCA, PCoA, OPLS and OPLS-DA. The OPLS method requires a numeric y-variable, 
 #' whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the number of
 #' predictive and orthogonal components are set to 1. 
 #' 
 #' @param data Skyline data.frame created by \code{\link{read_skyline}}.
-#' @param measure Which measure to use as intensity, usually Area_norm. The meausre should be already summarized and normalized.
+#' @param measure Which measure to use as intensity, usually Area_norm. The measure should be already summarized and normalized.
 #' @param method Either PCA, PCoA, OPLS or OPLS-DA.
 #' @param group_col Sample annotation to use as grouping column.
 #' @param groups A numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.

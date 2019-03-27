@@ -4,11 +4,11 @@
 \name{lipidDefaults}
 \alias{lipidDefaults}
 \title{lipidDefaults.
-A set of defualt mappings and annoataion used internally to correctly parse
+A set of default mappings and annotation used internally to correctly parse
 lipid molecule names.}
 \description{
 lipidDefaults.
-A set of defualt mappings and annoataion used internally to correctly parse
+A set of default mappings and annotation used internally to correctly parse
 lipid molecule names.
 }
 \examples{

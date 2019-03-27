@@ -7,14 +7,14 @@
 plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}}
+\item{mvaresults}{Results obtained from \code{\link{mva}}.}
 
-\item{components}{which components to plot. Ignored for PCoA, OPLS-DA results}
+\item{components}{Which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.}
 
-\item{color_by}{Sample annotation to use as color}
+\item{color_by}{Sample annotation to use as color.}
 }
 \value{
-A ggplot of the sample scores
+A ggplot of the sample scores.
 }
 \description{
 Plot a multivariate scatterplot of sample scores to investigate sample clustering

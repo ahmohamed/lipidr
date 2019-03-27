@@ -96,7 +96,7 @@ de_design <- function(..., coef=NULL, design, data, measure="Area") {
 #' Get a list of significantly changed molecules
 #'
 #' @param de.results Output of \code{\link{de_analysis}}.
-#' @param p.cutoff Sigificance threshold.
+#' @param p.cutoff Significance threshold.
 #' @param logFC.cutoff Cutoff limit for log2 fold change.
 #'
 #' @return A character vector with names of significantly differentially changed lipids.
@@ -121,7 +121,7 @@ significant_molecules = function(de.results, p.cutoff=0.05, logFC.cutoff=1) {
 #' @return a data.frame with enrichment results as obtained from \code{\link[fgsea]{fgsea}}. 
 #'   The results also contain the following attributes:#' \itemize{
 #'     \item de.results    Original de.results input.
-#'     \item rank.by   Measure used to rank lipid molcules.
+#'     \item rank.by   Measure used to rank lipid molecules.
 #'     \item sets   Lipid sets tested, with their member molecules.
 #'   }
 #' 

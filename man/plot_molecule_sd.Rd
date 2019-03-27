@@ -2,14 +2,14 @@
 % Please edit documentation in R/plot.R
 \name{plot_molecule_sd}
 \alias{plot_molecule_sd}
-\title{Plot a bar chart for standard deviation of a certain measure in each lipid}
+\title{Plot a bar chart for standard deviations of a certain measure in each lipid}
 \usage{
 plot_molecule_sd(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
 
-\item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized or Height}
+\item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized or Height.}
 
 \item{log}{Whether values should be log2 transformed (Set FALSE for retention time).}
 }

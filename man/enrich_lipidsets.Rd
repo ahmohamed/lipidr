@@ -8,16 +8,16 @@ enrich_lipidsets(de.results, rank.by = c("logFC", "P.Value",
   "Adj.P.Val"))
 }
 \arguments{
-\item{de.results}{output of \code{\link{de_analysis}}}
+\item{de.results}{Output of \code{\link{de_analysis}}.}
 
-\item{rank.by}{statistic used to rank the lipid list}
+\item{rank.by}{Statistic used to rank the lipid list.}
 }
 \value{
 a data.frame with enrichment results as obtained from \code{\link[fgsea]{fgsea}}. 
   The results also contain the following attributes:#' \itemize{
-    \item de.results    original de.results input
-    \item rank.by   measure used to rank lipid molcules
-    \item sets   lipid sets tested, with their member molecules
+    \item de.results    Original de.results input.
+    \item rank.by   Measure used to rank lipid molecules.
+    \item sets   Lipid sets tested, with their member molecules.
   }
 }
 \description{

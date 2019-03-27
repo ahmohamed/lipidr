@@ -7,14 +7,14 @@
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 }
 \arguments{
-\item{enrich.results}{output of \code{\link{enrich_lipidsets}}}
+\item{enrich.results}{Output of \code{\link{enrich_lipidsets}}.}
 
-\item{p.cutoff}{Sigificance threshold}
+\item{p.cutoff}{Significance threshold.}
 
-\item{size.cutoff}{Minimum number of lipids in a set tested for enrichment}
+\item{size.cutoff}{Minimum number of lipids in a set tested for enrichment.}
 }
 \value{
-a list of character vectors of significantly enriched sets for each contrast.
+A list of character vectors of significantly enriched sets for each contrast.
 }
 \description{
 Get a list of significantly changed lipid sets

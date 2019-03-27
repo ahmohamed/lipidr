@@ -7,11 +7,11 @@
 plot_class_sd(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
 
-\item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized, Height or Retention.Time}
+\item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized, Height or Retention.Time}
 
-\item{log}{whether values should be log2 transformed (Set FALSE for retention time).}
+\item{log}{Whether values should be log2 transformed (Set FALSE for retention time).}
 }
 \value{
 A ggplot object.
@@ -19,7 +19,7 @@ A ggplot object.
 \description{
 The function is usually used to look at standard deviations of intensity in each class,
 but can also be used to look at different measures such as  `Retention.Time`,
-to ensure all lipids are eluted within expected range. 
+to ensure all lipids are eluted within the expected range. 
 To assess instrumental variation apply the function to technical quality control samples.
 }
 \examples{

@@ -2,10 +2,10 @@
 #'
 #' Perform Probabilistic Quotient Normalization (PQN) for sample intensities.
 #' The PQN method determines a dilution factor for each sample by comparing
-#' the distibution of quotients between samples and a reference spectrum, followed
+#' the distribution of quotients between samples and a reference spectrum, followed
 #' by sample normalization using this dilution factor.
 #' The reference spectrum in this method is the average lipid abundance of all 
-#' samples (exluding blanks).
+#' samples (excluding blanks).
 #'
 #' @param data SkylineExperiment object created by \code{\link{read_skyline}}.
 #' @param measure Which measure to use as intensity, usually Area, Area.Normalized or Height.

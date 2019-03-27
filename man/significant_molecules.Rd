@@ -7,14 +7,14 @@
 significant_molecules(de.results, p.cutoff = 0.05, logFC.cutoff = 1)
 }
 \arguments{
-\item{de.results}{output of \code{\link{de_analysis}}}
+\item{de.results}{Output of \code{\link{de_analysis}}.}
 
-\item{p.cutoff}{Sigificance threshold}
+\item{p.cutoff}{Significance threshold.}
 
-\item{logFC.cutoff}{Cut off for log Fold change}
+\item{logFC.cutoff}{Cutoff limit for log2 fold change.}
 }
 \value{
-a character vector with names of singificantly differentially changed lipids
+A character vector with names of significantly differentially changed lipids.
 }
 \description{
 Get a list of significantly changed molecules

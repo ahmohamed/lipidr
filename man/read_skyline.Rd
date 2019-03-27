@@ -7,7 +7,7 @@
 read_skyline(files)
 }
 \arguments{
-\item{files}{list of Skyline exported files in CSV format}
+\item{files}{List of Skyline exported files in CSV format.}
 }
 \value{
 SummarizedExperiment object.

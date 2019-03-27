@@ -8,16 +8,16 @@ plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
   top.n = nrow(mvaresults$loadings))
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}}
+\item{mvaresults}{Results obtained from \code{\link{mva}}.}
 
-\item{components}{which components to plot. Ignored for PCoA, OPLS-DA results}
+\item{components}{which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.}
 
-\item{color_by}{Sample annotation to use as color}
+\item{color_by}{Sample annotation to use as color.}
 
-\item{top.n}{Number of top ranked features to highlight on the plot}
+\item{top.n}{Number of top ranked features to highlight in the plot .}
 }
 \value{
-A ggplot of the loading scores
+A ggplot of the loadings.
 }
 \description{
 Plot a multivariate scatterplot of feature loadings to investigate feature importance

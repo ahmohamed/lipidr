@@ -168,7 +168,7 @@ plot_class_enrichment <- function(de_results, significant.sets, measure="logFC")
 #' Plot a chart of (log2) fold changes of lipids per class showing chain lengths and saturations
 #'
 #' @param de_results Output of \code{\link{de_analysis}}.
-#' @param measure wWich measure to plot the distribution of: logFC, P.Value, Adj.P.Val.
+#' @param measure Which measure to plot the distribution of: logFC, P.Value, Adj.P.Val.
 #' @param contrast Which comparison to plot.
 #'
 #' @return A ggplot object.

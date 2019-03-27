@@ -7,10 +7,10 @@
 gen_lipidsets(molecules)
 }
 \arguments{
-\item{molecules}{A character vector containing lipid molecule names}
+\item{molecules}{A character vector containing lipid molecule names.}
 }
 \value{
-list of lipid sets
+List of lipid sets
 }
 \description{
 Generate lipid sets from lipid molecule names

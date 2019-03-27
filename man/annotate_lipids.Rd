@@ -2,19 +2,22 @@
 % Please edit documentation in R/annotation.R
 \name{annotate_lipids}
 \alias{annotate_lipids}
-\title{Parse Molecule names to extract class and chain information.}
+\title{Parse molecule names to extract lipid class and chain information.}
 \usage{
 annotate_lipids(molecules)
 }
 \arguments{
-\item{molecules}{A character vector containing lipid molecule names}
+\item{molecules}{A character vector containing lipid molecule names.}
 }
 \value{
-a data.frame with lipid annotations as columns. Input lipid names
-are given in a column named "Molecule"
+A data.frame with lipid annotations as columns. Input lipid names
+are given in a column named "Molecule".
 }
 \description{
-Parse Molecule names to extract class and chain information.
+Parse lipid names to return a data.frame containing lipid class, chain length and unsaturation. 
+Lipids should follow the pattern 'class xx:x/yy:y', with class referring to the abbreviated lipid class,
+xx:x as the composition of the first chain and yy:y as the second chain. Alternatively, lipids can be supplied following the
+the pattern 'class zz:z', where zz:z indicates the combined chain length and unsaturation information.
 }
 \examples{
 lipid_list = c("Lyso PE 18:1(d7)" , "PE(32:0)", "Cer(d18:0/C22:0)", "PG 16:0/18:1", "TG(16:0/18:1/18:1)")

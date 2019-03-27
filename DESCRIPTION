@@ -27,7 +27,9 @@ Suggests:
     BiocStyle,
     ggrepel,
     plotly,
-    covr
+    covr,
+    spelling
 VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization
+Language: en-US

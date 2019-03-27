@@ -7,16 +7,16 @@
 de_design(..., coef = NULL, design, data, measure = "Area")
 }
 \arguments{
-\item{...}{expressions, or character strings which can be parsed to expressions, specifying contrasts.
+\item{...}{Expressions, or character strings which can be parsed to expressions, specifying contrasts.
 These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provided.}
 
-\item{coef}{column number or column name specifying which coefficient of the linear model is of interest.}
+\item{coef}{Column number or column name specifying which coefficient of the linear model is of interest.}
 
 \item{design}{Design matrix generated from \code{\link{model.matrix}}, or a design formula .}
 
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed}
+\item{data}{Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed.}
 
-\item{measure}{name of the column indicating sample names}
+\item{measure}{Name of the column containing sample names.}
 }
 \value{
 TopTable as returned by limma package
