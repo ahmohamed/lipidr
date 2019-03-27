@@ -132,9 +132,9 @@ laply <- function(l, fun) {
 .silent <- function(f) {
   return(function(...) suppressWarnings(suppressMessages(f(...))))
 }
-.left_join.silent <- .silent(dplyr::left_join)
-.full_join.silent <- .silent(dplyr::full_join)
-.inner_join.silent <- .silent(dplyr::inner_join)
+.left_join_silent <- .silent(dplyr::left_join)
+.full_join_silent <- .silent(dplyr::full_join)
+.inner_join_silent <- .silent(dplyr::inner_join)
 
 #' @importFrom stats sd
 .cv <- function(a) {

@@ -360,7 +360,7 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
       rownames_to_column("LipidID")
 
     mds_matrix <- mds_matrix %>%
-      .left_join.silent(row_data)
+      .left_join_silent(row_data)
   }
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }
@@ -389,7 +389,7 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
       rownames_to_column("Sample")
 
     mds_matrix <- mds_matrix %>%
-      .left_join.silent(col_data)
+      .left_join_silent(col_data)
   }
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }

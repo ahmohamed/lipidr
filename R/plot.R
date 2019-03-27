@@ -153,7 +153,7 @@ plot_class_enrichment <- function(de_results, significant.sets, measure = "logFC
   )
   de_results <- de_results$Molecule %>%
     annotate_lipids() %>%
-    .left_join.silent(de_results) %>%
+    .left_join_silent(de_results) %>%
     group_by(contrast) %>%
     mutate(Significant = Class %in% significant.sets[[ contrast[[1]] ]]) %>%
     ungroup()
@@ -188,7 +188,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL, measure = "logF
   de_results <- de_results$Molecule %>%
     annotate_lipids() %>%
     filter(!itsd) %>%
-    .left_join.silent(de_results) %>%
+    .left_join_silent(de_results) %>%
     group_by(clean_name) %>%
     ungroup()
 
