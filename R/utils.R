@@ -143,6 +143,6 @@ laply <- function(l, fun) {
 
 .data_internal <- function(dataset) {
   if (!exists(dataset, envir = .myDataEnv)) {
-    utils::data(dataset, envir = .myDataEnv)
+    utils::data(list = c(dataset), envir = .myDataEnv)
   }
 }
