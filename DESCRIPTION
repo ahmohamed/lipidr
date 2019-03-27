@@ -15,7 +15,8 @@ Imports:
     ggplot2,
     limma,
     fgsea,
-    ropls
+    ropls,
+    magrittr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
