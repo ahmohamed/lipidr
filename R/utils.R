@@ -140,3 +140,9 @@ laply <- function(l, fun) {
 .cv <- function(a) {
   (sd(a, na.rm = TRUE) / mean(a, na.rm = TRUE)) * 100
 }
+
+.data_internal <- function(dataset) {
+  if (!exists(dataset, envir = .myDataEnv)) {
+    utils::data(dataset, envir = .myDataEnv)
+  }
+}

@@ -47,11 +47,20 @@ NULL
 #' data(data_nomalized)
 NULL
 
+#' Patterns used in parsing lipid names
+#'
+#' A collection of patterns to extract lipid class and chain information
+#' from lipid names. Used internally by the package.
+#'
+#' @docType data
+#' @name lipidnames_pattern
+#' @examples
+#' data(lipidnames_pattern)
+NULL
 
 .myDataEnv <- new.env(parent = emptyenv()) # not exported
 
 .onAttach <- function(lib, pkg) {
-  utils::data(lipidDefaults, envir = .myDataEnv)
   .myDataEnv$interactive <- FALSE
 }
 
@@ -69,11 +78,11 @@ NULL
 #' @examples
 #' data(data_normalized)
 #' use_interactive_graphics()
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' plot_molecule_cv(d_qc, "Area")
-#' 
+#'
 #' # turn off interactivity
 #' use_interactive_graphics(interactive = FALSE)
 use_interactive_graphics <- function(interactive = TRUE) {
