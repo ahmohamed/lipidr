@@ -10,7 +10,7 @@ de_analysis(..., data, measure = "Area", group_col = NULL)
 \item{...}{Expressions, or character strings which can be parsed to expressions, specifying contrasts.
 These are passed to \code{limma::makeContrasts}.}
 
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}, should be normalized and log2 transformed.}
 
 \item{measure}{Name of the column containing sample names.}
 

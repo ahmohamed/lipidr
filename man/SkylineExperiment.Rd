@@ -7,7 +7,7 @@
 SkylineExperiment(assay_list, attrs, colData = NULL, rowData = NULL)
 }
 \arguments{
-\item{assay_list}{A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to \code{\link{SummarizedExperiment}}.}
+\item{assay_list}{A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to \code{\link[=SummarizedExperiment]{SummarizedExperiment()}}.}
 
 \item{attrs}{A list of extra attributes to be saved to SkylineExperiment object.}
 

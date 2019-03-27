@@ -7,7 +7,7 @@
 add_sample_annotation(data, annot_file)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{annot_file}{CSV file with at least 2 columns, sample names and group(s).}
 }

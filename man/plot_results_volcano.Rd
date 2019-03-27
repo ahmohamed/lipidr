@@ -7,7 +7,7 @@
 plot_results_volcano(de_results, show.labels = TRUE)
 }
 \arguments{
-\item{de_results}{Output of \code{\link{de_analysis}}.}
+\item{de_results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
 \item{show.labels}{Whether labels should be displayed for significant lipids.}
 }

@@ -7,7 +7,7 @@
 plot_molecule_sd(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized or Height.}
 
@@ -18,7 +18,7 @@ A ggplot object.
 }
 \description{
 The function is usually used to look at standard deviation of intensity for each lipid,
-but can also be used to look at different measures such as  `Retention.Time`,
+but can also be used to look at different measures such as  \code{Retention.Time},
 to ensure all lipids elute within expected range.
 }
 \examples{

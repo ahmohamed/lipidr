@@ -8,7 +8,7 @@ plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
   top.n = nrow(mvaresults$loadings))
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}.}
+\item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
 
 \item{components}{which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.}
 

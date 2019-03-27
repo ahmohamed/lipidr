@@ -6,14 +6,14 @@
 #' whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the number of
 #' predictive and orthogonal components are set to 1.
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
+#' @param data Skyline data.frame created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area_norm. The measure should be already summarized and normalized.
 #' @param method Either PCA, PCoA, OPLS or OPLS-DA.
 #' @param group_col Sample annotation to use as grouping column.
 #' @param groups A numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
-#' @param ... Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.
+#' @param ... Extra arguments to be passed to [opls()] for OPLS-DA, ignored in other methods.
 #'
-#' @return Multivariate analysis results in \code{mvaresults} object.
+#' @return Multivariate analysis results in `mvaresults` object.
 #'   The object contains the following:\itemize{
 #'     \item scores    Sample scores
 #'     \item loadings   Feature or component loadings (not for PCoA)
@@ -183,7 +183,7 @@ plot_opls <- function(mvaresults, components, color_by, ellipse = TRUE, hotellin
 
 #' Plot a multivariate scatterplot of sample scores to investigate sample clustering
 #'
-#' @param mvaresults Results obtained from \code{\link{mva}}.
+#' @param mvaresults Results obtained from [mva()].
 #' @param components Which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.
 #' @param color_by Sample annotation to use as color.
 #'
@@ -230,7 +230,7 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
 
 #' Plot a multivariate scatterplot of feature loadings to investigate feature importance
 #'
-#' @param mvaresults Results obtained from \code{\link{mva}}.
+#' @param mvaresults Results obtained from [mva()].
 #' @param components which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.
 #' @param color_by Sample annotation to use as color.
 #' @param top.n Number of top ranked features to highlight in the plot .
@@ -284,10 +284,10 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2), color_by = NULL,
 
 #' Extract top lipids from OPLS-DA results
 #'
-#' @param mvaresults Results obtained from \code{\link{mva}}.
+#' @param mvaresults Results obtained from [mva()].
 #' @param top.n Number of lipids to return.
 #'
-#' @return A dataframe of \code{top.n} lipids with their annotations.
+#' @return A dataframe of `top.n` lipids with their annotations.
 #' @export
 #'
 #' @examples

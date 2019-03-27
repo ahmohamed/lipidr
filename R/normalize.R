@@ -7,7 +7,7 @@
 #' The reference spectrum in this method is the average lipid abundance of all
 #' samples (excluding blanks).
 #'
-#' @param data SkylineExperiment object created by \code{\link{read_skyline}}.
+#' @param data SkylineExperiment object created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area, Area.Normalized or Height.
 #' @param exclude Samples to exclude, can be either: \cr
 #' "blank" - automatically detected blank samples and exclude them
@@ -67,7 +67,7 @@ normalize_pqn <- function(data, measure = "Area", exclude = "blank", log = TRUE)
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
+#' @param data Skyline data.frame created by [read_skyline()].
 #' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height.
 #' @param exclude Samples to exclude, can be either: \cr
 #' "blank" - automatically detected blank samples and exclude them

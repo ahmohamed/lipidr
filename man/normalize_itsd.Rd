@@ -7,7 +7,7 @@
 normalize_itsd(data, measure = "Area", exclude = "blank", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{which measure to use as intensity, usually Area, Area.Normalized or Height.}
 
@@ -19,7 +19,7 @@ logical vector with the same length as samples.}
 }
 \value{
 A SkylineExperiment object with normalized values. Each molecule
-    is normalized against the internal standard from the same class.
+is normalized against the internal standard from the same class.
 }
 \description{
 Normalize each class by its corresponding internal standard(s).

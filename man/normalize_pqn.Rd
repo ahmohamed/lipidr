@@ -7,7 +7,7 @@
 normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link{read_skyline}}.}
+\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height.}
 

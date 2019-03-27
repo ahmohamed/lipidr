@@ -7,9 +7,9 @@
 plot_class_enrichment(de_results, significant.sets, measure = "logFC")
 }
 \arguments{
-\item{de_results}{Output of \code{\link{de_analysis}}.}
+\item{de_results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
-\item{significant.sets}{List of significantly changed lipid sets (output of \code{\link{significant_lipidsets}}).}
+\item{significant.sets}{List of significantly changed lipid sets (output of \code{\link[=significant_lipidsets]{significant_lipidsets()}}).}
 
 \item{measure}{Which measure to plot the distribution of: logFC, P.Value, Adj.P.Val.}
 }
@@ -18,7 +18,7 @@ A ggplot object.
 }
 \description{
 The function is usually used to look at log2 fold change distribution of lipids in each class,
-marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`.
+marking significantly enriched classes. Can also be used to plot \code{P.Value} or \code{Adj.P.Val}.
 }
 \examples{
 data(data_normalized)

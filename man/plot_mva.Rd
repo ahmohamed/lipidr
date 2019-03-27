@@ -7,7 +7,7 @@
 plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}.}
+\item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
 
 \item{components}{Which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.}
 

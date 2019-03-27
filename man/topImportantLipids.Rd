@@ -7,7 +7,7 @@
 topImportantLipids(mvaresults, top.n = 10)
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}.}
+\item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
 
 \item{top.n}{Number of lipids to return.}
 }

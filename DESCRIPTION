@@ -34,3 +34,4 @@ VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization
 Language: en-US
+Roxygen: list(markdown = TRUE)

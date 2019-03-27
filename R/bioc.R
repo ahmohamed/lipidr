@@ -9,7 +9,7 @@
 
 #' Constructor for Skyline experiment from list of assays
 #'
-#' @param assay_list A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to \code{\link{SummarizedExperiment}}.
+#' @param assay_list A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to [SummarizedExperiment()].
 #' @param attrs A list of extra attributes to be saved to SkylineExperiment object.
 #' @param colData A DataFrame object describing the rows (contains generated lipid annotations). Row names, if present, become the row names of the SummarizedExperiment object. The number of rows of the DataFrame must be equal to the number of rows of the matrices in assays.
 #' @param rowData An optional data.frame describing the samples (contains clinical information). Row names, if present, become the column names of the SkylineExperiment.

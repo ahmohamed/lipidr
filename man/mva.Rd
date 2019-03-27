@@ -8,7 +8,7 @@ mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS",
   "OPLS-DA"), group_col = NULL, groups = NULL, ...)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{Which measure to use as intensity, usually Area_norm. The measure should be already summarized and normalized.}
 
@@ -18,19 +18,19 @@ mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS",
 
 \item{groups}{A numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.}
 
-\item{...}{Extra arguments to be passed to \code{\link{opls}} for OPLS-DA, ignored in other methods.}
+\item{...}{Extra arguments to be passed to \code{\link[=opls]{opls()}} for OPLS-DA, ignored in other methods.}
 }
 \value{
 Multivariate analysis results in \code{mvaresults} object.
-  The object contains the following:\itemize{
-    \item scores    Sample scores
-    \item loadings   Feature or component loadings (not for PCoA)
-    \item method   Multivariate method that was used
-    \item row_data   Lipid molecule annotations
-    \item col_data   Sample annotations
-    \item original_object   Original output object as returned by
-        corresponding analysis methods
-  }
+The object contains the following:\itemize{
+\item scores    Sample scores
+\item loadings   Feature or component loadings (not for PCoA)
+\item method   Multivariate method that was used
+\item row_data   Lipid molecule annotations
+\item col_data   Sample annotations
+\item original_object   Original output object as returned by
+corresponding analysis methods
+}
 }
 \description{
 Blank samples are automatically detected (using TIC) and excluded. Missing data

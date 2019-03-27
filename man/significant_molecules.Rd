@@ -7,7 +7,7 @@
 significant_molecules(de.results, p.cutoff = 0.05, logFC.cutoff = 1)
 }
 \arguments{
-\item{de.results}{Output of \code{\link{de_analysis}}.}
+\item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
 \item{p.cutoff}{Significance threshold.}
 

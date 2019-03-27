@@ -2,7 +2,7 @@
 #'
 #' See \code{magrittr::\link[magrittr]{\%>\%}} for details.
 #'
-#' @return Result of \code{rhs(lhs, ...)}.
+#' @return Result of `rhs(lhs, ...)`.
 #' @name %>%
 #' @rdname pipe
 #' @keywords internal

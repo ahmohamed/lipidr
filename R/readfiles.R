@@ -41,7 +41,7 @@ read_skyline <- function(files) {
 
 #' Add sample annotation to Skyline data frame
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
+#' @param data Skyline data.frame created by [read_skyline()].
 #' @param annot_file CSV file with at least 2 columns, sample names and group(s).
 #'
 #' @importFrom dplyr %>% left_join

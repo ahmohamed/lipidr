@@ -7,7 +7,7 @@
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 }
 \arguments{
-\item{enrich.results}{Output of \code{\link{enrich_lipidsets}}.}
+\item{enrich.results}{Output of \code{\link[=enrich_lipidsets]{enrich_lipidsets()}}.}
 
 \item{p.cutoff}{Significance threshold.}
 
