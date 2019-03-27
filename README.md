@@ -1,4 +1,5 @@
 [![Travis-CI Build Status](https://travis-ci.org/ahmohamed/lipidr.svg?branch=master)](https://travis-ci.org/ahmohamed/lipidr)
+[![Coverage status](https://codecov.io/gh/ahmohamed/lipidr/branch/master/graph/badge.svg)](https://codecov.io/github/ahmohamed/lipidr?branch=master)
 
 # Analysis workflow for targeted lipidomics.
 
