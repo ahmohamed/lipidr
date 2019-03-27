@@ -47,7 +47,7 @@ annotate_lipids <- function(molecules) {
 
 .clean_molecule_name <- function(lipids_list) {
   .data_internal("lipidnames_pattern")
-  p = .myDataEnv$lipidnames_pattern
+  p <- .myDataEnv$lipidnames_pattern
   olipids <- trimws(lipids_list)
 
   # PC(O-32:0) --> PCO-32:0
@@ -55,7 +55,7 @@ annotate_lipids <- function(molecules) {
   olipids <- gsub(p2, "\\1\\2", olipids)
 
   # Cer(d18:0/C18:0) --> Cer d18:0/18:0
-  p2 <- paste0(p$class, "[ -]*\\(", 
+  p2 <- paste0(p$class, "[ -]*\\(",
     "([[:alpha:]]{0,1}\\d{1,2}:\\d{1,2}[^)]*)", "\\)"
   )
   olipids <- gsub(p2, "\\1 \\2", olipids)
@@ -88,20 +88,30 @@ annotate_lipids <- function(molecules) {
   olipids <- sub(" NEG$", "", olipids)
   olipids <- sub(" ID\\d+$", "", olipids)
 
+  is_itsd <- grepl(p$itsd, olipids) |
+    lipids_list %in% p$itsd_list |
+    olipids %in% p$itsd_list
+
   return(data.frame(
     Molecule = lipids_list, clean_name = olipids,
     ambig = grepl(paste0("^", p$mol, "(\\s*/\\s*", p$mol, ")$"), olipids),
-    not_matched = (!grepl(p, olipids) & !grepl(itsd, olipids)),
-    itsd = grepl(itsd, olipids) | lipids_list %in% itsd_list | olipids %in% itsd_list
+    not_matched = (!grepl(p$matching, olipids) & !grepl(p$itsd, olipids)),
+    itsd = is_itsd
   ))
 }
 
 #' @importFrom dplyr %>% mutate rowwise ungroup
 #' @importFrom tidyr separate
 .parse_lipid_info <- function(clean_df) {
+  .data_internal("lipidnames_pattern")
+  p <- .myDataEnv$lipidnames_pattern
+
   clean_df %>%
     mutate(
-      first_mol = sub(paste0("^(", p$mol, ")(\\s*/\\s*", p$mol, ")?$"), "\\1", clean_name),
+      first_mol = sub(
+        paste0("^(", p$mol, ")(\\s*/\\s*", p$mol, ")?$"),
+        "\\1", clean_name
+      ),
       first_mol = sub(
         paste0(
           p$class, "[ -]",
@@ -111,10 +121,18 @@ annotate_lipids <- function(molecules) {
         "\\1#$#\\2#$#\\4#$#\\6", first_mol
       )
     ) %>%
-    separate(first_mol, c("class_stub", "chain1", "chain2", "chain3"), sep = "#\\$#") %>%
-    separate(chain1, c("l_1", "s_1"), sep = "\\:", remove = FALSE, convert = TRUE) %>%
-    separate(chain2, c("l_2", "s_2"), sep = "\\:", remove = FALSE, convert = TRUE, fill = "right") %>%
-    separate(chain3, c("l_3", "s_3"), sep = "\\:", remove = FALSE, convert = TRUE, fill = "right") %>%
+    separate(
+      first_mol, c("class_stub", "chain1", "chain2", "chain3"),
+      sep = "#\\$#") %>%
+    separate(
+      chain1, c("l_1", "s_1"),
+      sep = "\\:", remove = FALSE, convert = TRUE) %>%
+    separate(
+      chain2, c("l_2", "s_2"),
+      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right") %>%
+    separate(
+      chain3, c("l_3", "s_3"),
+      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right") %>%
     rowwise() %>%
     mutate(
       total_cl = sum(l_1, l_2, l_3, na.rm = TRUE),
