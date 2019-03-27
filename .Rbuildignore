@@ -4,6 +4,6 @@
 ^LICENSE\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml*
+^\.travis\.yml$
 ^\.git*
-^\.BBSoptions*
+^\.BBSoptions$
