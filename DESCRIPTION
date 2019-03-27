@@ -3,6 +3,7 @@ Title: Lipidomics Analysis Workflow in R
 Version: 0.9.3
 Authors@R: person("Ahmed", "Mohamed", email = "ahmed.mohamed@qimrberghofer.edu.au", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6507-5300"))
 Description: What the package does (one paragraph).
+Depends: R (>= 3.5.0)
 Imports:
     methods,
     stats,
