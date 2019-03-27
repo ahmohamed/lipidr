@@ -28,19 +28,19 @@ Multivariate analysis results in \code{mvaresults} object.
     \item method   Multivariate method that was used
     \item row_data   Lipid molecule annotations
     \item col_data   Sample annotations
-    \item original_object   Original output object as returned by 
+    \item original_object   Original output object as returned by
         corresponding analysis methods
   }
 }
 \description{
 Blank samples are automatically detected (using TIC) and excluded. Missing data
 are imputed using average lipid intensity across all samples. The available methods
-are PCA, PCoA, OPLS and OPLS-DA. The OPLS method requires a numeric y-variable, 
+are PCA, PCoA, OPLS and OPLS-DA. The OPLS method requires a numeric y-variable,
 whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the number of
 predictive and orthogonal components are set to 1.
 }
 \examples{
 data(data_normalized)
 
-mvaresults = mva(data_normalized, measure="Area", method="PCA")
+mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 }

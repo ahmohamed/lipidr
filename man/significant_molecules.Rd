@@ -21,6 +21,6 @@ Get a list of significantly changed molecules
 }
 \examples{
 data(data_normalized)
-de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 significant_molecules(de_results)
 }

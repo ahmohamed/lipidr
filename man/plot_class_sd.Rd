@@ -19,12 +19,12 @@ A ggplot object.
 \description{
 The function is usually used to look at standard deviations of intensity in each class,
 but can also be used to look at different measures such as  `Retention.Time`,
-to ensure all lipids are eluted within the expected range. 
+to ensure all lipids are eluted within the expected range.
 To assess instrumental variation apply the function to technical quality control samples.
 }
 \examples{
 data(data_normalized)
 
-plot_class_sd(data_normalized, "Area", log=TRUE)
-plot_class_sd(data_normalized, "Retention.Time", log=FALSE)
+plot_class_sd(data_normalized, "Area", log = TRUE)
+plot_class_sd(data_normalized, "Retention.Time", log = FALSE)
 }

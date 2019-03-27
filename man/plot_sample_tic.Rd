@@ -22,6 +22,6 @@ Plot a bar chart for total sample intensity
 \examples{
 data(data_normalized)
 
-plot_sample_tic(data_normalized, "Area", log=TRUE)
-plot_sample_tic(data_normalized, "Background", log=FALSE)
+plot_sample_tic(data_normalized, "Area", log = TRUE)
+plot_sample_tic(data_normalized, "Background", log = FALSE)
 }

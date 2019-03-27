@@ -11,14 +11,14 @@ normalize_itsd(data, measure = "Area", exclude = "blank", log = TRUE)
 
 \item{measure}{which measure to use as intensity, usually Area, Area.Normalized or Height.}
 
-\item{exclude}{Samples to exclude, can be either: \cr 
+\item{exclude}{Samples to exclude, can be either: \cr
 "blank" - automatically detected blank samples and exclude them
 logical vector with the same length as samples.}
 
 \item{log}{whether the normalized values should be log2 transformed.}
 }
 \value{
-A SkylineExperiment object with normalized values. Each molecule 
+A SkylineExperiment object with normalized values. Each molecule
     is normalized against the internal standard from the same class.
 }
 \description{
@@ -28,13 +28,13 @@ of the same lipid class. If no corresponding internal standard is found
 the average of all measured internal standards is used instead.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
-clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-d = add_sample_annotation(d, clinical_file)
-d_summarized = summarize_transitions(d, method = "average")
+datadir <- system.file("extdata", package = "lipidr")
+filelist <- list.files(datadir, "data.csv", full.names = TRUE)
+d <- read_skyline(filelist)
+clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
+d <- add_sample_annotation(d, clinical_file)
+d_summarized <- summarize_transitions(d, method = "average")
 
 # Normalize data that have been summarized (single value per molecule).
-data_norm_itsd = normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
+data_norm_itsd <- normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 }

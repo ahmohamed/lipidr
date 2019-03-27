@@ -11,7 +11,7 @@ normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 
 \item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height.}
 
-\item{exclude}{Samples to exclude, can be either: \cr 
+\item{exclude}{Samples to exclude, can be either: \cr
 "blank" - automatically detected blank samples and exclude them
 logical vector with the same length as samples.}
 
@@ -25,23 +25,23 @@ Perform Probabilistic Quotient Normalization (PQN) for sample intensities.
 The PQN method determines a dilution factor for each sample by comparing
 the distribution of quotients between samples and a reference spectrum, followed
 by sample normalization using this dilution factor.
-The reference spectrum in this method is the average lipid abundance of all 
+The reference spectrum in this method is the average lipid abundance of all
 samples (excluding blanks).
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
-clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-d = add_sample_annotation(d, clinical_file)
-d_summarized = summarize_transitions(d, method = "average")
+datadir <- system.file("extdata", package = "lipidr")
+filelist <- list.files(datadir, "data.csv", full.names = TRUE)
+d <- read_skyline(filelist)
+clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
+d <- add_sample_annotation(d, clinical_file)
+d_summarized <- summarize_transitions(d, method = "average")
 
 # Normalize data that have been summarized (single value per molecule).
-data_normalized = normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
+data_normalized <- normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 }
 \references{
-Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006). 
-Probabilistic quotient normalization as robust method to account for dilution 
-of complex biological mixtures. Application in 1H NMR metabonomics. 
+Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006).
+Probabilistic quotient normalization as robust method to account for dilution
+of complex biological mixtures. Application in 1H NMR metabonomics.
 Analytical chemistry, 78(13), 4281-4290.
 }

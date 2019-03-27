@@ -17,6 +17,6 @@ Generate lipid sets from lipid molecule names
 }
 \examples{
 data(data_normalized)
-molecules = rowData(data_normalized)$Molecule
+molecules <- rowData(data_normalized)$Molecule
 gen_lipidsets(molecules)
 }

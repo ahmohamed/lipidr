@@ -21,6 +21,6 @@ Plot a chart of (log2) fold changes of lipids per class showing chain lengths an
 }
 \examples{
 data(data_normalized)
-de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 plot_chain_distribution(de_results)
 }

@@ -23,15 +23,15 @@ Plot a multivariate scatterplot of sample scores to investigate sample clusterin
 data(data_normalized)
 
 # PCA
-mvaresults = mva(data_normalized, measure="Area", method="PCA")
-plot_mva(mvaresults, color_by="group")
-plot_mva(mvaresults, color_by="Diet", components = c(2,3))
+mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
+plot_mva(mvaresults, color_by = "group")
+plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
 
 # PCoA
-mvaresults = mva(data_normalized, measure="Area", method="PCoA")
-plot_mva(mvaresults, color_by="group")
+mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
+plot_mva(mvaresults, color_by = "group")
 
 # OPLS-DA
-mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
-plot_mva(mvaresults, color_by="group")
+mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+plot_mva(mvaresults, color_by = "group")
 }

@@ -25,10 +25,10 @@ to ensure all lipids elute within expected range.
 data(data_normalized)
 
 # plot the variation in intensity of ITSD (internal standards) in QC samples
-d_itsd_qc = data_normalized[rowData(data_normalized)$itsd, data_normalized$group == "QC"]
+d_itsd_qc <- data_normalized[rowData(data_normalized)$itsd, data_normalized$group == "QC"]
 plot_molecule_sd(d_itsd_qc, "Area")
 
 # plot the variation in intensity and retention time of all measured lipids in QC samples
 plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
-plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log=FALSE)
+plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log = FALSE)
 }

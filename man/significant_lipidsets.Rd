@@ -21,7 +21,7 @@ Get a list of significantly changed lipid sets
 }
 \examples{
 data(data_normalized)
-de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
-enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 significant_lipidsets(enrich_results)
 }

@@ -24,7 +24,7 @@ in QC samples.
 data(data_normalized)
 
 # plot the variation in intensity and retention time of all measured lipids in QC samples
-d_qc = data_normalized[, data_normalized$group == "QC"]
+d_qc <- data_normalized[, data_normalized$group == "QC"]
 plot_molecule_cv(d_qc, "Area")
-plot_molecule_cv(d_qc, "Retention.Time", log=FALSE)
+plot_molecule_cv(d_qc, "Retention.Time", log = FALSE)
 }

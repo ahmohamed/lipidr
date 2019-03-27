@@ -23,6 +23,6 @@ but can also be used to look at different measures, such as  `Retention.Time` or
 \examples{
 data(data_normalized)
 
-plot_class_boxplot(data_normalized, "Area", log=TRUE)
-plot_class_boxplot(data_normalized, "Retention.Time", log=FALSE)
+plot_class_boxplot(data_normalized, "Area", log = TRUE)
+plot_class_boxplot(data_normalized, "Retention.Time", log = FALSE)
 }

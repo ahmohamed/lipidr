@@ -24,5 +24,5 @@ but can also be used to look at different measures, such as  `Retention.Time` or
 data(data_normalized)
 
 plot_molecule_boxplot(data_normalized)
-plot_molecule_boxplot(data_normalized, "Retention.Time", log=FALSE)
+plot_molecule_boxplot(data_normalized, "Retention.Time", log = FALSE)
 }

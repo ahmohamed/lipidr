@@ -25,6 +25,6 @@ Plot a multivariate scatterplot of feature loadings to investigate feature impor
 \examples{
 data(data_normalized)
 
-mvaresults = mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
-plot_mva_loadings(mvaresults, color_by="Class", top.n=30)
+mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+plot_mva_loadings(mvaresults, color_by = "Class", top.n = 30)
 }
