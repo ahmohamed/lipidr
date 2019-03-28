@@ -170,8 +170,8 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #'   HighFat_water - NormalDiet_water,
 #'   data = data_normalized, measure = "Area"
 #' )
-#' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
-enrich_lipidsets <- function(de.results,
+#' enrich_results <- lsea(de_results, rank.by = "logFC")
+lsea <- function(de.results,
                              rank.by = c("logFC", "P.Value", "Adj.P.Val")) {
   rank.by <- match.arg(rank.by)
   rank_by_sym <- sym(rank.by)
@@ -203,7 +203,7 @@ enrich_lipidsets <- function(de.results,
 
 #' Get a list of significantly changed lipid sets
 #'
-#' @param enrich.results Output of [enrich_lipidsets()].
+#' @param enrich.results Output of [lsea()].
 #' @param p.cutoff Significance threshold.
 #' @param size.cutoff Minimum number of lipids in a set tested for enrichment.
 #'
@@ -218,7 +218,7 @@ enrich_lipidsets <- function(de.results,
 #'   HighFat_water - NormalDiet_water,
 #'   data = data_normalized, measure = "Area"
 #' )
-#' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
+#' enrich_results <- lsea(de_results, rank.by = "logFC")
 #' significant_lipidsets(enrich_results)
 significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
                                   size.cutoff = 2) {

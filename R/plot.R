@@ -159,7 +159,7 @@ plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
 #'   HighFat_water - NormalDiet_water,
 #'   data = data_normalized, measure = "Area"
 #' )
-#' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
+#' enrich_results <- lsea(de_results, rank.by = "logFC")
 #' plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 plot_class_enrichment <- function(de_results, significant.sets,
                                   measure = "logFC") {
