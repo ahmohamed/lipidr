@@ -292,7 +292,8 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
   mds_matrix$molrank <- rank(-abs(mds_matrix[,2]))
 
   color_by <- ret$color_by
-
+  sm <- mvaresults$summary
+  
   p <- ggplot(mds_matrix, aes_string(
     colnames(mds_matrix)[[2]], colnames(mds_matrix)[[3]],
     color = color_by
