@@ -9,14 +9,15 @@ summarize_transitions(data, method = c("max", "average"))
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{method}{Choose to summarize multiple transitions by taking the average or maximum intensity.}
+\item{method}{Choose to summarize multiple transitions by taking the average
+or maximum intensity.}
 }
 \value{
 A SkylineExperiment object with single intensities per lipid molecule
 }
 \description{
-Calculate a single intensity for molecules with multiple transitions, by determining the
-average or maximum intensity.
+Calculate a single intensity for molecules with multiple transitions,
+by determining the average or maximum intensity.
 }
 \examples{
 datadir <- system.file("extdata", package = "lipidr")

@@ -5,14 +5,15 @@
 #' Plot a bar chart for total sample intensity
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to use as intensity, usually Area, Area.Normalized or Height.
+#' @param measure Which measure to use as intensity, usually Area,
+#'   Area.Normalized or Height.
 #' @param log Whether values should be log2 transformed.
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_sample_tic(data_normalized, "Area", log = TRUE)
 #' plot_sample_tic(data_normalized, "Background", log = FALSE)
 plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
@@ -31,21 +32,25 @@ plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
 
 #' Plot a boxplot chart to examine the distribution of values per sample
 #'
-#' The function is usually used to look at intensity distribution in each sample
-#' ensuring they are normalized. It can also be used to look at different measures
-#' such as  `Retention.Time` or `Background`.
+#' The function should usually be used to look at intensity distribution in
+#' each sample ensuring they are normalized. It can also be used to look at
+#' different measures such as  `Retention.Time` or `Background`.
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized or Height.
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized or Height.
 #' @param log Whether values should be log2 transformed.
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_sample_boxplot(data_normalized, "Area", log = TRUE)
-#' plot_sample_boxplot(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log = FALSE)
+#' plot_sample_boxplot(
+#'   data_normalized[, data_normalized$group == "QC"],
+#'   measure = "Retention.Time", log = FALSE
+#' )
 plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
@@ -65,20 +70,23 @@ plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
 
 #' Plot a bar chart for standard deviation of a certain measure in each class
 #'
-#' The function is usually used to look at standard deviations of intensity in each class,
-#' but can also be used to look at different measures such as  `Retention.Time`,
-#' to ensure all lipids are eluted within the expected range.
-#' To assess instrumental variation apply the function to technical quality control samples.
+#' The function is usually used to look at standard deviations of intensity in
+#' each class, but can also be used to look at different measures such as
+#' `Retention.Time`, to ensure all lipids are eluted within the expected range.
+#' To assess instrumental variation apply the function to technical quality
+#' control samples.
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized, Height or Retention.Time
-#' @param log Whether values should be log2 transformed (Set FALSE for retention time).
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized, Height or Retention.Time
+#' @param log Whether values should be log2 transformed
+#'   (Set FALSE for retention time).
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_class_sd(data_normalized, "Area", log = TRUE)
 #' plot_class_sd(data_normalized, "Retention.Time", log = FALSE)
 plot_class_sd <- function(data, measure = "Area", log = TRUE) {
@@ -99,18 +107,20 @@ plot_class_sd <- function(data, measure = "Area", log = TRUE) {
 
 #' Plot a boxplot chart to examine the distribution of values per class
 #'
-#' The function is usually used to look at the intensity distribution in each class,
-#' but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
+#' The function is usually used to look at the intensity distribution in each
+#' class, but can also be used to look at different measures, such as
+#' `Retention.Time` or `Background`.
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized or Height.
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized or Height.
 #' @param log Whether values should be log2 transformed.
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_class_boxplot(data_normalized, "Area", log = TRUE)
 #' plot_class_boxplot(data_normalized, "Retention.Time", log = FALSE)
 plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
@@ -131,18 +141,24 @@ plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
 
 #' Plot a boxplot chart to examine (log2) fold changes of lipids per class
 #'
-#' The function is usually used to look at log2 fold change distribution of lipids in each class,
-#' marking significantly enriched classes. Can also be used to plot `P.Value` or `Adj.P.Val`.
+#' The function is usually used to look at log2 fold change distribution of
+#' lipids in each class, marking significantly enriched classes. Can also be
+#' used to plot `P.Value` or `Adj.P.Val`.
 #'
 #' @param de_results Output of [de_analysis()].
-#' @param significant.sets List of significantly changed lipid sets (output of [significant_lipidsets()]).
-#' @param measure Which measure to plot the distribution of: logFC, P.Value, Adj.P.Val.
+#' @param significant.sets List of significantly changed lipid sets
+#'   (output of [significant_lipidsets()]).
+#' @param measure Which measure to plot the distribution of: logFC, P.Value,
+#'   Adj.P.Val.
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+#' de_results <- de_analysis(
+#'   HighFat_water - NormalDiet_water,
+#'   data = data_normalized, measure = "Area"
+#' )
 #' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 #' plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 plot_class_enrichment <- function(de_results, significant.sets,
@@ -167,17 +183,23 @@ plot_class_enrichment <- function(de_results, significant.sets,
   .display_plot(p)
 }
 
-#' Plot a chart of (log2) fold changes of lipids per class showing chain lengths and saturations
+#' Plot logFC of lipids per class showing chain information
+#' Plot a chart of (log2) fold changes of lipids per class showing chain
+#' lengths and saturations
 #'
 #' @param de_results Output of [de_analysis()].
-#' @param measure Which measure to plot the distribution of: logFC, P.Value, Adj.P.Val.
+#' @param measure Which measure to plot the distribution of: logFC, P.Value,
+#'   Adj.P.Val.
 #' @param contrast Which comparison to plot.
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+#' de_results <- de_analysis(
+#'   HighFat_water - NormalDiet_water,
+#'   data = data_normalized, measure = "Area"
+#' )
 #' plot_chain_distribution(de_results)
 plot_chain_distribution <- function(de_results, contrast = NULL,
                                     measure = "logFC") {
@@ -206,26 +228,35 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 
 #' Plot a bar chart for standard deviations of a certain measure in each lipid
 #'
-#' The function is usually used to look at standard deviation of intensity for each lipid,
-#' but can also be used to look at different measures such as  `Retention.Time`,
-#' to ensure all lipids elute within expected range.
+#' The function is usually used to look at standard deviation of intensity for
+#' each lipid, but can also be used to look at different measures such as
+#' `Retention.Time`, to ensure all lipids elute within expected range.
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized or Height.
-#' @param log Whether values should be log2 transformed (Set FALSE for retention time).
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized or Height.
+#' @param log Whether values should be log2 transformed
+#'   (Set FALSE for retention time).
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' # plot the variation in intensity of ITSD (internal standards) in QC samples
-#' d_itsd_qc <- data_normalized[rowData(data_normalized)$itsd, data_normalized$group == "QC"]
+#' d_itsd_qc <- data_normalized[
+#'   rowData(data_normalized)$itsd,
+#'   data_normalized$group == "QC"
+#' ]
 #' plot_molecule_sd(d_itsd_qc, "Area")
-#' 
-#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#'
+#' # plot the variation in intensity and retention time of all measured
+#' #   lipids in QC samples
 #' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
-#' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log = FALSE)
+#' plot_molecule_sd(
+#'   data_normalized[, data_normalized$group == "QC"],
+#'   measure = "Retention.Time", log = FALSE
+#' )
 plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
@@ -244,21 +275,25 @@ plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
   .display_plot(p)
 }
 
-#' Plot a bar chart for coefficient of variation (CV) of a certain measure in each lipid
+#' Bar chart for coefficient of variation of lipid molecules
 #'
-#' The functions is usually used to investigate the CV in lipid intensity or retention time,
-#' in QC samples.
+#' Plot a bar chart for coefficient of variation (CV) of a certain measure
+#' in each lipid. The functions is usually used to investigate the CV in lipid
+#' intensity or retention time, in QC samples.
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized or Height.
-#' @param log whether values should be log2 transformed (Set FALSE for retention time).
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized or Height.
+#' @param log whether values should be log2 transformed
+#'   (Set FALSE for retention time).
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
-#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#'
+#' # plot the variation in intensity and retention time of all measured
+#' #   lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' plot_molecule_cv(d_qc, "Area")
 #' plot_molecule_cv(d_qc, "Retention.Time", log = FALSE)
@@ -282,18 +317,20 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
 
 #' Plot a boxplot chart to examine the distribution of values per lipid
 #'
-#' The function is usually used to look at intensity distribution for each lipid,
-#' but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
+#' The function is usually used to look at intensity distribution for each
+#' lipid, but can also be used to look at different measures, such as
+#' `Retention.Time` or `Background`.
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area, Area.Normalized or Height.
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized or Height.
 #' @param log Whether values should be log2 transformed.
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_molecule_boxplot(data_normalized)
 #' plot_molecule_boxplot(data_normalized, "Retention.Time", log = FALSE)
 plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
@@ -322,7 +359,10 @@ plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+#' de_results <- de_analysis(
+#'   HighFat_water - NormalDiet_water,
+#'   data = data_normalized, measure = "Area"
+#' )
 #' plot_results_volcano(de_results, show.labels = FALSE)
 plot_results_volcano <- function(de_results, show.labels = TRUE) {
   de_results %>%

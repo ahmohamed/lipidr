@@ -2,7 +2,9 @@
 % Please edit documentation in R/plot.R
 \name{plot_chain_distribution}
 \alias{plot_chain_distribution}
-\title{Plot a chart of (log2) fold changes of lipids per class showing chain lengths and saturations}
+\title{Plot logFC of lipids per class showing chain information
+Plot a chart of (log2) fold changes of lipids per class showing chain
+lengths and saturations}
 \usage{
 plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 }
@@ -11,16 +13,22 @@ plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 
 \item{contrast}{Which comparison to plot.}
 
-\item{measure}{Which measure to plot the distribution of: logFC, P.Value, Adj.P.Val.}
+\item{measure}{Which measure to plot the distribution of: logFC, P.Value,
+Adj.P.Val.}
 }
 \value{
 A ggplot object.
 }
 \description{
-Plot a chart of (log2) fold changes of lipids per class showing chain lengths and saturations
+Plot logFC of lipids per class showing chain information
+Plot a chart of (log2) fold changes of lipids per class showing chain
+lengths and saturations
 }
 \examples{
 data(data_normalized)
-de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+de_results <- de_analysis(
+  HighFat_water - NormalDiet_water,
+  data = data_normalized, measure = "Area"
+)
 plot_chain_distribution(de_results)
 }

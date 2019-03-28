@@ -6,16 +6,17 @@
 #' be analyzed together.
 #'
 #' `lipidr` represents Skyline files as annotated data.frames, which can
-#' easily be manipulated by a wide variety of R packages. Sample annotations, such
-#' as sample group or other clinical information can be loaded. `lipidr`
-#' generates various plots, such as PCA score plots and box plots, for quality control of samples
-#' and measured lipids. Normalization methods with and without internal standards are also supported.
+#' easily be manipulated by a wide variety of R packages. Sample annotations,
+#' such as sample group or other clinical information can be loaded. `lipidr`
+#' generates various plots, such as PCA score plots and box plots, for quality
+#' control of samples and measured lipids. Normalization methods with and
+#' without internal standards are also supported.
 #'
-#' Differential analysis can be performed using any of the loaded clinical variables,
-#' which can be readily visualized as volcano plots. A novel lipid set enrichment analysis (LSEA)
-#' is implemented to detect preferential enrichment of certain lipid classes,
-#' chain lengths or saturation patterns. Plots for the visualization of enrichment results
-#' are also implemented.
+#' Differential analysis can be performed using any of the loaded clinical
+#' variables, which can be readily visualized as volcano plots. A novel lipid
+#' set enrichment analysis (LSEA) is implemented to detect preferential
+#' enrichment of certain lipid classes, chain lengths or saturation patterns.
+#' Plots for the visualization of enrichment results are also implemented.
 #'
 #' @author Ahmed Mohamed \email{ahmed.mohamed@@qimrberghofer.edu.au}
 #' @name lipidr-package
@@ -36,10 +37,13 @@ NULL
 
 #' Example dataset (normalized and log2 transformed)
 #'
-#' A dataset containing MRM mass spectrometry-based lipidomics data from murine serum samples. Mice were fed a normal or high-fat diet and
-#' had access to normal drinking water or drinking water containing the bile acid deoxycholic acid. Lipid peaks were integrated using
-#' Skyline and exported results were imported into R using `lipidr`. The dataset has been normalized and log2 transformed.
-#' Please see \link{normalize_pqn} for details on how to generate this dataset.
+#' A dataset containing MRM mass spectrometry-based lipidomics data from murine
+#' serum samples. Mice were fed a normal or high-fat diet and had access to
+#' normal drinking water or drinking water containing the bile acid
+#' deoxycholic acid. Lipid peaks were integrated using Skyline and exported
+#' results were imported into R using `lipidr`. The dataset has been normalized
+#' and log2 transformed. Please see \link{normalize_pqn} for details on how to
+#' generate this dataset.
 #'
 #' @docType data
 #' @name data_normalized
@@ -78,11 +82,12 @@ NULL
 #' @examples
 #' data(data_normalized)
 #' use_interactive_graphics()
-#' 
-#' # plot the variation in intensity and retention time of all measured lipids in QC samples
+#'
+#' # plot the variation in intensity and retention time of all measured
+#' #  lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' plot_molecule_cv(d_qc, "Area")
-#' 
+#'
 #' # turn off interactivity
 #' use_interactive_graphics(interactive = FALSE)
 use_interactive_graphics <- function(interactive = TRUE) {

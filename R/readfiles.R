@@ -8,9 +8,11 @@
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' filelist <- list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#'
+#' # all csv files
+#' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#' 
+#'
 #' # View automatically generated lipid annotations
 #' rowData(d)
 read_skyline <- function(files) {
@@ -42,7 +44,7 @@ read_skyline <- function(files) {
 #' Add sample annotation to Skyline data frame
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param annot_file CSV file with at least 2 columns, sample names and group(s).
+#' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
 #' @importFrom dplyr %>% left_join
 #' @importFrom SummarizedExperiment rowData rowData<- colData colData<-
@@ -51,19 +53,21 @@ read_skyline <- function(files) {
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' filelist <- list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#'
+#' # all csv files
+#' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#' 
+#'
 #' # Add clinical info to existing SkylineExperiment object
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' colData(d)
 #' d$group
-#' 
+#'
 #' # Subset samples using clinical information
 #' # Note we are subsetting columns
 #' d[, d$group == "QC"]
-#' 
+#'
 #' # Subset lipids using lipid annotation
 #' # Note we are subsetting rows
 #' d[rowData(d)$itsd, ]
@@ -100,7 +104,7 @@ add_sample_annotation <- function(data, annot_file) {
   data
 }
 
-####################################################################################################
+###########################################################################
 #' Internal method to read skyline file
 #' @param file skyline exported file in CSV format
 #' @importFrom dplyr %>% vars matches mutate_at

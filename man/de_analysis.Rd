@@ -27,5 +27,8 @@ Differential analysis of lipids between sample groups
 \examples{
 # type ?normalize_pqn to see how to normalize and log2-transform your data
 data(data_normalized)
-de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+de_results <- de_analysis(
+  HighFat_water - NormalDiet_water,
+  data = data_normalized, measure = "Area"
+)
 }

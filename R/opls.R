@@ -1,17 +1,21 @@
 #' Perform multivariate analyses to investigate sample clustering
 #'
-#' Blank samples are automatically detected (using TIC) and excluded. Missing data
-#' are imputed using average lipid intensity across all samples. The available methods
-#' are PCA, PCoA, OPLS and OPLS-DA. The OPLS method requires a numeric y-variable,
-#' whilst OPLS-DA requires two groups for comparison. By default, for OPLS and OPLS-DA the number of
-#' predictive and orthogonal components are set to 1.
+#' Blank samples are automatically detected (using TIC) and excluded.
+#' Missing data are imputed using average lipid intensity across all samples.
+#' The available methods are PCA, PCoA, OPLS and OPLS-DA. The OPLS method
+#' requires a numeric y-variable, whilst OPLS-DA requires two groups for
+#' comparison. By default, for OPLS and OPLS-DA the number of predictive and
+#' orthogonal components are set to 1.
 #'
 #' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to use as intensity, usually Area_norm. The measure should be already summarized and normalized.
+#' @param measure Which measure to use as intensity, usually Area_norm.
+#'   The measure should be already summarized and normalized.
 #' @param method Either PCA, PCoA, OPLS or OPLS-DA.
 #' @param group_col Sample annotation to use as grouping column.
-#' @param groups A numeric grouping (OPLS) or two groups to be used for supervised analysis (OPLS-DA), ignored in other methods.
-#' @param ... Extra arguments to be passed to [opls()] for OPLS-DA, ignored in other methods.
+#' @param groups A numeric grouping (OPLS) or two groups to be used for
+#'   supervised analysis (OPLS-DA), ignored in other methods.
+#' @param ... Extra arguments to be passed to [opls()] for OPLS-DA,
+#'   ignored in other methods.
 #'
 #' @return Multivariate analysis results in `mvaresults` object.
 #'   The object contains the following:\itemize{
@@ -31,7 +35,7 @@
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 mva <- function(data, measure = "Area",
                 method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
@@ -222,28 +226,35 @@ plot_opls <- function(mvaresults, components,
   .display_plot(p)
 }
 
-#' Plot a multivariate scatterplot of sample scores to investigate sample clustering
+#' Multivariate scatterplot of sample scores
+#'
+#' Plot a multivariate scatterplot of sample scores to investigate
+#' sample clustering.
 #'
 #' @param mvaresults Results obtained from [mva()].
-#' @param components Which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.
+#' @param components Which components to plot. Ignored for PCoA, OPLS and
+#'   OPLS-DA results.
 #' @param color_by Sample annotation to use as color.
 #'
 #' @return A ggplot of the sample scores.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' # PCA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 #' plot_mva(mvaresults, color_by = "group")
 #' plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
-#' 
+#'
 #' # PCoA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
 #' plot_mva(mvaresults, color_by = "group")
-#' 
+#'
 #' # OPLS-DA
-#' mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+#' mvaresults <- mva(
+#'   data_normalized,
+#'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+#' )
 #' plot_mva(mvaresults, color_by = "group")
 plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
   stopifnot(inherits(mvaresults, "mvaResults"))
@@ -276,10 +287,13 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
   .display_plot(p)
 }
 
-#' Plot a multivariate scatterplot of feature loadings to investigate feature importance
+#' Multivariate scatterplot of feature loadings
+#' Plot a multivariate scatterplot of feature loadings to investigate
+#' feature importance.
 #'
 #' @param mvaresults Results obtained from [mva()].
-#' @param components which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.
+#' @param components which components to plot. Ignored for PCoA, OPLS and
+#'   OPLS-DA results.
 #' @param color_by Sample annotation to use as color.
 #' @param top.n Number of top ranked features to highlight in the plot .
 #'
@@ -288,8 +302,11 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
 #'
 #' @examples
 #' data(data_normalized)
-#' 
-#' mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+#'
+#' mvaresults <- mva(
+#'   data_normalized,
+#'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+#' )
 #' plot_mva_loadings(mvaresults, color_by = "Class", top.n = 30)
 plot_mva_loadings <- function(mvaresults, components = c(1, 2),
                               color_by = NULL,
@@ -344,8 +361,11 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
 #'
 #' @examples
 #' data(data_normalized)
-#' 
-#' mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+#'
+#' mvaresults <- mva(
+#'   data_normalized,
+#'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+#' )
 #' top_lipids(mvaresults, top.n = 10)
 top_lipids <- function(mvaresults, top.n = 10) {
   stopifnot(inherits(mvaresults, "mvaResults"))

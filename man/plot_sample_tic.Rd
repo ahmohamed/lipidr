@@ -9,7 +9,8 @@ plot_sample_tic(data, measure = "Area", log = TRUE)
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height.}
+\item{measure}{Which measure to use as intensity, usually Area,
+Area.Normalized or Height.}
 
 \item{log}{Whether values should be log2 transformed.}
 }

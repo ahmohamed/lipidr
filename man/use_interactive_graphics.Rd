@@ -21,7 +21,8 @@ to be installed. Interactive graphics are disabled by default.
 data(data_normalized)
 use_interactive_graphics()
 
-# plot the variation in intensity and retention time of all measured lipids in QC samples
+# plot the variation in intensity and retention time of all measured
+#  lipids in QC samples
 d_qc <- data_normalized[, data_normalized$group == "QC"]
 plot_molecule_cv(d_qc, "Area")
 

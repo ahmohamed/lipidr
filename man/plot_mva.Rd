@@ -2,14 +2,15 @@
 % Please edit documentation in R/opls.R
 \name{plot_mva}
 \alias{plot_mva}
-\title{Plot a multivariate scatterplot of sample scores to investigate sample clustering}
+\title{Multivariate scatterplot of sample scores}
 \usage{
 plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
 }
 \arguments{
 \item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
 
-\item{components}{Which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.}
+\item{components}{Which components to plot. Ignored for PCoA, OPLS and
+OPLS-DA results.}
 
 \item{color_by}{Sample annotation to use as color.}
 }
@@ -17,7 +18,8 @@ plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
 A ggplot of the sample scores.
 }
 \description{
-Plot a multivariate scatterplot of sample scores to investigate sample clustering
+Plot a multivariate scatterplot of sample scores to investigate
+sample clustering.
 }
 \examples{
 data(data_normalized)
@@ -32,6 +34,9 @@ mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
 plot_mva(mvaresults, color_by = "group")
 
 # OPLS-DA
-mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+mvaresults <- mva(
+  data_normalized,
+  method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+)
 plot_mva(mvaresults, color_by = "group")
 }

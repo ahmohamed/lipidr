@@ -20,6 +20,9 @@ Extract top lipids from OPLS-DA results
 \examples{
 data(data_normalized)
 
-mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+mvaresults <- mva(
+  data_normalized,
+  method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+)
 top_lipids(mvaresults, top.n = 10)
 }
