@@ -30,9 +30,6 @@
 #' @param collapse Collapse all strings to create a single pattern (using `|`).
 #'
 #' @return regex-escaped string to be used for pattern matching
-#' @importFrom
-#'
-#' @examples
 .as_regex <- function(strings, collapse = FALSE, prefix="", suffix="") {
   ret <- gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", strings)
   if (collapse) {
