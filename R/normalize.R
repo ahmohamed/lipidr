@@ -35,7 +35,8 @@
 #' 
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_normalized <- normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
-normalize_pqn <- function(data, measure = "Area", exclude = "blank", log = TRUE) {
+normalize_pqn <- function(data, measure = "Area", 
+  exclude = "blank", log = TRUE) {
   if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
@@ -91,7 +92,8 @@ normalize_pqn <- function(data, measure = "Area", exclude = "blank", log = TRUE)
 #' 
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_norm_itsd <- normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
-normalize_itsd <- function(data, measure = "Area", exclude = "blank", log = TRUE) {
+normalize_itsd <- function(data, measure = "Area",
+  exclude = "blank", log = TRUE) {
   if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }

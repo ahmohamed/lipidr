@@ -165,7 +165,7 @@ plot_mva_loadings(mvaresults, color_by="Class", top.n=30)
 Alternatively, we can extract top *N* lipids along with their annotations.
 
 ```{r}
-topImportantLipids(mvaresults, top.n=10)
+top_lipids(mvaresults, top.n=10)
 ```
 
 ## Differential analysis

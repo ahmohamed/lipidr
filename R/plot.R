@@ -1,7 +1,4 @@
-#' @importFrom ggplot2 ggplot aes_string aes facet_wrap theme theme_dark theme_grey guides coord_flip
-#' @importFrom ggplot2 stat_sum stat_summary scale_fill_gradient2 scale_color_gradient2 element_text
-#' @importFrom ggplot2 geom_point geom_boxplot geom_bar geom_text geom_tile geom_vline geom_hline xlab ylab labs
-#' @importFrom ggplot2 scale_color_manual scale_alpha_manual stat_ellipse annotate xlim ylim
+#' @import ggplot2
 {}
 
 
@@ -26,7 +23,8 @@ plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
   }
   p <- ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
-    theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + guides(size = FALSE)
+    theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+    guides(size = FALSE)
 
   .display_plot(p)
 }
@@ -57,7 +55,8 @@ plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
 
   p <- ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
-    theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) + guides(size = FALSE)
+    theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+    guides(size = FALSE)
 
   .display_plot(p)
 }
@@ -146,7 +145,8 @@ plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
 #' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 #' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 #' plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
-plot_class_enrichment <- function(de_results, significant.sets, measure = "logFC") {
+plot_class_enrichment <- function(de_results, significant.sets,
+  measure = "logFC") {
   significant.sets <- lapply(
     significant.sets,
     function(c) sub("^Class_", "", c[grep("^Class_", c)])
@@ -179,7 +179,8 @@ plot_class_enrichment <- function(de_results, significant.sets, measure = "logFC
 #' data(data_normalized)
 #' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 #' plot_chain_distribution(de_results)
-plot_chain_distribution <- function(de_results, contrast = NULL, measure = "logFC") {
+plot_chain_distribution <- function(de_results, contrast = NULL,
+  measure = "logFC") {
   if (is.null(contrast)) {
     contrast <- de_results$contrast[[1]]
   }
@@ -231,7 +232,8 @@ plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
   if (log == TRUE) {
     measure <- .check_log(data, measure)
   }
-  p <- ggplot(dlong, aes_string("Molecule", measure, fill = "Class", color = "Class")) +
+  p <- ggplot(dlong, 
+    aes_string("Molecule", measure, fill = "Class", color = "Class")) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -264,7 +266,8 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
   if (log == TRUE) {
     measure <- .check_log(data, measure)
   }
-  p <- ggplot(dlong, aes_string("Molecule", measure, fill = "Class", color = "Class")) +
+  p <- ggplot(dlong,
+    aes_string("Molecule", measure, fill = "Class", color = "Class")) +
     stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -295,7 +298,8 @@ plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
   if (log == TRUE) {
     measure <- .check_log(data, measure)
   }
-  p <- ggplot(dlong, aes_string("Molecule", measure, fill = "Class", color = "Class")) +
+  p <- ggplot(dlong,
+    aes_string("Molecule", measure, fill = "Class", color = "Class")) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
@@ -324,9 +328,14 @@ plot_results_volcano <- function(de_results, show.labels = TRUE) {
         geom_vline(xintercept = c(1, -1), lty = 2) +
         facet_wrap(~contrast)
       if (show.labels) {
-        p + geom_text(aes(label = ifelse(adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, "")), vjust = -.5, size = 3, color = "black")
+        p + geom_text(
+          aes(
+            label = ifelse(
+              adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, "")
+          ), vjust = -.5, size = 3, color = "black"
+        )
       }
-      return(.display_plot(p))
+      .display_plot(p)
     })
 }
 

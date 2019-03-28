@@ -1,8 +1,11 @@
 #' Differential analysis of lipids between sample groups
 #'
-#' @param ... Expressions, or character strings which can be parsed to expressions, specifying contrasts.
-#' These are passed to `limma::makeContrasts`.
-#' @param data Skyline data.frame created by [read_skyline()], should be normalized and log2 transformed.
+#' @param ... Expressions, or character strings which can be parsed to 
+#' expressions, specifying contrasts. These are passed to
+#' `limma::makeContrasts`.
+#'
+#' @param data Skyline data.frame created by [read_skyline()], 
+#'   should be normalized and log2 transformed.
 #' @param measure Name of the column containing sample names.
 #' @param group_col Name of the column containing sample groups.
 #'
@@ -85,7 +88,7 @@ de_design <- function(..., coef = NULL, design, data, measure = "Area") {
     names(coef) <- coef
   }
 
-  efit <- limma::eBayes(vfit)
+  efit <- eBayes(vfit)
   dimname_x <- data@attrs$dimnames[[1]]
 
   top <- lapply(coef, function(x)
@@ -146,7 +149,7 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 enrich_lipidsets <- function(de.results,
   rank.by = c("logFC", "P.Value", "Adj.P.Val")) {
   rank.by <- match.arg(rank.by)
-  rank_by_sym <- rlang::sym(rank.by)
+  rank_by_sym <- sym(rank.by)
 
   sets <- gen_lipidsets(de.results$Molecule)
 
