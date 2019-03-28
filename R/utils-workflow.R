@@ -6,17 +6,17 @@
   if (mcols(assays(d), use.names = TRUE)[measure, "logged"]) {
     return(measure)
   }
-  return(paste0("log2(", measure, ")"))
+  paste0("log2(", measure, ")")
 }
-.copy.attr <- function(d, original) {
+.copy_attr <- function(d, original) {
   attr(d, "skyline") <- attr(original, "skyline")
-  return(d)
+  d
 }
 
 
 #' @importFrom dplyr select bind_rows
 #' @importFrom rlang syms
-.uniform.attrs <- function(datalist) {
+.uniform_attrs <- function(datalist) {
   attrlist <- lapply(datalist, attr, "skyline")
   cols <- lapply(datalist, colnames)
   all_cols <- Reduce(union, cols)
@@ -36,12 +36,11 @@
     measures = measure_cols[measure_cols %in% common_cols],
     intensity_cols = intensity_cols[intensity_cols %in% common_cols]
   )
-  # print(common_cols)
-  # print(names(datalist))
-  return(ret)
+  ret
 }
 
 .is_blank <- function(data, measure = "Area") {
   tic <- colSums(assay(data, measure), na.rm = TRUE)
-  return(median(tic) / tic > 50)
+
+  (median(tic) / tic) > 50
 }

@@ -15,14 +15,14 @@
 #' rowData(d)
 read_skyline <- function(files) {
   names(files) <- basename(files)
-  datalist <- lapply(files, .read_skyline_file) %>% .uniform.attrs()
+  datalist <- lapply(files, .read_skyline_file) %>% .uniform_attrs()
 
   original_data <- datalist %>%
     mutate(Sample = fct_inorder(Sample)) %>%
     group_by(Sample) %>%
     mutate(TransitionId = seq_len(n())) %>%
     ungroup() %>%
-    .copy.attr(datalist) %>%
+    .copy_attr(datalist) %>%
     .to_summarized_experiment()
 
 

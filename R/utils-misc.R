@@ -1,5 +1,4 @@
 .quos_syms <- function(x) {
-  ret <- list()
   if (rlang::is_syntactic_literal(x)) {
     return()
   } else if (is.symbol(x)) {

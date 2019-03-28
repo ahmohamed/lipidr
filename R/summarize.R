@@ -24,8 +24,12 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   }
 
   method <- match.arg(method)
-  multi_transitions <- to_df(data) %>% group_by_at(vars(-1, -matches("^Product")))
-  transition_gps <- split(multi_transitions$TransitionId, multi_transitions %>% group_indices())
+  multi_transitions <- to_df(data) %>% 
+    group_by_at(vars(-1, -matches("^Product")))
+  transition_gps <- split(
+    multi_transitions$TransitionId,
+    multi_transitions %>% group_indices()
+  )
   sum_fun <- ifelse(method == "average", mean, max)
 
   assay_list <- lapply(assays(data), function(m) {
@@ -53,5 +57,10 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   attrs <- data@attrs
   attrs$summarized <- TRUE
   attrs$dimnames[[1]] <- "MoleculeId"
-  SkylineExperiment(assay_list = assay_list, attrs = attrs, colData = colData(data), rowData = row_data)
+  SkylineExperiment(
+    assay_list = assay_list,
+    attrs = attrs,
+    colData = colData(data),
+    rowData = row_data
+  )
 }
