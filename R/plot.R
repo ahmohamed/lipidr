@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' plot_sample_tic(data_normalized, "Area", log = TRUE)
 #' plot_sample_tic(data_normalized, "Background", log = FALSE)
 plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
@@ -45,7 +45,7 @@ plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' plot_sample_boxplot(data_normalized, "Area", log = TRUE)
 #' plot_sample_boxplot(
 #'   data_normalized[, data_normalized$group == "QC"],
@@ -86,7 +86,7 @@ plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' plot_class_sd(data_normalized, "Area", log = TRUE)
 #' plot_class_sd(data_normalized, "Retention.Time", log = FALSE)
 plot_class_sd <- function(data, measure = "Area", log = TRUE) {
@@ -120,7 +120,7 @@ plot_class_sd <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' plot_class_boxplot(data_normalized, "Area", log = TRUE)
 #' plot_class_boxplot(data_normalized, "Retention.Time", log = FALSE)
 plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
@@ -242,14 +242,14 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' # plot the variation in intensity of ITSD (internal standards) in QC samples
 #' d_itsd_qc <- data_normalized[
 #'   rowData(data_normalized)$itsd,
 #'   data_normalized$group == "QC"
 #' ]
 #' plot_molecule_sd(d_itsd_qc, "Area")
-#'
+#' 
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
@@ -291,7 +291,7 @@ plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
@@ -330,7 +330,7 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' plot_molecule_boxplot(data_normalized)
 #' plot_molecule_boxplot(data_normalized, "Retention.Time", log = FALSE)
 plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {

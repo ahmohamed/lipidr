@@ -66,7 +66,7 @@ de_analysis <- function(..., data, measure = "Area", group_col = NULL) {
 #' @examples
 #' # type ?normalize_pqn to see how to normalize and log-transfome your data
 #' data(data_normalized)
-#'
+#' 
 #' # Using formula
 #' de_results <- de_design(
 #'   coef = "groupHighFat_water",
@@ -74,7 +74,7 @@ de_analysis <- function(..., data, measure = "Area", group_col = NULL) {
 #'   data = data_normalized,
 #'   measure = "Area"
 #' )
-#'
+#' 
 #' # Using design matrix
 #' design <- model.matrix(~group, data = colData(data_normalized))
 #' de_results <- de_design(

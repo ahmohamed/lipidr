@@ -35,7 +35,7 @@
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 mva <- function(data, measure = "Area",
                 method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
@@ -240,16 +240,16 @@ plot_opls <- function(mvaresults, components,
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' # PCA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 #' plot_mva(mvaresults, color_by = "group")
 #' plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
-#'
+#' 
 #' # PCoA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
 #' plot_mva(mvaresults, color_by = "group")
-#'
+#' 
 #' # OPLS-DA
 #' mvaresults <- mva(
 #'   data_normalized,
@@ -302,7 +302,7 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
 #'
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' mvaresults <- mva(
 #'   data_normalized,
 #'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
@@ -361,7 +361,7 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
 #'
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' mvaresults <- mva(
 #'   data_normalized,
 #'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
