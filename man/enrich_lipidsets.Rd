@@ -2,29 +2,32 @@
 % Please edit documentation in R/analysis.R
 \name{enrich_lipidsets}
 \alias{enrich_lipidsets}
-\title{Lipid set enrichment analysis}
+\title{Lipid set enrichment analysis (LSEA)}
 \usage{
 enrich_lipidsets(de.results, rank.by = c("logFC", "P.Value",
   "Adj.P.Val"))
 }
 \arguments{
-\item{de.results}{Output of \code{\link{de_analysis}}.}
+\item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
 \item{rank.by}{Statistic used to rank the lipid list.}
 }
 \value{
-a data.frame with enrichment results as obtained from \code{\link[fgsea]{fgsea}}.
-  The results also contain the following attributes:#' \itemize{
-    \item de.results    Original de.results input.
-    \item rank.by   Measure used to rank lipid molecules.
-    \item sets   Lipid sets tested, with their member molecules.
-  }
+Enrichment results (data.frame) as returned from \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.
+The results also contain the following attributes:#' \itemize{
+\item de.results    Original de.results input.
+\item rank.by   Measure used to rank lipid molecules.
+\item sets   Lipid sets tested, with their member molecules.
+}
 }
 \description{
-Lipid set enrichment analysis
+Lipid set enrichment analysis (LSEA)
 }
 \examples{
 data(data_normalized)
-de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
+de_results <- de_analysis(
+  HighFat_water - NormalDiet_water,
+  data = data_normalized, measure = "Area"
+)
 enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 }

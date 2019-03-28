@@ -7,14 +7,18 @@
 de_design(..., coef = NULL, design, data, measure = "Area")
 }
 \arguments{
-\item{...}{Expressions, or character strings which can be parsed to expressions, specifying contrasts.
-These are passed to \code{limma::makeContrasts}. Ignored if \code{coef} is provided.}
+\item{...}{Expressions, or character strings which can be parsed to
+expressions, specifying contrasts. These are passed to
+\code{limma::makeContrasts}. Ignored if \code{coef} is provided.}
 
-\item{coef}{Column number or column name specifying which coefficient of the linear model is of interest.}
+\item{coef}{Column number or column name specifying which coefficient of
+the linear model is of interest.}
 
-\item{design}{Design matrix generated from \code{\link{model.matrix}}, or a design formula .}
+\item{design}{Design matrix generated from \code{\link[=model.matrix]{model.matrix()}},
+or a design formula.}
 
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}, should be normalized and log2 transformed.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}},
+should be normalized and log2 transformed.}
 
 \item{measure}{Name of the column containing sample names.}
 }
@@ -29,9 +33,19 @@ Differential analysis of lipids between sample groups
 data(data_normalized)
 
 # Using formula
-de_results <- de_design(coef = "groupHighFat_water", design = ~group, data = data_normalized, measure = "Area")
+de_results <- de_design(
+  coef = "groupHighFat_water",
+  design = ~group,
+  data = data_normalized,
+  measure = "Area"
+)
 
 # Using design matrix
 design <- model.matrix(~group, data = colData(data_normalized))
-de_results <- de_design(coef = "groupHighFat_water", design = design, data = data_normalized, measure = "Area")
+de_results <- de_design(
+  coef = "groupHighFat_water",
+  design = design,
+  data = data_normalized,
+  measure = "Area"
+)
 }

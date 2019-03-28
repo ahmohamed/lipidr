@@ -7,9 +7,10 @@
 normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link{read_skyline}}.}
+\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{measure}{Which measure to use as intensity, usually Area, Area.Normalized or Height.}
+\item{measure}{Which measure to use as intensity, usually Area,
+Area.Normalized or Height.}
 
 \item{exclude}{Samples to exclude, can be either: \cr
 "blank" - automatically detected blank samples and exclude them
@@ -23,8 +24,8 @@ A SkylineExperiment object with normalized values
 \description{
 Perform Probabilistic Quotient Normalization (PQN) for sample intensities.
 The PQN method determines a dilution factor for each sample by comparing
-the distribution of quotients between samples and a reference spectrum, followed
-by sample normalization using this dilution factor.
+the distribution of quotients between samples and a reference spectrum,
+followed by sample normalization using this dilution factor.
 The reference spectrum in this method is the average lipid abundance of all
 samples (excluding blanks).
 }
@@ -37,7 +38,10 @@ d <- add_sample_annotation(d, clinical_file)
 d_summarized <- summarize_transitions(d, method = "average")
 
 # Normalize data that have been summarized (single value per molecule).
-data_normalized <- normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
+data_normalized <- normalize_pqn(
+  d_summarized,
+  measure = "Area", exclude = "blank", log = TRUE
+)
 }
 \references{
 Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006).

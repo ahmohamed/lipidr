@@ -2,15 +2,18 @@
 % Please edit documentation in R/opls.R
 \name{plot_mva_loadings}
 \alias{plot_mva_loadings}
-\title{Plot a multivariate scatterplot of feature loadings to investigate feature importance}
+\title{Multivariate scatterplot of feature loadings
+Plot a multivariate scatterplot of feature loadings to investigate
+feature importance.}
 \usage{
 plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
   top.n = nrow(mvaresults$loadings))
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}.}
+\item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
 
-\item{components}{which components to plot. Ignored for PCoA, OPLS and OPLS-DA results.}
+\item{components}{which components to plot. Ignored for PCoA, OPLS and
+OPLS-DA results.}
 
 \item{color_by}{Sample annotation to use as color.}
 
@@ -20,11 +23,16 @@ plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
 A ggplot of the loadings.
 }
 \description{
-Plot a multivariate scatterplot of feature loadings to investigate feature importance
+Multivariate scatterplot of feature loadings
+Plot a multivariate scatterplot of feature loadings to investigate
+feature importance.
 }
 \examples{
 data(data_normalized)
 
-mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
+mvaresults <- mva(
+  data_normalized,
+  method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+)
 plot_mva_loadings(mvaresults, color_by = "Class", top.n = 30)
 }

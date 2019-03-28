@@ -7,13 +7,20 @@
 SkylineExperiment(assay_list, attrs, colData = NULL, rowData = NULL)
 }
 \arguments{
-\item{assay_list}{A list or SimpleList of matrix-like elements, or a matrix-like object. Passed to \code{\link{SummarizedExperiment}}.}
+\item{assay_list}{A list or SimpleList of matrix-like elements,
+or a matrix-like object. Passed to \code{\link[=SummarizedExperiment]{SummarizedExperiment()}}.}
 
-\item{attrs}{A list of extra attributes to be saved to SkylineExperiment object.}
+\item{attrs}{A list of extra attributes to be saved to SkylineExperiment
+object.}
 
-\item{colData}{A DataFrame object describing the rows (contains generated lipid annotations). Row names, if present, become the row names of the SummarizedExperiment object. The number of rows of the DataFrame must be equal to the number of rows of the matrices in assays.}
+\item{colData}{A DataFrame object describing the rows (contains generated
+lipid annotations). Row names, if present, become the row names of the
+SummarizedExperiment object. The number of rows of the DataFrame
+must be equal to the number of rows of the matrices in assays.}
 
-\item{rowData}{An optional data.frame describing the samples (contains clinical information). Row names, if present, become the column names of the SkylineExperiment.}
+\item{rowData}{An optional data.frame describing the samples (contains
+clinical information). Row names, if present, become the column names of
+the SkylineExperiment.}
 }
 \value{
 SkylineExperiment object

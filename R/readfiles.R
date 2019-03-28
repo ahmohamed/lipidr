@@ -8,21 +8,23 @@
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' filelist <- list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#' 
+#' # all csv files
+#' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
 #' 
 #' # View automatically generated lipid annotations
 #' rowData(d)
 read_skyline <- function(files) {
   names(files) <- basename(files)
-  datalist <- lapply(files, .read_skyline_file) %>% .uniform.attrs()
+  datalist <- lapply(files, .read_skyline_file) %>% .uniform_attrs()
 
   original_data <- datalist %>%
     mutate(Sample = fct_inorder(Sample)) %>%
     group_by(Sample) %>%
     mutate(TransitionId = seq_len(n())) %>%
     ungroup() %>%
-    .copy.attr(datalist) %>%
+    .copy_attr(datalist) %>%
     .to_summarized_experiment()
 
 
@@ -36,13 +38,13 @@ read_skyline <- function(files) {
     length(unique(rowData(original_data)$Molecule)), " lipid molecules."
   )
 
-  return(original_data)
+  original_data
 }
 
 #' Add sample annotation to Skyline data frame
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
-#' @param annot_file CSV file with at least 2 columns, sample names and group(s).
+#' @param data Skyline data.frame created by [read_skyline()].
+#' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
 #' @importFrom dplyr %>% left_join
 #' @importFrom SummarizedExperiment rowData rowData<- colData colData<-
@@ -51,7 +53,9 @@ read_skyline <- function(files) {
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' filelist <- list.files(datadir, "data.csv", full.names = TRUE) # all csv files
+#' 
+#' # all csv files
+#' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
 #' 
 #' # Add clinical info to existing SkylineExperiment object
@@ -84,7 +88,10 @@ add_sample_annotation <- function(data, annot_file) {
 
   if (any(annot_cols %in% colnames(col_data))) {
     annot_cols_exist <- annot_cols[annot_cols %in% colnames(col_data)]
-    warning("These annotation columns already exist in data: ", paste(annot_cols_exist, collapse = ", "))
+    warning(
+      "These annotation columns already exist in data: ",
+      paste(annot_cols_exist, collapse = ", ")
+    )
     annot_cols <- annot_cols[!annot_cols %in% annot_cols_exist]
 
     if (length(annot_cols) == 0) return(data)
@@ -94,13 +101,10 @@ add_sample_annotation <- function(data, annot_file) {
 
   colData(data) <- col_data %>% left_join(annot, by = c(rowname = sample_col))
 
-  return(data)
+  data
 }
 
-####################################################################################################
-.is_pivoted <- function(d) {
-  return(!any(grepl("^Area|^Height|^Area\\.Normalized", colnames(d))))
-}
+###########################################################################
 #' Internal method to read skyline file
 #' @param file skyline exported file in CSV format
 #' @importFrom dplyr %>% vars matches mutate_at
@@ -108,62 +112,124 @@ add_sample_annotation <- function(data, annot_file) {
 #' @return std data.frame
 .read_skyline_file <- function(file) {
   original_data <- read.csv(file, stringsAsFactors = FALSE)
+  original_data[original_data == "#N/A"] <- NA
 
-  class_cols <- grep(class_pattern, colnames(original_data))
-  if (length(class_cols) == 0) {
-    stop("At least one of these columns should be exported from Skyline report.", class_names)
-  }
+  col_defs <- list(
+    class_cols = c("Protein.Name", "Protein"),
+    molecule_cols = c(
+      "Peptide.Name", "Peptide", "Molecule.Name", "Precursor.Ion.Name"
+    ),
+    replicate_cols = c("Replicate.Name", "Replicate"),
+    intensity_cols = c("Area", "Height", "Area.Normalized"),
+    measure_cols = c(
+      "Area", "Height", "Area.Normalized", "Retention.Time", "Background"
+    )
+  )
 
-  molecule_cols <- grep(molecule_pattern, colnames(original_data))
-  if (length(molecule_cols) == 0) {
-    stop("At least one of these columns should be exported from Skyline report.", molecule_names)
-  }
+  .col_exists(original_data, col_defs$class_cols)
+  molecule_col <- .col_exists(original_data, col_defs$molecule_cols)[[1]]
+  colnames(original_data)[[ molecule_col ]] <- "Molecule"
 
-  colnames(original_data)[[ molecule_cols[[1]] ]] <- "Molecule"
+  .col_exists(original_data, col_defs$intensity_cols)
 
-  if (!any(grepl("Area|Height|Area\\.Normalized", colnames(original_data)))) {
-    stop("At least one of these columns should be exported from Skyline report.", intensity_names)
-  }
-
-  if (.is_pivoted(original_data)) {
-    return(.read_pivoted(original_data))
+  if (.is_pivoted(original_data, col_defs$intensity_cols)) {
+    return(.read_pivoted(original_data, col_defs))
   } else {
-    return(.read_not_pivoted(original_data))
+    return(.read_not_pivoted(original_data, col_defs))
   }
 }
 
-.read_not_pivoted <- function(original_data) {
-  intensity_cols <- grep("^Area|^Height|^Area\\.Normalized", colnames(original_data))
-  replicate_cols <- grep(replicate_pattern, colnames(original_data))
+.read_not_pivoted <- function(original_data, col_defs) {
+  intensity_cols <- .col_exists(
+    original_data, col_defs$intensity_cols,
+    exact_match = TRUE
+  )
+  replicate_cols <- .col_exists(
+    original_data, col_defs$replicate_cols,
+    exact_match = TRUE, throws = FALSE
+  )
   if (length(replicate_cols) == 0) {
-    stop("In Skyline report, you should either export Replicate column or pivot by replicates")
+    stop(
+      "In Skyline report, you should either export Replicate column ",
+      "or pivot by replicates"
+    )
   }
 
   colnames(original_data)[[ replicate_cols[[1]] ]] <- "Sample"
-  ret <- original_data %>% mutate_at(vars(matches(measure_pattern)), as.numeric)
-  measure_cols <- colnames(original_data)[grep(measure_pattern, colnames(original_data))]
+  measure_cols <- .col_exists(
+    original_data, col_defs$measure_cols,
+    exact_match = TRUE, throws = FALSE
+  )
 
-  attr(ret, "skyline") <- list(skyline = TRUE, measures = measure_cols, intensity_cols = colnames(original_data)[intensity_cols])
-  return(ret)
+  ret <- original_data
+  ret[, measure_cols] <- sapply(ret[, measure_cols], as.numeric)
+  attr(ret, "skyline") <- list(
+    skyline = TRUE,
+    measures = colnames(original_data)[measure_cols],
+    intensity_cols = colnames(original_data)[intensity_cols]
+  )
+
+  ret
 }
 
-.read_pivoted <- function(original_data) {
-  intensity_cols <- grep("Area|Height|Area\\.Normalized", colnames(original_data))
-  intensity_cols <- colnames(original_data)[intensity_cols]
-  samples <- unique(sub("(.*)(Area|Height|Area\\.Normalized)", "\\1", intensity_cols))
-  samples_pattern <- paste("^", samples, sep = "", collapse = "|")
+.read_pivoted <- function(original_data, col_defs) {
+  intensity_cols <- .col_exists(original_data, col_defs$intensity_cols)
+  intensity_colnames <- colnames(original_data)[intensity_cols]
+
+  # Extract sample names from intensity columns
+  sample_names <- unique(sub(
+    "(.*)(Area|Height|Area\\.Normalized)$", "\\1", intensity_colnames
+  ))
+  samples_pattern <- .as_regex(samplenames, prefix = "^", collapse = TRUE)
   sample_cols <- grep(samples_pattern, colnames(original_data))
-  measures <- unique(sub(samples_pattern, "", colnames(original_data)[sample_cols]))
-  measures_pattern <- paste(measures, collapse = "|")
 
-  colnames(original_data) <- sub(paste0("\\.(", measures_pattern, ")"), "###\\1", colnames(original_data))
+  # Extract all measure names from sample columns
+  measures <- unique(sub(
+    samples_pattern, "", colnames(original_data)[sample_cols]
+  ))
+  measures_pattern <- .as_regex(measures, collapse = TRUE)
 
-  ret <- original_data %>%
-    mutate_at(vars(matches(measures_pattern)), as.numeric) %>%
-    gather(sample.measure, value, sample_cols) %>%
-    separate(sample.measure, into = c("Sample", "measure"), sep = "###", extra = "merge") %>%
+  colnames(original_data) <- sub(
+    paste0("\\.(", measures_pattern, ")"),
+    "###\\1",
+    colnames(original_data)
+  )
+
+  ret <- original_data
+  ret[, sample_cols] <- sapply(ret[, sample_cols], as.numeric)
+  ret <- ret %>%
+    gather("sample.measure", "value", sample_cols) %>%
+    separate(
+      sample.measure,
+      into = c("Sample", "measure"),
+      sep = "###", extra = "merge"
+    ) %>%
     spread(measure, value)
 
-  attr(ret, "skyline") <- list(skyline = TRUE, measures = measures, intensity_cols = intensity_cols)
-  return(ret)
+  attr(ret, "skyline") <- list(
+    skyline = TRUE,
+    measures = measures,
+    intensity_cols = intensity_colnames
+  )
+  ret
+}
+
+.col_exists <- function(d, cols, exact_match = FALSE, throws = TRUE) {
+  if (exact_match) {
+    col_idx <- which(colnames(d) %in% cols)
+  } else {
+    col_idx <- grep(.as_regex(cols, collapse = TRUE), colnames(d))
+  }
+
+  if (throws && length(col_idx) == 0) {
+    stop(
+      "At least one of these columns should be exported from Skyline report.",
+      cols
+    )
+  }
+  col_idx
+}
+
+.is_pivoted <- function(d, intensity_cols) {
+  !any(colnames(d) %in% intensity_cols)
 }

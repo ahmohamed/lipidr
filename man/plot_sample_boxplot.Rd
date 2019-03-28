@@ -7,9 +7,10 @@
 plot_sample_boxplot(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized or Height.}
+\item{measure}{Which measure to plot the distribution of: usually Area,
+Area.Normalized or Height.}
 
 \item{log}{Whether values should be log2 transformed.}
 }
@@ -17,13 +18,16 @@ plot_sample_boxplot(data, measure = "Area", log = TRUE)
 A ggplot object.
 }
 \description{
-The function is usually used to look at intensity distribution in each sample
-ensuring they are normalized. It can also be used to look at different measures
-such as  `Retention.Time` or `Background`.
+The function should usually be used to look at intensity distribution in
+each sample ensuring they are normalized. It can also be used to look at
+different measures such as  \code{Retention.Time} or \code{Background}.
 }
 \examples{
 data(data_normalized)
 
 plot_sample_boxplot(data_normalized, "Area", log = TRUE)
-plot_sample_boxplot(data_normalized[, data_normalized$group == "QC"], "Retention.Time", log = FALSE)
+plot_sample_boxplot(
+  data_normalized[, data_normalized$group == "QC"],
+  measure = "Retention.Time", log = FALSE
+)
 }

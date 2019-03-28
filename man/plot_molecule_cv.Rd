@@ -2,28 +2,32 @@
 % Please edit documentation in R/plot.R
 \name{plot_molecule_cv}
 \alias{plot_molecule_cv}
-\title{Plot a bar chart for coefficient of variation (CV) of a certain measure in each lipid}
+\title{Bar chart for coefficient of variation of lipid molecules}
 \usage{
 plot_molecule_cv(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}.}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{measure}{Which measure to plot the distribution of: usually Area, Area.Normalized or Height.}
+\item{measure}{Which measure to plot the distribution of: usually Area,
+Area.Normalized or Height.}
 
-\item{log}{whether values should be log2 transformed (Set FALSE for retention time).}
+\item{log}{whether values should be log2 transformed
+(Set FALSE for retention time).}
 }
 \value{
 A ggplot object.
 }
 \description{
-The functions is usually used to investigate the CV in lipid intensity or retention time,
-in QC samples.
+Plot a bar chart for coefficient of variation (CV) of a certain measure
+in each lipid. The functions is usually used to investigate the CV in lipid
+intensity or retention time, in QC samples.
 }
 \examples{
 data(data_normalized)
 
-# plot the variation in intensity and retention time of all measured lipids in QC samples
+# plot the variation in intensity and retention time of all measured
+#   lipids in QC samples
 d_qc <- data_normalized[, data_normalized$group == "QC"]
 plot_molecule_cv(d_qc, "Area")
 plot_molecule_cv(d_qc, "Retention.Time", log = FALSE)

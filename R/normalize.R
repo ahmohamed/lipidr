@@ -2,16 +2,17 @@
 #'
 #' Perform Probabilistic Quotient Normalization (PQN) for sample intensities.
 #' The PQN method determines a dilution factor for each sample by comparing
-#' the distribution of quotients between samples and a reference spectrum, followed
-#' by sample normalization using this dilution factor.
+#' the distribution of quotients between samples and a reference spectrum,
+#' followed by sample normalization using this dilution factor.
 #' The reference spectrum in this method is the average lipid abundance of all
 #' samples (excluding blanks).
 #'
-#' @param data SkylineExperiment object created by \code{\link{read_skyline}}.
-#' @param measure Which measure to use as intensity, usually Area, Area.Normalized or Height.
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param measure Which measure to use as intensity, usually Area,
+#'   Area.Normalized or Height.
 #' @param exclude Samples to exclude, can be either: \cr
-#' "blank" - automatically detected blank samples and exclude them
-#' logical vector with the same length as samples.
+#'   "blank" - automatically detected blank samples and exclude them
+#'   logical vector with the same length as samples.
 #'
 #' @param log Whether the normalized values should be log2 transformed.
 #'
@@ -34,8 +35,12 @@
 #' d_summarized <- summarize_transitions(d, method = "average")
 #' 
 #' # Normalize data that have been summarized (single value per molecule).
-#' data_normalized <- normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
-normalize_pqn <- function(data, measure = "Area", exclude = "blank", log = TRUE) {
+#' data_normalized <- normalize_pqn(
+#'   d_summarized,
+#'   measure = "Area", exclude = "blank", log = TRUE
+#' )
+normalize_pqn <- function(data, measure = "Area",
+                          exclude = "blank", log = TRUE) {
   if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
@@ -49,7 +54,10 @@ normalize_pqn <- function(data, measure = "Area", exclude = "blank", log = TRUE)
   m <- assay(data, measure)
 
   # factor_n = median ( lipid_i_n/ avg(lipid_i) )
-  assay(data, measure) <- m / apply(m / rowMeans(m, na.rm = TRUE), 2, median, na.rm = TRUE)
+  assay(data, measure) <- m / apply(
+    m / rowMeans(m, na.rm = TRUE), 2, median,
+    na.rm = TRUE
+  )
   mcols(assays(data), use.names = TRUE)[measure, "normalized"] <- TRUE
 
   if (log && !mcols(assays(data), use.names = TRUE)[measure, "logged"]) {
@@ -67,17 +75,19 @@ normalize_pqn <- function(data, measure = "Area", exclude = "blank", log = TRUE)
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data Skyline data.frame created by \code{\link{read_skyline}}.
-#' @param measure which measure to use as intensity, usually Area, Area.Normalized or Height.
+#' @param data Skyline data.frame created by [read_skyline()].
+#' @param measure Which measure to use as intensity, usually Area,
+#'   Area.Normalized or Height.
 #' @param exclude Samples to exclude, can be either: \cr
-#' "blank" - automatically detected blank samples and exclude them
-#' logical vector with the same length as samples.
+#'   "blank" - automatically detected blank samples and exclude them
+#'   logical vector with the same length as samples.
 #' @param log whether the normalized values should be log2 transformed.
 #'
 #' @return A SkylineExperiment object with normalized values. Each molecule
 #'     is normalized against the internal standard from the same class.
 #'
-#' @importFrom dplyr %>% select group_by mutate filter ungroup left_join inner_join
+#' @importFrom dplyr %>% select group_by mutate filter ungroup
+#' @importFrom dplyr left_join inner_join
 #' @importFrom rlang sym UQ
 #' @export
 #'
@@ -90,8 +100,12 @@ normalize_pqn <- function(data, measure = "Area", exclude = "blank", log = TRUE)
 #' d_summarized <- summarize_transitions(d, method = "average")
 #' 
 #' # Normalize data that have been summarized (single value per molecule).
-#' data_norm_itsd <- normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
-normalize_itsd <- function(data, measure = "Area", exclude = "blank", log = TRUE) {
+#' data_norm_itsd <- normalize_itsd(
+#'   d_summarized,
+#'   measure = "Area", exclude = "blank", log = TRUE
+#' )
+normalize_itsd <- function(data, measure = "Area",
+                           exclude = "blank", log = TRUE) {
   if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
