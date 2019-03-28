@@ -108,6 +108,7 @@ add_sample_annotation <- function(data, annot_file) {
 #' @return std data.frame
 .read_skyline_file <- function(file) {
   original_data <- read.csv(file, stringsAsFactors = FALSE)
+  original_data[original_data ==  "#N/A"] <- NA
 
   col_defs <- list (
     class_cols = c("Protein.Name", "Protein"),
