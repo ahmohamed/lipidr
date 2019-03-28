@@ -210,10 +210,6 @@ add_sample_annotation <- function(data, annot_file) {
 .col_exists <- function(d, cols, exact_match = FALSE, throws = TRUE) {
   if (exact_match) {
     col_idx <- which(colnames(d) %in% cols)
-    # col_idx <- grep(
-    #   .as_regex(cols, prefix = "^", suffix = "$", collapse = TRUE),
-    #   colnames(d)
-    # )
   } else {
     col_idx <- grep(.as_regex(cols,  collapse = TRUE), colnames(d))
   }
