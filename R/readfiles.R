@@ -162,7 +162,7 @@ add_sample_annotation <- function(data, annot_file) {
   )
 
   ret <- original_data
-  ret[, measure_cols] <- sapply(ret[, measure_cols], as.numeric)
+  ret[, measure_cols] <- vapply(ret[, measure_cols], as.numeric)
   attr(ret, "skyline") <- list(
     skyline = TRUE,
     measures = colnames(original_data)[measure_cols],
@@ -196,7 +196,7 @@ add_sample_annotation <- function(data, annot_file) {
   )
 
   ret <- original_data
-  ret[, sample_cols] <- sapply(ret[, sample_cols], as.numeric)
+  ret[, sample_cols] <- vapply(ret[, sample_cols], as.numeric)
   ret <- ret %>%
     gather("sample.measure", "value", sample_cols) %>%
     separate(
