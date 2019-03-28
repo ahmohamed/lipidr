@@ -146,7 +146,7 @@ plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
 #' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 #' plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 plot_class_enrichment <- function(de_results, significant.sets,
-  measure = "logFC") {
+                                  measure = "logFC") {
   significant.sets <- lapply(
     significant.sets,
     function(c) sub("^Class_", "", c[grep("^Class_", c)])
@@ -180,7 +180,7 @@ plot_class_enrichment <- function(de_results, significant.sets,
 #' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 #' plot_chain_distribution(de_results)
 plot_chain_distribution <- function(de_results, contrast = NULL,
-  measure = "logFC") {
+                                    measure = "logFC") {
   if (is.null(contrast)) {
     contrast <- de_results$contrast[[1]]
   }
@@ -232,8 +232,10 @@ plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
   if (log == TRUE) {
     measure <- .check_log(data, measure)
   }
-  p <- ggplot(dlong, 
-    aes_string("Molecule", measure, fill = "Class", color = "Class")) +
+  p <- ggplot(
+    dlong,
+    aes_string("Molecule", measure, fill = "Class", color = "Class")
+  ) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -266,8 +268,10 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
   if (log == TRUE) {
     measure <- .check_log(data, measure)
   }
-  p <- ggplot(dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")) +
+  p <- ggplot(
+    dlong,
+    aes_string("Molecule", measure, fill = "Class", color = "Class")
+  ) +
     stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -298,8 +302,10 @@ plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
   if (log == TRUE) {
     measure <- .check_log(data, measure)
   }
-  p <- ggplot(dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")) +
+  p <- ggplot(
+    dlong,
+    aes_string("Molecule", measure, fill = "Class", color = "Class")
+  ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
@@ -331,8 +337,10 @@ plot_results_volcano <- function(de_results, show.labels = TRUE) {
         p + geom_text(
           aes(
             label = ifelse(
-              adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, "")
-          ), vjust = -.5, size = 3, color = "black"
+              adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, ""
+            )
+          ),
+          vjust = -.5, size = 3, color = "black"
         )
       }
       .display_plot(p)

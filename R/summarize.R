@@ -24,7 +24,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   }
 
   method <- match.arg(method)
-  multi_transitions <- to_df(data) %>% 
+  multi_transitions <- to_df(data) %>%
     group_by_at(vars(-1, -matches("^Product")))
   transition_gps <- split(
     multi_transitions$TransitionId,

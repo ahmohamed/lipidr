@@ -43,7 +43,7 @@ annotate_lipids <- function(molecules) {
     return()
 }
 
-####Internal functions ############################################
+#### Internal functions ############################################
 
 .clean_molecule_name <- function(lipids_list) {
   .data_internal("lipidnames_pattern")
@@ -55,7 +55,8 @@ annotate_lipids <- function(molecules) {
   olipids <- gsub(p2, "\\1\\2", olipids)
 
   # Cer(d18:0/C18:0) --> Cer d18:0/18:0
-  p2 <- paste0(p$class, "[ -]*\\(",
+  p2 <- paste0(
+    p$class, "[ -]*\\(",
     "([[:alpha:]]{0,1}\\d{1,2}:\\d{1,2}[^)]*)", "\\)"
   )
   olipids <- gsub(p2, "\\1 \\2", olipids)
@@ -123,16 +124,20 @@ annotate_lipids <- function(molecules) {
     ) %>%
     separate(
       first_mol, c("class_stub", "chain1", "chain2", "chain3"),
-      sep = "#\\$#") %>%
+      sep = "#\\$#"
+    ) %>%
     separate(
       chain1, c("l_1", "s_1"),
-      sep = "\\:", remove = FALSE, convert = TRUE) %>%
+      sep = "\\:", remove = FALSE, convert = TRUE
+    ) %>%
     separate(
       chain2, c("l_2", "s_2"),
-      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right") %>%
+      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right"
+    ) %>%
     separate(
       chain3, c("l_3", "s_3"),
-      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right") %>%
+      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right"
+    ) %>%
     rowwise() %>%
     mutate(
       total_cl = sum(l_1, l_2, l_3, na.rm = TRUE),

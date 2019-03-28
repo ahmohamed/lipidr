@@ -1,4 +1,4 @@
-lipidnames_pattern = list()
+lipidnames_pattern <- list()
 lipidnames_pattern$itsd_list <- c(
   "15:0-18:1(d7) PG", "15:0-18:1(d7) PI", "Sa1P 17:0",
   "So1P 17:1", "15:0-18:1(d7) PE", "18:1-d9 SM",

@@ -34,8 +34,8 @@
 #' 
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 mva <- function(data, measure = "Area",
-  method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
-  group_col = NULL, groups = NULL, ...) {
+                method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
+                group_col = NULL, groups = NULL, ...) {
   stopifnot(inherits(data, "SkylineExperiment"))
   data_f <- data[!rowData(data)$itsd, !.is_blank(data)]
   d <- data_f %>%
@@ -57,7 +57,7 @@ mva <- function(data, measure = "Area",
       scores = object$x,
       loadings = object$rotation,
       variance = object$stdev,
-      var.pct = round( (object$sdev ^ 2) / sum(object$sdev ^ 2), 3) * 100,
+      var.pct = round((object$sdev^2) / sum(object$sdev^2), 3) * 100,
       method = "PCA",
       row_data = rowData(data_f),
       col_data = colData(data_f),
@@ -147,17 +147,22 @@ mva <- function(data, measure = "Area",
   }
 }
 
-run_opls <- function(data, y, 
-  predI = 1, orthoI = 1, scaleC = "standard", plotL = FALSE, ...) {
+run_opls <- function(data, y,
+                     predI = 1, orthoI = 1,
+                     scaleC = "standard",
+                     plotL = FALSE, ...) {
   opls(
-    data, y = y, 
-    predI = predI, orthoI = orthoI, scaleC = scaleC, plotL = plotL, ...
+    data,
+    y = y,
+    predI = predI, orthoI = orthoI,
+    scaleC = scaleC,
+    plotL = plotL, ...
   )
 }
 
 #' @importFrom stats var qf median dist
-plot_opls <- function(mvaresults, components, 
-  color_by, ellipse = TRUE, hotelling = TRUE) {
+plot_opls <- function(mvaresults, components,
+                      color_by, ellipse = TRUE, hotelling = TRUE) {
   ret <- .get_mds_matrix(mvaresults, components, color_by)
   d <- ret$mds_matrix
   color_by <- ret$color_by
@@ -196,17 +201,20 @@ plot_opls <- function(mvaresults, components,
     labs(color = "Group", fill = "Group") +
     theme_grey(base_size = 10) +
     annotate(
-      "text", x = Inf, y = Inf,
+      "text",
+      x = Inf, y = Inf,
       label = paste("R2X:", sm["sum", "R2X(cum)"]),
       vjust = 1, hjust = 1, size = 3
     ) +
     annotate(
-      "text", x = Inf, y = Inf,
+      "text",
+      x = Inf, y = Inf,
       label = paste("R2Y:", sm["sum", "R2Y(cum)"]),
       vjust = 2.5, hjust = 1, size = 3
     ) +
     annotate(
-      "text", x = Inf, y = Inf,
+      "text",
+      x = Inf, y = Inf,
       label = paste("Q2:", sm["sum", "Q2(cum)"]),
       vjust = 4, hjust = 1, size = 3
     )
@@ -284,16 +292,17 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
 #' mvaresults <- mva(data_normalized, method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA"))
 #' plot_mva_loadings(mvaresults, color_by = "Class", top.n = 30)
 plot_mva_loadings <- function(mvaresults, components = c(1, 2),
-  color_by = NULL, top.n = nrow(mvaresults$loadings)) {
+                              color_by = NULL,
+                              top.n = nrow(mvaresults$loadings)) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   stopifnot(inherits(mvaresults, "opls"))
   ret <- .get_loading_matrix(mvaresults, components, color_by)
   mds_matrix <- ret$mds_matrix
-  mds_matrix$molrank <- rank(-abs(mds_matrix[,2]))
+  mds_matrix$molrank <- rank(-abs(mds_matrix[, 2]))
 
   color_by <- ret$color_by
   sm <- mvaresults$summary
-  
+
   p <- ggplot(mds_matrix, aes_string(
     colnames(mds_matrix)[[2]], colnames(mds_matrix)[[3]],
     color = color_by
@@ -344,7 +353,7 @@ top_lipids <- function(mvaresults, top.n = 10) {
 
   ret <- .get_loading_matrix(mvaresults, c(1, 2), "Molecule")
   mds_matrix <- ret$mds_matrix
-  mds_matrix$molrank <- rank(-abs(mds_matrix[,2]))
+  mds_matrix$molrank <- rank(-abs(mds_matrix[, 2]))
   mds_matrix <- mds_matrix[, -c(1, 2, 3)]
   mds_matrix %>%
     filter(molrank <= top.n) %>%
@@ -359,8 +368,8 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
   ymax <- yc + ry * sin(seq(0, pi, length.out = 100))
   ymin <- yc + ry * sin(seq(0, -pi, length.out = 100))
   annotate(
-    "ribbon", 
-    x = x, ymin = ymin, ymax = ymax, 
+    "ribbon",
+    x = x, ymin = ymin, ymax = ymax,
     color = color, fill = fill, ...
   )
 }
@@ -392,7 +401,7 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
 }
 
 .get_loading_matrix <- function(mvaresults, components = c(1, 2),
-  color_by = NULL) {
+                                color_by = NULL) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   mds_matrix <- mvaresults$loadings[, components]
   mds_matrix <- mds_matrix %>%

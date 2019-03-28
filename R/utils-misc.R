@@ -29,7 +29,7 @@
 #' @param collapse Collapse all strings to create a single pattern (using `|`).
 #'
 #' @return regex-escaped string to be used for pattern matching
-.as_regex <- function(strings, collapse = FALSE, prefix="", suffix="") {
+.as_regex <- function(strings, collapse = FALSE, prefix = "", suffix = "") {
   ret <- gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", strings)
   if (collapse) {
     ret <- paste(prefix, ret, suffix, sep = "", collapse = "|")

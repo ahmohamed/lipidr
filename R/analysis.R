@@ -1,10 +1,10 @@
 #' Differential analysis of lipids between sample groups
 #'
-#' @param ... Expressions, or character strings which can be parsed to 
+#' @param ... Expressions, or character strings which can be parsed to
 #' expressions, specifying contrasts. These are passed to
 #' `limma::makeContrasts`.
 #'
-#' @param data Skyline data.frame created by [read_skyline()], 
+#' @param data Skyline data.frame created by [read_skyline()],
 #'   should be normalized and log2 transformed.
 #' @param measure Name of the column containing sample names.
 #' @param group_col Name of the column containing sample groups.
@@ -91,8 +91,9 @@ de_design <- function(..., coef = NULL, design, data, measure = "Area") {
   efit <- eBayes(vfit)
   dimname_x <- data@attrs$dimnames[[1]]
 
-  top <- lapply(coef, function(x)
-    topTable(efit, number = Inf, coef = x) %>% rownames_to_column(dimname_x)
+  top <- lapply(
+    coef, function(x)
+      topTable(efit, number = Inf, coef = x) %>% rownames_to_column(dimname_x)
   ) %>%
     bind_rows(.id = "contrast")
 
@@ -119,7 +120,7 @@ de_design <- function(..., coef = NULL, design, data, measure = "Area") {
 #' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 #' significant_molecules(de_results)
 significant_molecules <- function(de.results, p.cutoff = 0.05,
-  logFC.cutoff = 1) {
+                                  logFC.cutoff = 1) {
   de.results %>%
     filter(adj.P.Val < p.cutoff, abs(logFC) > logFC.cutoff) %>%
     (function(x) split(x$Molecule, x$contrast))
@@ -147,7 +148,7 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' de_results <- de_analysis(HighFat_water - NormalDiet_water, data = data_normalized, measure = "Area")
 #' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 enrich_lipidsets <- function(de.results,
-  rank.by = c("logFC", "P.Value", "Adj.P.Val")) {
+                             rank.by = c("logFC", "P.Value", "Adj.P.Val")) {
   rank.by <- match.arg(rank.by)
   rank_by_sym <- sym(rank.by)
 
@@ -192,7 +193,7 @@ enrich_lipidsets <- function(de.results,
 #' enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
 #' significant_lipidsets(enrich_results)
 significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
-  size.cutoff = 2) {
+                                  size.cutoff = 2) {
   enrich.results %>%
     filter(padj < p.cutoff, size > size.cutoff) %>%
     (function(x) split(x$set, x$contrast))

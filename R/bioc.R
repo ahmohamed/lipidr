@@ -6,8 +6,8 @@
 #' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 .SkylineExperiment <- setClass(
-  "SkylineExperiment", 
-  slots = list(attrs = "list"), 
+  "SkylineExperiment",
+  slots = list(attrs = "list"),
   contains = "SummarizedExperiment"
 )
 
@@ -22,7 +22,7 @@
 #' @importFrom SummarizedExperiment SummarizedExperiment
 #' @export
 SkylineExperiment <- function(assay_list, attrs,
-  colData = NULL, rowData = NULL) {
+                              colData = NULL, rowData = NULL) {
   se <- SummarizedExperiment(assay_list, colData = colData, rowData = rowData)
   ret <- .SkylineExperiment(se)
   ret@attrs <- attrs
@@ -35,7 +35,7 @@ SkylineExperiment <- function(assay_list, attrs,
     stop("Data.frame does not have skyline attribute")
   }
   assay_list <- lapply(
-    attr(d, "skyline")$measures, 
+    attr(d, "skyline")$measures,
     function(m) to_num_matrix(d, "Sample", "TransitionId", m)
   )
   names(assay_list) <- attr(d, "skyline")$measures

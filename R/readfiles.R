@@ -108,9 +108,9 @@ add_sample_annotation <- function(data, annot_file) {
 #' @return std data.frame
 .read_skyline_file <- function(file) {
   original_data <- read.csv(file, stringsAsFactors = FALSE)
-  original_data[original_data ==  "#N/A"] <- NA
+  original_data[original_data == "#N/A"] <- NA
 
-  col_defs <- list (
+  col_defs <- list(
     class_cols = c("Protein.Name", "Protein"),
     molecule_cols = c(
       "Peptide.Name", "Peptide", "Molecule.Name", "Precursor.Ion.Name"
@@ -137,10 +137,12 @@ add_sample_annotation <- function(data, annot_file) {
 
 .read_not_pivoted <- function(original_data, col_defs) {
   intensity_cols <- .col_exists(
-    original_data, col_defs$intensity_cols, exact_match = TRUE
+    original_data, col_defs$intensity_cols,
+    exact_match = TRUE
   )
   replicate_cols <- .col_exists(
-    original_data, col_defs$replicate_cols, exact_match = TRUE, throws = FALSE
+    original_data, col_defs$replicate_cols,
+    exact_match = TRUE, throws = FALSE
   )
   if (length(replicate_cols) == 0) {
     stop(
@@ -151,7 +153,8 @@ add_sample_annotation <- function(data, annot_file) {
 
   colnames(original_data)[[ replicate_cols[[1]] ]] <- "Sample"
   measure_cols <- .col_exists(
-    original_data, col_defs$measure_cols, exact_match = TRUE, throws = FALSE
+    original_data, col_defs$measure_cols,
+    exact_match = TRUE, throws = FALSE
   )
 
   ret <- original_data
@@ -211,7 +214,7 @@ add_sample_annotation <- function(data, annot_file) {
   if (exact_match) {
     col_idx <- which(colnames(d) %in% cols)
   } else {
-    col_idx <- grep(.as_regex(cols,  collapse = TRUE), colnames(d))
+    col_idx <- grep(.as_regex(cols, collapse = TRUE), colnames(d))
   }
 
   if (throws && length(col_idx) == 0) {
