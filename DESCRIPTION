@@ -1,6 +1,6 @@
 Package: lipidr
 Title: Lipidomics Analysis Workflow in R
-Version: 0.9.3
+Version: 0.98.0
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
@@ -21,8 +21,7 @@ Description: lipidr an easy-to-use R package implementing a complete workflow
     frameworks. lipidr allows data inspection, normalization, univariate and
     multivariate analysis, displaying informative visualizations. lipidr also
     implements a novel Lipid Set Enrichment Analysis (LSEA), harnessing 
-    molecular information such as lipid class, chain length and unsaturation.
-    
+    molecular information such as lipid class, chain length and unsaturation.    
 Depends: R (>= 3.5.0)
 Imports:
     methods,
