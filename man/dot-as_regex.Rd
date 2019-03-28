@@ -10,6 +10,10 @@
 \item{strings}{A character vector to be regex-escaped.}
 
 \item{collapse}{Collapse all strings to create a single pattern (using \code{|}).}
+
+\item{prefix}{A non-escaped prefix to use before each element.}
+
+\item{suffix}{A non-escaped suffix to use after each element}
 }
 \value{
 regex-escaped string to be used for pattern matching
