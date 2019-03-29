@@ -10,6 +10,9 @@ matrix:
     - os: osx
       r: bioc-release
 
+ allow_failures:	
+    - os: osx
+
 bioc_check: true
 
 env:
