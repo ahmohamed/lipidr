@@ -172,7 +172,7 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' )
 #' enrich_results <- lsea(de_results, rank.by = "logFC")
 lsea <- function(de.results,
-                             rank.by = c("logFC", "P.Value", "Adj.P.Val")) {
+                 rank.by = c("logFC", "P.Value", "Adj.P.Val")) {
   rank.by <- match.arg(rank.by)
   rank_by_sym <- sym(rank.by)
 

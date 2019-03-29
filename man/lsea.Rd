@@ -4,8 +4,7 @@
 \alias{lsea}
 \title{Lipid set enrichment analysis (LSEA)}
 \usage{
-lsea(de.results, rank.by = c("logFC", "P.Value",
-  "Adj.P.Val"))
+lsea(de.results, rank.by = c("logFC", "P.Value", "Adj.P.Val"))
 }
 \arguments{
 \item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}

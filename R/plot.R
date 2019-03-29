@@ -185,7 +185,9 @@ plot_class_enrichment <- function(de_results, significant.sets,
 
 #' Plot logFC of lipids per class showing chain information
 #' Plot a chart of (log2) fold changes of lipids per class showing chain
-#' lengths and saturations
+#' lengths and saturations. If multiple molecules with the same total chain
+#' length and saturation are present in the dataset, the `measure` is averaged,
+#' and the number of molecules is indicated on the plot.
 #'
 #' @param de_results Output of [de_analysis()].
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
@@ -204,24 +206,27 @@ plot_class_enrichment <- function(de_results, significant.sets,
 plot_chain_distribution <- function(de_results, contrast = NULL,
                                     measure = "logFC") {
   if (is.null(contrast)) {
-    contrast <- de_results$contrast[[1]]
+    use_contrast <- de_results$contrast[[1]]
   }
   measure <- sym(measure)
 
   de_results <- de_results$Molecule %>%
     annotate_lipids() %>%
     filter(!itsd) %>%
-    .left_join_silent(de_results) %>%
-    group_by(clean_name) %>%
-    ungroup()
+    .left_join_silent(de_results)
 
-  de_results <- de_results[de_results$contrast == contrast, ] %>%
-    mutate_at(vars(total_cl:total_cs), factor)
+  de_results <- de_results %>%
+    filter(contrast == use_contrast) %>%
+    select(total_cl, total_cs, !!measure, Class) %>%
+    mutate_at(vars(total_cl, total_cs), factor) %>%
+    group_by(Class, total_cl, total_cs) %>%
+    summarise(!!measure := mean(!!measure), nmolecules = n())
 
   p <- ggplot(de_results, aes(total_cs, total_cl, fill = logFC)) + geom_tile() +
     facet_wrap(~Class) +
     xlab("Total chain unsaturation") + ylab("Total chain length") +
-    scale_fill_gradient2(midpoint = 0)
+    scale_fill_gradient2(midpoint = 0) +
+    geom_text(aes(label = ifelse(nmolecules > 1, nmolecules, "")))
 
   .display_plot(p)
 }
