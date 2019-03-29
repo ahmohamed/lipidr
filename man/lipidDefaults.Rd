@@ -3,11 +3,14 @@
 \docType{data}
 \name{lipidDefaults}
 \alias{lipidDefaults}
-\title{lipidDefaults.}
+\title{lipidDefaults.
+A set of default mappings and annotation used internally to correctly parse
+lipid molecule names.}
 \description{
 lipidDefaults.
+A set of default mappings and annotation used internally to correctly parse
+lipid molecule names.
 }
 \examples{
-data(lipidannotation)
-
+data(lipidDefaults)
 }

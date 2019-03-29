@@ -2,38 +2,41 @@
 % Please edit documentation in R/opls.R
 \name{plot_mva}
 \alias{plot_mva}
-\title{Plot a multivariate scatterplot of sample scores to investigate sample clustering}
+\title{Multivariate scatterplot of sample scores}
 \usage{
 plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
 }
 \arguments{
-\item{mvaresults}{Results obtained from \code{\link{mva}}}
+\item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
 
-\item{components}{which components to plot. Ignored for PCoA, OPLS-DA results}
+\item{components}{Which components to plot. Ignored for PCoA, OPLS and
+OPLS-DA results.}
 
-\item{color_by}{Sample annotation to use as color}
+\item{color_by}{Sample annotation to use as color.}
+}
+\value{
+A ggplot of the sample scores.
 }
 \description{
-Plot a multivariate scatterplot of sample scores to investigate sample clustering
+Plot a multivariate scatterplot of sample scores to investigate
+sample clustering.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
-clinical_file = system.file("extdata", "clin.csv", package="lipidr")
-d = add_sample_annotation(d, clinical_file)
+data(data_normalized)
 
 # PCA
-mvaresults = mva(d, measure="Area", method="PCA")
-plot_mva(mvaresults, color_by="group")
-plot_mva(mvaresults, color_by="Diet", components = c(2,3))
+mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
+plot_mva(mvaresults, color_by = "group")
+plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
 
 # PCoA
-mvaresults = mva(d, measure="Area", method="PCoA")
-plot_mva(mvaresults, color_by="group")
+mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
+plot_mva(mvaresults, color_by = "group")
 
 # OPLS-DA
-mvaresults = mva(d, method = "OPLS-DA", group_col = "BileAcid", groups=c("water", "DCA"))
-plot_mva(mvaresults, color_by="group")
-
+mvaresults <- mva(
+  data_normalized,
+  method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+)
+plot_mva(mvaresults, color_by = "group")
 }

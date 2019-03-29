@@ -2,15 +2,28 @@
 % Please edit documentation in R/summarize.R
 \name{summarize_transitions}
 \alias{summarize_transitions}
-\title{Collapse transitions}
+\title{Summarize transitions}
 \usage{
 summarize_transitions(data, method = c("max", "average"))
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{method}{choose to summarize multiple transitions by taking average or max intensity}
+\item{method}{Choose to summarize multiple transitions by taking the average
+or maximum intensity.}
+}
+\value{
+A SkylineExperiment object with single intensities per lipid molecule
 }
 \description{
-Calculate a single intensity for molecules with multiple transitions
+Calculate a single intensity for molecules with multiple transitions,
+by determining the average or maximum intensity.
+}
+\examples{
+datadir <- system.file("extdata", package = "lipidr")
+filelist <- list.files(datadir, "data.csv", full.names = TRUE)
+d <- read_skyline(filelist)
+clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
+d <- add_sample_annotation(d, clinical_file)
+d_summarized <- summarize_transitions(d, method = "average")
 }

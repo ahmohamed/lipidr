@@ -7,20 +7,22 @@
 plot_sample_tic(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{measure}{which measure to use as intensity, usually Area, Area.Normalized or Height}
+\item{measure}{Which measure to use as intensity, usually Area,
+Area.Normalized or Height.}
 
-\item{log}{whether values should be log2 transformed}
+\item{log}{Whether values should be log2 transformed.}
+}
+\value{
+A ggplot object.
 }
 \description{
 Plot a bar chart for total sample intensity
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_sample_tic(d, "Area", log=TRUE)
-plot_sample_tic(d, "Background", log=FALSE)
+plot_sample_tic(data_normalized, "Area", log = TRUE)
+plot_sample_tic(data_normalized, "Background", log = FALSE)
 }

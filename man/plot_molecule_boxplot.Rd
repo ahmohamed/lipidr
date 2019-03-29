@@ -2,26 +2,29 @@
 % Please edit documentation in R/plot.R
 \name{plot_molecule_boxplot}
 \alias{plot_molecule_boxplot}
-\title{Plot a boxplot chart to examine distribution of values per lipid}
+\title{Plot a boxplot chart to examine the distribution of values per lipid}
 \usage{
 plot_molecule_boxplot(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link{read_skyline}}}
+\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{measure}{which measure to plot the distribution of: usually Area, Area.Normalized or Height}
+\item{measure}{Which measure to plot the distribution of: usually Area,
+Area.Normalized or Height.}
 
-\item{log}{whether values should be log2 transformed}
+\item{log}{Whether values should be log2 transformed.}
+}
+\value{
+A ggplot object.
 }
 \description{
-The functions is usually used to look at intensity distribution for each lipid,
-but can also be used to look at different measures, such as  `Retention.Time` or `Background`.
+The function is usually used to look at intensity distribution for each
+lipid, but can also be used to look at different measures, such as
+\code{Retention.Time} or \code{Background}.
 }
 \examples{
-datadir = system.file("extdata", package="lipidr")
-filelist = list.files(datadir, "data.csv", full.names = TRUE)
-d = read_skyline(filelist)
+data(data_normalized)
 
-plot_molecule_boxplot(d)
-plot_molecule_boxplot(d, "Retention.Time", log=FALSE)
+plot_molecule_boxplot(data_normalized)
+plot_molecule_boxplot(data_normalized, "Retention.Time", log = FALSE)
 }
