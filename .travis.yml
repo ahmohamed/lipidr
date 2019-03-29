@@ -16,6 +16,8 @@ env:
  global:
    - CRAN: http://cran.rstudio.com
 
+r_github_packages: tidyverse/ggplot2
+
 notifications:
   email:
     on_success: change

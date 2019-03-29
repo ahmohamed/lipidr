@@ -1,8 +1,27 @@
 Package: lipidr
 Title: Lipidomics Analysis Workflow in R
-Version: 0.9.3
-Authors@R: person("Ahmed", "Mohamed", email = "ahmed.mohamed@qimrberghofer.edu.au", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6507-5300"))
-Description: What the package does (one paragraph).
+Version: 0.98.0
+Authors@R: c(
+    person(
+        "Ahmed", "Mohamed", 
+        email = "mohamed@kuicr.kyoto-u.ac.jp", role = "cre",
+        comment = c(ORCID = "0000-0001-6507-5300")
+    ),
+    person(
+        "Ahmed", "Mohamed", 
+        email = "ahmed.mohamed@qimrberghofer.edu.au", role = "aut"
+    ),
+    person(
+        "Jeffrey", "Molendijk", 
+        email = "Jeffrey.Molendijk@qimrberghofer.edu.au", role = "aut"
+    ))
+Description: lipidr an easy-to-use R package implementing a complete workflow 
+    for downstream analysis of lipidomics data. lipidr parses results exported 
+    from Skyline directly into R, allowing integration into current analysis 
+    frameworks. lipidr allows data inspection, normalization, univariate and
+    multivariate analysis, displaying informative visualizations. lipidr also
+    implements a novel Lipid Set Enrichment Analysis (LSEA), harnessing 
+    molecular information such as lipid class, chain length and unsaturation.    
 Depends: R (>= 3.5.0)
 Imports:
     methods,
@@ -21,7 +40,6 @@ Imports:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
 Suggests: 
     knitr,
     rmarkdown,
@@ -34,4 +52,5 @@ VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization
 Language: en-US
+RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)

@@ -29,6 +29,6 @@ de_results <- de_analysis(
   HighFat_water - NormalDiet_water,
   data = data_normalized, measure = "Area"
 )
-enrich_results <- enrich_lipidsets(de_results, rank.by = "logFC")
+enrich_results <- lsea(de_results, rank.by = "logFC")
 plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 }

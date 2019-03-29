@@ -207,7 +207,7 @@ For more details on creating design matrices for different experimental designs,
 `lipidr` automatically generates sets of lipids based on lipid class, chain length and saturation. Measured lipids are then ranked by their fold change, or p-value using results from differential analysis.
 
 ```{r}
-enrich_results = enrich_lipidsets(de_results, rank.by = "logFC")
+enrich_results = lsea(de_results, rank.by = "logFC")
 significant_lipidsets(enrich_results)
 ```
 
