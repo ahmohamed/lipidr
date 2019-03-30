@@ -34,6 +34,7 @@ environment:
   matrix:
     - R_VERSION: devel
     - R_VERSION: release
+      BIOC_USE_DEVEL: "FALSE"
 
 matrix:  
   allow_failures:
