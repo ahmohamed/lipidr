@@ -336,8 +336,13 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
 #' @examples
 #' data(data_normalized)
 #' 
-#' plot_molecule_boxplot(data_normalized)
-#' plot_molecule_boxplot(data_normalized, "Retention.Time", log = FALSE)
+#' # plot the variation in intensity of ITSD (internal standards) in QC samples
+#' d_itsd_qc <- data_normalized[
+#'   rowData(data_normalized)$itsd,
+#'   data_normalized$group == "QC"
+#' ]
+#' plot_molecule_boxplot(d_itsd_qc)
+#' plot_molecule_boxplot(d_itsd_qc, "Retention.Time", log = FALSE)
 plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)

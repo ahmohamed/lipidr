@@ -307,7 +307,7 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
 #'   data_normalized,
 #'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
 #' )
-#' plot_mva_loadings(mvaresults, color_by = "Class", top.n = 30)
+#' plot_mva_loadings(mvaresults, color_by = "Class", top.n = 10)
 plot_mva_loadings <- function(mvaresults, components = c(1, 2),
                               color_by = NULL,
                               top.n = nrow(mvaresults$loadings)) {
