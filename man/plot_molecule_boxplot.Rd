@@ -25,6 +25,11 @@ lipid, but can also be used to look at different measures, such as
 \examples{
 data(data_normalized)
 
-plot_molecule_boxplot(data_normalized)
-plot_molecule_boxplot(data_normalized, "Retention.Time", log = FALSE)
+# plot the variation in intensity of ITSD (internal standards) in QC samples
+d_itsd_qc <- data_normalized[
+  rowData(data_normalized)$itsd,
+  data_normalized$group == "QC"
+]
+plot_molecule_boxplot(d_itsd_qc)
+plot_molecule_boxplot(d_itsd_qc, "Retention.Time", log = FALSE)
 }

@@ -34,5 +34,5 @@ mvaresults <- mva(
   data_normalized,
   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
 )
-plot_mva_loadings(mvaresults, color_by = "Class", top.n = 30)
+plot_mva_loadings(mvaresults, color_by = "Class", top.n = 10)
 }
