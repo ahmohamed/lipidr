@@ -16,6 +16,7 @@ cache:
 # Adapt as necessary starting from here
 
 build_script:
+  - travis-tool.sh install_github tidyverse/ggplot2
   - travis-tool.sh install_bioc_deps
 
 test_script:
@@ -29,9 +30,15 @@ environment:
   global:
     R_ARCH: x64
     USE_RTOOLS: true
+    GCC_PATH: mingw_64
   matrix:
     - R_VERSION: devel
-      GCC_PATH: mingw_64
+    - R_VERSION: release
+      BIOC_USE_DEVEL: "FALSE"
+
+matrix:  
+  allow_failures:
+    - R_VERSION: devel
 
 artifacts:
   - path: '*.Rcheck\**\*.log'
