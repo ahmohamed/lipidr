@@ -24,7 +24,8 @@ class, but can also be used to look at different measures, such as
 }
 \examples{
 data(data_normalized)
+d_qc <- data_normalized[, data_normalized$group == "QC"]
 
-plot_class_boxplot(data_normalized, "Area", log = TRUE)
-plot_class_boxplot(data_normalized, "Retention.Time", log = FALSE)
+plot_class_boxplot(d_qc, "Area", log = TRUE)
+plot_class_boxplot(d_qc, "Retention.Time", log = FALSE)
 }

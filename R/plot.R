@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_sample_tic(data_normalized, "Area", log = TRUE)
 #' plot_sample_tic(data_normalized, "Background", log = FALSE)
 plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
@@ -45,12 +45,13 @@ plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
-#' plot_sample_boxplot(data_normalized, "Area", log = TRUE)
+#'
 #' plot_sample_boxplot(
 #'   data_normalized[, data_normalized$group == "QC"],
 #'   measure = "Retention.Time", log = FALSE
 #' )
+#' # NOT RUN
+#' # plot_sample_boxplot(data_normalized, "Area", log = TRUE)
 plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
@@ -86,7 +87,7 @@ plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_class_sd(data_normalized, "Area", log = TRUE)
 #' plot_class_sd(data_normalized, "Retention.Time", log = FALSE)
 plot_class_sd <- function(data, measure = "Area", log = TRUE) {
@@ -120,9 +121,10 @@ plot_class_sd <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
-#' plot_class_boxplot(data_normalized, "Area", log = TRUE)
-#' plot_class_boxplot(data_normalized, "Retention.Time", log = FALSE)
+#' d_qc <- data_normalized[, data_normalized$group == "QC"]
+#'
+#' plot_class_boxplot(d_qc, "Area", log = TRUE)
+#' plot_class_boxplot(d_qc, "Retention.Time", log = FALSE)
 plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
@@ -138,50 +140,6 @@ plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
   .display_plot(p)
 }
 
-
-#' Plot a boxplot chart to examine (log2) fold changes of lipids per class
-#'
-#' The function is usually used to look at log2 fold change distribution of
-#' lipids in each class, marking significantly enriched classes. Can also be
-#' used to plot `P.Value` or `Adj.P.Val`.
-#'
-#' @param de_results Output of [de_analysis()].
-#' @param significant.sets List of significantly changed lipid sets
-#'   (output of [significant_lipidsets()]).
-#' @param measure Which measure to plot the distribution of: logFC, P.Value,
-#'   Adj.P.Val.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' de_results <- de_analysis(
-#'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
-#' )
-#' enrich_results <- lsea(de_results, rank.by = "logFC")
-#' plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
-plot_class_enrichment <- function(de_results, significant.sets,
-                                  measure = "logFC") {
-  significant.sets <- lapply(
-    significant.sets,
-    function(c) sub("^Class_", "", c[grep("^Class_", c)])
-  )
-  de_results <- de_results$Molecule %>%
-    annotate_lipids() %>%
-    .left_join_silent(de_results) %>%
-    group_by(contrast) %>%
-    mutate(Significant = Class %in% significant.sets[[ contrast[[1]] ]]) %>%
-    ungroup()
-
-  p <- ggplot(de_results, aes_string("Class", measure, color = "Significant")) +
-    geom_boxplot() + geom_hline(yintercept = 0, lty = 2) +
-    facet_wrap(~contrast, scales = "free_x") +
-    scale_color_manual(values = c("black", "red")) +
-    theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
-
-  .display_plot(p)
-}
 
 #' Plot logFC of lipids per class showing chain information
 #' Plot a chart of (log2) fold changes of lipids per class showing chain
@@ -247,14 +205,14 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' # plot the variation in intensity of ITSD (internal standards) in QC samples
 #' d_itsd_qc <- data_normalized[
 #'   rowData(data_normalized)$itsd,
 #'   data_normalized$group == "QC"
 #' ]
 #' plot_molecule_sd(d_itsd_qc, "Area")
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
@@ -296,7 +254,7 @@ plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
@@ -335,7 +293,7 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' # plot the variation in intensity of ITSD (internal standards) in QC samples
 #' d_itsd_qc <- data_normalized[
 #'   rowData(data_normalized)$itsd,

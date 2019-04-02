@@ -1,6 +1,6 @@
 #' Pipe operator
 #'
-#' See \code{magrittr::\link[magrittr-pipe]{\%>\%}} for details.
+#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 #'
 #' @return Result of `rhs(lhs, ...)`.
 #' @name %>%
