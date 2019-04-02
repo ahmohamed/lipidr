@@ -39,7 +39,6 @@ Imports:
     magrittr
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Suggests: 
     knitr,
     rmarkdown,
@@ -54,3 +53,5 @@ biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
 Language: en-US
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
+URL: https://github.com/ahmohamed/lipidr
+BugReports: https://github.com/ahmohamed/lipidr/issues/
