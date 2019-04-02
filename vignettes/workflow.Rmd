@@ -236,7 +236,7 @@ Normalized and log transformed data should be used.
 ```{r}
 de_results = de_analysis(
   data=d_normalized, 
-  HighFat_water - NormalDiet_water, NormalDiet_DCA - NormalDiet_water, 
+  HighFat_water - NormalDiet_water,
   measure="Area"
 )
 head(de_results)
