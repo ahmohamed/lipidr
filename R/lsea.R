@@ -53,7 +53,7 @@ lsea <- function(de.results,
   return(res)
 }
 
-#' `significant_lipidsets` gets a list of significantly changed lipid sets
+#' @describeIn lsea gets a list of significantly changed lipid sets
 #'
 #' @param enrich.results Output of [lsea()].
 #' @param p.cutoff Significance threshold.
@@ -62,7 +62,6 @@ lsea <- function(de.results,
 #' @return `significant_lipidsets` returns a list of character vectors of
 #'   significantly enriched sets for each contrast.
 #' @importFrom dplyr %>% filter
-#' @rdname lsea
 #' @export
 #' @examples
 #' sig_lipidsets <- significant_lipidsets(enrich_results)
@@ -74,7 +73,7 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 }
 
 
-#' `plot_class_enrichment` is usually used to look at log2 fold change
+#' @describeIn lsea is usually used to look at log2 fold change
 #' distribution of lipids in each class, marking significantly enriched classes.
 #' Can also be used to plot `P.Value` or `Adj.P.Val`.
 #'
@@ -85,7 +84,6 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 #'
 #' @return `plot_class_enrichment` reutrns a ggplot object.
 #' @export
-#' @rdname lsea
 #' @examples
 #' plot_class_enrichment(de_results, sig_lipidsets)
 plot_class_enrichment <- function(de.results, significant.sets,

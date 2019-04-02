@@ -119,7 +119,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   return(top)
 }
 
-#' `significant_molecules` gets a list of significantly changed lipids for
+#' @describeIn de_analysis gets a list of significantly changed lipids for
 #' each contrast.
 #'
 #' @param de.results Output of [de_analysis()].
@@ -130,7 +130,6 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 #'   significantly differentially changed lipids.
 #' @importFrom dplyr %>% filter
 #' @export
-#' @rdname de_analysis
 #'
 #' @examples
 #' significant_molecules(de_results)
@@ -141,7 +140,7 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
     (function(x) split(x$Molecule, x$contrast))
 }
 
-#' `plot_results_volcano` plots a volcano chart for differential analysis
+#' @describeIn de_analysis plots a volcano chart for differential analysis
 #' results.
 #'
 #' @param show.labels Whether labels should be displayed for
@@ -149,7 +148,6 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #'
 #' @return `plot_results_volcano` returns a ggplot object.
 #' @export
-#' @rdname de_analysis
 #' @examples
 #' plot_results_volcano(de_results, show.labels = FALSE)
 plot_results_volcano <- function(de_results, show.labels = TRUE) {

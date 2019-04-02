@@ -57,6 +57,15 @@ accepts a list of contrasts, while \code{de_design} allows users to define a
 design matrix, useful for complex experimental designs or for adjusting
 possible confounding variables.
 }
+\section{Functions}{
+\itemize{
+\item \code{significant_molecules}: gets a list of significantly changed lipids for
+each contrast.
+
+\item \code{plot_results_volcano}: plots a volcano chart for differential analysis
+results.
+}}
+
 \examples{
 # type ?normalize_pqn to see how to normalize and log2-transform your data
 data(data_normalized)

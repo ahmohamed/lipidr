@@ -45,13 +45,16 @@ significantly enriched sets for each contrast.
 }
 \description{
 Lipid set enrichment analysis (LSEA)
+}
+\section{Functions}{
+\itemize{
+\item \code{significant_lipidsets}: gets a list of significantly changed lipid sets
 
-\code{significant_lipidsets} gets a list of significantly changed lipid sets
-
-\code{plot_class_enrichment} is usually used to look at log2 fold change
+\item \code{plot_class_enrichment}: is usually used to look at log2 fold change
 distribution of lipids in each class, marking significantly enriched classes.
 Can also be used to plot \code{P.Value} or \code{Adj.P.Val}.
-}
+}}
+
 \examples{
 data(data_normalized)
 de_results <- de_analysis(

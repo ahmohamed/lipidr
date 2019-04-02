@@ -2,13 +2,23 @@
 % Please edit documentation in R/opls.R
 \name{mva}
 \alias{mva}
+\alias{plot_mva}
+\alias{plot_mva_loadings}
+\alias{top_lipids}
 \title{Perform multivariate analyses to investigate sample clustering}
 \usage{
 mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS",
   "OPLS-DA"), group_col = NULL, groups = NULL, ...)
+
+plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
+
+plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
+  top.n = nrow(mvaresults$loadings))
+
+top_lipids(mvaresults, top.n = 10)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{Which measure to use as intensity, usually Area_norm.
 The measure should be already summarized and normalized.}
@@ -22,6 +32,16 @@ supervised analysis (OPLS-DA), ignored in other methods.}
 
 \item{...}{Extra arguments to be passed to \code{\link[=opls]{opls()}} for OPLS-DA,
 ignored in other methods.}
+
+\item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
+
+\item{components}{Which components to plot. Ignored for PCoA, OPLS and
+OPLS-DA results.}
+
+\item{color_by}{Sample annotation (or lipid annotation in case of
+\code{plot_mva_loadings}) to use as color.}
+
+\item{top.n}{Number of top ranked features to highlight in the plot .}
 }
 \value{
 Multivariate analysis results in \code{mvaresults} object.
@@ -34,17 +54,52 @@ The object contains the following:\itemize{
 \item original_object   Original output object as returned by
 corresponding analysis methods
 }
+
+\code{plot_mva} returns a ggplot of the sample scores.
+
+\code{plot_mva_loadings} returns a ggplot of the loadings.
+
+\code{top_lipids} returns s dataframe of \code{top.n} lipids with
+their annotations.
 }
 \description{
-Blank samples are automatically detected (using TIC) and excluded.
-Missing data are imputed using average lipid intensity across all samples.
+\code{mva} performs multivariate analysis using several possible methods.
 The available methods are PCA, PCoA, OPLS and OPLS-DA. The OPLS method
 requires a numeric y-variable, whilst OPLS-DA requires two groups for
 comparison. By default, for OPLS and OPLS-DA the number of predictive and
 orthogonal components are set to 1.
+Blank samples are automatically detected (using TIC) and excluded.
+Missing data are imputed using average lipid intensity across all samples.
 }
+\section{Functions}{
+\itemize{
+\item \code{plot_mva}: plots a multivariate scatterplot of sample scores to investigate
+sample clustering.
+
+\item \code{plot_mva_loadings}: Plot a multivariate scatterplot of feature loadings
+to investigate feature importance.
+
+\item \code{top_lipids}: extracts top lipids from OPLS-DA results
+}}
+
 \examples{
 data(data_normalized)
 
+# PCA
 mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
+plot_mva(mvaresults, color_by = "group")
+plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
+
+# PCoA
+mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
+plot_mva(mvaresults, color_by = "group")
+
+# OPLS-DA
+mvaresults <- mva(
+  data_normalized,
+  method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+)
+plot_mva(mvaresults, color_by = "group")
+plot_mva_loadings(mvaresults, color_by = "Class", top.n = 10)
+top_lipids(mvaresults, top.n = 10)
 }
