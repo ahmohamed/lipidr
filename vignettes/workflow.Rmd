@@ -175,8 +175,9 @@ Normalized and log transformed data should be used.
 
 ```{r}
 de_results = de_analysis(
+  data=d_normalized, 
   HighFat_water - NormalDiet_water, NormalDiet_DCA - NormalDiet_water, 
-  data=d_normalized, measure="Area"
+  measure="Area"
 )
 head(de_results)
 significant_molecules(de_results)
@@ -193,11 +194,19 @@ For more complex experimental designs, where one might deal with factor adjustme
 
 ```{r, eval=FALSE}
 # Using formula
-de_results = de_design(coef="groupHighFat_water", design = ~ group, data=d_normalized, measure="Area")
+de_results = de_design(
+  data=d_normalized,
+  design = ~ group, 
+  coef="groupHighFat_water", 
+  measure="Area")
 
 # Using design matrix
 design = model.matrix(~ group, data=colData(d_normalized))
-de_results = de_design(coef="groupHighFat_water", design = design, data=d_normalized, measure="Area")
+de_results = de_design(
+  data=d_normalized,
+  design = design,
+  coef="groupHighFat_water",
+  measure="Area")
 ```
 
 For more details on creating design matrices for different experimental designs, refer to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].

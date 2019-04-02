@@ -18,8 +18,9 @@
 #' @examples
 #' data(data_normalized)
 #' de_results <- de_analysis(
+#'   data_normalized,
 #'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
+#'   measure = "Area"
 #' )
 #' enrich_results <- lsea(de_results, rank.by = "logFC")
 lsea <- function(de.results,

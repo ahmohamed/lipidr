@@ -157,8 +157,9 @@ plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
 #' @examples
 #' data(data_normalized)
 #' de_results <- de_analysis(
+#'   data_normalized,
 #'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
+#'   measure = "Area"
 #' )
 #' plot_chain_distribution(de_results)
 plot_chain_distribution <- function(de_results, contrast = NULL,

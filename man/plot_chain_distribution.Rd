@@ -31,8 +31,9 @@ and the number of molecules is indicated on the plot.
 \examples{
 data(data_normalized)
 de_results <- de_analysis(
+  data_normalized,
   HighFat_water - NormalDiet_water,
-  data = data_normalized, measure = "Area"
+  measure = "Area"
 )
 plot_chain_distribution(de_results)
 }
