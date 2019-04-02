@@ -10,7 +10,7 @@ lsea(de.results, rank.by = c("logFC", "P.Value", "Adj.P.Val"))
 
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 
-plot_class_enrichment(de_results, significant.sets, measure = "logFC")
+plot_class_enrichment(de.results, significant.sets, measure = "logFC")
 }
 \arguments{
 \item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
@@ -30,7 +30,7 @@ plot_class_enrichment(de_results, significant.sets, measure = "logFC")
 Adj.P.Val.}
 }
 \value{
-For \code{lsea}, enrichment results (data.frame) as returned from
+\code{lsea} returns enrichment results (data.frame) as returned from
 \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.
 The results also contain the following attributes: \itemize{
 \item de.results    Original de.results input.
@@ -38,8 +38,8 @@ The results also contain the following attributes: \itemize{
 \item sets   Lipid sets tested, with their member molecules.
 }
 
-A list of character vectors of significantly enriched sets for
-each contrast.
+\code{significant_lipidsets} returns a list of character vectors of
+significantly enriched sets for each contrast.
 
 \code{plot_class_enrichment} reutrns a ggplot object.
 }
@@ -48,9 +48,9 @@ Lipid set enrichment analysis (LSEA)
 
 \code{significant_lipidsets} gets a list of significantly changed lipid sets
 
-\code{plot_class_enrichment} is usually used to look at log2 fold change distribution of
-lipids in each class, marking significantly enriched classes. Can also be
-used to plot \code{P.Value} or \code{Adj.P.Val}.
+\code{plot_class_enrichment} is usually used to look at log2 fold change
+distribution of lipids in each class, marking significantly enriched classes.
+Can also be used to plot \code{P.Value} or \code{Adj.P.Val}.
 }
 \examples{
 data(data_normalized)

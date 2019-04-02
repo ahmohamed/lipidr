@@ -153,7 +153,7 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' @param de.results Output of [de_analysis()].
 #' @param rank.by Statistic used to rank the lipid list.
 #'
-#' @return For `lsea`, enrichment results (data.frame) as returned from
+#' @return `lsea` returns enrichment results (data.frame) as returned from
 #'   [fgsea::fgsea()].
 #'   The results also contain the following attributes: \itemize{
 #'     \item de.results    Original de.results input.
@@ -208,8 +208,8 @@ lsea <- function(de.results,
 #' @param p.cutoff Significance threshold.
 #' @param size.cutoff Minimum number of lipids in a set tested for enrichment.
 #'
-#' @return A list of character vectors of significantly enriched sets for
-#'   each contrast.
+#' @return `significant_lipidsets` returns a list of character vectors of
+#'   significantly enriched sets for each contrast.
 #' @importFrom dplyr %>% filter
 #' @rdname lsea
 #' @export
@@ -223,9 +223,9 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 }
 
 
-#' `plot_class_enrichment` is usually used to look at log2 fold change distribution of
-#' lipids in each class, marking significantly enriched classes. Can also be
-#' used to plot `P.Value` or `Adj.P.Val`.
+#' `plot_class_enrichment` is usually used to look at log2 fold change
+#' distribution of lipids in each class, marking significantly enriched classes.
+#' Can also be used to plot `P.Value` or `Adj.P.Val`.
 #'
 #' @param significant.sets List of significantly changed lipid sets
 #'   (output of [significant_lipidsets()]).
@@ -237,13 +237,13 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 #' @rdname lsea
 #' @examples
 #' plot_class_enrichment(de_results, sig_lipidsets)
-plot_class_enrichment <- function(de_results, significant.sets,
+plot_class_enrichment <- function(de.results, significant.sets,
                                   measure = "logFC") {
   significant.sets <- lapply(
     significant.sets,
     function(c) sub("^Class_", "", c[grep("^Class_", c)])
   )
-  de_results <- de_results$Molecule %>%
+  de_results <- de.results$Molecule %>%
     annotate_lipids() %>%
     .left_join_silent(de_results) %>%
     group_by(contrast) %>%
