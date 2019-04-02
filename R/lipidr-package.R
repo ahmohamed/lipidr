@@ -5,8 +5,9 @@
 #' takes exported Skyline CSV as input, allowing for multiple methods to
 #' be analyzed together.
 #'
-#' `lipidr` represents Skyline files as annotated data.frames, which can
-#' easily be manipulated by a wide variety of R packages. Sample annotations,
+#' `lipidr` represents Skyline files as SummarizedExperiment objects, which can
+#' easily be integrated with a wide variety of Bioconductor packages.
+#' Sample annotations,
 #' such as sample group or other clinical information can be loaded. `lipidr`
 #' generates various plots, such as PCA score plots and box plots, for quality
 #' control of samples and measured lipids. Normalization methods with and
@@ -82,12 +83,12 @@ NULL
 #' @examples
 #' data(data_normalized)
 #' use_interactive_graphics()
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #  lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' # plot_molecule_cv(d_qc, "Area")
-#' 
+#'
 #' # turn off interactivity
 #' use_interactive_graphics(interactive = FALSE)
 use_interactive_graphics <- function(interactive = TRUE) {
