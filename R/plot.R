@@ -318,43 +318,6 @@ plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
   .display_plot(p)
 }
 
-#' Plot a volcano chart for differential analysis results
-#'
-#' @param de_results Output of [de_analysis()].
-#' @param show.labels Whether labels should be displayed for significant lipids.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' de_results <- de_analysis(
-#'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
-#' )
-#' plot_results_volcano(de_results, show.labels = FALSE)
-plot_results_volcano <- function(de_results, show.labels = TRUE) {
-  de_results %>%
-    mutate_at(vars(matches("P.Val")), log10) %>%
-    (function(.) {
-      p <- ggplot(., aes(logFC, -adj.P.Val, color = Class, label = Molecule)) +
-        geom_point() +
-        geom_hline(yintercept = -log10(0.05), lty = 2) +
-        geom_vline(xintercept = c(1, -1), lty = 2) +
-        facet_wrap(~contrast)
-      if (show.labels) {
-        p + geom_text(
-          aes(
-            label = ifelse(
-              adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, ""
-            )
-          ),
-          vjust = -.5, size = 3, color = "black"
-        )
-      }
-      .display_plot(p)
-    })
-}
-
 .display_plot <- function(p) {
   if (.myDataEnv$interactive) {
     p <- plotly::ggplotly(p)

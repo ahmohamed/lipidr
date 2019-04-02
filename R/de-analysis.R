@@ -1,11 +1,16 @@
 #' Differential analysis of lipids between sample groups
 #'
-#' @param ... Expressions, or character strings which can be parsed to
-#' expressions, specifying contrasts. These are passed to
-#' `limma::makeContrasts`.
+#' `de_analysis` and `de_design` perform differential analysis of measured
+#' lipids that are associated with a sample group (annotation). `de_analysis`
+#' accepts a list of contrasts, while `de_design` allows users to define a
+#' design matrix, useful for complex experimental designs or for adjusting
+#' possible confounding variables.
 #'
 #' @param data Skyline data.frame created by [read_skyline()],
 #'   should be normalized and log2 transformed.
+#' @param ... Expressions, or character strings which can be parsed to
+#'   expressions, specifying contrasts. These are passed to
+#'   `limma::makeContrasts`.
 #' @param measure Name of the column containing sample names.
 #' @param group_col Name of the column containing sample groups.
 #'
@@ -19,11 +24,14 @@
 #' @examples
 #' # type ?normalize_pqn to see how to normalize and log2-transform your data
 #' data(data_normalized)
+#'
+#' # Specifying contrasts
 #' de_results <- de_analysis(
+#'   data_normalized,
 #'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
+#'   measure = "Area"
 #' )
-de_analysis <- function(..., data, measure = "Area", group_col = NULL) {
+de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
   if (is.null(group_col)) {
     if (ncol(colData(data)) > 0) {
       group_col <- names(colData(data))[[1]]
@@ -43,47 +51,36 @@ de_analysis <- function(..., data, measure = "Area", group_col = NULL) {
   group <- fct_drop(colData(data)[[group_col]])
   design <- model.matrix(~ 0 + group)
   colnames(design) <- gsub("group", "", colnames(design))
-  return(de_design(..., design = design, data = data, measure = measure))
+  return(de_design(data = data, design = design, ..., measure = measure))
 }
 
-#' Differential analysis of lipids between sample groups
-#'
-#' @param ... Expressions, or character strings which can be parsed to
-#'   expressions, specifying contrasts. These are passed to
-#'   `limma::makeContrasts`. Ignored if `coef` is provided.
 #' @param design Design matrix generated from [model.matrix()],
 #'   or a design formula.
 #' @param coef Column number or column name specifying which coefficient of
 #'   the linear model is of interest.
-#' @param data Skyline data.frame created by [read_skyline()],
-#'   should be normalized and log2 transformed.
-#' @param measure Name of the column containing sample names.
 #'
-#' @return TopTable as returned by limma package
 #' @importFrom rlang is_formula
 #' @importFrom limma topTable lmFit makeContrasts contrasts.fit eBayes
 #' @export
+#' @rdname de_analysis
 #' @examples
-#' # type ?normalize_pqn to see how to normalize and log-transfome your data
-#' data(data_normalized)
-#'
 #' # Using formula
-#' de_results <- de_design(
-#'   coef = "groupHighFat_water",
-#'   design = ~group,
+#' de_results_formula <- de_design(
 #'   data = data_normalized,
+#'   design = ~group,
+#'   coef = "groupHighFat_water",
 #'   measure = "Area"
 #' )
 #'
 #' # Using design matrix
 #' design <- model.matrix(~group, data = colData(data_normalized))
-#' de_results <- de_design(
-#'   coef = "groupHighFat_water",
-#'   design = design,
+#' de_results_design <- de_design(
 #'   data = data_normalized,
+#'   design = design,
+#'   coef = "groupHighFat_water",
 #'   measure = "Area"
 #' )
-de_design <- function(..., coef = NULL, design, data, measure = "Area") {
+de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   if (is_formula(design)) {
     design <- model.matrix(design, data = colData(data))
   } else if (!is.matrix(design)) {
@@ -122,23 +119,20 @@ de_design <- function(..., coef = NULL, design, data, measure = "Area") {
   return(top)
 }
 
-#' Get a list of significantly changed molecules
+#' `significant_molecules` gets a list of significantly changed lipids for
+#' each contrast.
 #'
 #' @param de.results Output of [de_analysis()].
 #' @param p.cutoff Significance threshold.
 #' @param logFC.cutoff Cutoff limit for log2 fold change.
 #'
-#' @return A character vector with names of significantly differentially
-#'   changed lipids.
+#' @return `significant_molecules` returns a character vector with names of
+#'   significantly differentially changed lipids.
 #' @importFrom dplyr %>% filter
 #' @export
+#' @rdname de_analysis
 #'
 #' @examples
-#' data(data_normalized)
-#' de_results <- de_analysis(
-#'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
-#' )
 #' significant_molecules(de_results)
 significant_molecules <- function(de.results, p.cutoff = 0.05,
                                   logFC.cutoff = 1) {
@@ -147,3 +141,36 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
     (function(x) split(x$Molecule, x$contrast))
 }
 
+#' `plot_results_volcano` plots a volcano chart for differential analysis
+#' results.
+#'
+#' @param show.labels Whether labels should be displayed for
+#'   significant lipids.
+#'
+#' @return `plot_results_volcano` returns a ggplot object.
+#' @export
+#' @rdname de_analysis
+#' @examples
+#' plot_results_volcano(de_results, show.labels = FALSE)
+plot_results_volcano <- function(de_results, show.labels = TRUE) {
+  de_results %>%
+    mutate_at(vars(matches("P.Val")), log10) %>%
+    (function(.) {
+      p <- ggplot(., aes(logFC, -adj.P.Val, color = Class, label = Molecule)) +
+        geom_point() +
+        geom_hline(yintercept = -log10(0.05), lty = 2) +
+        geom_vline(xintercept = c(1, -1), lty = 2) +
+        facet_wrap(~contrast)
+      if (show.labels) {
+        p + geom_text(
+          aes(
+            label = ifelse(
+              adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, ""
+            )
+          ),
+          vjust = -.5, size = 3, color = "black"
+        )
+      }
+      .display_plot(p)
+    })
+}
