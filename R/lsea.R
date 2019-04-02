@@ -82,7 +82,7 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
 #'   Adj.P.Val.
 #'
-#' @return `plot_class_enrichment` reutrns a ggplot object.
+#' @return `plot_class_enrichment` returns a ggplot object.
 #' @export
 #' @examples
 #' plot_class_enrichment(de_results, sig_lipidsets)

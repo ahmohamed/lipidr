@@ -150,8 +150,8 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' @export
 #' @examples
 #' plot_results_volcano(de_results, show.labels = FALSE)
-plot_results_volcano <- function(de_results, show.labels = TRUE) {
-  de_results %>%
+plot_results_volcano <- function(de.results, show.labels = TRUE) {
+  de.results %>%
     mutate_at(vars(matches("P.Val")), log10) %>%
     (function(.) {
       p <- ggplot(., aes(logFC, -adj.P.Val, color = Class, label = Molecule)) +

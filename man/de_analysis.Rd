@@ -13,7 +13,7 @@ de_design(data, design, ..., coef = NULL, measure = "Area")
 
 significant_molecules(de.results, p.cutoff = 0.05, logFC.cutoff = 1)
 
-plot_results_volcano(de_results, show.labels = TRUE)
+plot_results_volcano(de.results, show.labels = TRUE)
 }
 \arguments{
 \item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}},
