@@ -323,3 +323,6 @@ plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
   }
   return(p)
 }
+
+# colnames used in plot_chain_distribution
+utils::globalVariables(c("nmolecules"))
