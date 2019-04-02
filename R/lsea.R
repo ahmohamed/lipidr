@@ -2,7 +2,7 @@
 #'
 #' @param de.results Output of [de_analysis()].
 #' @param rank.by Statistic used to rank the lipid list.
-#' @param ... Extra paramters passed to [fgsea::fgsea()].
+#' @param ... Extra parameters passed to [fgsea::fgsea()].
 #'
 #' @return `lsea` returns enrichment results (data.frame) as returned from
 #'   [fgsea::fgsea()].

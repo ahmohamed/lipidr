@@ -81,7 +81,7 @@ d = read_skyline(filelist)
 print(d)
 ```
 
-Datasets are represeted in R as `SummarizedExperiment`s to facilitate integration other Bioconductor packages.
+Datasets are represented in R as `SummarizedExperiment`s to facilitate integration other Bioconductor packages.
 
 ### Adding sample annotation
 
@@ -123,7 +123,7 @@ rowData(d_pc)
 colData(d_pc)
 ```
 
-For domenstration purposes, we select only 3 lipids classes, Ceramides (`Cer`), PhosphatidylCholines (`PC`) and LysoPhosphatidylCholines (`LPC`). We also `BileAcid` treated group from our dataset.
+For demonstration purposes, we select only 3 lipids classes, Ceramides (`Cer`), PhosphatidylCholines (`PC`) and LysoPhosphatidylCholines (`LPC`). We also `BileAcid` treated group from our dataset.
 
 ```{r}
 lipid_classes = rowData(d)$Class %in% c("Cer", "PC", "LPC")
@@ -205,7 +205,7 @@ plot_mva(mvaresults, color_by="group", components = c(1,2))
 ```
 
 Plotting other components is possible by specifying `components` argument. For
-example `components = c(2,3)` plots 2nd and 3rd components.
+example `components = c(2,3)` plots second and third components.
 
 ## Supervised multivariate analysis
 
@@ -289,7 +289,7 @@ plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 
 `lipidr` can also plot fold changes of lipids per class showing chain lengths
 and saturations. Number on the plot indicate multiple lipids measured with
-the same chain propoerties.
+the same chain properties.
 
 ```{r, fig.height=8}
 plot_chain_distribution(de_results)

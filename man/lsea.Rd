@@ -17,7 +17,7 @@ plot_class_enrichment(de.results, significant.sets, measure = "logFC")
 
 \item{rank.by}{Statistic used to rank the lipid list.}
 
-\item{...}{Extra paramters passed to \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.}
+\item{...}{Extra parameters passed to \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.}
 
 \item{enrich.results}{Output of \code{\link[=lsea]{lsea()}}.}
 

@@ -1,9 +1,11 @@
 AppVeyor
 bioc
 bioconductor
+Ceramides
 DataFrame
 de
 deoxycholic
+devtools
 Dieterle
 edgeR
 edgeRUsersGuide
@@ -19,6 +21,7 @@ Lipidomics
 loadings
 logFC
 LSEA
+LysoPhosphatidylCholines
 MDS
 metabonomics
 MRM
@@ -26,6 +29,7 @@ murine
 NMR
 OPLS
 PCoA
+PhosphatidylCholines
 PQN
 saturations
 Schlotterbeck
