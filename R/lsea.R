@@ -2,6 +2,7 @@
 #'
 #' @param de.results Output of [de_analysis()].
 #' @param rank.by Statistic used to rank the lipid list.
+#' @param ... Extra paramters passed to [fgsea::fgsea()].
 #'
 #' @return `lsea` returns enrichment results (data.frame) as returned from
 #'   [fgsea::fgsea()].
@@ -22,9 +23,12 @@
 #'   HighFat_water - NormalDiet_water,
 #'   measure = "Area"
 #' )
-#' enrich_results <- lsea(de_results, rank.by = "logFC")
+#' enrich_results <- lsea(
+#'   de_results,
+#'   rank.by = "logFC", minSize = 4, nperm = 1000
+#' )
 lsea <- function(de.results,
-                 rank.by = c("logFC", "P.Value", "Adj.P.Val")) {
+                 rank.by = c("logFC", "P.Value", "Adj.P.Val"), ...) {
   rank.by <- match.arg(rank.by)
   rank_by_sym <- sym(rank.by)
 
@@ -37,12 +41,13 @@ lsea <- function(de.results,
 
   contrast.list <- split.data.frame(de.results, de.results$contrast)
 
+
   res <- lapply(contrast.list, function(x)
-    fgsea::fgsea(
+    .gsea_fun(
       pathways = sets,
       stats = to_named_list(x, "Molecule", rank.by),
-      minSize = 2, nperm = 10000
-    )) %>%
+      ...
+  )) %>%
     bind_rows(.id = "contrast")
 
   res <- res %>% arrange(padj) %>% rename(set = pathway)
@@ -51,6 +56,13 @@ lsea <- function(de.results,
   attr(res, "sets") <- sets
 
   return(res)
+}
+
+.gsea_fun <- function(pathways, stats, minSize=2, nperm=10000, ...) {
+  fgsea::fgsea(
+    pathways = pathways, stats = stats,
+    minSize = minSize, nperm = nperm, ...
+  )
 }
 
 #' @describeIn lsea gets a list of significantly changed lipid sets

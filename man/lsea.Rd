@@ -6,7 +6,7 @@
 \alias{plot_class_enrichment}
 \title{Lipid set enrichment analysis (LSEA)}
 \usage{
-lsea(de.results, rank.by = c("logFC", "P.Value", "Adj.P.Val"))
+lsea(de.results, rank.by = c("logFC", "P.Value", "Adj.P.Val"), ...)
 
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 
@@ -16,6 +16,8 @@ plot_class_enrichment(de.results, significant.sets, measure = "logFC")
 \item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
 \item{rank.by}{Statistic used to rank the lipid list.}
+
+\item{...}{Extra paramters passed to \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.}
 
 \item{enrich.results}{Output of \code{\link[=lsea]{lsea()}}.}
 
@@ -62,7 +64,10 @@ de_results <- de_analysis(
   HighFat_water - NormalDiet_water,
   measure = "Area"
 )
-enrich_results <- lsea(de_results, rank.by = "logFC")
+enrich_results <- lsea(
+  de_results,
+  rank.by = "logFC", minSize = 4, nperm = 1000
+)
 sig_lipidsets <- significant_lipidsets(enrich_results)
 plot_class_enrichment(de_results, sig_lipidsets)
 }
