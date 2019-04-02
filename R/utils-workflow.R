@@ -44,3 +44,6 @@
 
   (median(tic) / tic) > 50
 }
+
+# colname created in .uniform.attrs
+utils::globalVariables(c("filename"))

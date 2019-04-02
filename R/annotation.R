@@ -152,3 +152,13 @@ annotate_lipids <- function(molecules) {
     ) %>%
     ungroup()
 }
+
+# Defined as lipid annotations
+utils::globalVariables(c(
+  "first_mol",
+  "chain1", "chain2", "chain3",
+  "l_1", "s_1", "l_2", "s_2", "l_3", "s_3",
+  "total_cl", "total_cs",
+  "Molecule", "clean_name", "ambig", "not_matched", "itsd",
+  "Class"
+  ))

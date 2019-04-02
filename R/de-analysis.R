@@ -172,3 +172,6 @@ plot_results_volcano <- function(de.results, show.labels = TRUE) {
       .display_plot(p)
     })
 }
+
+# colnames used in topTable
+utils::globalVariables(c("logFC", "P.Value", "Adj.P.Val", "contrast"))

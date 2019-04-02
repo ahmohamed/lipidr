@@ -8,11 +8,11 @@
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' 
+#'
 #' # all csv files
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#' 
+#'
 #' # View automatically generated lipid annotations
 #' rowData(d)
 read_skyline <- function(files) {
@@ -53,21 +53,21 @@ read_skyline <- function(files) {
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' 
+#'
 #' # all csv files
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#' 
+#'
 #' # Add clinical info to existing SkylineExperiment object
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' colData(d)
 #' d$group
-#' 
+#'
 #' # Subset samples using clinical information
 #' # Note we are subsetting columns
 #' d[, d$group == "QC"]
-#' 
+#'
 #' # Subset lipids using lipid annotation
 #' # Note we are subsetting rows
 #' d[rowData(d)$itsd, ]
@@ -107,6 +107,7 @@ add_sample_annotation <- function(data, annot_file) {
 ###########################################################################
 #' Internal method to read skyline file
 #' @param file skyline exported file in CSV format
+#' @importFrom utils read.csv
 #' @importFrom dplyr %>% vars matches mutate_at
 #' @importFrom tidyr gather spread separate
 #' @return std data.frame
@@ -180,7 +181,7 @@ add_sample_annotation <- function(data, annot_file) {
   sample_names <- unique(sub(
     "(.*)(Area|Height|Area\\.Normalized)$", "\\1", intensity_colnames
   ))
-  samples_pattern <- .as_regex(samplenames, prefix = "^", collapse = TRUE)
+  samples_pattern <- .as_regex(sample_names, prefix = "^", collapse = TRUE)
   sample_cols <- grep(samples_pattern, colnames(original_data))
 
   # Extract all measure names from sample columns
@@ -233,3 +234,6 @@ add_sample_annotation <- function(data, annot_file) {
 .is_pivoted <- function(d, intensity_cols) {
   !any(colnames(d) %in% intensity_cols)
 }
+
+# colnames used internally in read.pivoted / not.pivoted
+utils::globalVariables(c("sample.measure", "value", "measure"))

@@ -129,3 +129,9 @@ gen_lipidsets <- function(molecules) {
 
   split(as.character(data_$Molecule), data_$set)
 }
+
+# colnames used internally in gen.lipidset
+utils::globalVariables(c("collection", "value"))
+
+# colnames output by fgsea
+utils::globalVariables(c("padj", "size", "pathway"))

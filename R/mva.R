@@ -1,3 +1,7 @@
+# colnames used internally in top.lipids
+utils::globalVariables(c("molrank"))
+
+
 #' Perform multivariate analyses to investigate sample clustering
 #'
 #' `mva` performs multivariate analysis using several possible methods.
@@ -318,7 +322,7 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
     geom_point(size = 3, pch = 16, aes(alpha = molrank > top.n)) +
     scale_alpha_manual(values = c(1, 0.5))
 
-  if ("ggrepel" %in% rownames(installed.packages())) {
+  if (requireNamespace("ggrepel", quietly = TRUE)) {
     xlimits <- max(abs(mds_matrix[, 2])) * 1.25
     ylimits <- max(abs(mds_matrix[, 3])) * 1.1
 

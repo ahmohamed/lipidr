@@ -1,3 +1,6 @@
+# Defined as dimnames / dplyr .
+utils::globalVariables(c(".", "TransitionId", "Sample"))
+
 #' SkylineExperiment object
 #'
 #' @slot attrs Extra slot to hold the workflow stage for the data,

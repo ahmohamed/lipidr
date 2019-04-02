@@ -66,3 +66,9 @@ summarize_transitions <- function(data, method = c("max", "average")) {
     rowData = row_data
   )
 }
+
+# Defined as dimname
+utils::globalVariables(c("MoleculeId"))
+
+# colnames used internally in summarize_transitions
+utils::globalVariables(c("group_idx"))
