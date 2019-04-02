@@ -26,16 +26,17 @@ each lipid, but can also be used to look at different measures such as
 \examples{
 data(data_normalized)
 
-# plot the variation in intensity of ITSD (internal standards) in QC samples
+# plot the variation in intensity, RT of ITSD (internal standards)
+#   in QC samples
 d_itsd_qc <- data_normalized[
   rowData(data_normalized)$itsd,
   data_normalized$group == "QC"
 ]
 plot_molecule_sd(d_itsd_qc, "Area")
+plot_molecule_sd(d_itsd_qc, measure = "Retention.Time", log = FALSE)
 
-# plot the variation in intensity and retention time of all measured
+# plot the variation in intensity and of all measured
 #   lipids in QC samples
 d_qc <- data_normalized[, data_normalized$group == "QC"]
 plot_molecule_sd(d_qc, "Area")
-plot_molecule_sd(d_qc, measure = "Retention.Time", log = FALSE)
 }
