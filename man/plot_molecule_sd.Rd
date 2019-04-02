@@ -35,9 +35,7 @@ plot_molecule_sd(d_itsd_qc, "Area")
 
 # plot the variation in intensity and retention time of all measured
 #   lipids in QC samples
-plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
-plot_molecule_sd(
-  data_normalized[, data_normalized$group == "QC"],
-  measure = "Retention.Time", log = FALSE
-)
+d_qc <- data_normalized[, data_normalized$group == "QC"]
+plot_molecule_sd(d_qc, "Area")
+plot_molecule_sd(d_qc, measure = "Retention.Time", log = FALSE)
 }

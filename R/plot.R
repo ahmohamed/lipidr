@@ -216,11 +216,9 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 #'
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
-#' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
-#' plot_molecule_sd(
-#'   data_normalized[, data_normalized$group == "QC"],
-#'   measure = "Retention.Time", log = FALSE
-#' )
+#' d_qc <- data_normalized[, data_normalized$group == "QC"]
+#' plot_molecule_sd(d_qc, "Area")
+#' plot_molecule_sd(d_qc, measure = "Retention.Time", log = FALSE)
 plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
