@@ -66,7 +66,7 @@ de_analysis <- function(..., data, measure = "Area", group_col = NULL) {
 #' @examples
 #' # type ?normalize_pqn to see how to normalize and log-transfome your data
 #' data(data_normalized)
-#' 
+#'
 #' # Using formula
 #' de_results <- de_design(
 #'   coef = "groupHighFat_water",
@@ -74,7 +74,7 @@ de_analysis <- function(..., data, measure = "Area", group_col = NULL) {
 #'   data = data_normalized,
 #'   measure = "Area"
 #' )
-#' 
+#'
 #' # Using design matrix
 #' design <- model.matrix(~group, data = colData(data_normalized))
 #' de_results <- de_design(
@@ -153,8 +153,9 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' @param de.results Output of [de_analysis()].
 #' @param rank.by Statistic used to rank the lipid list.
 #'
-#' @return Enrichment results (data.frame) as returned from [fgsea::fgsea()].
-#'   The results also contain the following attributes:#' \itemize{
+#' @return For `lsea`, enrichment results (data.frame) as returned from
+#'   [fgsea::fgsea()].
+#'   The results also contain the following attributes: \itemize{
 #'     \item de.results    Original de.results input.
 #'     \item rank.by   Measure used to rank lipid molecules.
 #'     \item sets   Lipid sets tested, with their member molecules.
@@ -201,7 +202,7 @@ lsea <- function(de.results,
   return(res)
 }
 
-#' Get a list of significantly changed lipid sets
+#' `significant_lipidsets` gets a list of significantly changed lipid sets
 #'
 #' @param enrich.results Output of [lsea()].
 #' @param p.cutoff Significance threshold.
@@ -210,16 +211,10 @@ lsea <- function(de.results,
 #' @return A list of character vectors of significantly enriched sets for
 #'   each contrast.
 #' @importFrom dplyr %>% filter
+#' @rdname lsea
 #' @export
-#'
 #' @examples
-#' data(data_normalized)
-#' de_results <- de_analysis(
-#'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
-#' )
-#' enrich_results <- lsea(de_results, rank.by = "logFC")
-#' significant_lipidsets(enrich_results)
+#' sig_lipidsets <- significant_lipidsets(enrich_results)
 significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
                                   size.cutoff = 2) {
   enrich.results %>%
@@ -227,6 +222,42 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
     (function(x) split(x$set, x$contrast))
 }
 
+
+#' `plot_class_enrichment` is usually used to look at log2 fold change distribution of
+#' lipids in each class, marking significantly enriched classes. Can also be
+#' used to plot `P.Value` or `Adj.P.Val`.
+#'
+#' @param significant.sets List of significantly changed lipid sets
+#'   (output of [significant_lipidsets()]).
+#' @param measure Which measure to plot the distribution of: logFC, P.Value,
+#'   Adj.P.Val.
+#'
+#' @return `plot_class_enrichment` reutrns a ggplot object.
+#' @export
+#' @rdname lsea
+#' @examples
+#' plot_class_enrichment(de_results, sig_lipidsets)
+plot_class_enrichment <- function(de_results, significant.sets,
+                                  measure = "logFC") {
+  significant.sets <- lapply(
+    significant.sets,
+    function(c) sub("^Class_", "", c[grep("^Class_", c)])
+  )
+  de_results <- de_results$Molecule %>%
+    annotate_lipids() %>%
+    .left_join_silent(de_results) %>%
+    group_by(contrast) %>%
+    mutate(Significant = Class %in% significant.sets[[ contrast[[1]] ]]) %>%
+    ungroup()
+
+  p <- ggplot(de_results, aes_string("Class", measure, color = "Significant")) +
+    geom_boxplot() + geom_hline(yintercept = 0, lty = 2) +
+    facet_wrap(~contrast, scales = "free_x") +
+    scale_color_manual(values = c("black", "red")) +
+    theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
+
+  .display_plot(p)
+}
 
 #' Generate lipid sets from lipid molecule names
 #'

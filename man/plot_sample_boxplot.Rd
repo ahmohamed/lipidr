@@ -25,9 +25,10 @@ different measures such as  \code{Retention.Time} or \code{Background}.
 \examples{
 data(data_normalized)
 
-plot_sample_boxplot(data_normalized, "Area", log = TRUE)
 plot_sample_boxplot(
   data_normalized[, data_normalized$group == "QC"],
   measure = "Retention.Time", log = FALSE
 )
+# NOT RUN
+# plot_sample_boxplot(data_normalized, "Area", log = TRUE)
 }
