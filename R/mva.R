@@ -184,13 +184,13 @@ plot_opls <- function(mvaresults, components,
     label = "Sample", color = color_by
   ))
 
-  if (ellipse == TRUE) {
+  if (ellipse) {
     p <- p + stat_ellipse(
       geom = "polygon", alpha = 0.3, linetype = "blank",
       aes_string(fill = color_by), type = "norm"
     )
   }
-  if (hotelling == TRUE) {
+  if (hotelling) {
     p <- p + gg_circle(
       rx = sqrt(var(pscores) * hotFisN),
       ry = sqrt(var(oscores) * hotFisN),

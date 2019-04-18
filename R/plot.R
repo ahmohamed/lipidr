@@ -19,7 +19,7 @@
 plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
   p <- ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom = "bar") +
@@ -55,7 +55,7 @@ plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
 plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
 
@@ -93,7 +93,7 @@ plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
 plot_class_sd <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
 
@@ -128,7 +128,7 @@ plot_class_sd <- function(data, measure = "Area", log = TRUE) {
 plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
 
@@ -223,7 +223,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
   p <- ggplot(
@@ -263,7 +263,7 @@ plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
 plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
   p <- ggplot(
@@ -304,7 +304,7 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
 plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
   p <- ggplot(
