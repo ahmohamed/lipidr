@@ -382,7 +382,8 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
   if (length(choices) != 2L) {
     stop("length of choices must be 2")
   }
-  if (!length(scores <- x$x)) {
+  scores <- x$x
+  if (!length(scores)) {
     stop(gettextf("object '%s' has no scores", deparse(substitute(x))),
       domain = NA
     )
