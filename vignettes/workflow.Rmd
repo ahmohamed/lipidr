@@ -1,8 +1,13 @@
 ---
 title: "Workflow"
-author: "Ahmed Mohamed"
+author:
+- name: Ahmed Mohamed
+  affiliation: Prescision & Systems Biomedicine, QIMR Berghofer, Australia
 date: "`r Sys.Date()`"
-output: html_vignette
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{lipidr_workflow}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,24 +19,24 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width =
 library(lipidr)
 library(ggplot2)
 ```
-## Introduction
+# Introduction
 `lipidr` implements a series of functions to facilitate inspection,
 analysis and visualization of targeted lipidomics datasets. `lipidr`
 takes exported Skyline CSV as input, allowing for multiple methods to
 be analyzed together.
 
 
-### Input
+## Input
 
 `lipidr` represents Skyline files as SummarizedExperiment objects, which can
 easily be integrated with a wide variety of Bioconductor packages. 
 Sample annotations, such as sample group or other clinical information can be loaded.
 
-### Quality control & visualization
+## Quality control & visualization
 `lipidr` generates various plots, such as PCA score plots and box plots, for quality control of samples and measured lipids. Normalization methods with and
 without internal standards are also supported.
 
-### Differential Analysis
+## Differential Analysis
 Differential analysis can be performed using any of the loaded clinical
 variables, which can be readily visualized as volcano plots. A novel lipid
 set enrichment analysis (LSEA) is implemented to detect preferential
@@ -41,8 +46,8 @@ Plots for the visualization of enrichment results are also implemented.
 This vignette provides a step by step guide for downstream analysis of targeted
 lipidomics data, exported from Skyline.
 
-## Installation
-### From Bioconductor:
+# Installation
+## From Bioconductor:
 In R console, type:
 
 ```r
@@ -51,7 +56,7 @@ if (!requireNamespace("BiocManager", quietly=TRUE))
 BiocManager::install("lipidr")  
 ```
 
-### From GitHub using devtools:
+## From GitHub using devtools:
 In R console, type:
 
 ```r
@@ -59,17 +64,19 @@ library(devtools)
 install_github("ahmohamed/lipidr")
 ```
 
+# Analysis Workflow
 ## Example Study
 
 In this workflow, we will use serum lipidomics data from mice fed a normal or high-fat diet. Mice were fed a normal or high-fat diet (`Diet` column) and had access to normal drinking water or drinking water containing the bile acid deoxycholic acid (`BileAcid` column). Lipid peaks were integrated using Skyline and exported as CSV files.
 
-## Exporting files from Skyline
+## Data Import & manipulation
+### Exporting files from Skyline
 
 Integrated peaks should be exported from each Skyline file through File => Export => Report. Selecting `Transition Results` ensures that necessary information is exported from Skyline. Otherwise, you should ensure that peak `Area` or `Height` or a similar measure is exported. Regardless of the `measure` you choose for intensity, you can use `lipidr` workflow.
 
 `Replicates` should either be exported, or the `Pivot Replicate Name` option must be used.
 
-## Reading files into R
+### Reading files into R
 
 `lipidr` can read multiple CSV files from different analysis methods together. Using our example dataset, three Skyline CSV files are used as input to `read.skyline`.
 
@@ -94,7 +101,7 @@ d = add_sample_annotation(d, clinical_file)
 colData(d)
 ```
 
-## Data subsetting
+### Data subsetting
 
 It is helpful to imagine SkylineExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is `d[rows, cols]`.
 
@@ -134,7 +141,7 @@ d = d[lipid_classes, groups]
 d_qc = d[, d$group == "QC"]
 ```
 
-## Visualization of raw data
+## Raw Data Quality Check
 
 To ensure data quality, we can look at total lipid intensity as bar chart (`plot_sample_tic`) or distribution of samples (`plot_sample_boxplot`).
 
@@ -207,7 +214,7 @@ plot_mva(mvaresults, color_by="group", components = c(1,2))
 Plotting other components is possible by specifying `components` argument. For
 example `components = c(2,3)` plots second and third components.
 
-## Supervised multivariate analysis
+### Supervised multivariate analysis
 
 Supervised multivariate analyses, such as OPLS and OPLS-DA can be performed to determine which lipids are associated with a group (y-variable) of interest. In this example we use "Diet" as grouping, and display the results in a scores plot.
 
@@ -293,4 +300,9 @@ the same chain properties.
 
 ```{r, fig.height=8}
 plot_chain_distribution(de_results)
+```
+
+# Session information
+```{r}
+sessionInfo()
 ```
