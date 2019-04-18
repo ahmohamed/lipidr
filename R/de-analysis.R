@@ -15,7 +15,6 @@
 #' @param group_col Name of the column containing sample groups.
 #'
 #' @importFrom forcats fct_drop
-#' @importFrom dplyr one_of
 #' @importFrom rlang quos
 #' @importFrom stats model.matrix setNames
 #' @return TopTable as returned by limma package
@@ -128,7 +127,6 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 #'
 #' @return `significant_molecules` returns a character vector with names of
 #'   significantly differentially changed lipids.
-#' @importFrom dplyr %>% filter
 #' @export
 #'
 #' @examples

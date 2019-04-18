@@ -1,5 +1,6 @@
 #' @import ggplot2
-{}
+#' @import dplyr
+NULL
 
 
 #' Plot a bar chart for total sample intensity

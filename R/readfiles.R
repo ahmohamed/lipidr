@@ -1,7 +1,6 @@
 #' Read Skyline exported files
 #'
 #' @param files List of Skyline exported files in CSV format.
-#' @importFrom dplyr %>% arrange mutate n
 #' @importFrom forcats fct_inorder
 #' @return SummarizedExperiment object.
 #' @export
@@ -46,7 +45,6 @@ read_skyline <- function(files) {
 #' @param data Skyline data.frame created by [read_skyline()].
 #' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
-#' @importFrom dplyr %>% left_join
 #' @importFrom SummarizedExperiment rowData rowData<- colData colData<-
 #' @return Skyline data.frame with sample group information.
 #' @export
@@ -108,7 +106,6 @@ add_sample_annotation <- function(data, annot_file) {
 #' Internal method to read skyline file
 #' @param file skyline exported file in CSV format
 #' @importFrom utils read.csv
-#' @importFrom dplyr %>% vars matches mutate_at
 #' @importFrom tidyr gather spread separate
 #' @return std data.frame
 .read_skyline_file <- function(file) {

@@ -7,8 +7,6 @@
 #' @param method Choose to summarize multiple transitions by taking the average
 #'   or maximum intensity.
 #'
-#' @importFrom dplyr %>% vars matches arrange group_by_at ungroup
-#' @importFrom dplyr group_indices summarise first
 #' @return A SkylineExperiment object with single intensities per lipid molecule
 #' @export
 #'

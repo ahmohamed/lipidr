@@ -11,7 +11,6 @@
 #' @return A data.frame with lipid annotations as columns. Input lipid names
 #'   are given in a column named "Molecule".
 #'
-#' @importFrom dplyr %>% filter left_join full_join
 #' @export
 #'
 #' @examples
@@ -108,7 +107,6 @@ annotate_lipids <- function(molecules) {
   ))
 }
 
-#' @importFrom dplyr %>% mutate rowwise ungroup
 #' @importFrom tidyr separate
 .parse_lipid_info <- function(clean_df) {
   .data_internal("lipidnames_pattern")

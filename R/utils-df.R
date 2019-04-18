@@ -13,7 +13,6 @@ to_rownames_ <- function(df, col = "rowname") {
   df
 }
 
-#' @importFrom dplyr select
 #' @importFrom tidyr spread
 #' @importFrom rlang sym
 to_num_matrix <- function(data, sample, feature, measure) {

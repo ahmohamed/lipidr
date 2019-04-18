@@ -18,7 +18,6 @@
 #'
 #' @return A SkylineExperiment object with normalized values
 #' @importFrom SummarizedExperiment assay<- assays<-
-#' @importFrom dplyr %>% vars select group_by mutate
 #' @importFrom rlang sym UQ
 #' @export
 #' @references Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006).
@@ -86,8 +85,6 @@ normalize_pqn <- function(data, measure = "Area",
 #' @return A SkylineExperiment object with normalized values. Each molecule
 #'     is normalized against the internal standard from the same class.
 #'
-#' @importFrom dplyr %>% select group_by mutate filter ungroup
-#' @importFrom dplyr left_join inner_join
 #' @importFrom rlang sym UQ
 #' @export
 #'

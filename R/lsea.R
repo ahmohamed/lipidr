@@ -12,7 +12,6 @@
 #'     \item sets   Lipid sets tested, with their member molecules.
 #'   }
 #'
-#' @importFrom dplyr %>% bind_rows arrange rename
 #' @importFrom rlang :=
 #' @export
 #'
@@ -73,7 +72,6 @@ lsea <- function(de.results,
 #'
 #' @return `significant_lipidsets` returns a list of character vectors of
 #'   significantly enriched sets for each contrast.
-#' @importFrom dplyr %>% filter
 #' @export
 #' @examples
 #' sig_lipidsets <- significant_lipidsets(enrich_results)
@@ -126,7 +124,6 @@ plot_class_enrichment <- function(de.results, significant.sets,
 #'
 #' @return List of lipid sets
 #' @export
-#' @importFrom dplyr %>% filter distinct
 #' @importFrom tidyr gather unite
 #' @examples
 #' data(data_normalized)
