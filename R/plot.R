@@ -4,7 +4,7 @@ NULL
 
 #' Inofrmative plots to investigate samples
 #'
-#' `lipidr` supports two types of plots for sample quality chekcing.
+#' `lipidr` supports two types of plots for sample quality checking.
 #' `tic` plots a bar chart for total sample intensity.
 #' `boxplot` plots a boxplot chart to examine the distribution of values
 #' per sample.
@@ -41,29 +41,36 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   .display_plot(.plot_sample_boxplot(data, measure, log))
 }
 
-.plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
+.plot_sample_tic <- function(dlong, measure) {
   ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
 }
 
-.plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
+.plot_sample_boxplot <- function(dlong, measure) {
   ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
 }
 
-#' Plot a bar chart for standard deviation of a certain measure in each class
+#' Inofrmative plots to investigate lipid classes
 #'
-#' The function is usually used to look at standard deviations of intensity in
-#' each class, but can also be used to look at different measures such as
-#' `Retention.Time`, to ensure all lipids are eluted within the expected range.
-#' To assess instrumental variation apply the function to technical quality
-#' control samples.
+#' `lipidr` supports two types of plots for to look at lipid classes.
+#' `sd` plots a bar chart for standard deviation of a certain measure in each
+#' class. This plot type is usually used to look at standard deviations of
+#' intensity in each class, but can also be used to look at different measures
+#' such as `Retention.Time`, to ensure all lipids are eluted within the expected
+#' range. To assess instrumental variation apply the function to technical
+#' quality control samples.
+#' `boxplot` Plots a boxplot chart to examine the distribution of values per
+#' class. This plot type is usually used to look at the intensity distribution
+#' in eachclass, but can also be used to look at different measures, such as
+#' `Retention.Time` or `Background`.
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
+#' @param type plot type, either `sd` or `boxplot`. Default is `sd`
 #' @param measure Which measure to plot the distribution of: usually Area,
 #'   Area.Normalized, Height or Retention.Time
 #' @param log Whether values should be log2 transformed
@@ -74,56 +81,40 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' @examples
 #' data(data_normalized)
 #'
-#' plot_class_sd(data_normalized, "Area", log = TRUE)
-#' plot_class_sd(data_normalized, "Retention.Time", log = FALSE)
-plot_class_sd <- function(data, measure = "Area", log = TRUE) {
+#' d_qc <- data_normalized[, data_normalized$group == "QC"]
+#' plot_lipidclass(d_qc, "sd", "Area", log = TRUE)
+#' plot_lipidclass(d_qc, "sd", "Retention.Time", log = FALSE)
+#' plot_lipidclass(d_qc, "boxplot", "Area", log = TRUE)
+#' plot_lipidclass(d_qc, "boxplot", "Retention.Time", log = FALSE)
+plot_lipidclass <- function(data, type = c("sd", "boxplot"),
+  measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  type <- match.arg(type)
   dlong <- to_long_format(data, measure)
   if (log) {
     measure <- .check_log(data, measure)
   }
 
-  p <- ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+  if (type == "sd") {
+    return(.display_plot(.plot_class_sd(dlong, measure)))
+  }
+
+  .display_plot(.plot_class_boxplot(dlong, measure))
+}
+
+.plot_class_sd <- function(dlong, measure) {
+  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("SD of", measure))
-
-  .display_plot(p)
 }
 
-#' Plot a boxplot chart to examine the distribution of values per class
-#'
-#' The function is usually used to look at the intensity distribution in each
-#' class, but can also be used to look at different measures, such as
-#' `Retention.Time` or `Background`.
-#'
-#' @param data SkylineExperiment object created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height.
-#' @param log Whether values should be log2 transformed.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' d_qc <- data_normalized[, data_normalized$group == "QC"]
-#'
-#' plot_class_boxplot(d_qc, "Area", log = TRUE)
-#' plot_class_boxplot(d_qc, "Retention.Time", log = FALSE)
-plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
-  dlong <- to_long_format(data, measure)
-  if (log) {
-    measure <- .check_log(data, measure)
-  }
-
-  p <- ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+.plot_class_boxplot <- function(dlong, measure) {
+  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
     geom_boxplot() +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
-
-  .display_plot(p)
 }
 
 

@@ -159,7 +159,7 @@ plot_molecule_sd(d_qc, measure = "Area")
 Or intensity distribution within different lipid classes.
 
 ```{r, fig.height=5}
-plot_class_boxplot(d)
+plot_lipidclass(d, "boxplot")
 ```
 
 ### Interactive plots

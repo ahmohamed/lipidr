@@ -21,7 +21,7 @@ Area.Normalized or Height.}
 A ggplot object.
 }
 \description{
-\code{lipidr} supports two types of plots for sample quality chekcing.
+\code{lipidr} supports two types of plots for sample quality checking.
 \code{tic} plots a bar chart for total sample intensity.
 \code{boxplot} plots a boxplot chart to examine the distribution of values
 per sample.
