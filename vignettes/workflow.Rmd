@@ -143,16 +143,16 @@ d_qc = d[, d$group == "QC"]
 
 ## Raw Data Quality Check
 
-To ensure data quality, we can look at total lipid intensity as bar chart (`plot_sample_tic`) or distribution of samples (`plot_sample_boxplot`).
+To ensure data quality, we can look at total lipid intensity as bar chart or distribution of samples as a boxplot.
 
 ```{r, fig.height=6}
-plot_sample_tic(d, log=TRUE)
+plot_samples(d, type = "tic", log = TRUE)
 ```
 
 We can also look at intensity and retention time distributions for each lipid molecule using `plot_molecule_boxplot`. It is recommended to assess the variation across quality control samples.
 
 ```{r, fig.width=10, fig.height=6}
-plot_molecule_sd(d_qc, measure = "Retention.Time", log=FALSE)
+plot_molecule_sd(d_qc, measure = "Retention.Time", log = FALSE)
 plot_molecule_sd(d_qc, measure = "Area")
 ```
 
