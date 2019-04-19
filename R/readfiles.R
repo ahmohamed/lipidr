@@ -42,7 +42,7 @@ read_skyline <- function(files) {
 
 #' Add sample annotation to Skyline data frame
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' @param data SkylineExperiment object created by [read_skyline()].
 #' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
 #' @importFrom SummarizedExperiment rowData rowData<- colData colData<-

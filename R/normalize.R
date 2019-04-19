@@ -74,7 +74,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' @param data SkylineExperiment object created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area.Normalized or Height.
 #' @param exclude Samples to exclude, can be either: \cr

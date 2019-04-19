@@ -3,7 +3,7 @@
 #' Calculate a single intensity for molecules with multiple transitions,
 #' by determining the average or maximum intensity.
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' @param data SkylineExperiment object created by [read_skyline()].
 #' @param method Choose to summarize multiple transitions by taking the average
 #'   or maximum intensity.
 #'

@@ -7,7 +7,7 @@
 plot_class_boxplot(data, measure = "Area", log = TRUE)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
 Area.Normalized or Height.}

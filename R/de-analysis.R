@@ -6,7 +6,7 @@
 #' design matrix, useful for complex experimental designs or for adjusting
 #' possible confounding variables.
 #'
-#' @param data Skyline data.frame created by [read_skyline()],
+#' @param data SkylineExperiment object created by [read_skyline()],
 #'   should be normalized and log2 transformed.
 #' @param ... Expressions, or character strings which can be parsed to
 #'   expressions, specifying contrasts. These are passed to

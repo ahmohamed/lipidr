@@ -7,7 +7,7 @@
 summarize_transitions(data, method = c("max", "average"))
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{method}{Choose to summarize multiple transitions by taking the average
 or maximum intensity.}
