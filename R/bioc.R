@@ -3,15 +3,11 @@ utils::globalVariables(c(".", "TransitionId", "Sample"))
 
 #' SkylineExperiment object
 #'
-#' @slot attrs Extra slot to hold the workflow stage for the data,
-#'   whether normalized, summarized or log transformed.
-#'
 #' @export
 #' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 .SkylineExperiment <- setClass(
   "SkylineExperiment",
-  slots = list(attrs = "list"),
   contains = "SummarizedExperiment"
 )
 
@@ -34,9 +30,9 @@ utils::globalVariables(c(".", "TransitionId", "Sample"))
 #' @export
 SkylineExperiment <- function(assay_list, attrs,
                               colData = NULL, rowData = NULL) {
-  se <- SummarizedExperiment(assay_list, colData = colData, rowData = rowData)
+  se <- SummarizedExperiment(assay_list,
+    colData = colData, rowData = rowData, metadata=attrs)
   ret <- .SkylineExperiment(se)
-  ret@attrs <- attrs
   return(ret)
 }
 
@@ -78,7 +74,7 @@ SkylineExperiment <- function(assay_list, attrs,
 #' @importFrom SummarizedExperiment assay
 #' @importFrom tidyr gather
 to_long_format <- function(ds, measure = "Area") {
-  dims <- ds@attrs$dimnames
+  dims <- ds@metadata$dimnames
   assay(ds, measure) %>%
     as.data.frame() %>%
     rownames_to_column(dims[[1]]) %>%
@@ -101,11 +97,11 @@ to_df <- function(d, dim = "row") {
     rownames(row_data) <- rownames(d)
     row_data %>%
       as.data.frame() %>%
-      rownames_to_column(d@attrs$dimnames[[1]])
+      rownames_to_column(d@metadata$dimnames[[1]])
   } else {
     colData(d) %>%
       as.data.frame() %>%
-      rownames_to_column(d@attrs$dimnames[[2]])
+      rownames_to_column(d@metadata$dimnames[[2]])
   }
 }
 .join_wrapper <- function(f) {

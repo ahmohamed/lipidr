@@ -106,7 +106,7 @@ normalize_itsd <- function(data, measure = "Area",
   if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
     stop(measure, " is already normalized")
   }
-  if (!data@attrs$summarized) {
+  if (!data@metadata$summarized) {
     stop("Data should be summarized using summarize_transitions")
   }
 

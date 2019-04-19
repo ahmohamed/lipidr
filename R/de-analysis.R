@@ -102,7 +102,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   }
 
   efit <- eBayes(vfit)
-  dimname_x <- data@attrs$dimnames[[1]]
+  dimname_x <- data@metadata$dimnames[[1]]
 
   top <- lapply(
     coef, function(x)

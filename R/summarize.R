@@ -19,7 +19,7 @@
 #' d_summarized <- summarize_transitions(d, method = "average")
 summarize_transitions <- function(data, method = c("max", "average")) {
   stopifnot(inherits(data, "SkylineExperiment"))
-  if (data@attrs$summarized) {
+  if (data@metadata$summarized) {
     stop("data is already summarized")
   }
 
@@ -54,7 +54,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
 
   row_data <- row_data[ row.names(assay_list[[1]]), ]
 
-  attrs <- data@attrs
+  attrs <- data@metadata
   attrs$summarized <- TRUE
   attrs$dimnames[[1]] <- "MoleculeId"
   SkylineExperiment(
