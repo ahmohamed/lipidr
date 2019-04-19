@@ -13,10 +13,10 @@ plot_molecules(data, type = c("cv", "sd", "boxplot"), measure = "Area",
 \item{type}{plot type, either \code{cv}, \code{sd} or \code{boxplot}. Default is \code{cv}.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
-Area.Normalized or Height.}
+Area.Normalized or Height. Default is \code{Area}}
 
 \item{log}{Whether values should be log2 transformed
-(Set FALSE for retention time).}
+(Set FALSE for retention time). Default is \code{TRUE}}
 }
 \value{
 A ggplot object.

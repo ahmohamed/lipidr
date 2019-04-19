@@ -11,8 +11,9 @@
 #' @param ... Expressions, or character strings which can be parsed to
 #'   expressions, specifying contrasts. These are passed to
 #'   `limma::makeContrasts`.
-#' @param measure Name of the column containing sample names.
-#' @param group_col Name of the column containing sample groups.
+#' @param measure Name of the column containing sample names. Default is `Area`.
+#' @param group_col Name of the column containing sample groups. If not
+#'   provided, defaults to first sample annotation column.
 #'
 #' @importFrom forcats fct_drop
 #' @importFrom rlang quos
@@ -122,8 +123,8 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 #' each contrast.
 #'
 #' @param de.results Output of [de_analysis()].
-#' @param p.cutoff Significance threshold.
-#' @param logFC.cutoff Cutoff limit for log2 fold change.
+#' @param p.cutoff Significance threshold.  Default is `0.05`.
+#' @param logFC.cutoff Cutoff limit for log2 fold change.  Default is `1`.
 #'
 #' @return `significant_molecules` returns a character vector with names of
 #'   significantly differentially changed lipids.
@@ -142,7 +143,7 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' results.
 #'
 #' @param show.labels Whether labels should be displayed for
-#'   significant lipids.
+#'   significant lipids.  Default is `TRUE`.
 #'
 #' @return `plot_results_volcano` returns a ggplot object.
 #' @export

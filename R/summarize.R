@@ -5,7 +5,7 @@
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param method Choose to summarize multiple transitions by taking the average
-#'   or maximum intensity.
+#'   or maximum intensity. Default is `max`
 #'
 #' @return A SkylineExperiment object with single intensities per lipid molecule
 #' @export

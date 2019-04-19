@@ -13,9 +13,9 @@ plot_samples(data, type = c("tic", "boxplot"), measure = "Area",
 \item{type}{plot type, either \code{tic} or \code{boxplot}. Default is \code{tic}.}
 
 \item{measure}{Which measure to use as intensity, usually Area,
-Area.Normalized or Height.}
+Area.Normalized or Height. Default is \code{Area}}
 
-\item{log}{Whether values should be log2 transformed.}
+\item{log}{Whether values should be log2 transformed. Default is \code{TRUE}}
 }
 \value{
 A ggplot object.
@@ -30,8 +30,8 @@ per sample.
 data(data_normalized)
 
 plot_samples(data_normalized, type = "tic", "Area", log = TRUE)
-plot_sample_tic(data_normalized, type = "tic", "Background", log = FALSE)
-plot_sample_boxplot(
+plot_samples(data_normalized, type = "tic", "Background", log = FALSE)
+plot_samples(
   data_normalized[, data_normalized$group == "QC"],
   type = "boxplot",
   measure = "Retention.Time", log = FALSE

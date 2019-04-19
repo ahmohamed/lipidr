@@ -11,8 +11,8 @@ NULL
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param type plot type, either `tic` or `boxplot`. Default is `tic`.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height.
-#' @param log Whether values should be log2 transformed.
+#'   Area.Normalized or Height. Default is `Area`
+#' @param log Whether values should be log2 transformed. Default is `TRUE`
 #'
 #' @return A ggplot object.
 #' @export
@@ -20,8 +20,8 @@ NULL
 #' data(data_normalized)
 #'
 #' plot_samples(data_normalized, type = "tic", "Area", log = TRUE)
-#' plot_sample_tic(data_normalized, type = "tic", "Background", log = FALSE)
-#' plot_sample_boxplot(
+#' plot_samples(data_normalized, type = "tic", "Background", log = FALSE)
+#' plot_samples(
 #'   data_normalized[, data_normalized$group == "QC"],
 #'   type = "boxplot",
 #'   measure = "Retention.Time", log = FALSE
@@ -35,10 +35,10 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
     measure <- .check_log(data, measure)
   }
   if (type == "tic") {
-    return(.display_plot(.plot_sample_tic(data, measure, log)))
+    return(.display_plot(.plot_sample_tic(dlong, measure)))
   }
 
-  .display_plot(.plot_sample_boxplot(data, measure, log))
+  .display_plot(.plot_sample_boxplot(dlong, measure))
 }
 
 .plot_sample_tic <- function(dlong, measure) {
@@ -72,8 +72,8 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param type plot type, either `boxplot` or `sd`. Default is `boxplot`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized, Height or Retention.Time
-#' @param log Whether values should be log2 transformed
+#'   Area.Normalized, Height or Retention.Time. Default is `Area`
+#' @param log Whether values should be log2 transformed. Default is `TRUE`
 #'   (Set FALSE for retention time).
 #'
 #' @return A ggplot object.
@@ -125,8 +125,9 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
 #'
 #' @param de_results Output of [de_analysis()].
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
-#'   Adj.P.Val.
-#' @param contrast Which comparison to plot.
+#'   Adj.P.Val. Default is `logFC`
+#' @param contrast Which comparison to plot. if not provided, defaults to the 
+#'   the first comparison.
 #'
 #' @return A ggplot object.
 #' @export
@@ -186,9 +187,9 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param type plot type, either `cv`, `sd` or `boxplot`. Default is `cv`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height.
+#'   Area.Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed
-#'   (Set FALSE for retention time).
+#'   (Set FALSE for retention time). Default is `TRUE`
 #'
 #' @return A ggplot object.
 #' @export

@@ -20,12 +20,13 @@ top_lipids(mvaresults, top.n = 10)
 \arguments{
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{measure}{Which measure to use as intensity, usually Area_norm.
+\item{measure}{Which measure to use as intensity, usually Area (default).
 The measure should be already summarized and normalized.}
 
-\item{method}{Either PCA, PCoA, OPLS or OPLS-DA.}
+\item{method}{Either PCA, PCoA, OPLS or OPLS-DA.  Default is \code{PCA}.}
 
-\item{group_col}{Sample annotation to use as grouping column.}
+\item{group_col}{Sample annotation to use as grouping column. If not
+provided, samples are treated independently.}
 
 \item{groups}{A numeric grouping (OPLS) or two groups to be used for
 supervised analysis (OPLS-DA), ignored in other methods.}
@@ -36,12 +37,14 @@ ignored in other methods.}
 \item{mvaresults}{Results obtained from \code{\link[=mva]{mva()}}.}
 
 \item{components}{Which components to plot. Ignored for PCoA, OPLS and
-OPLS-DA results.}
+OPLS-DA results. Default is first 2 components.}
 
 \item{color_by}{Sample annotation (or lipid annotation in case of
-\code{plot_mva_loadings}) to use as color.}
+\code{plot_mva_loadings}) to use as color. Defaults to individual samples /
+lipids}
 
-\item{top.n}{Number of top ranked features to highlight in the plot .}
+\item{top.n}{Number of top ranked features to highlight in the plot.
+If omitted, returns top 10 lipids.}
 }
 \value{
 Multivariate analysis results in \code{mvaresults} object.

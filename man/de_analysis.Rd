@@ -23,9 +23,10 @@ should be normalized and log2 transformed.}
 expressions, specifying contrasts. These are passed to
 \code{limma::makeContrasts}.}
 
-\item{measure}{Name of the column containing sample names.}
+\item{measure}{Name of the column containing sample names. Default is \code{Area}.}
 
-\item{group_col}{Name of the column containing sample groups.}
+\item{group_col}{Name of the column containing sample groups. If not
+provided, defaults to first sample annotation column.}
 
 \item{design}{Design matrix generated from \code{\link[=model.matrix]{model.matrix()}},
 or a design formula.}
@@ -35,12 +36,12 @@ the linear model is of interest.}
 
 \item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
-\item{p.cutoff}{Significance threshold.}
+\item{p.cutoff}{Significance threshold.  Default is \code{0.05}.}
 
-\item{logFC.cutoff}{Cutoff limit for log2 fold change.}
+\item{logFC.cutoff}{Cutoff limit for log2 fold change.  Default is \code{1}.}
 
 \item{show.labels}{Whether labels should be displayed for
-significant lipids.}
+significant lipids.  Default is \code{TRUE}.}
 }
 \value{
 TopTable as returned by limma package

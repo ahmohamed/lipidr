@@ -13,10 +13,11 @@ plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 \arguments{
 \item{de_results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
-\item{contrast}{Which comparison to plot.}
+\item{contrast}{Which comparison to plot. if not provided, defaults to the
+the first comparison.}
 
 \item{measure}{Which measure to plot the distribution of: logFC, P.Value,
-Adj.P.Val.}
+Adj.P.Val. Default is \code{logFC}}
 }
 \value{
 A ggplot object.

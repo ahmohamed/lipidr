@@ -15,21 +15,22 @@ plot_class_enrichment(de.results, significant.sets, measure = "logFC")
 \arguments{
 \item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
-\item{rank.by}{Statistic used to rank the lipid list.}
+\item{rank.by}{Statistic used to rank the lipid list.  Default is \code{logFC}.}
 
 \item{...}{Extra parameters passed to \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.}
 
 \item{enrich.results}{Output of \code{\link[=lsea]{lsea()}}.}
 
-\item{p.cutoff}{Significance threshold.}
+\item{p.cutoff}{Significance threshold.  Default is \code{0.05}.}
 
-\item{size.cutoff}{Minimum number of lipids in a set tested for enrichment.}
+\item{size.cutoff}{Minimum number of lipids in a set tested for enrichment.
+Default is \code{2}.}
 
 \item{significant.sets}{List of significantly changed lipid sets
 (output of \code{\link[=significant_lipidsets]{significant_lipidsets()}}).}
 
 \item{measure}{Which measure to plot the distribution of: logFC, P.Value,
-Adj.P.Val.}
+Adj.P.Val. Default is \code{logFC}.}
 }
 \value{
 \code{lsea} returns enrichment results (data.frame) as returned from

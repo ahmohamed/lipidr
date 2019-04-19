@@ -1,7 +1,7 @@
 #' Lipid set enrichment analysis (LSEA)
 #'
 #' @param de.results Output of [de_analysis()].
-#' @param rank.by Statistic used to rank the lipid list.
+#' @param rank.by Statistic used to rank the lipid list.  Default is `logFC`.
 #' @param ... Extra parameters passed to [fgsea::fgsea()].
 #'
 #' @return `lsea` returns enrichment results (data.frame) as returned from
@@ -67,8 +67,9 @@ lsea <- function(de.results,
 #' @describeIn lsea gets a list of significantly changed lipid sets
 #'
 #' @param enrich.results Output of [lsea()].
-#' @param p.cutoff Significance threshold.
+#' @param p.cutoff Significance threshold.  Default is `0.05`.
 #' @param size.cutoff Minimum number of lipids in a set tested for enrichment.
+#'    Default is `2`.
 #'
 #' @return `significant_lipidsets` returns a list of character vectors of
 #'   significantly enriched sets for each contrast.
@@ -90,7 +91,7 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 #' @param significant.sets List of significantly changed lipid sets
 #'   (output of [significant_lipidsets()]).
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
-#'   Adj.P.Val.
+#'   Adj.P.Val. Default is `logFC`.
 #'
 #' @return `plot_class_enrichment` returns a ggplot object.
 #' @export

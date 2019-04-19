@@ -10,7 +10,7 @@ summarize_transitions(data, method = c("max", "average"))
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{method}{Choose to summarize multiple transitions by taking the average
-or maximum intensity.}
+or maximum intensity. Default is \code{max}}
 }
 \value{
 A SkylineExperiment object with single intensities per lipid molecule

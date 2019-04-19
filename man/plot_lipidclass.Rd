@@ -13,9 +13,9 @@ plot_lipidclass(data, type = c("boxplot", "sd"), measure = "Area",
 \item{type}{plot type, either \code{boxplot} or \code{sd}. Default is \code{boxplot}.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
-Area.Normalized, Height or Retention.Time}
+Area.Normalized, Height or Retention.Time. Default is \code{Area}}
 
-\item{log}{Whether values should be log2 transformed
+\item{log}{Whether values should be log2 transformed. Default is \code{TRUE}
 (Set FALSE for retention time).}
 }
 \value{

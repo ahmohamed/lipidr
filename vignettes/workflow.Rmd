@@ -184,7 +184,7 @@ followed by sample normalization using this dilution factor.
 
 ```{r, fig.height=6}
 d_normalized = normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
-plot_sample_boxplot(d_normalized)
+plot_samples(d_normalized, "boxplot")
 ```
 
 By specifying `exclude = "blank"`, blank runs are automatically detected and

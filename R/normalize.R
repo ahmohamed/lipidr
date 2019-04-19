@@ -9,12 +9,13 @@
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height.
+#'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
-#'   logical vector with the same length as samples.
+#'   logical vector with the same length as samples. Default.
 #'
-#' @param log Whether the normalized values should be log2 transformed.
+#' @param log Whether the normalized values should be log2 transformed. Default
+#'   is `TRUE`.
 #'
 #' @return A SkylineExperiment object with normalized values
 #' @importFrom SummarizedExperiment assay<- assays<-
@@ -40,16 +41,7 @@
 #' )
 normalize_pqn <- function(data, measure = "Area",
                           exclude = "blank", log = TRUE) {
-  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
-    stop(measure, " is already normalized")
-  }
-  if (!is.null(exclude)) {
-    if (exclude == "blank") {
-      data <- data[, !.is_blank(data)]
-    } else {
-      data <- data[, exclude]
-    }
-  }
+  data <- .prenormalize_check(data, measure, exclude)
   m <- assay(data, measure)
 
   # factor_n = median ( lipid_i_n/ avg(lipid_i) )
@@ -76,11 +68,12 @@ normalize_pqn <- function(data, measure = "Area",
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height.
+#'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
-#'   logical vector with the same length as samples.
-#' @param log whether the normalized values should be log2 transformed.
+#'   logical vector with the same length as samples. Default.
+#' @param log whether the normalized values should be log2 transformed. Default
+#'   is `TRUE`.
 #'
 #' @return A SkylineExperiment object with normalized values. Each molecule
 #'     is normalized against the internal standard from the same class.
@@ -103,20 +96,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' )
 normalize_itsd <- function(data, measure = "Area",
                            exclude = "blank", log = TRUE) {
-  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
-    stop(measure, " is already normalized")
-  }
-  if (!data@metadata$summarized) {
-    stop("Data should be summarized using summarize_transitions")
-  }
-
-  if (!is.null(exclude)) {
-    if (exclude == "blank") {
-      data <- data[, !.is_blank(data)]
-    } else {
-      data <- data[, exclude]
-    }
-  }
+  data <- .prenormalize_check(data, measure, exclude)
   itsd <- rowData(data)$itsd
   if (sum(itsd) == 0) {
     stop("No internal standards found in your lipid list.")
@@ -151,4 +131,18 @@ normalize_itsd <- function(data, measure = "Area",
   }
 
   return(data)
+}
+
+.prenormalize_check <- function(data, measure, exclude) {
+  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
+    stop(measure, " is already normalized")
+  }
+  if (!is.null(exclude)) {
+    if (exclude == "blank") {
+      data <- data[, !.is_blank(data)]
+    } else {
+      data <- data[, exclude]
+    }
+  }
+  data
 }

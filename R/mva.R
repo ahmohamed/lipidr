@@ -13,10 +13,11 @@ utils::globalVariables(c("molrank"))
 #' Missing data are imputed using average lipid intensity across all samples.
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
-#' @param measure Which measure to use as intensity, usually Area_norm.
+#' @param measure Which measure to use as intensity, usually Area (default).
 #'   The measure should be already summarized and normalized.
-#' @param method Either PCA, PCoA, OPLS or OPLS-DA.
-#' @param group_col Sample annotation to use as grouping column.
+#' @param method Either PCA, PCoA, OPLS or OPLS-DA.  Default is `PCA`.
+#' @param group_col Sample annotation to use as grouping column. If not
+#'   provided, samples are treated independently.
 #' @param groups A numeric grouping (OPLS) or two groups to be used for
 #'   supervised analysis (OPLS-DA), ignored in other methods.
 #' @param ... Extra arguments to be passed to [opls()] for OPLS-DA,
@@ -233,9 +234,10 @@ plot_opls <- function(mvaresults, components,
 #'
 #' @param mvaresults Results obtained from [mva()].
 #' @param components Which components to plot. Ignored for PCoA, OPLS and
-#'   OPLS-DA results.
+#'   OPLS-DA results. Default is first 2 components.
 #' @param color_by Sample annotation (or lipid annotation in case of
-#'   `plot_mva_loadings`) to use as color.
+#'   `plot_mva_loadings`) to use as color. Defaults to individual samples /
+#'   lipids
 #'
 #' @return `plot_mva` returns a ggplot of the sample scores.
 #' @export
@@ -294,7 +296,8 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
 #' @describeIn mva Plot a multivariate scatterplot of feature loadings
 #' to investigate feature importance.
 #'
-#' @param top.n Number of top ranked features to highlight in the plot .
+#' @param top.n Number of top ranked features to highlight in the plot.
+#'   If omitted, returns top 10 lipids.
 #'
 #' @return `plot_mva_loadings` returns a ggplot of the loadings.
 #' @export

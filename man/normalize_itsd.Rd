@@ -10,13 +10,14 @@ normalize_itsd(data, measure = "Area", exclude = "blank", log = TRUE)
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{Which measure to use as intensity, usually Area,
-Area.Normalized or Height.}
+Area.Normalized or Height. Default is \code{Area}.}
 
 \item{exclude}{Samples to exclude, can be either: \cr
 "blank" - automatically detected blank samples and exclude them
-logical vector with the same length as samples.}
+logical vector with the same length as samples. Default.}
 
-\item{log}{whether the normalized values should be log2 transformed.}
+\item{log}{whether the normalized values should be log2 transformed. Default
+is \code{TRUE}.}
 }
 \value{
 A SkylineExperiment object with normalized values. Each molecule
