@@ -6,6 +6,10 @@
 \title{lipidDefaults.
 A set of default mappings and annotation used internally to correctly parse
 lipid molecule names.}
+\format{An object of class \code{list} of length 2.}
+\usage{
+lipidDefaults
+}
 \description{
 lipidDefaults.
 A set of default mappings and annotation used internally to correctly parse
@@ -14,3 +18,4 @@ lipid molecule names.
 \examples{
 data(lipidDefaults)
 }
+\keyword{datasets}

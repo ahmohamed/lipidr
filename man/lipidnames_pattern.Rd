@@ -4,6 +4,10 @@
 \name{lipidnames_pattern}
 \alias{lipidnames_pattern}
 \title{Patterns used in parsing lipid names}
+\format{An object of class \code{list} of length 8.}
+\usage{
+lipidnames_pattern
+}
 \description{
 A collection of patterns to extract lipid class and chain information
 from lipid names. Used internally by the package.
@@ -11,3 +15,4 @@ from lipid names. Used internally by the package.
 \examples{
 data(lipidnames_pattern)
 }
+\keyword{datasets}

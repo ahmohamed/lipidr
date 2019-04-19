@@ -4,6 +4,10 @@
 \name{data_normalized}
 \alias{data_normalized}
 \title{Example dataset (normalized and log2 transformed)}
+\format{An object of class \code{SkylineExperiment} with 278 rows and 56 columns.}
+\usage{
+data_normalized
+}
 \description{
 A dataset containing MRM mass spectrometry-based lipidomics data from murine
 serum samples. Mice were fed a normal or high-fat diet and had access to
@@ -16,3 +20,4 @@ generate this dataset.
 \examples{
 data(data_nomalized)
 }
+\keyword{datasets}

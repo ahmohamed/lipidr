@@ -34,7 +34,7 @@ NULL
 #' @name lipidDefaults
 #' @examples
 #' data(lipidDefaults)
-NULL
+"lipidDefaults"
 
 #' Example dataset (normalized and log2 transformed)
 #'
@@ -50,7 +50,7 @@ NULL
 #' @name data_normalized
 #' @examples
 #' data(data_nomalized)
-NULL
+"data_normalized"
 
 #' Patterns used in parsing lipid names
 #'
@@ -61,7 +61,7 @@ NULL
 #' @name lipidnames_pattern
 #' @examples
 #' data(lipidnames_pattern)
-NULL
+"lipidnames_pattern"
 
 .myDataEnv <- new.env(parent = emptyenv()) # not exported
 
