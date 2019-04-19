@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_samples}
 \alias{plot_samples}
-\title{Inofrmative plots to investigate samples}
+\title{Informative plots to investigate samples}
 \usage{
 plot_samples(data, type = c("tic", "boxplot"), measure = "Area",
   log = TRUE)
@@ -10,7 +10,7 @@ plot_samples(data, type = c("tic", "boxplot"), measure = "Area",
 \arguments{
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{type}{plot type, either \code{tic} or \code{boxplot}. Default is \code{tic}}
+\item{type}{plot type, either \code{tic} or \code{boxplot}. Default is \code{tic}.}
 
 \item{measure}{Which measure to use as intensity, usually Area,
 Area.Normalized or Height.}
@@ -21,8 +21,8 @@ Area.Normalized or Height.}
 A ggplot object.
 }
 \description{
-\code{lipidr} supports two types of plots for sample quality checking.
-\code{tic} plots a bar chart for total sample intensity.
+\code{lipidr} supports two types of plots for sample quality checking.\cr\cr
+\code{tic} plots a bar chart for total sample intensity.\cr\cr
 \code{boxplot} plots a boxplot chart to examine the distribution of values
 per sample.
 }

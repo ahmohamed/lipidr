@@ -2,15 +2,15 @@
 % Please edit documentation in R/plot.R
 \name{plot_lipidclass}
 \alias{plot_lipidclass}
-\title{Inofrmative plots to investigate lipid classes}
+\title{Informative plots to investigate lipid classes}
 \usage{
-plot_lipidclass(data, type = c("sd", "boxplot"), measure = "Area",
+plot_lipidclass(data, type = c("boxplot", "sd"), measure = "Area",
   log = TRUE)
 }
 \arguments{
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{type}{plot type, either \code{sd} or \code{boxplot}. Default is \code{sd}}
+\item{type}{plot type, either \code{boxplot} or \code{sd}. Default is \code{boxplot}.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
 Area.Normalized, Height or Retention.Time}
@@ -22,13 +22,13 @@ Area.Normalized, Height or Retention.Time}
 A ggplot object.
 }
 \description{
-\code{lipidr} supports two types of plots for to look at lipid classes.
+\code{lipidr} supports two types of plots for to visualize at lipid classes.\cr\cr
 \code{sd} plots a bar chart for standard deviation of a certain measure in each
 class. This plot type is usually used to look at standard deviations of
 intensity in each class, but can also be used to look at different measures
 such as \code{Retention.Time}, to ensure all lipids are eluted within the expected
 range. To assess instrumental variation apply the function to technical
-quality control samples.
+quality control samples. \cr\cr
 \code{boxplot} Plots a boxplot chart to examine the distribution of values per
 class. This plot type is usually used to look at the intensity distribution
 in eachclass, but can also be used to look at different measures, such as

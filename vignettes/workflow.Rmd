@@ -149,11 +149,11 @@ To ensure data quality, we can look at total lipid intensity as bar chart or dis
 plot_samples(d, type = "tic", log = TRUE)
 ```
 
-We can also look at intensity and retention time distributions for each lipid molecule using `plot_molecule_boxplot`. It is recommended to assess the variation across quality control samples.
+We can also look at intensity and retention time distributions for each lipid molecule using `plot_molecules(type = boxplot)`. It is recommended to assess the variation across quality control samples.
 
 ```{r, fig.width=10, fig.height=6}
-plot_molecule_sd(d_qc, measure = "Retention.Time", log = FALSE)
-plot_molecule_sd(d_qc, measure = "Area")
+plot_molecules(d_qc, "sd", measure = "Retention.Time", log = FALSE)
+plot_molecules(d_qc, "cv", measure = "Area")
 ```
 
 Or intensity distribution within different lipid classes.
