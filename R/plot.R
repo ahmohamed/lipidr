@@ -1,5 +1,7 @@
 #' @import ggplot2
-#' @import dplyr
+#' @importFrom dplyr filter left_join full_join mutate rowwise ungroup one_of inner_join
+#' @importFrom dplyr bind_rows arrange rename distinct select group_by n matches
+#' @importFrom dplyr mutate_at group_by_at group_indices summarise first vars
 NULL
 
 #' Informative plots to investigate samples
