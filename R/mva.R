@@ -163,7 +163,7 @@ run_opls <- function(data, y,
     y = y,
     predI = predI, orthoI = orthoI,
     scaleC = scaleC,
-    plotL = plotL, ...
+    fig.pdfC = plotL, ...
   )
 }
 
