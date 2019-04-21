@@ -157,13 +157,13 @@ mva <- function(data, measure = "Area",
 run_opls <- function(data, y,
                      predI = 1, orthoI = 1,
                      scaleC = "standard",
-                     fig.pdfC = NULL, ...) {
+                     plotL = FALSE, ...) {
   opls(
     data,
     y = y,
     predI = predI, orthoI = orthoI,
     scaleC = scaleC,
-    fig.pdfC = fig.pdfC, ...
+    fig.pdfC = plotL, ...
   )
 }
 
