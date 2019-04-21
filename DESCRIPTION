@@ -1,6 +1,6 @@
 Package: lipidr
 Title: Lipidomics Analysis Workflow in R
-Version: 0.99.12
+Version: 0.99.13
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
