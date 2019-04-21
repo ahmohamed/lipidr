@@ -1,6 +1,6 @@
 Package: lipidr
 Title: Lipidomics Analysis Workflow in R
-Version: 0.99.10
+Version: 0.99.11
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
@@ -39,7 +39,6 @@ Imports:
     ropls,
     magrittr
 License: MIT + file LICENSE
-Encoding: UTF-8
 Suggests: 
     knitr,
     rmarkdown,
