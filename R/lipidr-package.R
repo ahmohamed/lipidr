@@ -49,7 +49,7 @@ NULL
 #' @docType data
 #' @name data_normalized
 #' @examples
-#' data(data_nomalized)
+#' data(data_normalized)
 "data_normalized"
 
 #' Patterns used in parsing lipid names

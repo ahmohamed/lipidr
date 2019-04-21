@@ -18,6 +18,6 @@ and log2 transformed. Please see \link{normalize_pqn} for details on how to
 generate this dataset.
 }
 \examples{
-data(data_nomalized)
+data(data_normalized)
 }
 \keyword{datasets}
