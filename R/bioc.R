@@ -138,8 +138,10 @@ to_df <- function(d, dim = "row") {
 }
 
 #' @importFrom SummarizedExperiment colData rowData
+#' @importFrom S4Vectors metadata
 #' @export colData
 #' @export rowData
+#' @export metadata
 NULL
 
 #' @export
