@@ -16,20 +16,23 @@ setValidity("SkylineExperiment", function(object) {
   metadata <- metadata(object)
 
   dn <- metadata$dimnames
-  if (!is.character(dn) || length(dn != 2)) {
+  if (!is.character(dn) || length(dn) != 2) {
+    print(!is.character(dn))
+    print(length(dn != 2))
     msg <- "metadata should have a 'dimnames' character vector of length 2"
     errors <- c(errors, msg)
   }
 
   summarized <- metadata$summarized
-  if (!is.is.logical(summarized) || length(summarized != 1)) {
+  if (!is.logical(summarized) || length(summarized) != 1) {
     msg <- "metadata should have a 'summarized' logical value"
     errors <- c(errors, msg)
   }
 
   row_data <- rowData(object)
   annotations <- c("filename", "Molecule", "Class", "itsd")
-  if (!all(annotations %in% row_data)) {
+  if (!all(annotations %in% colnames(row_data))) {
+    annotations <- paste(annotations, collapse = ", ")
     msg <- paste("rowData should have these annotation columns:", annotations)
     errors <- c(errors, msg)
   }
@@ -84,6 +87,7 @@ SkylineExperiment <- function(assay_list, metadata,
     distinct()
   row_data <- toDataFrame(row_data, row.names.col = "TransitionId")
   row_data <- row_data[ row.names(assay_list[[1]]), ]
+  row_data <- row_data %>% left_join(annotate_lipids(row_data$Molecule))
   metadata <- list(summarized = FALSE, dimnames = c("TransitionId", "Sample"))
 
   SkylineExperiment(
