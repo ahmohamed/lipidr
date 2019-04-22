@@ -47,7 +47,7 @@ This vignette provides a step by step guide for downstream analysis of targeted
 lipidomics data, exported from Skyline.
 
 # Installation
-## From Bioconductor:
+## From Bioconductor
 In R console, type:
 
 ```r
@@ -56,7 +56,7 @@ if (!requireNamespace("BiocManager", quietly=TRUE))
 BiocManager::install("lipidr")  
 ```
 
-## From GitHub using devtools:
+## From GitHub using devtools
 In R console, type:
 
 ```r
