@@ -15,23 +15,21 @@ utils::globalVariables(c(".", "TransitionId", "Sample"))
 #'
 #' @param assay_list A list or SimpleList of matrix-like elements,
 #'   or a matrix-like object. Passed to [SummarizedExperiment()].
-#' @param attrs A list of extra attributes to be saved to SkylineExperiment
-#'   object.
-#' @param colData A DataFrame object describing the rows (contains generated
+#' @param rowData A DataFrame object describing the rows (contains generated
 #'   lipid annotations). Row names, if present, become the row names of the
 #'   SummarizedExperiment object. The number of rows of the DataFrame
 #'   must be equal to the number of rows of the matrices in assays.
-#' @param rowData An optional data.frame describing the samples (contains
+#' @param colData An optional DataFrame describing the samples (contains
 #'   clinical information). Row names, if present, become the column names of
 #'   the SkylineExperiment.
 #'
 #' @return SkylineExperiment object
 #' @importFrom SummarizedExperiment SummarizedExperiment
 #' @export
-SkylineExperiment <- function(assay_list, attrs,
+SkylineExperiment <- function(assay_list, metadata,
                               colData = NULL, rowData = NULL) {
   se <- SummarizedExperiment(assay_list,
-    colData = colData, rowData = rowData, metadata=attrs)
+    colData = colData, rowData = rowData, metadata = metadata)
   ret <- .SkylineExperiment(se)
   return(ret)
 }
@@ -61,13 +59,13 @@ SkylineExperiment <- function(assay_list, attrs,
     distinct()
   row_data <- toDataFrame(row_data, row.names.col = "TransitionId")
   row_data <- row_data[ row.names(assay_list[[1]]), ]
-  attrs <- list(summarized = FALSE, dimnames = c("TransitionId", "Sample"))
+  metadata <- list(summarized = FALSE, dimnames = c("TransitionId", "Sample"))
 
   SkylineExperiment(
     assay_list,
+    metadata = metadata,
     colData = col_data,
-    rowData = row_data,
-    attrs = attrs
+    rowData = row_data
   )
 }
 
