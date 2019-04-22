@@ -43,6 +43,7 @@ mva <- function(data, measure = "Area",
                 method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
                 group_col = NULL, groups = NULL, ...) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  validObject(data)
   method <- match.arg(method)
   data_f <- data[!rowData(data)$itsd, !.is_blank(data)]
   d <- data_f %>%

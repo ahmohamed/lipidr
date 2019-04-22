@@ -31,6 +31,7 @@ NULL
 plot_samples <- function(data, type = c("tic", "boxplot"),
   measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
   if (log) {
@@ -91,6 +92,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
   if (log) {
@@ -218,6 +220,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
   if (log) {

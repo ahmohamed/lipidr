@@ -11,6 +11,31 @@ utils::globalVariables(c(".", "TransitionId", "Sample"))
   contains = "SummarizedExperiment"
 )
 
+setValidity("SkylineExperiment", function(object) {
+  errors <- character()
+  metadata <- metadata(object)
+
+  dn <- metadata$dimnames
+  if (!is.character(dn) || length(dn != 2)) {
+    msg <- "metadata should have a 'dimnames' character vector of length 2"
+    errors <- c(errors, msg)
+  }
+
+  summarized <- metadata$summarized
+  if (!is.is.logical(summarized) || length(summarized != 1)) {
+    msg <- "metadata should have a 'summarized' logical value"
+    errors <- c(errors, msg)
+  }
+
+  row_data <- rowData(object)
+  annotations <- c("filename", "Molecule", "Class", "itsd")
+  if (!all(annotations %in% row_data)) {
+    msg <- paste("rowData should have these annotation columns:", annotations)
+    errors <- c(errors, msg)
+  }
+  if (length(errors) == 0) TRUE else errors
+})
+
 #' Constructor for Skyline experiment from list of assays
 #'
 #' @param assay_list A list or SimpleList of matrix-like elements,
