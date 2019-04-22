@@ -112,18 +112,10 @@ to_df <- function(d, dim = "row") {
   })
 }
 
-#' @export
-setMethod(
-  "colData",
-  c(x = "SkylineExperiment"),
-  selectMethod("colData", list("SummarizedExperiment"))
-)
-#' @export
-setMethod(
-  "rowData",
-  c(x = "SkylineExperiment"),
-  selectMethod("rowData", list("SummarizedExperiment"))
-)
+#' @importFrom SummarizedExperiment colData rowData
+#' @export colData
+#' @export rowData
+NULL
 
 #' @export
 left_join.DataFrame <- .join_wrapper(dplyr::left_join)
