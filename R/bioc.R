@@ -72,7 +72,7 @@ SkylineExperiment <- function(assay_list, metadata,
 #' @importFrom SummarizedExperiment assay
 #' @importFrom tidyr gather
 to_long_format <- function(ds, measure = "Area") {
-  dims <- ds@metadata$dimnames
+  dims <- metadata(ds)$dimnames
   assay(ds, measure) %>%
     as.data.frame() %>%
     rownames_to_column(dims[[1]]) %>%
@@ -95,11 +95,11 @@ to_df <- function(d, dim = "row") {
     rownames(row_data) <- rownames(d)
     row_data %>%
       as.data.frame() %>%
-      rownames_to_column(d@metadata$dimnames[[1]])
+      rownames_to_column(metadata(d)$dimnames[[1]])
   } else {
     colData(d) %>%
       as.data.frame() %>%
-      rownames_to_column(d@metadata$dimnames[[2]])
+      rownames_to_column(metadata(d)$dimnames[[2]])
   }
 }
 .join_wrapper <- function(f) {
