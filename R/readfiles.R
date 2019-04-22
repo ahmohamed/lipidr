@@ -1,6 +1,7 @@
 #' Read Skyline exported files
 #'
-#' @param files List of Skyline exported files in CSV format.
+#' @param files Character vector with filepaths to 
+#'   Skyline exported files in CSV format.
 #' @importFrom forcats fct_inorder
 #' @return SummarizedExperiment object.
 #' @export

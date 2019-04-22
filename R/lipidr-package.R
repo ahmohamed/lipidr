@@ -22,6 +22,7 @@
 #' @author Ahmed Mohamed \email{ahmed.mohamed@@qimrberghofer.edu.au}
 #' @name lipidr-package
 #' @docType package
+#' @aliases lipidr lipidr-package
 #'
 NULL
 

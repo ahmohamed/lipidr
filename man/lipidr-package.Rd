@@ -3,6 +3,7 @@
 \docType{package}
 \name{lipidr-package}
 \alias{lipidr-package}
+\alias{lipidr}
 \title{Analysis workflow for targeted lipidomics}
 \description{
 \code{lipidr} implements a series of functions to facilitate inspection,
