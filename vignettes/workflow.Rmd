@@ -225,7 +225,7 @@ plot_mva(mvaresults, color_by="group")
 
 We can also plot the loadings and display important lipids contributing to the separation between different (Diet) groups.
 
-```{r}
+```{r, eval=FALSE}
 plot_mva_loadings(mvaresults, color_by="Class", top.n=10)
 ```
 
