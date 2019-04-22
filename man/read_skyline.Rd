@@ -11,7 +11,7 @@ read_skyline(files)
 Skyline exported files in CSV format.}
 }
 \value{
-SummarizedExperiment object.
+SkylineExperiment object.
 }
 \description{
 Read Skyline exported files

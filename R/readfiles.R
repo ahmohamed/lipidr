@@ -3,7 +3,7 @@
 #' @param files Character vector with filepaths to 
 #'   Skyline exported files in CSV format.
 #' @importFrom forcats fct_inorder
-#' @return SummarizedExperiment object.
+#' @return SkylineExperiment object.
 #' @export
 #'
 #' @examples
