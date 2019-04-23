@@ -5,7 +5,6 @@ utils::globalVariables(c(".", "TransitionId", "Sample"))
 #'
 #' @export
 #' @import methods
-#' @importClassesFrom SummarizedExperiment SummarizedExperiment
 .SkylineExperiment <- setClass(
   "SkylineExperiment",
   contains = "SummarizedExperiment"
@@ -57,7 +56,6 @@ setValidity("SkylineExperiment", function(object) {
 #'   }
 #'
 #' @return SkylineExperiment object
-#' @importFrom SummarizedExperiment SummarizedExperiment
 #' @export
 SkylineExperiment <- function(assay_list, metadata,
                               colData = NULL, rowData = NULL) {
@@ -67,7 +65,7 @@ SkylineExperiment <- function(assay_list, metadata,
   return(ret)
 }
 
-#' @importFrom S4Vectors mcols mcols<-
+#' @importFrom S4Vectors mcols mcols<- metadata
 .to_summarized_experiment <- function(d) {
   if (is.null(attr(d, "skyline"))) {
     stop("Data.frame does not have skyline attribute")
@@ -103,7 +101,6 @@ SkylineExperiment <- function(assay_list, metadata,
   )
 }
 
-#' @importFrom SummarizedExperiment assay
 #' @importFrom tidyr gather
 to_long_format <- function(ds, measure = "Area") {
   dims <- metadata(ds)$dimnames
@@ -122,7 +119,6 @@ toDataFrame <- function(df, row.names.col = "rowname") {
   DataFrame(df, row.names = nm)
 }
 
-#' @importFrom SummarizedExperiment rowData rowData<- colData colData<-
 to_df <- function(d, dim = "row") {
   if (dim == "row") {
     row_data <- rowData(d)
@@ -145,13 +141,6 @@ to_df <- function(d, dim = "row") {
       toDataFrame()
   })
 }
-
-#' @importFrom SummarizedExperiment colData rowData
-#' @importFrom S4Vectors metadata
-#' @export colData
-#' @export rowData
-#' @export metadata
-NULL
 
 #' @export
 left_join.DataFrame <- .join_wrapper(dplyr::left_join)

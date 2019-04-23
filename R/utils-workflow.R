@@ -1,4 +1,3 @@
-#' @importFrom SummarizedExperiment mcols assays
 .check_log <- function(d, measure) {
   if (measure == "Retention.Time") {
     warning("Retention time should not be logged")

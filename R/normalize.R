@@ -18,7 +18,6 @@
 #'   is `TRUE`.
 #'
 #' @return A SkylineExperiment object with normalized values
-#' @importFrom SummarizedExperiment assay<- assays<-
 #' @importFrom rlang sym UQ
 #' @export
 #' @references Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006).

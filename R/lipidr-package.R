@@ -1,3 +1,8 @@
+#' @import ggplot2
+#' @import dplyr
+#' @import SummarizedExperiment
+NULL
+
 #' Analysis workflow for targeted lipidomics
 #'
 #' `lipidr` implements a series of functions to facilitate inspection,

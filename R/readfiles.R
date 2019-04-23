@@ -42,7 +42,6 @@ read_skyline <- function(files) {
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
-#' @importFrom SummarizedExperiment rowData rowData<- colData colData<-
 #' @return Skyline data.frame with sample group information.
 #' @export
 #'
