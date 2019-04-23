@@ -9,4 +9,4 @@ d <- add_sample_annotation(d, clinical_file)
 d_summarized <- summarize_transitions(d, method = "average")
 data_normalized <- normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 
-usethis::use_data(data_normalized)
+usethis::use_data(data_normalized, overwrite = TRUE)

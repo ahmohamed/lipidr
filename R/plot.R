@@ -146,7 +146,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 
   de_results <- de_results$Molecule %>%
     annotate_lipids() %>%
-    filter(!itsd) %>%
+    filter(!istd) %>%
     .left_join_silent(de_results)
 
   de_results <- de_results %>%
@@ -200,17 +200,17 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 #' plot_molecules(d_qc, "cv", "Area")
 #' plot_molecules(d_qc, "cv", "Retention.Time", log = FALSE)
 #'
-#' # plot the variation in intensity, RT of ITSD (internal standards)
+#' # plot the variation in intensity, RT of ISTD (internal standards)
 #' #   in QC samples
-#' d_itsd_qc <- data_normalized[
-#'   rowData(data_normalized)$itsd,
+#' d_istd_qc <- data_normalized[
+#'   rowData(data_normalized)$istd,
 #'   data_normalized$group == "QC"
 #' ]
-#' plot_molecules(d_itsd_qc, "sd", "Area")
-#' plot_molecules(d_itsd_qc, "sd", "Retention.Time", log = FALSE)
+#' plot_molecules(d_istd_qc, "sd", "Area")
+#' plot_molecules(d_istd_qc, "sd", "Retention.Time", log = FALSE)
 #'
-#' plot_molecules(d_itsd_qc, "boxplot")
-#' plot_molecules(d_itsd_qc, "boxplot", "Retention.Time", log = FALSE)
+#' plot_molecules(d_istd_qc, "boxplot")
+#' plot_molecules(d_istd_qc, "boxplot", "Retention.Time", log = FALSE)
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))

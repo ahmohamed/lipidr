@@ -64,7 +64,7 @@ read_skyline <- function(files) {
 #'
 #' # Subset lipids using lipid annotation
 #' # Note we are subsetting rows
-#' d[rowData(d)$itsd, ]
+#' d[rowData(d)$istd, ]
 add_sample_annotation <- function(data, annot_file) {
   annot <- read.csv(annot_file)
   stopifnot(ncol(annot) > 1)

@@ -89,36 +89,36 @@ normalize_pqn <- function(data, measure = "Area",
 #' d_summarized <- summarize_transitions(d, method = "average")
 #' 
 #' # Normalize data that have been summarized (single value per molecule).
-#' data_norm_itsd <- normalize_itsd(
+#' data_norm_istd <- normalize_istd(
 #'   d_summarized,
 #'   measure = "Area", exclude = "blank", log = TRUE
 #' )
-normalize_itsd <- function(data, measure = "Area",
+normalize_istd <- function(data, measure = "Area",
                            exclude = "blank", log = TRUE) {
   data <- .prenormalize_check(data, measure, exclude)
-  itsd <- rowData(data)$itsd
-  if (sum(itsd) == 0) {
+  istd <- rowData(data)$istd
+  if (sum(istd) == 0) {
     stop("No internal standards found in your lipid list.")
   }
   m <- assay(data, measure)
-  mitsd <- m[itsd, ]
+  mistd <- m[istd, ]
 
-  # itsd_n = itsd_ni / mean(itsd_i)
-  mitsd <- mitsd / rowMeans(mitsd, na.rm = TRUE)
+  # istd_n = istd_ni / mean(istd_i)
+  mistd <- mistd / rowMeans(mistd, na.rm = TRUE)
 
   # per class:
-  itsd_list <- to_df(data) %>%
+  istd_list <- to_df(data) %>%
     group_by(filename, Class) %>%
-    mutate(itsd_list = list(as.character(MoleculeId[itsd]))) %>%
-    .$itsd_list
+    mutate(istd_list = list(as.character(MoleculeId[istd]))) %>%
+    .$istd_list
 
-  assay(data, measure) <- laply(seq_along(itsd_list), function(i) {
-    if (length(itsd_list[[i]]) == 0) {
+  assay(data, measure) <- laply(seq_along(istd_list), function(i) {
+    if (length(istd_list[[i]]) == 0) {
       f <- 1
-    } else if (length(itsd_list[[i]]) == 1) {
-      f <- mitsd[itsd_list[[i]], ]
+    } else if (length(istd_list[[i]]) == 1) {
+      f <- mistd[istd_list[[i]], ]
     } else {
-      f <- colMeans(mitsd[itsd_list[[i]], ], na.rm = TRUE)
+      f <- colMeans(mistd[istd_list[[i]], ], na.rm = TRUE)
     }
 
     return(m[i, ] / f)

@@ -45,7 +45,7 @@ mva <- function(data, measure = "Area",
   stopifnot(inherits(data, "SkylineExperiment"))
   validObject(data)
   method <- match.arg(method)
-  data_f <- data[!rowData(data)$itsd, !.is_blank(data)]
+  data_f <- data[!rowData(data)$istd, !.is_blank(data)]
   d <- data_f %>%
     assay(measure) %>%
     .replace_na_rowmean() %>%

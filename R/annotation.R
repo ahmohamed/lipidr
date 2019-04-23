@@ -95,15 +95,15 @@ annotate_lipids <- function(molecules) {
   olipids <- sub(" NEG$", "", olipids)
   olipids <- sub(" ID\\d+$", "", olipids)
 
-  is_itsd <- grepl(p$itsd, olipids) |
-    lipids_list %in% p$itsd_list |
-    olipids %in% p$itsd_list
+  is_istd <- grepl(p$istd, olipids) |
+    lipids_list %in% p$istd_list |
+    olipids %in% p$istd_list
 
   return(data.frame(
     Molecule = lipids_list, clean_name = olipids,
     ambig = grepl(paste0("^", p$mol, "(\\s*/\\s*", p$mol, ")$"), olipids),
-    not_matched = (!grepl(p$matching, olipids) & !grepl(p$itsd, olipids)),
-    itsd = is_itsd
+    not_matched = (!grepl(p$matching, olipids) & !grepl(p$istd, olipids)),
+    istd = is_istd
   ))
 }
 
@@ -157,6 +157,6 @@ utils::globalVariables(c(
   "chain1", "chain2", "chain3",
   "l_1", "s_1", "l_2", "s_2", "l_3", "s_3",
   "total_cl", "total_cs",
-  "Molecule", "clean_name", "ambig", "not_matched", "itsd",
+  "Molecule", "clean_name", "ambig", "not_matched", "istd",
   "Class"
   ))

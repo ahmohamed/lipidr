@@ -199,7 +199,7 @@ found the average of all measured internal standards is used instead.
 
 
 ```{r, fig.height=6, eval=FALSE}
-d_normalized_itsd = normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
+d_normalized_istd = normalize_istd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 ```
 
 ## Multivariate analysis

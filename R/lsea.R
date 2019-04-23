@@ -132,7 +132,7 @@ plot_class_enrichment <- function(de.results, significant.sets,
 #' gen_lipidsets(molecules)
 gen_lipidsets <- function(molecules) {
   data_ <- annotate_lipids(molecules) %>%
-    filter(!itsd) %>%
+    filter(!istd) %>%
     distinct(Molecule, Class, total_cl, total_cs) %>%
     gather("collection", "value", Class, total_cl, total_cs) %>%
     unite("set", collection, value, sep = "_")

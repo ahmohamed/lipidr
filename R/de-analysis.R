@@ -113,7 +113,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 
   top <- to_df(data, dim = "row") %>%
     select(
-      one_of("Molecule", "Class", "total_cl", "total_cs", "itsd", dimname_x)
+      one_of("Molecule", "Class", "total_cl", "total_cs", "istd", dimname_x)
     ) %>%
     .left_join_silent(top)
   return(top)

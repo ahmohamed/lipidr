@@ -1,5 +1,5 @@
 lipidnames_pattern <- list()
-lipidnames_pattern$itsd_list <- c(
+lipidnames_pattern$istd_list <- c(
   "15:0-18:1(d7) PG", "15:0-18:1(d7) PI", "Sa1P 17:0",
   "So1P 17:1", "15:0-18:1(d7) PE", "18:1-d9 SM",
   "Cer d18:1/C12:0", "PS 33:1 d7", "15:0-18:1(d7) PC",
@@ -16,7 +16,7 @@ lipidnames_pattern$mol <- paste0(
   ")?\\s*", "([/-_]", lipidnames_pattern$chain,
   ")?\\s*", lipidnames_pattern$notes, "?"
 )
-lipidnames_pattern$itsd <- paste0(
+lipidnames_pattern$istd <- paste0(
   "^", lipidnames_pattern$mol, ".*", lipidnames_pattern$isotope
 )
 # Examples: PE 32:2, PE 16:0/16:2, GlucCer 18:0/18:0

@@ -36,5 +36,5 @@ d[, d$group == "QC"]
 
 # Subset lipids using lipid annotation
 # Note we are subsetting rows
-d[rowData(d)$itsd, ]
+d[rowData(d)$istd, ]
 }

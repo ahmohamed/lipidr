@@ -29,7 +29,7 @@ setValidity("SkylineExperiment", function(object) {
   }
 
   row_data <- rowData(object)
-  annotations <- c("filename", "Molecule", "Class", "itsd")
+  annotations <- c("filename", "Molecule", "Class", "istd")
   if (!all(annotations %in% colnames(row_data))) {
     annotations <- paste(annotations, collapse = ", ")
     msg <- paste("rowData should have these annotation columns:", annotations)
