@@ -60,7 +60,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   attrs$dimnames[[1]] <- "MoleculeId"
   SkylineExperiment(
     assay_list = assay_list,
-    metadata = metadata,
+    metadata = attrs,
     colData = colData(data),
     rowData = row_data
   )

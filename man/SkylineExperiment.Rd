@@ -10,6 +10,12 @@ SkylineExperiment(assay_list, metadata, colData = NULL, rowData = NULL)
 \item{assay_list}{A list or SimpleList of matrix-like elements,
 or a matrix-like object. Passed to \code{\link[=SummarizedExperiment]{SummarizedExperiment()}}.}
 
+\item{metadata}{A list containing arbirary information about the experiment.
+It should at least contain 2 elements: \itemize{
+\item dimnames    2-element character vector with dimension names
+\item summarized   Has transitions been summarized?
+}}
+
 \item{colData}{An optional DataFrame describing the samples (contains
 clinical information). Row names, if present, become the column names of
 the SkylineExperiment.}
