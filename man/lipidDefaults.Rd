@@ -3,7 +3,7 @@
 \docType{data}
 \name{lipidDefaults}
 \alias{lipidDefaults}
-\title{lipidDefaults.
+\title{Default values for lipidr internal functions
 A set of default mappings and annotation used internally to correctly parse
 lipid molecule names.}
 \format{An object of class \code{list} of length 2.}
@@ -11,11 +11,17 @@ lipid molecule names.}
 lipidDefaults
 }
 \description{
-lipidDefaults.
+Default values for lipidr internal functions
 A set of default mappings and annotation used internally to correctly parse
 lipid molecule names.
 }
 \examples{
 data(lipidDefaults)
 }
+\seealso{
+Other lipidr datasets: \code{\link{data_normalized}},
+  \code{\link{lipidnames_pattern}},
+  \code{\link{lipidr-data}}
+}
+\concept{lipidr datasets}
 \keyword{datasets}

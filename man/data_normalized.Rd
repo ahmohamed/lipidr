@@ -20,4 +20,10 @@ generate this dataset.
 \examples{
 data(data_normalized)
 }
+\seealso{
+Other lipidr datasets: \code{\link{lipidDefaults}},
+  \code{\link{lipidnames_pattern}},
+  \code{\link{lipidr-data}}
+}
+\concept{lipidr datasets}
 \keyword{datasets}

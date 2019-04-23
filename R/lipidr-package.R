@@ -27,14 +27,30 @@
 NULL
 
 
-#' lipidDefaults.
+#' Description of lipidr datasets
+#'
+#' lipidr-package has 3 datasets: \itemize{
+#'   \item data_normalized    Example lipidomics dataset,
+#'     normalized & log2-transformed.
+#'   \item lipidDefaults   A list of default mappings and annotations for lipids.
+#'   \item lipidnames_pattern   A list of patterns used in parsing lipid names.
+#'  }
+#'  See below for detailed descrition of each dataset.
+#'
+#' @docType data
+#' @name lipidr-data
+#' @family lipidr datasets
+#' @examples data(data_normalized)
+NULL
+
+#' Default values for lipidr internal functions
 #' A set of default mappings and annotation used internally to correctly parse
 #' lipid molecule names.
 #'
 #' @docType data
 #' @name lipidDefaults
-#' @examples
-#' data(lipidDefaults)
+#' @family lipidr datasets
+#' @examples data(lipidDefaults)
 "lipidDefaults"
 
 #' Example dataset (normalized and log2 transformed)
@@ -49,8 +65,8 @@ NULL
 #'
 #' @docType data
 #' @name data_normalized
-#' @examples
-#' data(data_normalized)
+#' @family lipidr datasets
+#' @examples data(data_normalized)
 "data_normalized"
 
 #' Patterns used in parsing lipid names
@@ -60,8 +76,8 @@ NULL
 #'
 #' @docType data
 #' @name lipidnames_pattern
-#' @examples
-#' data(lipidnames_pattern)
+#' @family lipidr datasets
+#' @examples data(lipidnames_pattern)
 "lipidnames_pattern"
 
 .myDataEnv <- new.env(parent = emptyenv()) # not exported

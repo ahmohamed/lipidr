@@ -15,4 +15,9 @@ from lipid names. Used internally by the package.
 \examples{
 data(lipidnames_pattern)
 }
+\seealso{
+Other lipidr datasets: \code{\link{data_normalized}},
+  \code{\link{lipidDefaults}}, \code{\link{lipidr-data}}
+}
+\concept{lipidr datasets}
 \keyword{datasets}
