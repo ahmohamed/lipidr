@@ -9,6 +9,8 @@ matrix:
       r: bioc-devel
     - os: osx
       r: bioc-release
+  allow_failures:
+    - os: osx
 
 bioc_check: true
 
@@ -16,7 +18,13 @@ env:
  global:
    - CRAN: http://cran.rstudio.com
 
+r_github_packages: tidyverse/ggplot2
+
 notifications:
   email:
     on_success: change
     on_failure: change
+
+after_success:
+  - Rscript -e 'covr::codecov(type="all")'
+  

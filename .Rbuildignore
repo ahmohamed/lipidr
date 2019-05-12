@@ -1,6 +1,9 @@
+^appveyor\.yml$
+^codecov\.yml$
+^data-raw$
 ^LICENSE\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml*
+^\.travis\.yml$
 ^\.git*
-^\.BBSoptions*
+^\.BBSoptions$

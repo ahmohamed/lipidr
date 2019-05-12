@@ -2,25 +2,39 @@
 % Please edit documentation in R/plot.R
 \name{plot_chain_distribution}
 \alias{plot_chain_distribution}
-\title{Plot a chart for log fold changes of lipids per class showing chain lengths and saturations}
+\title{Plot logFC of lipids per class showing chain information
+Plot a chart of (log2) fold changes of lipids per class showing chain
+lengths and saturations. If multiple molecules with the same total chain
+length and saturation are present in the dataset, the \code{measure} is averaged,
+and the number of molecules is indicated on the plot.}
 \usage{
 plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 }
 \arguments{
-\item{de_results}{output of \code{\link{de_analysis}}}
+\item{de_results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
-\item{contrast}{which comparison to plot.}
+\item{contrast}{Which comparison to plot. if not provided, defaults to the
+the first comparison.}
 
-\item{measure}{which measure to plot the distribution of: logFC, P.Value, Adj.P.Val}
+\item{measure}{Which measure to plot the distribution of: logFC, P.Value,
+Adj.P.Val. Default is \code{logFC}}
 }
 \value{
 A ggplot object.
 }
 \description{
-Plot a chart for log fold changes of lipids per class showing chain lengths and saturations
+Plot logFC of lipids per class showing chain information
+Plot a chart of (log2) fold changes of lipids per class showing chain
+lengths and saturations. If multiple molecules with the same total chain
+length and saturation are present in the dataset, the \code{measure} is averaged,
+and the number of molecules is indicated on the plot.
 }
 \examples{
 data(data_normalized)
-de_results = de_analysis(HighFat_water - NormalDiet_water, data=data_normalized, measure="Area")
+de_results <- de_analysis(
+  data_normalized,
+  HighFat_water - NormalDiet_water,
+  measure = "Area"
+)
 plot_chain_distribution(de_results)
 }

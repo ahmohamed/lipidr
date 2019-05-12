@@ -3,10 +3,27 @@
 \docType{data}
 \name{data_normalized}
 \alias{data_normalized}
-\title{Example dataset (normalized and log transformed)}
+\title{Example dataset (normalized and log2 transformed)}
+\format{An object of class \code{SkylineExperiment} with 278 rows and 56 columns.}
+\usage{
+data_normalized
+}
 \description{
-Please see \link{normalize_pqn} for details on how to generate this dataset.
+A dataset containing MRM mass spectrometry-based lipidomics data from murine
+serum samples. Mice were fed a normal or high-fat diet and had access to
+normal drinking water or drinking water containing the bile acid
+deoxycholic acid. Lipid peaks were integrated using Skyline and exported
+results were imported into R using \code{lipidr}. The dataset has been normalized
+and log2 transformed. Please see \link{normalize_pqn} for details on how to
+generate this dataset.
 }
 \examples{
-data(data_nomalized)
+data(data_normalized)
 }
+\seealso{
+Other lipidr datasets: \code{\link{lipidDefaults}},
+  \code{\link{lipidnames_pattern}},
+  \code{\link{lipidr-data}}
+}
+\concept{lipidr datasets}
+\keyword{datasets}
