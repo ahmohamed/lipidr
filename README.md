@@ -1,14 +1,18 @@
+[![Travis-CI Build Status](https://travis-ci.org/ahmohamed/lipidr.svg?branch=master)](https://travis-ci.org/ahmohamed/lipidr)
+[![Coverage status](https://codecov.io/gh/ahmohamed/lipidr/branch/master/graph/badge.svg)](https://codecov.io/github/ahmohamed/lipidr?branch=master)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ahmohamed/lipidr?branch=master&svg=true)](https://ci.appveyor.com/project/ahmohamed/lipidr)
+
 # Analysis workflow for targeted lipidomics.
 
 `lipidr` implements a series of functions to facilitate inspection,
 analysis and visualization of targeted lipidomics datasets. `lipidr`
 takes exported Skyline CSV as input, allowing for multiple methods to
-be analyzed togther.
+be analyzed together.
 
 ## Input
 `lipidr` represents Skyline files as annotated data.frames, which can be easily manipulated by a wide variety of R packages. Sample annotations, such as sample group or other clinical information can be easily loaded.
 
-## QC, Plotting
+## Quality control & plotting
 `lipidr` generates various plots, such as PCA and box plots, for quality control of samples and measured lipids. Normalization methods with and without internal standards are also supported.
 
 ## Differential Analysis
