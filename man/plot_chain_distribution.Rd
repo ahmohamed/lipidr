@@ -13,10 +13,11 @@ plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 \arguments{
 \item{de_results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
 
-\item{contrast}{Which comparison to plot.}
+\item{contrast}{Which comparison to plot. if not provided, defaults to the
+the first comparison.}
 
 \item{measure}{Which measure to plot the distribution of: logFC, P.Value,
-Adj.P.Val.}
+Adj.P.Val. Default is \code{logFC}}
 }
 \value{
 A ggplot object.
@@ -31,8 +32,9 @@ and the number of molecules is indicated on the plot.
 \examples{
 data(data_normalized)
 de_results <- de_analysis(
+  data_normalized,
   HighFat_water - NormalDiet_water,
-  data = data_normalized, measure = "Area"
+  measure = "Area"
 )
 plot_chain_distribution(de_results)
 }

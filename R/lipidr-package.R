@@ -1,3 +1,8 @@
+#' @import ggplot2
+#' @import dplyr
+#' @import SummarizedExperiment
+NULL
+
 #' Analysis workflow for targeted lipidomics
 #'
 #' `lipidr` implements a series of functions to facilitate inspection,
@@ -5,8 +10,9 @@
 #' takes exported Skyline CSV as input, allowing for multiple methods to
 #' be analyzed together.
 #'
-#' `lipidr` represents Skyline files as annotated data.frames, which can
-#' easily be manipulated by a wide variety of R packages. Sample annotations,
+#' `lipidr` represents Skyline files as SummarizedExperiment objects, which can
+#' easily be integrated with a wide variety of Bioconductor packages.
+#' Sample annotations,
 #' such as sample group or other clinical information can be loaded. `lipidr`
 #' generates various plots, such as PCA score plots and box plots, for quality
 #' control of samples and measured lipids. Normalization methods with and
@@ -21,19 +27,36 @@
 #' @author Ahmed Mohamed \email{ahmed.mohamed@@qimrberghofer.edu.au}
 #' @name lipidr-package
 #' @docType package
+#' @aliases lipidr lipidr-package
 #'
 NULL
 
 
-#' lipidDefaults.
+#' Description of lipidr datasets
+#'
+#' lipidr-package has 3 datasets: \itemize{
+#'   \item data_normalized    Example lipidomics dataset,
+#'     normalized & log2-transformed.
+#'   \item lipidDefaults   A list of default mappings and annotations for lipids.
+#'   \item lipidnames_pattern   A list of patterns used in parsing lipid names.
+#'  }
+#'  See below for detailed descrition of each dataset.
+#'
+#' @docType data
+#' @name lipidr-data
+#' @family lipidr datasets
+#' @examples data(data_normalized)
+NULL
+
+#' Default values for lipidr internal functions
 #' A set of default mappings and annotation used internally to correctly parse
 #' lipid molecule names.
 #'
 #' @docType data
 #' @name lipidDefaults
-#' @examples
-#' data(lipidDefaults)
-NULL
+#' @family lipidr datasets
+#' @examples data(lipidDefaults)
+"lipidDefaults"
 
 #' Example dataset (normalized and log2 transformed)
 #'
@@ -47,9 +70,9 @@ NULL
 #'
 #' @docType data
 #' @name data_normalized
-#' @examples
-#' data(data_nomalized)
-NULL
+#' @family lipidr datasets
+#' @examples data(data_normalized)
+"data_normalized"
 
 #' Patterns used in parsing lipid names
 #'
@@ -58,9 +81,9 @@ NULL
 #'
 #' @docType data
 #' @name lipidnames_pattern
-#' @examples
-#' data(lipidnames_pattern)
-NULL
+#' @family lipidr datasets
+#' @examples data(lipidnames_pattern)
+"lipidnames_pattern"
 
 .myDataEnv <- new.env(parent = emptyenv()) # not exported
 
@@ -82,12 +105,12 @@ NULL
 #' @examples
 #' data(data_normalized)
 #' use_interactive_graphics()
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #  lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
-#' # plot_molecule_cv(d_qc, "Area")
-#' 
+#' # plot_molecules(d_qc, "cv", "Area")
+#'
 #' # turn off interactivity
 #' use_interactive_graphics(interactive = FALSE)
 use_interactive_graphics <- function(interactive = TRUE) {

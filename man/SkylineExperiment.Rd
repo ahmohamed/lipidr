@@ -4,23 +4,26 @@
 \alias{SkylineExperiment}
 \title{Constructor for Skyline experiment from list of assays}
 \usage{
-SkylineExperiment(assay_list, attrs, colData = NULL, rowData = NULL)
+SkylineExperiment(assay_list, metadata, colData = NULL, rowData = NULL)
 }
 \arguments{
 \item{assay_list}{A list or SimpleList of matrix-like elements,
 or a matrix-like object. Passed to \code{\link[=SummarizedExperiment]{SummarizedExperiment()}}.}
 
-\item{attrs}{A list of extra attributes to be saved to SkylineExperiment
-object.}
+\item{metadata}{A list containing arbirary information about the experiment.
+It should at least contain 2 elements: \itemize{
+\item dimnames    2-element character vector with dimension names
+\item summarized   Has transitions been summarized?
+}}
 
-\item{colData}{A DataFrame object describing the rows (contains generated
+\item{colData}{An optional DataFrame describing the samples (contains
+clinical information). Row names, if present, become the column names of
+the SkylineExperiment.}
+
+\item{rowData}{A DataFrame object describing the rows (contains generated
 lipid annotations). Row names, if present, become the row names of the
 SummarizedExperiment object. The number of rows of the DataFrame
 must be equal to the number of rows of the matrices in assays.}
-
-\item{rowData}{An optional data.frame describing the samples (contains
-clinical information). Row names, if present, become the column names of
-the SkylineExperiment.}
 }
 \value{
 SkylineExperiment object

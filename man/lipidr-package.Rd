@@ -3,6 +3,7 @@
 \docType{package}
 \name{lipidr-package}
 \alias{lipidr-package}
+\alias{lipidr}
 \title{Analysis workflow for targeted lipidomics}
 \description{
 \code{lipidr} implements a series of functions to facilitate inspection,
@@ -11,8 +12,9 @@ takes exported Skyline CSV as input, allowing for multiple methods to
 be analyzed together.
 }
 \details{
-\code{lipidr} represents Skyline files as annotated data.frames, which can
-easily be manipulated by a wide variety of R packages. Sample annotations,
+\code{lipidr} represents Skyline files as SummarizedExperiment objects, which can
+easily be integrated with a wide variety of Bioconductor packages.
+Sample annotations,
 such as sample group or other clinical information can be loaded. \code{lipidr}
 generates various plots, such as PCA score plots and box plots, for quality
 control of samples and measured lipids. Normalization methods with and

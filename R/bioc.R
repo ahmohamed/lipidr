@@ -1,43 +1,71 @@
+# Defined as dimnames / dplyr .
+utils::globalVariables(c(".", "TransitionId", "Sample"))
+
 #' SkylineExperiment object
-#'
-#' @slot attrs Extra slot to hold the workflow stage for the data,
-#'   whether normalized, summarized or log transformed.
 #'
 #' @export
 #' @import methods
-#' @importClassesFrom SummarizedExperiment SummarizedExperiment
 .SkylineExperiment <- setClass(
   "SkylineExperiment",
-  slots = list(attrs = "list"),
   contains = "SummarizedExperiment"
 )
+
+setValidity("SkylineExperiment", function(object) {
+  errors <- character()
+  metadata <- metadata(object)
+
+  dn <- metadata$dimnames
+  if (!is.character(dn) || length(dn) != 2) {
+    print(!is.character(dn))
+    print(length(dn != 2))
+    msg <- "metadata should have a 'dimnames' character vector of length 2"
+    errors <- c(errors, msg)
+  }
+
+  summarized <- metadata$summarized
+  if (!is.logical(summarized) || length(summarized) != 1) {
+    msg <- "metadata should have a 'summarized' logical value"
+    errors <- c(errors, msg)
+  }
+
+  row_data <- rowData(object)
+  annotations <- c("filename", "Molecule", "Class", "istd")
+  if (!all(annotations %in% colnames(row_data))) {
+    annotations <- paste(annotations, collapse = ", ")
+    msg <- paste("rowData should have these annotation columns:", annotations)
+    errors <- c(errors, msg)
+  }
+  if (length(errors) == 0) TRUE else errors
+})
 
 #' Constructor for Skyline experiment from list of assays
 #'
 #' @param assay_list A list or SimpleList of matrix-like elements,
 #'   or a matrix-like object. Passed to [SummarizedExperiment()].
-#' @param attrs A list of extra attributes to be saved to SkylineExperiment
-#'   object.
-#' @param colData A DataFrame object describing the rows (contains generated
+#' @param rowData A DataFrame object describing the rows (contains generated
 #'   lipid annotations). Row names, if present, become the row names of the
 #'   SummarizedExperiment object. The number of rows of the DataFrame
 #'   must be equal to the number of rows of the matrices in assays.
-#' @param rowData An optional data.frame describing the samples (contains
+#' @param colData An optional DataFrame describing the samples (contains
 #'   clinical information). Row names, if present, become the column names of
 #'   the SkylineExperiment.
+#' @param metadata A list containing arbirary information about the experiment.
+#'   It should at least contain 2 elements: \itemize{
+#'     \item dimnames    2-element character vector with dimension names
+#'     \item summarized   Has transitions been summarized?
+#'   }
 #'
 #' @return SkylineExperiment object
-#' @importFrom SummarizedExperiment SummarizedExperiment
 #' @export
-SkylineExperiment <- function(assay_list, attrs,
+SkylineExperiment <- function(assay_list, metadata,
                               colData = NULL, rowData = NULL) {
-  se <- SummarizedExperiment(assay_list, colData = colData, rowData = rowData)
+  se <- SummarizedExperiment(assay_list,
+    colData = colData, rowData = rowData, metadata = metadata)
   ret <- .SkylineExperiment(se)
-  ret@attrs <- attrs
   return(ret)
 }
 
-#' @importFrom S4Vectors mcols mcols<-
+#' @importFrom S4Vectors mcols mcols<- metadata
 .to_summarized_experiment <- function(d) {
   if (is.null(attr(d, "skyline"))) {
     stop("Data.frame does not have skyline attribute")
@@ -62,20 +90,20 @@ SkylineExperiment <- function(assay_list, attrs,
     distinct()
   row_data <- toDataFrame(row_data, row.names.col = "TransitionId")
   row_data <- row_data[ row.names(assay_list[[1]]), ]
-  attrs <- list(summarized = FALSE, dimnames = c("TransitionId", "Sample"))
+  row_data <- row_data %>% left_join(annotate_lipids(row_data$Molecule))
+  metadata <- list(summarized = FALSE, dimnames = c("TransitionId", "Sample"))
 
   SkylineExperiment(
     assay_list,
+    metadata = metadata,
     colData = col_data,
-    rowData = row_data,
-    attrs = attrs
+    rowData = row_data
   )
 }
 
-#' @importFrom SummarizedExperiment assay
 #' @importFrom tidyr gather
 to_long_format <- function(ds, measure = "Area") {
-  dims <- ds@attrs$dimnames
+  dims <- metadata(ds)$dimnames
   assay(ds, measure) %>%
     as.data.frame() %>%
     rownames_to_column(dims[[1]]) %>%
@@ -91,18 +119,17 @@ toDataFrame <- function(df, row.names.col = "rowname") {
   DataFrame(df, row.names = nm)
 }
 
-#' @importFrom SummarizedExperiment rowData rowData<- colData colData<-
 to_df <- function(d, dim = "row") {
   if (dim == "row") {
     row_data <- rowData(d)
     rownames(row_data) <- rownames(d)
     row_data %>%
       as.data.frame() %>%
-      rownames_to_column(d@attrs$dimnames[[1]])
+      rownames_to_column(metadata(d)$dimnames[[1]])
   } else {
     colData(d) %>%
       as.data.frame() %>%
-      rownames_to_column(d@attrs$dimnames[[2]])
+      rownames_to_column(metadata(d)$dimnames[[2]])
   }
 }
 .join_wrapper <- function(f) {
@@ -114,19 +141,6 @@ to_df <- function(d, dim = "row") {
       toDataFrame()
   })
 }
-
-#' @export
-setMethod(
-  "colData",
-  c(x = "SkylineExperiment"),
-  selectMethod("colData", list("SummarizedExperiment"))
-)
-#' @export
-setMethod(
-  "rowData",
-  c(x = "SkylineExperiment"),
-  selectMethod("rowData", list("SummarizedExperiment"))
-)
 
 #' @export
 left_join.DataFrame <- .join_wrapper(dplyr::left_join)

@@ -1,4 +1,3 @@
-#' @importFrom SummarizedExperiment mcols assays
 .check_log <- function(d, measure) {
   if (measure == "Retention.Time") {
     warning("Retention time should not be logged")
@@ -14,7 +13,6 @@
 }
 
 
-#' @importFrom dplyr select bind_rows
 #' @importFrom rlang syms
 .uniform_attrs <- function(datalist) {
   attrlist <- lapply(datalist, attr, "skyline")
@@ -44,3 +42,6 @@
 
   (median(tic) / tic) > 50
 }
+
+# colname created in .uniform.attrs
+utils::globalVariables(c("filename"))

@@ -1,6 +1,6 @@
 Package: lipidr
 Title: Lipidomics Analysis Workflow in R
-Version: 0.99.0
+Version: 1.1.0
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
@@ -22,12 +22,14 @@ Description: lipidr an easy-to-use R package implementing a complete workflow
     multivariate analysis, displaying informative visualizations. lipidr also
     implements a novel Lipid Set Enrichment Analysis (LSEA), harnessing 
     molecular information such as lipid class, chain length and unsaturation.    
-Depends: R (>= 3.6.0)
+Depends: 
+    R (>= 3.6.0),
+    SummarizedExperiment
 Imports:
     methods,
     stats,
+    utils,
     S4Vectors,
-    SummarizedExperiment,
     rlang,
     dplyr,
     tidyr,
@@ -38,8 +40,6 @@ Imports:
     ropls,
     magrittr
 License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
 Suggests: 
     knitr,
     rmarkdown,
@@ -54,3 +54,5 @@ biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
 Language: en-US
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
+URL: https://github.com/ahmohamed/lipidr
+BugReports: https://github.com/ahmohamed/lipidr/issues/

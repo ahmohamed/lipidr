@@ -7,7 +7,7 @@
 add_sample_annotation(data, annot_file)
 }
 \arguments{
-\item{data}{Skyline data.frame created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{annot_file}{CSV file with at least 2 columns, sample names & group(s).}
 }
@@ -36,5 +36,5 @@ d[, d$group == "QC"]
 
 # Subset lipids using lipid annotation
 # Note we are subsetting rows
-d[rowData(d)$itsd, ]
+d[rowData(d)$istd, ]
 }

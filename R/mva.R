@@ -1,17 +1,23 @@
+# colnames used internally in top.lipids
+utils::globalVariables(c("molrank"))
+
+
 #' Perform multivariate analyses to investigate sample clustering
 #'
-#' Blank samples are automatically detected (using TIC) and excluded.
-#' Missing data are imputed using average lipid intensity across all samples.
+#' `mva` performs multivariate analysis using several possible methods.
 #' The available methods are PCA, PCoA, OPLS and OPLS-DA. The OPLS method
 #' requires a numeric y-variable, whilst OPLS-DA requires two groups for
 #' comparison. By default, for OPLS and OPLS-DA the number of predictive and
 #' orthogonal components are set to 1.
+#' Blank samples are automatically detected (using TIC) and excluded.
+#' Missing data are imputed using average lipid intensity across all samples.
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to use as intensity, usually Area_norm.
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param measure Which measure to use as intensity, usually Area (default).
 #'   The measure should be already summarized and normalized.
-#' @param method Either PCA, PCoA, OPLS or OPLS-DA.
-#' @param group_col Sample annotation to use as grouping column.
+#' @param method Either PCA, PCoA, OPLS or OPLS-DA.  Default is `PCA`.
+#' @param group_col Sample annotation to use as grouping column. If not
+#'   provided, samples are treated independently.
 #' @param groups A numeric grouping (OPLS) or two groups to be used for
 #'   supervised analysis (OPLS-DA), ignored in other methods.
 #' @param ... Extra arguments to be passed to [opls()] for OPLS-DA,
@@ -33,15 +39,13 @@
 #' @importFrom forcats fct_drop
 #'
 #' @export
-#' @examples
-#' data(data_normalized)
-#' 
-#' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 mva <- function(data, measure = "Area",
                 method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
                 group_col = NULL, groups = NULL, ...) {
   stopifnot(inherits(data, "SkylineExperiment"))
-  data_f <- data[!rowData(data)$itsd, !.is_blank(data)]
+  validObject(data)
+  method <- match.arg(method)
+  data_f <- data[!rowData(data)$istd, !.is_blank(data)]
   d <- data_f %>%
     assay(measure) %>%
     .replace_na_rowmean() %>%
@@ -71,7 +75,7 @@ mva <- function(data, measure = "Area",
     original_object = object
     ))
   }
-  if (method == "PCoA") {
+  else if (method == "PCoA") {
     return(structure(list(
       scores = cmdscale(dist(d)),
       method = "PCoA",
@@ -83,84 +87,84 @@ mva <- function(data, measure = "Area",
     ))
   }
 
-  if (method %in% c("OPLS", "OPLS-DA")) {
-    if (is.null(group_col)) {
-      stop("Please add clinical data or specify a group column")
-    }
+  # method either "OPLS" or "OPLS-DA"
+  if (is.null(group_col)) {
+    stop("Please add clinical data or specify a group column")
+  }
 
-    if (length(group_col) == 1) {
-      # group_col is the name of the grouping column
-      group_vector <- colData(data_f)[[group_col]]
-    } else {
-      # group_col is a vector with grouping
-      group_vector <- group_col
-    }
+  if (length(group_col) == 1) {
+    # group_col is the name of the grouping column
+    group_vector <- colData(data_f)[[group_col]]
+  } else {
+    # group_col is a vector with grouping
+    group_vector <- group_col
+  }
 
-    if (method == "OPLS-DA") {
-      # group_vector should either have 2 values,
-      # or a subset should be provided in groups
-      if (length(unique(group_vector)) != 2) {
-        if (length(unique(groups)) != 2) {
-          stop("Please provide 2 groups for comparison in OPLS-DA")
-        }
-        # all groups in the subset should be present in the vector
-        if (!all(groups %in% group_vector)) {
-          stop("Provided groups are not in the grouping column.")
-        }
+  if (method == "OPLS-DA") {
+    # group_vector should either have 2 values,
+    # or a subset should be provided in groups
+    if (length(unique(group_vector)) != 2) {
+      if (length(unique(groups)) != 2) {
+        stop("Please provide 2 groups for comparison in OPLS-DA")
       }
-    } else {
-      # This is OPLS
-      # group_vector should be numeric
-      if (!is.numeric(group_vector)) {
-        stop("Please provide a numeric y-variable for comparison in OPLS")
-      }
-      # if group subset is provided, it should be numeric,
-      # and values should be present in group_vector
-      if (!is.null(groups)) {
-        if (!is.numeric(groups)) {
-          stop(
-            "Please provide a numeric groups variable for comparison in OPLS"
-          )
-        }
-      }
+      # all groups in the subset should be present in the vector
       if (!all(groups %in% group_vector)) {
         stop("Provided groups are not in the grouping column.")
       }
     }
-    # By now we know that group_vector is of correct type
-    # groups, if provided, have correct type and values.
-    if (!is.null(groups)) {
-      data_f <- data_f[, group_vector %in% groups]
-      d <- d[group_vector %in% groups, ]
-      group_vector <- fct_drop(group_vector[group_vector %in% groups])
+  } else {
+    # This is OPLS
+    # group_vector should be numeric
+    if (!is.numeric(group_vector)) {
+      stop("Please provide a numeric y-variable for comparison in OPLS")
     }
-    object <- run_opls(d, y = group_vector, ...)
-
-    return(structure(list(
-      scores = data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1]),
-      loadings = data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1]),
-      summary = object@modelDF,
-      method = method,
-      row_data = rowData(data_f),
-      col_data = colData(data_f),
-      group_col = group_col
-    ),
-    class = c("mvaResults", "opls"),
-    original_object = object
-    ))
+    # if group subset is provided, it should be numeric,
+    # and values should be present in group_vector
+    if (!is.null(groups)) {
+      if (!is.numeric(groups)) {
+        stop(
+          "Please provide a numeric groups variable for comparison in OPLS"
+        )
+      }
+    }
+    if (!all(groups %in% group_vector)) {
+      stop("Provided groups are not in the grouping column.")
+    }
   }
+  # By now we know that group_vector is of correct type
+  # groups, if provided, have correct type and values.
+  if (!is.null(groups)) {
+    data_f <- data_f[, group_vector %in% groups]
+    d <- d[group_vector %in% groups, ]
+    group_vector <- fct_drop(group_vector[group_vector %in% groups])
+  }
+  object <- run_opls(d, y = group_vector, ...)
+
+  return(structure(list(
+    scores = data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1]),
+    loadings = data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1]),
+    summary = object@modelDF,
+    method = method,
+    row_data = rowData(data_f),
+    col_data = colData(data_f),
+    group_col = group_col
+  ),
+  class = c("mvaResults", "opls"),
+  original_object = object
+  ))
+
 }
 
 run_opls <- function(data, y,
                      predI = 1, orthoI = 1,
                      scaleC = "standard",
-                     plotL = FALSE, ...) {
+                     fig.pdfC = NULL, ...) {
   opls(
     data,
     y = y,
     predI = predI, orthoI = orthoI,
     scaleC = scaleC,
-    plotL = plotL, ...
+    fig.pdfC = fig.pdfC, ...
   )
 }
 
@@ -183,13 +187,13 @@ plot_opls <- function(mvaresults, components,
     label = "Sample", color = color_by
   ))
 
-  if (ellipse == TRUE) {
+  if (ellipse) {
     p <- p + stat_ellipse(
       geom = "polygon", alpha = 0.3, linetype = "blank",
       aes_string(fill = color_by), type = "norm"
     )
   }
-  if (hotelling == TRUE) {
+  if (hotelling) {
     p <- p + gg_circle(
       rx = sqrt(var(pscores) * hotFisN),
       ry = sqrt(var(oscores) * hotFisN),
@@ -226,34 +230,36 @@ plot_opls <- function(mvaresults, components,
   .display_plot(p)
 }
 
-#' Multivariate scatterplot of sample scores
-#'
-#' Plot a multivariate scatterplot of sample scores to investigate
+#' @describeIn mva plots a multivariate scatterplot of sample scores to investigate
 #' sample clustering.
 #'
 #' @param mvaresults Results obtained from [mva()].
 #' @param components Which components to plot. Ignored for PCoA, OPLS and
-#'   OPLS-DA results.
-#' @param color_by Sample annotation to use as color.
+#'   OPLS-DA results. Default is first 2 components.
+#' @param color_by Sample annotation (or lipid annotation in case of
+#'   `plot_mva_loadings`) to use as color. Defaults to individual samples /
+#'   lipids
 #'
-#' @return A ggplot of the sample scores.
+#' @return `plot_mva` returns a ggplot of the sample scores.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' # PCA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 #' plot_mva(mvaresults, color_by = "group")
-#' plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
-#' 
+#' # NOT RUN
+#' # plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
+#'
 #' # PCoA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
-#' plot_mva(mvaresults, color_by = "group")
-#' 
+#' # NOT RUN
+#' # plot_mva(mvaresults, color_by = "group")
+#'
 #' # OPLS-DA
 #' mvaresults <- mva(
 #'   data_normalized,
-#'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
+#'   method = "OPLS-DA", group_col = "Diet", groups=c("HighFat", "Normal")
 #' )
 #' plot_mva(mvaresults, color_by = "group")
 plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
@@ -287,27 +293,18 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
   .display_plot(p)
 }
 
-#' Multivariate scatterplot of feature loadings
-#' Plot a multivariate scatterplot of feature loadings to investigate
-#' feature importance.
+
+#' @describeIn mva Plot a multivariate scatterplot of feature loadings
+#' to investigate feature importance.
 #'
-#' @param mvaresults Results obtained from [mva()].
-#' @param components which components to plot. Ignored for PCoA, OPLS and
-#'   OPLS-DA results.
-#' @param color_by Sample annotation to use as color.
-#' @param top.n Number of top ranked features to highlight in the plot .
+#' @param top.n Number of top ranked features to highlight in the plot.
+#'   If omitted, returns top 10 lipids.
 #'
-#' @return A ggplot of the loadings.
+#' @return `plot_mva_loadings` returns a ggplot of the loadings.
 #' @export
 #'
 #' @examples
-#' data(data_normalized)
-#' 
-#' mvaresults <- mva(
-#'   data_normalized,
-#'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
-#' )
-#' plot_mva_loadings(mvaresults, color_by = "Class", top.n = 30)
+#' plot_mva_loadings(mvaresults, color_by = "Class", top.n = 10)
 plot_mva_loadings <- function(mvaresults, components = c(1, 2),
                               color_by = NULL,
                               top.n = nrow(mvaresults$loadings)) {
@@ -332,7 +329,7 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
     geom_point(size = 3, pch = 16, aes(alpha = molrank > top.n)) +
     scale_alpha_manual(values = c(1, 0.5))
 
-  if ("ggrepel" %in% rownames(installed.packages())) {
+  if (requireNamespace("ggrepel", quietly = TRUE)) {
     xlimits <- max(abs(mds_matrix[, 2])) * 1.25
     ylimits <- max(abs(mds_matrix[, 3])) * 1.1
 
@@ -351,21 +348,13 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
   .display_plot(p)
 }
 
-#' Extract top lipids from OPLS-DA results
+#' @describeIn mva extracts top lipids from OPLS-DA results
 #'
-#' @param mvaresults Results obtained from [mva()].
-#' @param top.n Number of lipids to return.
-#'
-#' @return A dataframe of `top.n` lipids with their annotations.
+#' @return `top_lipids` returns s dataframe of `top.n` lipids with
+#'   their annotations.
 #' @export
 #'
 #' @examples
-#' data(data_normalized)
-#' 
-#' mvaresults <- mva(
-#'   data_normalized,
-#'   method = "OPLS-DA", group_col = "BileAcid", groups = c("water", "DCA")
-#' )
 #' top_lipids(mvaresults, top.n = 10)
 top_lipids <- function(mvaresults, top.n = 10) {
   stopifnot(inherits(mvaresults, "mvaResults"))
@@ -398,7 +387,8 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
   if (length(choices) != 2L) {
     stop("length of choices must be 2")
   }
-  if (!length(scores <- x$x)) {
+  scores <- x$x
+  if (!length(scores)) {
     stop(gettextf("object '%s' has no scores", deparse(substitute(x))),
       domain = NA
     )

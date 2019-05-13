@@ -1,8 +1,13 @@
 ---
 title: "Workflow"
-author: "Ahmed Mohamed"
+author:
+- name: Ahmed Mohamed
+  affiliation: Prescision & Systems Biomedicine, QIMR Berghofer, Australia
 date: "`r Sys.Date()`"
-output: html_vignette
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{lipidr_workflow}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,20 +19,64 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width =
 library(lipidr)
 library(ggplot2)
 ```
+# Introduction
+`lipidr` implements a series of functions to facilitate inspection,
+analysis and visualization of targeted lipidomics datasets. `lipidr`
+takes exported Skyline CSV as input, allowing for multiple methods to
+be analyzed together.
 
-This vignette provides a step by step guide to analyzing targeted lipidomics data, exported from Skyline.
 
+## Input
+
+`lipidr` represents Skyline files as SummarizedExperiment objects, which can
+easily be integrated with a wide variety of Bioconductor packages. 
+Sample annotations, such as sample group or other clinical information can be loaded.
+
+## Quality control & visualization
+`lipidr` generates various plots, such as PCA score plots and box plots, for quality control of samples and measured lipids. Normalization methods with and
+without internal standards are also supported.
+
+## Differential Analysis
+Differential analysis can be performed using any of the loaded clinical
+variables, which can be readily visualized as volcano plots. A novel lipid
+set enrichment analysis (LSEA) is implemented to detect preferential
+enrichment of certain lipid classes, chain lengths or saturation patterns.
+Plots for the visualization of enrichment results are also implemented.
+
+This vignette provides a step by step guide for downstream analysis of targeted
+lipidomics data, exported from Skyline.
+
+# Installation
+## From Bioconductor
+In R console, type:
+
+```r
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("lipidr")  
+```
+
+## From GitHub using devtools
+In R console, type:
+
+```r
+library(devtools)   
+install_github("ahmohamed/lipidr")
+```
+
+# Analysis Workflow
 ## Example Study
 
-In this workflow, we will use serum lipidomics data from mice fed a normal or high-fat diet.
+In this workflow, we will use serum lipidomics data from mice fed a normal or high-fat diet. Mice were fed a normal or high-fat diet (`Diet` column) and had access to normal drinking water or drinking water containing the bile acid deoxycholic acid (`BileAcid` column). Lipid peaks were integrated using Skyline and exported as CSV files.
 
-## Exporting files from Skyline
+## Data Import & manipulation
+### Exporting files from Skyline
 
 Integrated peaks should be exported from each Skyline file through File => Export => Report. Selecting `Transition Results` ensures that necessary information is exported from Skyline. Otherwise, you should ensure that peak `Area` or `Height` or a similar measure is exported. Regardless of the `measure` you choose for intensity, you can use `lipidr` workflow.
 
 `Replicates` should either be exported, or the `Pivot Replicate Name` option must be used.
 
-## Reading files into R
+### Reading files into R
 
 `lipidr` can read multiple CSV files from different analysis methods together. Using our example dataset, three Skyline CSV files are used as input to `read.skyline`.
 
@@ -38,6 +87,8 @@ filelist = list.files(datadir, "data.csv", full.names = TRUE) # all csv files
 d = read_skyline(filelist)
 print(d)
 ```
+
+Datasets are represented in R as `SummarizedExperiment`s to facilitate integration other Bioconductor packages.
 
 ### Adding sample annotation
 
@@ -50,7 +101,7 @@ d = add_sample_annotation(d, clinical_file)
 colData(d)
 ```
 
-## Data subsetting
+### Data subsetting
 
 It is helpful to imagine SkylineExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is `d[rows, cols]`.
 
@@ -79,28 +130,36 @@ rowData(d_pc)
 colData(d_pc)
 ```
 
-## Visualization of raw data
+For demonstration purposes, we select only 3 lipids classes, Ceramides (`Cer`), PhosphatidylCholines (`PC`) and LysoPhosphatidylCholines (`LPC`). We also `BileAcid` treated group from our dataset.
 
-To ensure data quality, we can look at total lipid intensity and distribution of samples.
+```{r}
+lipid_classes = rowData(d)$Class %in% c("Cer", "PC", "LPC")
+groups = d$BileAcid != "DCA"
+d = d[lipid_classes, groups]
 
-```{r, fig.height=6}
-plot_sample_tic(d, log=TRUE)
-plot_sample_boxplot(d, log=TRUE)
+#QC sample subset
+d_qc = d[, d$group == "QC"]
 ```
 
-We can also look at intensity and retention time distributions for each lipid molecule. It is recommended to assess the variation across quality control samples.
+## Raw Data Quality Check
+
+To ensure data quality, we can look at total lipid intensity as bar chart or distribution of samples as a boxplot.
+
+```{r, fig.height=6}
+plot_samples(d, type = "tic", log = TRUE)
+```
+
+We can also look at intensity and retention time distributions for each lipid molecule using `plot_molecules(type = boxplot)`. It is recommended to assess the variation across quality control samples.
 
 ```{r, fig.width=10, fig.height=6}
-plot_molecule_boxplot(d_qc, measure = "Area")
-plot_molecule_sd(d_qc, measure = "Retention.Time", log=FALSE)
-plot_molecule_sd(d_qc, measure = "Area")
+plot_molecules(d_qc, "sd", measure = "Retention.Time", log = FALSE)
+plot_molecules(d_qc, "cv", measure = "Area")
 ```
 
 Or intensity distribution within different lipid classes.
 
 ```{r, fig.height=5}
-plot_class_sd(d)
-plot_class_boxplot(d)
+plot_lipidclass(d, "boxplot")
 ```
 
 ### Interactive plots
@@ -119,20 +178,28 @@ d_summarized = summarize_transitions(d, method = "average")
 ## Normalization
 
 ### Probabilistic Quotient Normalization (PQN)
-PQN corrects for dilution errors, etc.
+The PQN method determines a dilution factor for each sample by comparing
+the distribution of quotients between samples and a reference spectrum,
+followed by sample normalization using this dilution factor.
 
 ```{r, fig.height=6}
 d_normalized = normalize_pqn(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
-plot_sample_boxplot(d_normalized)
+plot_samples(d_normalized, "boxplot")
 ```
+
+By specifying `exclude = "blank"`, blank runs are automatically detected and
+excluded from the normalization process.
 
 ### Internal standard normalization
 
-Internal standard normalization corrects lipid class-specific variations between samples.
+Internal standard normalization corrects lipid class-specific variations 
+between samples. Lipid classes are normalized using corresponding internal
+standard(s) of the same lipid class. If no corresponding internal standard is
+found the average of all measured internal standards is used instead.
 
-```{r, fig.height=6}
-d_normalized_itsd = normalize_itsd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
-plot_sample_boxplot(d_normalized_itsd)
+
+```{r, fig.height=6, eval=FALSE}
+d_normalized_istd = normalize_istd(d_summarized, measure = "Area", exclude = "blank", log = TRUE)
 ```
 
 ## Multivariate analysis
@@ -141,13 +208,13 @@ You can investigate sample variation using either PCA or PCoA (classical MDS).
 
 ```{r, fig.width=6, fig.height=5}
 mvaresults = mva(d_normalized, measure="Area", method="PCA")
-plot_mva(mvaresults, color_by="group")
-
-# plot 2nd, 3rd components.
-plot_mva(mvaresults, color_by="BileAcid", components = c(2,3))
+plot_mva(mvaresults, color_by="group", components = c(1,2))
 ```
 
-## Supervised multivariate analysis
+Plotting other components is possible by specifying `components` argument. For
+example `components = c(2,3)` plots second and third components.
+
+### Supervised multivariate analysis
 
 Supervised multivariate analyses, such as OPLS and OPLS-DA can be performed to determine which lipids are associated with a group (y-variable) of interest. In this example we use "Diet" as grouping, and display the results in a scores plot.
 
@@ -158,8 +225,8 @@ plot_mva(mvaresults, color_by="group")
 
 We can also plot the loadings and display important lipids contributing to the separation between different (Diet) groups.
 
-```{r}
-plot_mva_loadings(mvaresults, color_by="Class", top.n=30)
+```{r, eval=FALSE}
+plot_mva_loadings(mvaresults, color_by="Class", top.n=10)
 ```
 
 Alternatively, we can extract top *N* lipids along with their annotations.
@@ -175,8 +242,9 @@ Normalized and log transformed data should be used.
 
 ```{r}
 de_results = de_analysis(
-  HighFat_water - NormalDiet_water, NormalDiet_DCA - NormalDiet_water, 
-  data=d_normalized, measure="Area"
+  data=d_normalized, 
+  HighFat_water - NormalDiet_water,
+  measure="Area"
 )
 head(de_results)
 significant_molecules(de_results)
@@ -193,11 +261,19 @@ For more complex experimental designs, where one might deal with factor adjustme
 
 ```{r, eval=FALSE}
 # Using formula
-de_results = de_design(coef="groupHighFat_water", design = ~ group, data=d_normalized, measure="Area")
+de_design(
+  data=d_normalized,
+  design = ~ group, 
+  coef="groupHighFat_water", 
+  measure="Area")
 
 # Using design matrix
 design = model.matrix(~ group, data=colData(d_normalized))
-de_results = de_design(coef="groupHighFat_water", design = design, data=d_normalized, measure="Area")
+de_design(
+  data=d_normalized,
+  design = design,
+  coef="groupHighFat_water",
+  measure="Area")
 ```
 
 For more details on creating design matrices for different experimental designs, refer to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].
@@ -217,6 +293,16 @@ Visualization of enrichment analysis results. The enriched lipid classes and cha
 plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 ```
 
+
+`lipidr` can also plot fold changes of lipids per class showing chain lengths
+and saturations. Number on the plot indicate multiple lipids measured with
+the same chain properties.
+
 ```{r, fig.height=8}
 plot_chain_distribution(de_results)
+```
+
+# Session information
+```{r}
+sessionInfo()
 ```

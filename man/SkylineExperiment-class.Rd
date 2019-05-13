@@ -8,10 +8,3 @@
 \description{
 SkylineExperiment object
 }
-\section{Slots}{
-
-\describe{
-\item{\code{attrs}}{Extra slot to hold the workflow stage for the data,
-whether normalized, summarized or log transformed.}
-}}
-

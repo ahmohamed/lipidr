@@ -7,10 +7,11 @@
 read_skyline(files)
 }
 \arguments{
-\item{files}{List of Skyline exported files in CSV format.}
+\item{files}{Character vector with filepaths to
+Skyline exported files in CSV format.}
 }
 \value{
-SummarizedExperiment object.
+SkylineExperiment object.
 }
 \description{
 Read Skyline exported files

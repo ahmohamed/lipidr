@@ -1,186 +1,118 @@
-#' @import ggplot2
-{}
-
-
-#' Plot a bar chart for total sample intensity
+#' Informative plots to investigate samples
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' `lipidr` supports two types of plots for sample quality checking.\cr\cr
+#' `tic` plots a bar chart for total sample intensity.\cr\cr
+#' `boxplot` plots a boxplot chart to examine the distribution of values
+#' per sample.
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param type plot type, either `tic` or `boxplot`. Default is `tic`.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height.
-#' @param log Whether values should be log2 transformed.
+#'   Area.Normalized or Height. Default is `Area`
+#' @param log Whether values should be log2 transformed. Default is `TRUE`
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
-#' plot_sample_tic(data_normalized, "Area", log = TRUE)
-#' plot_sample_tic(data_normalized, "Background", log = FALSE)
-plot_sample_tic <- function(data, measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
-  dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
-    measure <- .check_log(data, measure)
-  }
-  p <- ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom = "bar") +
-    facet_wrap(~filename, ncol = 1, scales = "free_y") +
-    theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    guides(size = FALSE)
-
-  .display_plot(p)
-}
-
-#' Plot a boxplot chart to examine the distribution of values per sample
 #'
-#' The function should usually be used to look at intensity distribution in
-#' each sample ensuring they are normalized. It can also be used to look at
-#' different measures such as  `Retention.Time` or `Background`.
-#'
-#' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height.
-#' @param log Whether values should be log2 transformed.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' 
-#' plot_sample_boxplot(data_normalized, "Area", log = TRUE)
-#' plot_sample_boxplot(
+#' plot_samples(data_normalized, type = "tic", "Area", log = TRUE)
+#' plot_samples(data_normalized, type = "tic", "Background", log = FALSE)
+#' plot_samples(
 #'   data_normalized[, data_normalized$group == "QC"],
+#'   type = "boxplot",
 #'   measure = "Retention.Time", log = FALSE
 #' )
-plot_sample_boxplot <- function(data, measure = "Area", log = TRUE) {
+plot_samples <- function(data, type = c("tic", "boxplot"),
+  measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  validObject(data)
+  type <- match.arg(type)
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
+  if (type == "tic") {
+    return(.display_plot(.plot_sample_tic(dlong, measure)))
+  }
 
-  p <- ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() +
+  .display_plot(.plot_sample_boxplot(dlong, measure))
+}
+
+.plot_sample_tic <- function(dlong, measure) {
+  ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
-
-  .display_plot(p)
 }
 
+.plot_sample_boxplot <- function(dlong, measure) {
+  ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() +
+    facet_wrap(~filename, ncol = 1, scales = "free_y") +
+    theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+    guides(size = FALSE)
+}
 
-
-#' Plot a bar chart for standard deviation of a certain measure in each class
+#' Informative plots to investigate lipid classes
 #'
-#' The function is usually used to look at standard deviations of intensity in
-#' each class, but can also be used to look at different measures such as
-#' `Retention.Time`, to ensure all lipids are eluted within the expected range.
-#' To assess instrumental variation apply the function to technical quality
-#' control samples.
+#' `lipidr` supports two types of plots for to visualize at lipid classes.\cr\cr
+#' `sd` plots a bar chart for standard deviation of a certain measure in each
+#' class. This plot type is usually used to look at standard deviations of
+#' intensity in each class, but can also be used to look at different measures
+#' such as `Retention.Time`, to ensure all lipids are eluted within the expected
+#' range. To assess instrumental variation apply the function to technical
+#' quality control samples. \cr\cr
+#' `boxplot` Plots a boxplot chart to examine the distribution of values per
+#' class. This plot type is usually used to look at the intensity distribution
+#' in eachclass, but can also be used to look at different measures, such as
+#' `Retention.Time` or `Background`.
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param type plot type, either `boxplot` or `sd`. Default is `boxplot`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized, Height or Retention.Time
-#' @param log Whether values should be log2 transformed
+#'   Area.Normalized, Height or Retention.Time. Default is `Area`
+#' @param log Whether values should be log2 transformed. Default is `TRUE`
 #'   (Set FALSE for retention time).
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
-#' plot_class_sd(data_normalized, "Area", log = TRUE)
-#' plot_class_sd(data_normalized, "Retention.Time", log = FALSE)
-plot_class_sd <- function(data, measure = "Area", log = TRUE) {
+#'
+#' d_qc <- data_normalized[, data_normalized$group == "QC"]
+#' plot_lipidclass(d_qc, "sd", "Area", log = TRUE)
+#' plot_lipidclass(d_qc, "sd", "Retention.Time", log = FALSE)
+#' plot_lipidclass(d_qc, "boxplot", "Area", log = TRUE)
+#' plot_lipidclass(d_qc, "boxplot", "Retention.Time", log = FALSE)
+plot_lipidclass <- function(data, type = c("boxplot", "sd"),
+  measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  validObject(data)
+  type <- match.arg(type)
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
 
-  p <- ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+  if (type == "sd") {
+    return(.display_plot(.plot_class_sd(dlong, measure)))
+  }
+
+  .display_plot(.plot_class_boxplot(dlong, measure))
+}
+
+.plot_class_sd <- function(dlong, measure) {
+  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("SD of", measure))
-
-  .display_plot(p)
 }
 
-#' Plot a boxplot chart to examine the distribution of values per class
-#'
-#' The function is usually used to look at the intensity distribution in each
-#' class, but can also be used to look at different measures, such as
-#' `Retention.Time` or `Background`.
-#'
-#' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height.
-#' @param log Whether values should be log2 transformed.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' 
-#' plot_class_boxplot(data_normalized, "Area", log = TRUE)
-#' plot_class_boxplot(data_normalized, "Retention.Time", log = FALSE)
-plot_class_boxplot <- function(data, measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
-  dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
-    measure <- .check_log(data, measure)
-  }
-
-  p <- ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+.plot_class_boxplot <- function(dlong, measure) {
+  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
     geom_boxplot() +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
-
-  .display_plot(p)
-}
-
-
-#' Plot a boxplot chart to examine (log2) fold changes of lipids per class
-#'
-#' The function is usually used to look at log2 fold change distribution of
-#' lipids in each class, marking significantly enriched classes. Can also be
-#' used to plot `P.Value` or `Adj.P.Val`.
-#'
-#' @param de_results Output of [de_analysis()].
-#' @param significant.sets List of significantly changed lipid sets
-#'   (output of [significant_lipidsets()]).
-#' @param measure Which measure to plot the distribution of: logFC, P.Value,
-#'   Adj.P.Val.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' de_results <- de_analysis(
-#'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
-#' )
-#' enrich_results <- lsea(de_results, rank.by = "logFC")
-#' plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
-plot_class_enrichment <- function(de_results, significant.sets,
-                                  measure = "logFC") {
-  significant.sets <- lapply(
-    significant.sets,
-    function(c) sub("^Class_", "", c[grep("^Class_", c)])
-  )
-  de_results <- de_results$Molecule %>%
-    annotate_lipids() %>%
-    .left_join_silent(de_results) %>%
-    group_by(contrast) %>%
-    mutate(Significant = Class %in% significant.sets[[ contrast[[1]] ]]) %>%
-    ungroup()
-
-  p <- ggplot(de_results, aes_string("Class", measure, color = "Significant")) +
-    geom_boxplot() + geom_hline(yintercept = 0, lty = 2) +
-    facet_wrap(~contrast, scales = "free_x") +
-    scale_color_manual(values = c("black", "red")) +
-    theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
-
-  .display_plot(p)
 }
 
 #' Plot logFC of lipids per class showing chain information
@@ -191,16 +123,18 @@ plot_class_enrichment <- function(de_results, significant.sets,
 #'
 #' @param de_results Output of [de_analysis()].
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
-#'   Adj.P.Val.
-#' @param contrast Which comparison to plot.
+#'   Adj.P.Val. Default is `logFC`
+#' @param contrast Which comparison to plot. if not provided, defaults to the 
+#'   the first comparison.
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
 #' de_results <- de_analysis(
+#'   data_normalized,
 #'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
+#'   measure = "Area"
 #' )
 #' plot_chain_distribution(de_results)
 plot_chain_distribution <- function(de_results, contrast = NULL,
@@ -212,7 +146,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 
   de_results <- de_results$Molecule %>%
     annotate_lipids() %>%
-    filter(!itsd) %>%
+    filter(!istd) %>%
     .left_join_silent(de_results)
 
   de_results <- de_results %>%
@@ -231,44 +165,74 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
   .display_plot(p)
 }
 
-#' Plot a bar chart for standard deviations of a certain measure in each lipid
+#' Informative plots to investigate individual lipid molecules
 #'
-#' The function is usually used to look at standard deviation of intensity for
-#' each lipid, but can also be used to look at different measures such as
-#' `Retention.Time`, to ensure all lipids elute within expected range.
+#' `lipidr` supports three types of plots for to visualize at lipid molecules.
+#' \cr\cr
+#' `cv` plots a bar chart for coefficient of variation of lipid molecules. This
+#' plot type is usually used to investigate the CV in lipid intensity or
+#' retention time, in QC samples. \cr\cr
+#' `sd` plots a bar chart for standard deviations of a certain measure in each
+#' lipid. This plot type is usually used to look at standard deviation of
+#' intensity foreach lipid, but can also be used to look at different
+#' measures such as `Retention.Time`, to ensure all lipids elute within
+#' expected range. \cr\cr
+#' `boxplot` plots a boxplot chart to examine the distribution of values per
+#' lipid. This plot type is usually used to look at intensity distribution
+#' for each lipid, but can also be used to look at different measures, such as
+#' `Retention.Time` or `Background`.
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param type plot type, either `cv`, `sd` or `boxplot`. Default is `cv`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height.
+#'   Area.Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed
-#'   (Set FALSE for retention time).
+#'   (Set FALSE for retention time). Default is `TRUE`
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
-#' # plot the variation in intensity of ITSD (internal standards) in QC samples
-#' d_itsd_qc <- data_normalized[
-#'   rowData(data_normalized)$itsd,
-#'   data_normalized$group == "QC"
-#' ]
-#' plot_molecule_sd(d_itsd_qc, "Area")
-#' 
+#' d_qc <- data_normalized[, data_normalized$group == "QC"]
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
-#' plot_molecule_sd(data_normalized[, data_normalized$group == "QC"], "Area")
-#' plot_molecule_sd(
-#'   data_normalized[, data_normalized$group == "QC"],
-#'   measure = "Retention.Time", log = FALSE
-#' )
-plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
+#' plot_molecules(d_qc, "cv", "Area")
+#' plot_molecules(d_qc, "cv", "Retention.Time", log = FALSE)
+#'
+#' # plot the variation in intensity, RT of ISTD (internal standards)
+#' #   in QC samples
+#' d_istd_qc <- data_normalized[
+#'   rowData(data_normalized)$istd,
+#'   data_normalized$group == "QC"
+#' ]
+#' plot_molecules(d_istd_qc, "sd", "Area")
+#' plot_molecules(d_istd_qc, "sd", "Retention.Time", log = FALSE)
+#'
+#' plot_molecules(d_istd_qc, "boxplot")
+#' plot_molecules(d_istd_qc, "boxplot", "Retention.Time", log = FALSE)
+plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
+  measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "SkylineExperiment"))
+  validObject(data)
+  type <- match.arg(type)
   dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
+  if (log) {
     measure <- .check_log(data, measure)
   }
-  p <- ggplot(
+
+  if (type == "cv") {
+    return(.display_plot(.plot_molecule_cv(dlong, measure)))
+  }
+  else if (type == "sd") {
+    return(.display_plot(.plot_molecule_sd(dlong, measure)))
+  }
+
+  .display_plot(.plot_molecule_boxplot(dlong, measure))
+}
+
+.plot_molecule_sd <- function(dlong, measure) {
+  ggplot(
     dlong,
     aes_string("Molecule", measure, fill = "Class", color = "Class")
   ) +
@@ -276,39 +240,10 @@ plot_molecule_sd <- function(data, measure = "Area", log = TRUE) {
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("SD of", measure))
-
-  .display_plot(p)
 }
 
-#' Bar chart for coefficient of variation of lipid molecules
-#'
-#' Plot a bar chart for coefficient of variation (CV) of a certain measure
-#' in each lipid. The functions is usually used to investigate the CV in lipid
-#' intensity or retention time, in QC samples.
-#'
-#' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height.
-#' @param log whether values should be log2 transformed
-#'   (Set FALSE for retention time).
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' 
-#' # plot the variation in intensity and retention time of all measured
-#' #   lipids in QC samples
-#' d_qc <- data_normalized[, data_normalized$group == "QC"]
-#' plot_molecule_cv(d_qc, "Area")
-#' plot_molecule_cv(d_qc, "Retention.Time", log = FALSE)
-plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
-  dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
-    measure <- .check_log(data, measure)
-  }
-  p <- ggplot(
+.plot_molecule_cv <- function(dlong, measure) {
+  ggplot(
     dlong,
     aes_string("Molecule", measure, fill = "Class", color = "Class")
   ) +
@@ -317,79 +252,16 @@ plot_molecule_cv <- function(data, measure = "Area", log = TRUE) {
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("SD of", measure))
 
-  .display_plot(p)
 }
 
-#' Plot a boxplot chart to examine the distribution of values per lipid
-#'
-#' The function is usually used to look at intensity distribution for each
-#' lipid, but can also be used to look at different measures, such as
-#' `Retention.Time` or `Background`.
-#'
-#' @param data Skyline data.frame created by [read_skyline()].
-#' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height.
-#' @param log Whether values should be log2 transformed.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' 
-#' plot_molecule_boxplot(data_normalized)
-#' plot_molecule_boxplot(data_normalized, "Retention.Time", log = FALSE)
-plot_molecule_boxplot <- function(data, measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
-  dlong <- to_long_format(data, measure)
-  if (log == TRUE) {
-    measure <- .check_log(data, measure)
-  }
-  p <- ggplot(
+.plot_molecule_boxplot <- function(dlong, measure) {
+  ggplot(
     dlong,
     aes_string("Molecule", measure, fill = "Class", color = "Class")
   ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
-
-  .display_plot(p)
-}
-
-#' Plot a volcano chart for differential analysis results
-#'
-#' @param de_results Output of [de_analysis()].
-#' @param show.labels Whether labels should be displayed for significant lipids.
-#'
-#' @return A ggplot object.
-#' @export
-#' @examples
-#' data(data_normalized)
-#' de_results <- de_analysis(
-#'   HighFat_water - NormalDiet_water,
-#'   data = data_normalized, measure = "Area"
-#' )
-#' plot_results_volcano(de_results, show.labels = FALSE)
-plot_results_volcano <- function(de_results, show.labels = TRUE) {
-  de_results %>%
-    mutate_at(vars(matches("P.Val")), log10) %>%
-    (function(.) {
-      p <- ggplot(., aes(logFC, -adj.P.Val, color = Class, label = Molecule)) +
-        geom_point() +
-        geom_hline(yintercept = -log10(0.05), lty = 2) +
-        geom_vline(xintercept = c(1, -1), lty = 2) +
-        facet_wrap(~contrast)
-      if (show.labels) {
-        p + geom_text(
-          aes(
-            label = ifelse(
-              adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, ""
-            )
-          ),
-          vjust = -.5, size = 3, color = "black"
-        )
-      }
-      .display_plot(p)
-    })
 }
 
 .display_plot <- function(p) {
@@ -398,3 +270,6 @@ plot_results_volcano <- function(de_results, show.labels = TRUE) {
   }
   return(p)
 }
+
+# colnames used in plot_chain_distribution
+utils::globalVariables(c("nmolecules"))

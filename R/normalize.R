@@ -9,16 +9,15 @@
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height.
+#'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
-#'   logical vector with the same length as samples.
+#'   logical vector with the same length as samples. Default.
 #'
-#' @param log Whether the normalized values should be log2 transformed.
+#' @param log Whether the normalized values should be log2 transformed. Default
+#'   is `TRUE`.
 #'
 #' @return A SkylineExperiment object with normalized values
-#' @importFrom SummarizedExperiment assay<- assays<-
-#' @importFrom dplyr %>% vars select group_by mutate
 #' @importFrom rlang sym UQ
 #' @export
 #' @references Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006).
@@ -41,16 +40,7 @@
 #' )
 normalize_pqn <- function(data, measure = "Area",
                           exclude = "blank", log = TRUE) {
-  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
-    stop(measure, " is already normalized")
-  }
-  if (!is.null(exclude)) {
-    if (exclude == "blank") {
-      data <- data[, !.is_blank(data)]
-    } else {
-      data <- data[, exclude]
-    }
-  }
+  data <- .prenormalize_check(data, measure, exclude)
   m <- assay(data, measure)
 
   # factor_n = median ( lipid_i_n/ avg(lipid_i) )
@@ -75,19 +65,18 @@ normalize_pqn <- function(data, measure = "Area",
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' @param data SkylineExperiment object created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height.
+#'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
-#'   logical vector with the same length as samples.
-#' @param log whether the normalized values should be log2 transformed.
+#'   logical vector with the same length as samples. Default.
+#' @param log whether the normalized values should be log2 transformed. Default
+#'   is `TRUE`.
 #'
 #' @return A SkylineExperiment object with normalized values. Each molecule
 #'     is normalized against the internal standard from the same class.
 #'
-#' @importFrom dplyr %>% select group_by mutate filter ungroup
-#' @importFrom dplyr left_join inner_join
 #' @importFrom rlang sym UQ
 #' @export
 #'
@@ -100,49 +89,36 @@ normalize_pqn <- function(data, measure = "Area",
 #' d_summarized <- summarize_transitions(d, method = "average")
 #' 
 #' # Normalize data that have been summarized (single value per molecule).
-#' data_norm_itsd <- normalize_itsd(
+#' data_norm_istd <- normalize_istd(
 #'   d_summarized,
 #'   measure = "Area", exclude = "blank", log = TRUE
 #' )
-normalize_itsd <- function(data, measure = "Area",
+normalize_istd <- function(data, measure = "Area",
                            exclude = "blank", log = TRUE) {
-  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
-    stop(measure, " is already normalized")
-  }
-  if (!data@attrs$summarized) {
-    stop("Data should be summarized using summarize_transitions")
-  }
-
-  if (!is.null(exclude)) {
-    if (exclude == "blank") {
-      data <- data[, !.is_blank(data)]
-    } else {
-      data <- data[, exclude]
-    }
-  }
-  itsd <- rowData(data)$itsd
-  if (sum(itsd) == 0) {
+  data <- .prenormalize_check(data, measure, exclude)
+  istd <- rowData(data)$istd
+  if (sum(istd) == 0) {
     stop("No internal standards found in your lipid list.")
   }
   m <- assay(data, measure)
-  mitsd <- m[itsd, ]
+  mistd <- m[istd, ]
 
-  # itsd_n = itsd_ni / mean(itsd_i)
-  mitsd <- mitsd / rowMeans(mitsd, na.rm = TRUE)
+  # istd_n = istd_ni / mean(istd_i)
+  mistd <- mistd / rowMeans(mistd, na.rm = TRUE)
 
   # per class:
-  itsd_list <- to_df(data) %>%
+  istd_list <- to_df(data) %>%
     group_by(filename, Class) %>%
-    mutate(itsd_list = list(as.character(MoleculeId[itsd]))) %>%
-    .$itsd_list
+    mutate(istd_list = list(as.character(MoleculeId[istd]))) %>%
+    .$istd_list
 
-  assay(data, measure) <- laply(seq_along(itsd_list), function(i) {
-    if (length(itsd_list[[i]]) == 0) {
+  assay(data, measure) <- laply(seq_along(istd_list), function(i) {
+    if (length(istd_list[[i]]) == 0) {
       f <- 1
-    } else if (length(itsd_list[[i]]) == 1) {
-      f <- mitsd[itsd_list[[i]], ]
+    } else if (length(istd_list[[i]]) == 1) {
+      f <- mistd[istd_list[[i]], ]
     } else {
-      f <- colMeans(mitsd[itsd_list[[i]], ], na.rm = TRUE)
+      f <- colMeans(mistd[istd_list[[i]], ], na.rm = TRUE)
     }
 
     return(m[i, ] / f)
@@ -154,4 +130,18 @@ normalize_itsd <- function(data, measure = "Area",
   }
 
   return(data)
+}
+
+.prenormalize_check <- function(data, measure, exclude) {
+  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
+    stop(measure, " is already normalized")
+  }
+  if (!is.null(exclude)) {
+    if (exclude == "blank") {
+      data <- data[, !.is_blank(data)]
+    } else {
+      data <- data[, exclude]
+    }
+  }
+  data
 }

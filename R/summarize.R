@@ -3,12 +3,10 @@
 #' Calculate a single intensity for molecules with multiple transitions,
 #' by determining the average or maximum intensity.
 #'
-#' @param data Skyline data.frame created by [read_skyline()].
+#' @param data SkylineExperiment object created by [read_skyline()].
 #' @param method Choose to summarize multiple transitions by taking the average
-#'   or maximum intensity.
+#'   or maximum intensity. Default is `max`
 #'
-#' @importFrom dplyr %>% vars matches arrange group_by_at ungroup
-#' @importFrom dplyr group_indices summarise first
 #' @return A SkylineExperiment object with single intensities per lipid molecule
 #' @export
 #'
@@ -21,7 +19,8 @@
 #' d_summarized <- summarize_transitions(d, method = "average")
 summarize_transitions <- function(data, method = c("max", "average")) {
   stopifnot(inherits(data, "SkylineExperiment"))
-  if (data@attrs$summarized) {
+  validObject(data)
+  if (metadata(data)$summarized) {
     stop("data is already summarized")
   }
 
@@ -56,13 +55,19 @@ summarize_transitions <- function(data, method = c("max", "average")) {
 
   row_data <- row_data[ row.names(assay_list[[1]]), ]
 
-  attrs <- data@attrs
+  attrs <- metadata(data)
   attrs$summarized <- TRUE
   attrs$dimnames[[1]] <- "MoleculeId"
   SkylineExperiment(
     assay_list = assay_list,
-    attrs = attrs,
+    metadata = attrs,
     colData = colData(data),
     rowData = row_data
   )
 }
+
+# Defined as dimname
+utils::globalVariables(c("MoleculeId"))
+
+# colnames used internally in summarize_transitions
+utils::globalVariables(c("group_idx"))
