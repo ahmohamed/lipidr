@@ -36,6 +36,10 @@ environment:
     - R_VERSION: release
       BIOC_USE_DEVEL: "FALSE"
 
+matrix:  
+  allow_failures:
+    - R_VERSION: devel
+
 artifacts:
   - path: '*.Rcheck\**\*.log'
     name: Logs
