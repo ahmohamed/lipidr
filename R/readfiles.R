@@ -106,6 +106,11 @@ add_sample_annotation <- function(data, annot_file) {
 #' @return std data.frame
 .read_skyline_file <- function(file) {
   original_data <- read.csv(file, stringsAsFactors = FALSE)
+
+  # Check it is not an empty file
+  if (!nrow(original_data)) {
+    stop("file ", file, " does not have any data.")
+  }
   original_data[original_data == "#N/A"] <- NA
 
   col_defs <- list(
@@ -190,7 +195,6 @@ add_sample_annotation <- function(data, annot_file) {
   )
 
   ret <- original_data
-  ret[, sample_cols] <- sapply(ret[, sample_cols], as.numeric)
   ret <- ret %>%
     gather("sample.measure", "value", sample_cols) %>%
     separate(
@@ -199,6 +203,12 @@ add_sample_annotation <- function(data, annot_file) {
       sep = "###", extra = "merge"
     ) %>%
     spread(measure, value)
+
+  if (any(colnames(ret) %in% col_defs$replicate_cols)) {
+    ret <- ret[, !colnames(ret) %in% col_defs$replicate_cols]
+    measures <- measures[!measures %in% col_defs$replicate_cols]
+  }
+  ret <- ret %>% mutate_at(vars(one_of(measures)), as.numeric)
 
   attr(ret, "skyline") <- list(
     skyline = TRUE,
