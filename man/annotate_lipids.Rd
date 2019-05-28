@@ -4,7 +4,7 @@
 \alias{annotate_lipids}
 \title{Parse molecule names to extract lipid class and chain information.}
 \usage{
-annotate_lipids(molecules)
+annotate_lipids(molecules, no_match = c("warn", "remove", "ignore"))
 }
 \arguments{
 \item{molecules}{A character vector containing lipid molecule names.}

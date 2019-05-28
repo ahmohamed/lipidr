@@ -21,7 +21,8 @@
 #'   "TG(16:0/18:1/18:1)"
 #' )
 #' annotate_lipids(lipid_list)
-annotate_lipids <- function(molecules) {
+annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
+  no_match <- match.arg(no_match)
   .data_internal("lipidDefaults")
   def <- .myDataEnv$lipidDefaults$clean_mols
   not_in_db <- molecules[!molecules %in% def$Molecule]
@@ -34,19 +35,25 @@ annotate_lipids <- function(molecules) {
 
   clean_ <- .clean_molecule_name(not_in_db)
   if (any(clean_$not_matched)) {
-    warning(
-      "Some lipid names couldn't be parsed because they don't follow ",
-      "the pattern 'CLS xx:x/yy:y' \n    ",
-      clean_$Molecule[clean_$not_matched]
-    )
+    if (no_match == "warn") {
+      warning(
+        "Some lipid names couldn't be parsed because they don't follow ",
+        "the pattern 'CLS xx:x/yy:y' \n    ",
+        paste0(clean_$Molecule[clean_$not_matched], collapse = ", ")
+      )
+    }
   }
 
-  clean_ %>%
+  ret <- clean_ %>%
     filter(!not_matched) %>%
     .parse_lipid_info() %>%
     .left_join_silent(.myDataEnv$lipidDefaults$class_info) %>%
-    .full_join_silent(def %>% filter(Molecule %in% molecules)) %>%
-    return()
+    .full_join_silent(def %>% filter(Molecule %in% molecules))
+
+  if (no_match != "remove") {
+    ret <- ret %>% .full_join_silent(clean_)
+  }
+  ret
 }
 
 #### Internal functions ############################################
