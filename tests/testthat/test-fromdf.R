@@ -63,3 +63,17 @@ test_that("Can read dataframe with duplicate molecules", {
   expect_false( any(unlist(mcols(assays(d)))) )
   expect_equal(dim(d %>% summarize_transitions()), c(19, 11))
 })
+
+test_that("Gives error when no lipid names are provided", {
+  f1df <- f1_matrix %>% as.data.frame() %>%
+    rownames_to_column("Features") %>%
+    select(-Features)
+
+  expect_error(as_skyline_experiment(f1df), "Data frame does not contain valid lipid names.")
+})
+
+context("test-fromdf-todo")
+test_that("Skyline export as dataframe is not yet supported", {
+  a <- read.csv("A1.csv")
+  expect_error(as_skyline_experiment(a))
+})

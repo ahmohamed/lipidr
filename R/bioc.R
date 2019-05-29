@@ -59,10 +59,86 @@ setValidity("SkylineExperiment", function(object) {
 #' @export
 SkylineExperiment <- function(assay_list, metadata,
                               colData = NULL, rowData = NULL) {
+  stopifnot(length(assay_list) > 0)
+  if (is.null(colData)) {
+    colData <- DataFrame(row.names = colnames(assay_list[[1]]))
+  }
   se <- SummarizedExperiment(assay_list,
     colData = colData, rowData = rowData, metadata = metadata)
   ret <- .SkylineExperiment(se)
   return(ret)
+}
+
+#' Convert data.frame/matrix to SkylineExperiment
+#'
+#' @param df A data.frame or matrix where rows are lipids and columns
+#'   are samples. Lipid names should be provided in the first column
+#'   or in rownames of `df`. Measurements should be numeric.
+#'   The data is considered `summarized` unless at least one lipid
+#'   is duplicated (has > 1 row).
+#' @param logged Whether the data is log-transformed
+#' @param normalized Whether the data is normalized
+#'
+#' @return SkylineExperiment
+#' @export
+as_skyline_experiment <- function(df, logged=FALSE, normalized=FALSE) {
+  # if (!.is_skyline_export(df)) {
+  #   #return(.to_summarized_experiment(d))
+  # }
+  first_col <- 0
+  if (is.factor(df[, 1])) {
+    df[, 1] <- as.character(df[, 1])
+  }
+  if (is.character(df[, 1])) {
+    first_col <- sum(!annotate_lipids(df[, 1], no_match = "ignore")$not_matched)
+  }
+  rows <- 0
+  if (is.character(rownames(df))) {
+    rows <- sum(!annotate_lipids(rownames(df), no_match = "ignore")$not_matched)
+  }
+  if (first_col == 0 && rows == 0) {
+    stop("Data frame does not contain valid lipid names. ",
+      "Lipids features should be in rownames or the first column."
+    )
+  }
+
+  if (first_col > rows) {
+    # Molecules are in the first column
+    molecules <- df[, 1]
+    if (sum(duplicated(molecules))) {
+      row_dimname <- "TransitionId"
+      summarized <- FALSE
+      df <- df[, -1]
+    } else {
+      row_dimname <- "Molecule"
+      summarized <- TRUE
+      rownames(df) <- df[, 1]
+      df <- df[, -1]
+    }
+  } else {
+    # Molecules are in the rownames
+    molecules <- rownames(df)
+    row_dimname <- "Molecule"
+    summarized <- TRUE
+  }
+  assay_list <- list(Area = data.matrix(df, rownames.force = TRUE))
+  assay_list <- as(assay_list, "SimpleList")
+  mcols(assay_list) <- list(logged = logged, normalized = normalized)
+  row_data <- DataFrame(
+    filename="dataframe",
+    Molecule = molecules,
+    row.names=rownames(df)
+  ) %>%
+    left_join(annotate_lipids(molecules))
+  metadata <- list(
+    summarized = summarized,
+    dimnames = c(row_dimname, "Sample")
+  )
+  SkylineExperiment(
+    assay_list,
+    metadata = metadata,
+    rowData = row_data
+  )
 }
 
 #' @importFrom S4Vectors mcols mcols<- metadata
