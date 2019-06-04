@@ -63,7 +63,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' quality control samples. \cr\cr
 #' `boxplot` Plots a boxplot chart to examine the distribution of values per
 #' class. This plot type is usually used to look at the intensity distribution
-#' in eachclass, but can also be used to look at different measures, such as
+#' in each class, but can also be used to look at different measures, such as
 #' `Retention.Time` or `Background`.
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
@@ -174,7 +174,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 #' retention time, in QC samples. \cr\cr
 #' `sd` plots a bar chart for standard deviations of a certain measure in each
 #' lipid. This plot type is usually used to look at standard deviation of
-#' intensity foreach lipid, but can also be used to look at different
+#' intensity for each lipid, but can also be used to look at different
 #' measures such as `Retention.Time`, to ensure all lipids elute within
 #' expected range. \cr\cr
 #' `boxplot` plots a boxplot chart to examine the distribution of values per

@@ -29,7 +29,7 @@ plot type is usually used to investigate the CV in lipid intensity or
 retention time, in QC samples. \cr\cr
 \code{sd} plots a bar chart for standard deviations of a certain measure in each
 lipid. This plot type is usually used to look at standard deviation of
-intensity foreach lipid, but can also be used to look at different
+intensity for each lipid, but can also be used to look at different
 measures such as \code{Retention.Time}, to ensure all lipids elute within
 expected range. \cr\cr
 \code{boxplot} plots a boxplot chart to examine the distribution of values per

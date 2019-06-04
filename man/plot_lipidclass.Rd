@@ -31,7 +31,7 @@ range. To assess instrumental variation apply the function to technical
 quality control samples. \cr\cr
 \code{boxplot} Plots a boxplot chart to examine the distribution of values per
 class. This plot type is usually used to look at the intensity distribution
-in eachclass, but can also be used to look at different measures, such as
+in each class, but can also be used to look at different measures, such as
 \code{Retention.Time} or \code{Background}.
 }
 \examples{

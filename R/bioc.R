@@ -49,7 +49,7 @@ setValidity("SkylineExperiment", function(object) {
 #' @param colData An optional DataFrame describing the samples (contains
 #'   clinical information). Row names, if present, become the column names of
 #'   the SkylineExperiment.
-#' @param metadata A list containing arbirary information about the experiment.
+#' @param metadata A list containing arbitrary information about the experiment.
 #'   It should at least contain 2 elements: \itemize{
 #'     \item dimnames    2-element character vector with dimension names
 #'     \item summarized   Has transitions been summarized?

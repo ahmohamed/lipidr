@@ -40,7 +40,7 @@ NULL
 #'   \item lipidDefaults   A list of default mappings and annotations for lipids.
 #'   \item lipidnames_pattern   A list of patterns used in parsing lipid names.
 #'  }
-#'  See below for detailed descrition of each dataset.
+#'  See below for detailed description of each dataset.
 #'
 #' @docType data
 #' @name lipidr-data
