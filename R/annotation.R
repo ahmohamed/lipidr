@@ -8,6 +8,8 @@
 #' where zz:z indicates the combined chain length and unsaturation information.
 #'
 #' @param molecules A character vector containing lipid molecule names.
+#' @param no_match How to handle lipids that cannot be parsed? Default is
+#'   to give warnings.
 #' @return A data.frame with lipid annotations as columns. Input lipid names
 #'   are given in a column named "Molecule".
 #'
