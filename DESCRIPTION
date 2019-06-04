@@ -47,7 +47,8 @@ Suggests:
     ggrepel,
     plotly,
     covr,
-    spelling
+    spelling,
+    testthat
 VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization

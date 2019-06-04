@@ -21,7 +21,10 @@
   common_cols <- Reduce(intersect, cols)
   omitted_cols <- all_cols[!all_cols %in% common_cols]
   if (length(omitted_cols) > 0) {
-    warning("Some columns were not available in all files. ", omitted_cols)
+    warning(
+      "Some columns were not available in all files. ",
+      paste(omitted_cols, collapse = ", ")
+    )
   }
 
   ret <- bind_rows(datalist, .id = "filename") %>%
