@@ -151,9 +151,8 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' plot_results_volcano(de_results, show.labels = FALSE)
 plot_results_volcano <- function(de.results, show.labels = TRUE) {
   de.results %>%
-    mutate_at(vars(matches("P.Val")), log10) %>%
     (function(.) {
-      p <- ggplot(., aes(logFC, -adj.P.Val, color = Class, label = Molecule)) +
+      p <- ggplot(., aes(logFC, -log10(adj.P.Val), color = Class, label = Molecule)) +
         geom_point() +
         geom_hline(yintercept = -log10(0.05), lty = 2) +
         geom_vline(xintercept = c(1, -1), lty = 2) +

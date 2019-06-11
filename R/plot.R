@@ -124,7 +124,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
 #' @param de_results Output of [de_analysis()].
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
 #'   Adj.P.Val. Default is `logFC`
-#' @param contrast Which comparison to plot. if not provided, defaults to the 
+#' @param contrast Which comparison to plot. if not provided, defaults to the
 #'   the first comparison.
 #'
 #' @return A ggplot object.
@@ -250,7 +250,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("SD of", measure))
+    ylab(paste("CV of", measure))
 
 }
 
