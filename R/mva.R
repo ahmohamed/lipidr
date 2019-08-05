@@ -60,13 +60,13 @@ mva <- function(data, measure = "Area",
   }
 
   if (method == "PCA") {
-    object <- prcomp(d, scale = TRUE)
+    object <- run_pca(d, ...)
+    
     return(structure(list(
-      scores = object$x,
-      loadings = object$rotation,
-      variance = object$stdev,
-      var.pct = round((object$sdev^2) / sum(object$sdev^2), 3) * 100,
-      method = "PCA",
+      scores = data.frame(object@scoreMN[, 1], object@scoreMN[, 2]),
+      loadings = data.frame(object@loadingMN[, 1], object@loadingMN[, 2]),
+      summary = object@modelDF,
+      method = method,
       row_data = rowData(data_f),
       col_data = colData(data_f),
       group_col = group_col
@@ -168,6 +168,18 @@ run_opls <- function(data, y,
   )
 }
 
+run_pca <- function(data,
+                     predI = 2,
+                     scaleC = "standard",
+                     fig.pdfC = NULL, ...) {
+  opls(
+    data,
+    predI = predI,
+    scaleC = scaleC,
+    fig.pdfC = fig.pdfC, ...
+  )
+}
+
 #' @importFrom stats var qf median dist
 plot_opls <- function(mvaresults, components,
                       color_by, ellipse = TRUE, hotelling = TRUE) {
@@ -227,6 +239,59 @@ plot_opls <- function(mvaresults, components,
       vjust = 4, hjust = 1, size = 3
     )
 
+
+  .display_plot(p)
+}
+
+
+#' @importFrom stats var qf median dist
+plot_pca <- function(mvaresults, components,
+                      color_by, ellipse = TRUE, hotelling = TRUE) {
+  ret <- .get_mds_matrix(mvaresults, components, color_by)
+  d <- ret$mds_matrix
+  color_by <- ret$color_by
+  
+  N <- nrow(d)
+  pscores <- d[, 2]
+  oscores <- d[, 3]
+  
+  hotFisN <- (N - 1) * 2 * (N^2 - 1) / (N^2 * (N - 2)) * qf(0.95, 2, N - 2)
+  
+  
+  p <- ggplot(d, aes_string(
+    colnames(d)[[2]], colnames(d)[[3]],
+    label = "Sample", color = color_by
+  ))
+  
+  if (ellipse) {
+    p <- p + stat_ellipse(
+      geom = "polygon", alpha = 0.3, linetype = "blank",
+      aes_string(fill = color_by), type = "norm"
+    )
+  }
+  if (hotelling) {
+    p <- p + gg_circle(
+      rx = sqrt(var(pscores) * hotFisN),
+      ry = sqrt(var(oscores) * hotFisN),
+      xc = 0, yc = 0
+    )
+  }
+  sm <- mvaresults$summary
+  p <- p + geom_hline(yintercept = 0, color = "gray") +
+    geom_vline(xintercept = 0, color = "gray") +
+    geom_point(size = 3) +
+    xlab(paste("p1:", sm["p1", "R2X"] * 100, "%")) +
+    ylab(paste("p2:", sm["p2", "R2X"] * 100, "%")) +
+    labs(color = "Group", fill = "Group") +
+    theme_grey(base_size = 10) +
+    annotate(
+      "text",
+      x = Inf, y = Inf,
+      label = paste("R2X:", sm[, "R2X(cum)"] %>% max),
+      vjust = 1, hjust = 1, size = 3
+    )
+  
+  
   .display_plot(p)
 }
 
@@ -268,27 +333,8 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
     return(plot_opls(mvaresults, components, color_by))
   }
 
-  ret <- .get_mds_matrix(mvaresults, components, color_by)
-  mds_matrix <- ret$mds_matrix
-  color_by <- ret$color_by
-  cols <- colnames(mds_matrix)
-
-  p <- ggplot(mds_matrix, aes_string(
-    cols[[2]], cols[[3]],
-    label = "Sample", color = color_by
-  )) + geom_point(size = 3, pch = 16) +
-    geom_text(vjust = -.5, size = 3, color = "black")
-
-  if (inherits(mvaresults, "pca") && !is.null(mvaresults$var.pct)) {
-    xlabel <- paste(
-      cols[[2]],
-      "(", mvaresults$var.pct[[ components[[1]] ]], "%)"
-    )
-    ylabel <- paste(
-      cols[[3]],
-      "(", mvaresults$var.pct[[ components[[2]] ]], "%)"
-    )
-    p <- p + xlab(xlabel) + ylab(ylabel)
+  if (inherits(mvaresults, "pca")) {
+    return(plot_pca(mvaresults, components, color_by))
   }
   .display_plot(p)
 }
