@@ -165,6 +165,40 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
   .display_plot(p)
 }
 
+#' Plot a regulation trend line  between logFC and chain annotation
+#' Fit and plot a regression line of (log2) fold changes and chain
+#' lengths or unsaturations. If multiple comparisons are included, one
+#' regression is plotted for each.
+#'
+#' @param de_results Output of [de_analysis]().
+#' @param annotation Whether to fit trend line against chain `length` or `unsat`.
+#'
+#' @return A ggplot object.
+#' @export
+#' @examples
+#' data(data_normalized)
+#' de_results <- de_analysis(
+#'   data_normalized,
+#'   HighFat_water - NormalDiet_water,
+#'   NormalDiet_DCA - NormalDiet_water,
+#'   measure = "Area"
+#' )
+#' plot_trend(de_results, "length")
+plot_trend <- function(de_results, annotation = c("length", "unsat")) {
+  annotation = match.arg(annotation)
+  x = rlang::sym(ifelse(annotation == "length", "total_cl", "total_cs"))
+  x_lab = ifelse(annotation == "length", "Chain length", "Unsaturated bonds")
+  x_breaks = if (annotation == "length") seq(10,80,2) else seq(0,12,1)
+
+
+  ggplot(de_results, aes(!!x, logFC, color=contrast)) +
+    geom_hline(color="black", yintercept = 0, lty=2) +
+    geom_smooth(alpha = 0.2) +
+    labs(x = x_lab, y = "logFC") +
+    scale_x_continuous(breaks = x_breaks) +
+    theme(legend.position = "bottom")
+}
+
 #' Informative plots to investigate individual lipid molecules
 #'
 #' `lipidr` supports three types of plots for to visualize at lipid molecules.
@@ -264,12 +298,57 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 }
 
+#' Plot an annotated heatmap
+#' Plots a hierarchically clustered heatmap showing selected sample and
+#' lipid molecule annotations.
+#'
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized, Height or Retention.Time. Default is `Area`.
+#' @param molecule_annotation The column name for lipid annotation, default to `Class`.
+#' @param sample_annotation The column name for sample annotation, default to `all`.
+#'
+#' @return A heatmap plot
+#' @export
+#'
+#' @examples
+#' data(data_normalized)
+#' plot_heatmap(data_normalized, sample_annotation = "group")
+plot_heatmap <- function(data, measure = "Area",
+  molecule_annotation = "Class", sample_annotation = "all") {
+  if (!requireNamespace("pheatmap", quietly = TRUE)) {
+    stop("Package 'pheatmap' must be installed for heatmap plots")
+  }
+  annotation_col = colData(data) %>% as.data.frame()
+  annotation_row = rowData(data) %>% as.data.frame()
+  if (sample_annotation != "all") {
+    if (sample_annotation == FALSE) {
+      annotation_col = NULL
+    } else {
+      annotation_col = annotation_col %>% 
+        dplyr::select(!!sym(sample_annotation))
+    }
+  }
+  if (molecule_annotation != "all") {
+    if (molecule_annotation == FALSE) {
+      annotation_row = NULL
+    } else {
+      annotation_row = annotation_row %>% 
+        dplyr::select(!!sym(molecule_annotation))
+    }
+  }
+  pheatmap::pheatmap(assay(data, measure),
+    annotation_row = annotation_row, annotation_col = annotation_col)
+}
+
 .display_plot <- function(p) {
   if (.myDataEnv$interactive) {
     p <- plotly::ggplotly(p)
   }
   return(p)
 }
+
+
 
 # colnames used in plot_chain_distribution
 utils::globalVariables(c("nmolecules"))

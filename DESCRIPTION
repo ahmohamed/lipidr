@@ -46,6 +46,7 @@ Suggests:
     BiocStyle,
     ggrepel,
     plotly,
+    pheatmap,
     covr,
     spelling,
     testthat

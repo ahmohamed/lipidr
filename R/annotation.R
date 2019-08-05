@@ -30,9 +30,7 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
   not_in_db <- molecules[!molecules %in% def$Molecule]
 
   if (length(not_in_db) == 0) {
-    def %>%
-      filter(Molecule %in% molecules) %>%
-      return()
+    return(def %>% filter(Molecule %in% molecules))
   }
 
   clean_ <- .clean_molecule_name(not_in_db)
@@ -50,6 +48,7 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
     filter(!not_matched) %>%
     .parse_lipid_info() %>%
     .left_join_silent(.myDataEnv$lipidDefaults$class_info) %>%
+    mutate(Class = as.character(ifelse(is.na(Class), class_stub, Class))) %>%
     .full_join_silent(def %>% filter(Molecule %in% molecules))
 
   if (no_match != "remove") {

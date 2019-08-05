@@ -110,7 +110,7 @@ as_skyline_experiment <- function(df, logged=FALSE, normalized=FALSE) {
       summarized <- FALSE
       df <- df[, -1]
     } else {
-      row_dimname <- "Molecule"
+      row_dimname <- "MoleculeId"
       summarized <- TRUE
       rownames(df) <- df[, 1]
       df <- df[, -1]
@@ -118,7 +118,7 @@ as_skyline_experiment <- function(df, logged=FALSE, normalized=FALSE) {
   } else {
     # Molecules are in the rownames
     molecules <- rownames(df)
-    row_dimname <- "Molecule"
+    row_dimname <- "MoleculeId"
     summarized <- TRUE
   }
   assay_list <- list(Area = data.matrix(df, rownames.force = TRUE))
