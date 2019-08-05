@@ -170,19 +170,19 @@ run_opls <- function(data, y,
 }
 
 run_pca <- function(data,
-                     predI = 2,
+                     predI = NA,
                      scaleC = "standard",
                      fig.pdfC = NULL, ...) {
   opls(
     data,
-    predI = predI,
+    predI = nrow(data),
     scaleC = scaleC,
     fig.pdfC = fig.pdfC, ...
   )
 }
 
 #' @importFrom stats var qf median dist
-plot_opls <- function(mvaresults, components,
+plot_ropls_results <- function(mvaresults, components,
                       color_by, ellipse = TRUE, hotelling = TRUE) {
   ret <- .get_mds_matrix(mvaresults, components, color_by)
   d <- ret$mds_matrix
@@ -214,16 +214,41 @@ plot_opls <- function(mvaresults, components,
     )
   }
   sm <- mvaresults$summary
+
+  if (inherits(mvaresults, "pca")) {
+    x_comp <- paste0("PC", components[[1]], ":")
+    x_lab <- paste(x_comp, sm[components[[1]], "R2X"] * 100, "%")
+    y_comp <- paste0("PC", components[[2]], ":")
+    y_lab <- paste(y_comp, sm[components[[2]], "R2X"] * 100, "%")
+  } else {
+    x_lab <- paste("p1:", sm["p1", "R2X"] * 100, "%")
+    y_lab <- paste("o1:", sm["o1", "R2X"] * 100, "%")
+  }
+
   p <- p + geom_hline(yintercept = 0, color = "gray") +
     geom_vline(xintercept = 0, color = "gray") +
     geom_point(size = 3) +
-    xlab(paste("p1:", sm["p1", "R2X"] * 100, "%")) +
-    ylab(paste("o1:", sm["o1", "R2X"] * 100, "%")) +
+    xlab(x_lab) +
+    ylab(y_lab) +
     labs(color = "Group", fill = "Group") +
-    theme_grey(base_size = 10) +
-    annotate(
+    theme_grey(base_size = 10)
+
+  # Model annoatations
+  if (inherits(mvaresults, "pca")){
+    p <- p +
+      annotate(
+        "text",
+        x = Inf, y = Inf,
+        # Total variace accounted for until component n
+        label = paste("R2X:", sm[max(components), "R2X(cum)"]),
+        vjust = 1, hjust = 1, size = 3
+      )
+  }
+  else  {
+    p <- p + annotate(
       "text",
       x = Inf, y = Inf,
+      # Total variace accounted for until component n
       label = paste("R2X:", sm["sum", "R2X(cum)"]),
       vjust = 1, hjust = 1, size = 3
     ) +
@@ -239,60 +264,7 @@ plot_opls <- function(mvaresults, components,
       label = paste("Q2:", sm["sum", "Q2(cum)"]),
       vjust = 4, hjust = 1, size = 3
     )
-
-
-  .display_plot(p)
-}
-
-
-#' @importFrom stats var qf median dist
-plot_pca <- function(mvaresults, components,
-                      color_by, ellipse = TRUE, hotelling = TRUE) {
-  ret <- .get_mds_matrix(mvaresults, components, color_by)
-  d <- ret$mds_matrix
-  color_by <- ret$color_by
-  
-  N <- nrow(d)
-  pscores <- d[, 2]
-  oscores <- d[, 3]
-  
-  hotFisN <- (N - 1) * 2 * (N^2 - 1) / (N^2 * (N - 2)) * qf(0.95, 2, N - 2)
-  
-  
-  p <- ggplot(d, aes_string(
-    colnames(d)[[2]], colnames(d)[[3]],
-    label = "Sample", color = color_by
-  ))
-  
-  if (ellipse) {
-    p <- p + stat_ellipse(
-      geom = "polygon", alpha = 0.3, linetype = "blank",
-      aes_string(fill = color_by), type = "norm"
-    )
   }
-  if (hotelling) {
-    p <- p + gg_circle(
-      rx = sqrt(var(pscores) * hotFisN),
-      ry = sqrt(var(oscores) * hotFisN),
-      xc = 0, yc = 0
-    )
-  }
-  sm <- mvaresults$summary
-  p <- p + geom_hline(yintercept = 0, color = "gray") +
-    geom_vline(xintercept = 0, color = "gray") +
-    geom_point(size = 3) +
-    xlab(paste("p1:", sm["p1", "R2X"] * 100, "%")) +
-    ylab(paste("p2:", sm["p2", "R2X"] * 100, "%")) +
-    labs(color = "Group", fill = "Group") +
-    theme_grey(base_size = 10) +
-    annotate(
-      "text",
-      x = Inf, y = Inf,
-      label = paste("R2X:", sm[, "R2X(cum)"] %>% max),
-      vjust = 1, hjust = 1, size = 3
-    )
-  
-  
   .display_plot(p)
 }
 
@@ -330,13 +302,21 @@ plot_pca <- function(mvaresults, components,
 #' plot_mva(mvaresults, color_by = "group")
 plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
   stopifnot(inherits(mvaresults, "mvaResults"))
-  if (inherits(mvaresults, "opls")) {
-    return(plot_opls(mvaresults, components, color_by))
+  if (!inherits(mvaresults, "pcoa")) {
+    return(plot_ropls_results(mvaresults, components, color_by))
   }
 
-  if (inherits(mvaresults, "pca")) {
-    return(plot_pca(mvaresults, components, color_by))
-  }
+  ret <- .get_mds_matrix(mvaresults, components, color_by)
+  mds_matrix <- ret$mds_matrix
+  color_by <- ret$color_by
+  cols <- colnames(mds_matrix)
+
+   p <- ggplot(mds_matrix, aes_string(
+    cols[[2]], cols[[3]],
+    label = "Sample", color = color_by
+  )) + geom_point(size = 3, pch = 16) +
+    geom_text(vjust = -.5, size = 3, color = "black")
+
   .display_plot(p)
 }
 
