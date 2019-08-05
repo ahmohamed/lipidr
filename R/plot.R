@@ -317,7 +317,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 plot_heatmap <- function(data, measure = "Area",
   molecule_annotation = "Class", sample_annotation = "all") {
   if (!requireNamespace("pheatmap", quietly = TRUE)) {
-    stop("Package 'pheatmap' must be installed for interactive graphics")
+    stop("Package 'pheatmap' must be installed for heatmap plots")
   }
   annotation_col = colData(data) %>% as.data.frame()
   annotation_row = rowData(data) %>% as.data.frame()
