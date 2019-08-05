@@ -165,6 +165,40 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
   .display_plot(p)
 }
 
+#' Plot a regulation trend line  between logFC and chain annotation
+#' Fit and plot a regression line of (log2) fold changes and chain
+#' lengths or unsaturations. If multiple comparisons are included, one
+#' regression is plotted for each.
+#'
+#' @param de_results Output of [de_analysis]().
+#' @param annotation Whether to fit trend line against chain `length` or `unsat`.
+#'
+#' @return A ggplot object.
+#' @export
+#' @examples
+#' data(data_normalized)
+#' de_results <- de_analysis(
+#'   data_normalized,
+#'   HighFat_water - NormalDiet_water,
+#'   NormalDiet_DCA - NormalDiet_water,
+#'   measure = "Area"
+#' )
+#' plot_trend(de_results, "length")
+plot_trend <- function(de_results, annotation = c("length", "unsat")) {
+  annotation = match.arg(annotation)
+  x = rlang::sym(ifelse(annotation == "length", "total_cl", "total_cs"))
+  x_lab = ifelse(annotation == "length", "Chain length", "Unsaturated bonds")
+  x_breaks = if (annotation == "length") seq(10,80,2) else seq(0,12,1)
+
+
+  ggplot(de_results, aes(!!x, logFC, color=contrast)) +
+    geom_hline(color="black", yintercept = 0, lty=2) +
+    geom_smooth(alpha = 0.2) +
+    labs(x = x_lab, y = "logFC") +
+    scale_x_continuous(breaks = x_breaks) +
+    theme(legend.position = "bottom")
+}
+
 #' Informative plots to investigate individual lipid molecules
 #'
 #' `lipidr` supports three types of plots for to visualize at lipid molecules.
@@ -311,6 +345,8 @@ plot_heatmap <- function(data, measure = "Area",
   }
   return(p)
 }
+
+
 
 # colnames used in plot_chain_distribution
 utils::globalVariables(c("nmolecules"))
