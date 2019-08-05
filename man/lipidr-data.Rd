@@ -9,7 +9,7 @@ lipidr-package has 3 datasets: \itemize{
 \item data_normalized    Example lipidomics dataset,
 normalized & log2-transformed.
 \item lipidDefaults   A list of default mappings and annotations for lipids.
-\item lipidname_pattern   A list of patterns used in parsing lipid names.
+\item lipidnames_pattern   A list of patterns used in parsing lipid names.
 }
 See below for detailed description of each dataset.
 }
