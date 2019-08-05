@@ -50,6 +50,7 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
     filter(!not_matched) %>%
     .parse_lipid_info() %>%
     .left_join_silent(.myDataEnv$lipidDefaults$class_info) %>%
+    mutate(Class = ifelse(is.na(Class), class_stub, Class)) %>%
     .full_join_silent(def %>% filter(Molecule %in% molecules))
 
   if (no_match != "remove") {
