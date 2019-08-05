@@ -29,5 +29,5 @@ lipid molecule annotations.
 }
 \examples{
 data(data_normalized)
-plot_heatmap(d, sample_annotation = "group")
+plot_heatmap(data_normalized, sample_annotation = "group")
 }

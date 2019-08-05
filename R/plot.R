@@ -313,7 +313,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #'
 #' @examples
 #' data(data_normalized)
-#' plot_heatmap(d, sample_annotation = "group")
+#' plot_heatmap(data_normalized, sample_annotation = "group")
 plot_heatmap <- function(data, measure = "Area",
   molecule_annotation = "Class", sample_annotation = "all") {
   if (!requireNamespace("pheatmap", quietly = TRUE)) {
@@ -325,14 +325,16 @@ plot_heatmap <- function(data, measure = "Area",
     if (sample_annotation == FALSE) {
       annotation_col = NULL
     } else {
-      annotation_col = annotation_col %>% dplyr::select(!!sym(sample_annotation))
+      annotation_col = annotation_col %>% 
+        dplyr::select(!!sym(sample_annotation))
     }
   }
   if (molecule_annotation != "all") {
     if (molecule_annotation == FALSE) {
       annotation_row = NULL
     } else {
-      annotation_row = annotation_row %>% dplyr::select(!!sym(molecule_annotation))
+      annotation_row = annotation_row %>% 
+        dplyr::select(!!sym(molecule_annotation))
     }
   }
   pheatmap::pheatmap(assay(data, measure),
