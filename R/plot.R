@@ -264,6 +264,47 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 }
 
+#' Plot an annotated heatmap
+#' Plots a hierarchically clustered heatmap showing selected sample and
+#' lipid molecule annotations.
+#'
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param measure Which measure to plot the distribution of: usually Area,
+#'   Area.Normalized, Height or Retention.Time. Default is `Area`.
+#' @param molecule_annotation The column name for lipid annotation, default to `Class`.
+#' @param sample_annotation The column name for sample annotation, default to `all`.
+#'
+#' @return A heatmap plot
+#' @export
+#'
+#' @examples
+#' data(data_normalized)
+#' plot_heatmap(d, sample_annotation = "group")
+plot_heatmap <- function(data, measure = "Area",
+  molecule_annotation = "Class", sample_annotation = "all") {
+  if (!requireNamespace("pheatmap", quietly = TRUE)) {
+    stop("Package 'pheatmap' must be installed for interactive graphics")
+  }
+  annotation_col = colData(data) %>% as.data.frame()
+  annotation_row = rowData(data) %>% as.data.frame()
+  if (sample_annotation != "all") {
+    if (sample_annotation == FALSE) {
+      annotation_col = NULL
+    } else {
+      annotation_col = annotation_col %>% dplyr::select(!!sym(sample_annotation))
+    }
+  }
+  if (molecule_annotation != "all") {
+    if (molecule_annotation == FALSE) {
+      annotation_row = NULL
+    } else {
+      annotation_row = annotation_row %>% dplyr::select(!!sym(molecule_annotation))
+    }
+  }
+  pheatmap::pheatmap(assay(data, measure),
+    annotation_row = annotation_row, annotation_col = annotation_col)
+}
+
 .display_plot <- function(p) {
   if (.myDataEnv$interactive) {
     p <- plotly::ggplotly(p)
