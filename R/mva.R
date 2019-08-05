@@ -58,24 +58,7 @@ mva <- function(data, measure = "Area",
       group_col <- NULL
     }
   }
-
-  if (method == "PCA") {
-    object <- prcomp(d, scale = TRUE)
-    return(structure(list(
-      scores = object$x,
-      loadings = object$rotation,
-      variance = object$stdev,
-      var.pct = round((object$sdev^2) / sum(object$sdev^2), 3) * 100,
-      method = "PCA",
-      row_data = rowData(data_f),
-      col_data = colData(data_f),
-      group_col = group_col
-    ),
-    class = c("mvaResults", "pca"),
-    original_object = object
-    ))
-  }
-  else if (method == "PCoA") {
+  if (method == "PCoA") {
     return(structure(list(
       scores = cmdscale(dist(d)),
       method = "PCoA",
@@ -87,6 +70,45 @@ mva <- function(data, measure = "Area",
     ))
   }
 
+  if (method == "PCA") {
+    object <- run_pca(d, ...)
+    scores <- as.data.frame(object@scoreMN)
+    loadings <- as.data.frame(object@loadingMN)
+    class_name <- "pca"
+  } else {
+    # OPLS & OPLS-DA require a y (group) vector
+    group_vector <- get_group_vector_opls (data_f, group_col, groups, method)
+
+    # By now we know that group_vector is of correct type
+    # groups, if provided, have correct type and values.
+    if (!is.null(groups)) {
+      data_f <- data_f[, group_vector %in% groups]
+      d <- d[group_vector %in% groups, ]
+      group_vector <- fct_drop(group_vector[group_vector %in% groups])
+    }
+
+    object <- run_opls(d, y = group_vector, ...)
+    scores <- data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1])
+    loadings <- data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1])
+    class_name <- "opls"
+  }
+
+  return(structure(list(
+    scores = scores,
+    loadings = loadings,
+    summary = object@modelDF,
+    method = method,
+    row_data = rowData(data_f),
+    col_data = colData(data_f),
+    group_col = group_col
+  ),
+  class = c("mvaResults", class_name),
+  original_object = object
+  ))
+
+}
+
+get_group_vector_opls <- function(data_f, group_col, groups, method) {
   # method either "OPLS" or "OPLS-DA"
   if (is.null(group_col)) {
     stop("Please add clinical data or specify a group column")
@@ -131,28 +153,7 @@ mva <- function(data, measure = "Area",
       stop("Provided groups are not in the grouping column.")
     }
   }
-  # By now we know that group_vector is of correct type
-  # groups, if provided, have correct type and values.
-  if (!is.null(groups)) {
-    data_f <- data_f[, group_vector %in% groups]
-    d <- d[group_vector %in% groups, ]
-    group_vector <- fct_drop(group_vector[group_vector %in% groups])
-  }
-  object <- run_opls(d, y = group_vector, ...)
-
-  return(structure(list(
-    scores = data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1]),
-    loadings = data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1]),
-    summary = object@modelDF,
-    method = method,
-    row_data = rowData(data_f),
-    col_data = colData(data_f),
-    group_col = group_col
-  ),
-  class = c("mvaResults", "opls"),
-  original_object = object
-  ))
-
+  group_vector
 }
 
 run_opls <- function(data, y,
@@ -168,8 +169,20 @@ run_opls <- function(data, y,
   )
 }
 
+run_pca <- function(data,
+                     predI = NA,
+                     scaleC = "standard",
+                     fig.pdfC = NULL, ...) {
+  opls(
+    data,
+    predI = nrow(data),
+    scaleC = scaleC,
+    fig.pdfC = fig.pdfC, ...
+  )
+}
+
 #' @importFrom stats var qf median dist
-plot_opls <- function(mvaresults, components,
+plot_ropls_results <- function(mvaresults, components,
                       color_by, ellipse = TRUE, hotelling = TRUE) {
   ret <- .get_mds_matrix(mvaresults, components, color_by)
   d <- ret$mds_matrix
@@ -201,16 +214,41 @@ plot_opls <- function(mvaresults, components,
     )
   }
   sm <- mvaresults$summary
+
+  if (inherits(mvaresults, "pca")) {
+    x_comp <- paste0("PC", components[[1]], ":")
+    x_lab <- paste(x_comp, sm[components[[1]], "R2X"] * 100, "%")
+    y_comp <- paste0("PC", components[[2]], ":")
+    y_lab <- paste(y_comp, sm[components[[2]], "R2X"] * 100, "%")
+  } else {
+    x_lab <- paste("p1:", sm["p1", "R2X"] * 100, "%")
+    y_lab <- paste("o1:", sm["o1", "R2X"] * 100, "%")
+  }
+
   p <- p + geom_hline(yintercept = 0, color = "gray") +
     geom_vline(xintercept = 0, color = "gray") +
     geom_point(size = 3) +
-    xlab(paste("p1:", sm["p1", "R2X"] * 100, "%")) +
-    ylab(paste("o1:", sm["o1", "R2X"] * 100, "%")) +
+    xlab(x_lab) +
+    ylab(y_lab) +
     labs(color = "Group", fill = "Group") +
-    theme_grey(base_size = 10) +
-    annotate(
+    theme_grey(base_size = 10)
+
+  # Model annoatations
+  if (inherits(mvaresults, "pca")){
+    p <- p +
+      annotate(
+        "text",
+        x = Inf, y = Inf,
+        # Total variace accounted for until component n
+        label = paste("R2X:", sm[max(components), "R2X(cum)"]),
+        vjust = 1, hjust = 1, size = 3
+      )
+  }
+  else  {
+    p <- p + annotate(
       "text",
       x = Inf, y = Inf,
+      # Total variace accounted for until component n
       label = paste("R2X:", sm["sum", "R2X(cum)"]),
       vjust = 1, hjust = 1, size = 3
     ) +
@@ -226,7 +264,7 @@ plot_opls <- function(mvaresults, components,
       label = paste("Q2:", sm["sum", "Q2(cum)"]),
       vjust = 4, hjust = 1, size = 3
     )
-
+  }
   .display_plot(p)
 }
 
@@ -264,8 +302,8 @@ plot_opls <- function(mvaresults, components,
 #' plot_mva(mvaresults, color_by = "group")
 plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
   stopifnot(inherits(mvaresults, "mvaResults"))
-  if (inherits(mvaresults, "opls")) {
-    return(plot_opls(mvaresults, components, color_by))
+  if (!inherits(mvaresults, "pcoa")) {
+    return(plot_ropls_results(mvaresults, components, color_by))
   }
 
   ret <- .get_mds_matrix(mvaresults, components, color_by)
@@ -273,23 +311,12 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
   color_by <- ret$color_by
   cols <- colnames(mds_matrix)
 
-  p <- ggplot(mds_matrix, aes_string(
+   p <- ggplot(mds_matrix, aes_string(
     cols[[2]], cols[[3]],
     label = "Sample", color = color_by
   )) + geom_point(size = 3, pch = 16) +
     geom_text(vjust = -.5, size = 3, color = "black")
 
-  if (inherits(mvaresults, "pca") && !is.null(mvaresults$var.pct)) {
-    xlabel <- paste(
-      cols[[2]],
-      "(", mvaresults$var.pct[[ components[[1]] ]], "%)"
-    )
-    ylabel <- paste(
-      cols[[3]],
-      "(", mvaresults$var.pct[[ components[[2]] ]], "%)"
-    )
-    p <- p + xlab(xlabel) + ylab(ylabel)
-  }
   .display_plot(p)
 }
 
