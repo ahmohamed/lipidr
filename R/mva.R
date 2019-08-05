@@ -58,24 +58,7 @@ mva <- function(data, measure = "Area",
       group_col <- NULL
     }
   }
-
-  if (method == "PCA") {
-    object <- run_pca(d, ...)
-    
-    return(structure(list(
-      scores = data.frame(object@scoreMN[, 1], object@scoreMN[, 2]),
-      loadings = data.frame(object@loadingMN[, 1], object@loadingMN[, 2]),
-      summary = object@modelDF,
-      method = method,
-      row_data = rowData(data_f),
-      col_data = colData(data_f),
-      group_col = group_col
-    ),
-    class = c("mvaResults", "pca"),
-    original_object = object
-    ))
-  }
-  else if (method == "PCoA") {
+  if (method == "PCoA") {
     return(structure(list(
       scores = cmdscale(dist(d)),
       method = "PCoA",
@@ -87,6 +70,45 @@ mva <- function(data, measure = "Area",
     ))
   }
 
+  if (method == "PCA") {
+    object <- run_pca(d, ...)
+    scores <- as.data.frame(object@scoreMN)
+    loadings <- as.data.frame(object@loadingMN)
+    class_name <- "pca"
+  } else {
+    # OPLS & OPLS-DA require a y (group) vector
+    group_vector <- get_group_vector_opls (data_f, group_col, groups, method)
+
+    # By now we know that group_vector is of correct type
+    # groups, if provided, have correct type and values.
+    if (!is.null(groups)) {
+      data_f <- data_f[, group_vector %in% groups]
+      d <- d[group_vector %in% groups, ]
+      group_vector <- fct_drop(group_vector[group_vector %in% groups])
+    }
+
+    object <- run_opls(d, y = group_vector, ...)
+    scores <- data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1])
+    loadings <- data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1])
+    class_name <- "opls"
+  }
+
+  return(structure(list(
+    scores = scores,
+    loadings = loadings,
+    summary = object@modelDF,
+    method = method,
+    row_data = rowData(data_f),
+    col_data = colData(data_f),
+    group_col = group_col
+  ),
+  class = c("mvaResults", class_name),
+  original_object = object
+  ))
+
+}
+
+get_group_vector_opls <- function(data_f, group_col, groups, method) {
   # method either "OPLS" or "OPLS-DA"
   if (is.null(group_col)) {
     stop("Please add clinical data or specify a group column")
@@ -131,28 +153,7 @@ mva <- function(data, measure = "Area",
       stop("Provided groups are not in the grouping column.")
     }
   }
-  # By now we know that group_vector is of correct type
-  # groups, if provided, have correct type and values.
-  if (!is.null(groups)) {
-    data_f <- data_f[, group_vector %in% groups]
-    d <- d[group_vector %in% groups, ]
-    group_vector <- fct_drop(group_vector[group_vector %in% groups])
-  }
-  object <- run_opls(d, y = group_vector, ...)
-
-  return(structure(list(
-    scores = data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1]),
-    loadings = data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1]),
-    summary = object@modelDF,
-    method = method,
-    row_data = rowData(data_f),
-    col_data = colData(data_f),
-    group_col = group_col
-  ),
-  class = c("mvaResults", "opls"),
-  original_object = object
-  ))
-
+  group_vector
 }
 
 run_opls <- function(data, y,
