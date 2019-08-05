@@ -23,8 +23,7 @@ to_num_matrix <- function(data, sample, feature, measure) {
   data %>%
     select(!!sample, !!feature, !!measure) %>%
     spread(!!sample, !!measure) %>%
-    to_rownames_(as.character(feature)) %>%
-    return()
+    to_rownames_(as.character(feature))
 }
 
 .replace_na_rowmean <- function(m) {
