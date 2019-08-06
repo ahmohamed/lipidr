@@ -27,6 +27,7 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
   no_match <- match.arg(no_match)
   .data_internal("lipidDefaults")
   def <- .myDataEnv$lipidDefaults$clean_mols
+  molecules <- unique(molecules)
   not_in_db <- molecules[!molecules %in% def$Molecule]
 
   if (length(not_in_db) == 0) {
