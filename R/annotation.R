@@ -131,13 +131,14 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
         paste0(
           p$class, "[ -]",
           p$chain, "([/-]", p$chain, ")?",
+          "([/-]", p$chain, ")?",
           "([/-]", p$chain, ")?.*$"
         ),
-        "\\1#$#\\2#$#\\4#$#\\6", first_mol
+        "\\1#$#\\2#$#\\4#$#\\6#$#\\8", first_mol
       )
     ) %>%
     separate(
-      first_mol, c("class_stub", "chain1", "chain2", "chain3"),
+      first_mol, c("class_stub", "chain1", "chain2", "chain3", "chain4"),
       sep = "#\\$#"
     ) %>%
     separate(
@@ -152,10 +153,14 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
       chain3, c("l_3", "s_3"),
       sep = "\\:", remove = FALSE, convert = TRUE, fill = "right"
     ) %>%
+    separate(
+      chain4, c("l_4", "s_4"),
+      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right"
+    ) %>%
     rowwise() %>%
     mutate(
-      total_cl = sum(l_1, l_2, l_3, na.rm = TRUE),
-      total_cs = sum(s_1, s_2, s_3, na.rm = TRUE)
+      total_cl = sum(l_1, l_2, l_3, l_4, na.rm = TRUE),
+      total_cs = sum(s_1, s_2, s_3, s_4, na.rm = TRUE)
     ) %>%
     ungroup()
 }
@@ -163,8 +168,8 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
 # Defined as lipid annotations
 utils::globalVariables(c(
   "first_mol",
-  "chain1", "chain2", "chain3",
-  "l_1", "s_1", "l_2", "s_2", "l_3", "s_3",
+  "chain1", "chain2", "chain3", "chain4",
+  "l_1", "s_1", "l_2", "s_2", "l_3", "s_3", "l_4", "s_4",
   "total_cl", "total_cs",
   "Molecule", "clean_name", "ambig", "not_matched", "istd",
   "Class"
