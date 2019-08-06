@@ -1,8 +1,54 @@
+#' Functions to get and set attributes of SkylineExperiment objects
+#'
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param measure Which measure to get / set attributes of.
+#' @param val Value to be assigned to the attribute.
+#'
+#' @return Modified SkylineExperiment.
+#' @rdname set_attr
+#' @export
+is_logged <- function(data, measure) {
+  mcols(assays(data), use.names = TRUE)[measure, "logged"]
+}
+
+#' @rdname set_attr
+#' @export
+set_logged <- function(data, measure, val) {
+  mcols(assays(data), use.names = TRUE)[measure, "logged"] <- val
+  data
+}
+
+#' @rdname set_attr
+#' @export
+is_normalized <- function(data, measure) {
+  mcols(assays(data), use.names = TRUE)[measure, "normalized"]
+}
+
+#' @rdname set_attr
+#' @export
+set_normalized <- function(data, measure, val) {
+  mcols(assays(data), use.names = TRUE)[measure, "normalized"] <- val
+  data
+}
+
+#' @rdname set_attr
+#' @export
+is_summarized <- function(data) {
+  metadata(data)$summarized
+}
+
+#' @rdname set_attr
+#' @export
+set_summarized <- function(data, val) {
+  metadata(data)$summarized <- val
+  data
+}
+
 .check_log <- function(d, measure) {
   if (measure == "Retention.Time") {
     warning("Retention time should not be logged")
   }
-  if (mcols(assays(d), use.names = TRUE)[measure, "logged"]) {
+  if (is_logged(d, measure)) {
     return(measure)
   }
   paste0("log2(", measure, ")")

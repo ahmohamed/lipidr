@@ -48,11 +48,11 @@ normalize_pqn <- function(data, measure = "Area",
     m / rowMeans(m, na.rm = TRUE), 2, median,
     na.rm = TRUE
   )
-  mcols(assays(data), use.names = TRUE)[measure, "normalized"] <- TRUE
+  data <- set_normalized(data, measure, TRUE)
 
-  if (log && !mcols(assays(data), use.names = TRUE)[measure, "logged"]) {
+  if (log && !is_logged(data, measure)) {
     assay(data, measure) <- log2(assay(data, measure))
-    mcols(assays(data), use.names = TRUE)[measure, "logged"] <- TRUE
+    data <- set_logged(data, measure, TRUE)
   }
 
   return(data)
@@ -87,7 +87,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
-#' 
+#'
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_norm_istd <- normalize_istd(
 #'   d_summarized,
@@ -124,16 +124,16 @@ normalize_istd <- function(data, measure = "Area",
     return(m[i, ] / f)
   })
 
-  if (log && !mcols(assays(data), use.names = TRUE)[measure, "logged"]) {
+  if (log && !is_logged(data, measure)) {
     assay(data, measure) <- log2(assay(data, measure))
-    mcols(assays(data), use.names = TRUE)[measure, "logged"] <- TRUE
+    data <- set_logged(data, measure, TRUE)
   }
 
   return(data)
 }
 
 .prenormalize_check <- function(data, measure, exclude) {
-  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
+  if (is_normalized(data, measure)) {
     stop(measure, " is already normalized")
   }
   if (!is.null(exclude)) {

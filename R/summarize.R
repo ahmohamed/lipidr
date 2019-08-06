@@ -20,7 +20,7 @@
 summarize_transitions <- function(data, method = c("max", "average")) {
   stopifnot(inherits(data, "SkylineExperiment"))
   validObject(data)
-  if (metadata(data)$summarized) {
+  if (is_summarized(data)) {
     stop("data is already summarized")
   }
 
