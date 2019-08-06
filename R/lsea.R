@@ -105,7 +105,7 @@ plot_class_enrichment <- function(de.results, significant.sets,
   )
   de_results <- de.results$Molecule %>%
     annotate_lipids() %>%
-    .left_join_silent(de_results) %>%
+    .left_join_silent(de.results) %>%
     group_by(contrast) %>%
     mutate(Significant = Class %in% significant.sets[[ contrast[[1]] ]]) %>%
     ungroup()
