@@ -61,7 +61,7 @@ fetch_mw_study <- function(study_id) {
 
 #' Parse mwTab file into a SkylineExperiment.
 #'
-#' @param file File path or url for a mwTab file.
+#' @param mwTab File path or url for a mwTab file.
 #'
 #' @return A SkylineExperiment object containing clinical and lipid intensity
 #'   data.

@@ -7,7 +7,7 @@
 read_mwTab(mwTab)
 }
 \arguments{
-\item{file}{File path or url for a mwTab file.}
+\item{mwTab}{File path or url for a mwTab file.}
 }
 \value{
 A SkylineExperiment object containing clinical and lipid intensity
