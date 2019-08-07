@@ -172,5 +172,5 @@ utils::globalVariables(c(
   "l_1", "s_1", "l_2", "s_2", "l_3", "s_3", "l_4", "s_4",
   "total_cl", "total_cs",
   "Molecule", "clean_name", "ambig", "not_matched", "istd",
-  "Class"
+  "Class", "class_stub"
   ))

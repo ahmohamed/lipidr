@@ -10,8 +10,9 @@
 #' @return A data frame with studies matching the keyword. Study ID, title,
 #'   author and details are retrieved.
 #'
-#' @importFrom tidyr unite spread
+#' @importFrom tidyr unite spread unnest
 #' @importFrom rlang syms !!!
+#' @importFrom utils read.delim
 #' @export
 #' @family Metabolomics Workbench
 #'
@@ -32,8 +33,12 @@ list_mw_studies <- function(keyword="lipid") {
     mutate(cs = cumsum(V1 == "study_id")) %>%
     spread(key = V1, value = V2) %>%
     select(!!!rlang::syms(cols)) %>%
-    unite(author, first_name, last_name, sep = " ")
+    unite("author", first_name, last_name, sep = " ")
 }
+
+# colname created in list_mw_studies
+utils::globalVariables(c("V1", "V2", "first_name", "last_name"))
+
 
 #' Download and parse full data for a study from Metabolomics Workbench.
 #'
@@ -147,8 +152,11 @@ read_mw_datamatrix <- function(file) {
 .unnest_key_value <- function(.data, col, kv_sep, list_sep) {
   col = enquo(col)
   .data %>%
-    mutate(a = strsplit(as.character(!!col), list_sep)) %>%
-    unnest(a) %>% separate(a, c("annot", "val"), sep=kv_sep) %>%
+    mutate(col = strsplit(as.character(!!col), list_sep)) %>%
+    unnest(col) %>% separate(col, c("annot", "val"), sep=kv_sep) %>%
     mutate(annot = ifelse(annot == "Sample", "SampleType", annot)) %>%
     spread(annot, val) %>% select(-!!col)
 }
+
+# colname created in .unnest_key_value
+utils::globalVariables(c("annot", "val", "Factors", "AdditionalData"))
