@@ -8,12 +8,16 @@
 #' @rdname set_attr
 #' @export
 is_logged <- function(data, measure) {
-  mcols(assays(data), use.names = TRUE)[measure, "logged"]
+  assay_annot <- mcols(assays(data), use.names = TRUE)
+  !is.null(assay_annot) && assay_annot[measure, "logged"]
 }
 
 #' @rdname set_attr
 #' @export
 set_logged <- function(data, measure, val) {
+  if (is.null(mcols(assays(data)))) {
+    mcols(assays(data)) <- list(logged = FALSE, normalized = FALSE)
+  }
   mcols(assays(data), use.names = TRUE)[measure, "logged"] <- val
   data
 }
@@ -21,12 +25,16 @@ set_logged <- function(data, measure, val) {
 #' @rdname set_attr
 #' @export
 is_normalized <- function(data, measure) {
-  mcols(assays(data), use.names = TRUE)[measure, "normalized"]
+  assay_annot <- mcols(assays(data), use.names = TRUE)
+  !is.null(assay_annot) && assay_annot[measure, "normalized"]
 }
 
 #' @rdname set_attr
 #' @export
 set_normalized <- function(data, measure, val) {
+  if (is.null(mcols(assays(data)))) {
+    mcols(assays(data)) <- list(logged = FALSE, normalized = FALSE)
+  }
   mcols(assays(data), use.names = TRUE)[measure, "normalized"] <- val
   data
 }
