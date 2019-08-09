@@ -39,7 +39,8 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 }
 
 .plot_sample_tic <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Sample", measure)) + stat_sum(geom = "bar") +
+  ggplot(dlong, aes_string("Sample", measure)) + 
+    stat_summary(fun.y = mean, geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
