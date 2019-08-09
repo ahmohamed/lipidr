@@ -121,6 +121,7 @@ as_skyline_experiment <- function(df, logged=FALSE, normalized=FALSE) {
     row_dimname <- "MoleculeId"
     summarized <- TRUE
   }
+  df <- df %>% mutate_if(is.factor, as.character)
   assay_list <- list(Area = data.matrix(df, rownames.force = TRUE))
   assay_list <- as(assay_list, "SimpleList")
   mcols(assay_list) <- list(logged = logged, normalized = normalized)
