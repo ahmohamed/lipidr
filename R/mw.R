@@ -76,7 +76,10 @@ fetch_mw_study <- function(study_id) {
 read_mwTab <- function(mwTab) {
   txt = readLines(mwTab)
   analyses = .mw_analysis_lists(txt)
-  do.call("rbind", lapply(analyses, .parse_mw_analysis))
+  prased_analyses <- lapply(analyses, .parse_mw_analysis)
+  combined <- do.call("rbind", prased_analyses)
+  mcols(assays(combined)) <- list(logged = FALSE, normalized = FALSE)
+  combined
 }
 
 #' Parse a Metabolomics Workbench data matrix into a SkylineExperiment.
@@ -93,11 +96,13 @@ read_mwTab <- function(mwTab) {
 read_mw_datamatrix <- function(file) {
   .data = read.delim(
     file,
-    sep = "\t", check.names = FALSE
+    sep = "\t", check.names = FALSE,
+    stringsAsFactors = FALSE
   )
 
   d <- .data[-1, ]
   colnames(d)[[1]] <- "Molecule"
+  original_names <- d$Molecule
   stereo = "\\((\\d+[ZE]\\.*)+\\)"
   adduct = " \\[.*$"
   d$Molecule = sub(adduct, "", d$Molecule)
@@ -105,6 +110,7 @@ read_mw_datamatrix <- function(file) {
   d$Molecule = sub("^(\\w+)-", "\\1", d$Molecule)
   d$Molecule = sub("\\d+\\:\\d+ \\(", "\\(", d$Molecule)
   d <- as_skyline_experiment(d)
+  rownames(d) <- original_names
 
   col_data = t(.data[1, ]) %>% as.data.frame()
   colnames(col_data)[[1]] = "Factors"
