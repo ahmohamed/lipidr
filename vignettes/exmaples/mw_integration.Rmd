@@ -1,0 +1,212 @@
+---
+title: "Data mining using lipidr"
+author:
+- name: Ahmed Mohamed
+  affiliation: Precision & Systems Biomedicine, QIMR Berghofer, Australia
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{lipidr_data_mining}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8)
+```
+# Introduction
+Through integration with Metabolomics Workbench API, `lipidr` allows users,
+to quickly explore public lipidomics experiments. `lipidr` provides an easy
+way to re-analyze and visualize these datasets.
+
+
+# Loading libraries
+```{r libload}
+library(lipidr)
+use_interactive_graphics()
+```
+
+First, we load `lipidr` using `library` command. For this vignette we will enable interactive graphics plotting by calling `use_interactive_graphics()`.
+
+# Explore Metabolomics Workbench lipidomics datasets
+Users can search all Metabolomics Workbench studies using any
+relevant keyword. A list of all studies matching the keyword will be
+returned as a table (`data.frame`).
+
+```{r list_studies}
+list_mw_studies(keyword = "lipid")
+```
+
+# Download datasets
+Datasets can be easily downloaded and prased into `SkylineExperiment` object
+using `lipidr` function `fetch_mw_study()` by supplying a `study_id`. The
+exmaple shown in this vignette is from `ST001111` [link](https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&DataMode=AllData&StudyID=ST001111&StudyType=MS&ResultType=1). The dataset contains positive and netgative MS data for untargeted 
+lipidomics from different breast cancer tissues.
+
+```{r fetch_study}
+d = fetch_mw_study("ST001111")
+
+d
+```
+
+
+We can have a look at the clinical data, which was conveniently
+parsed by `lipidr`.
+
+```{r coldata}
+colData(d)
+```
+
+Next, we tell `lipidr` that our dataset is normalized and logged.
+
+```{r set_logged}
+d <- set_logged(d, "Area", TRUE)
+d <- set_normalized(d, "Area", TRUE)
+```
+
+## Quality control
+We look at total ion intensity for each sample.
+```{r}
+plot_samples(d, "tic")
+```
+
+Because there is no QC samples or technical replicates in this dataset, we cannot
+assess the %CV of molecules. Also, there is no need to `summarize_transitions`
+in untargeted datasets.
+
+# PCA
+
+```{r}
+mvaresults = mva(d, measure="Area", method="PCA")
+plot_mva(mvaresults, color_by="SampleType", components = c(1,2))
+```
+We can see mild separation between benign and cancer samples, but not between cancer and metastatsis. We can also spot 2 outlier samples that we may want to consider checking closely. The low variace explained by `PC1` and `PC2`
+(cumulative 25%, displayed in the plot as `R2X`) indicate highly variable lipid profiles in these clinical samples.
+
+# Univariate Analysis
+## Two group comparison
+For simple analysis, we can compare cancer vs benign and cancer vs metastasis. From PCA plot, we can 
+expect very little difference between cancer and metastasis.
+
+```{r two_group}
+two_group <- de_analysis(d, Cancer-Benign, Cancer-Metastasis)
+plot_results_volcano(two_group)
+```
+
+By quickly looking at the volcano plots, we can confirm the minute difference between cancer and metastatic samples. A fairly large difference is observed between cancer and benign samples, with PCs and PGs upregulated and CLs and TGs downregulated in cancer tissues.
+
+## Multi-group comparison
+Instead of two-group comparison, we might be interested in lipids are differetially expressed in any group.
+We can perform ANOVA-style multigroup comparison using `de_design` function, which allows users to provide
+a custom *design matrix*. `de_design` is extremely helpful in complex experimental designs, where several
+factors should be accounted for in the analysis.
+
+In this exmaple, we will use cancer stage as our grouping variable. In our dataset, we can see samples with Stages I-IV. Using ANOVA-style analysis, we will identify all lipid molecules likely to be different among cancer stages.
+
+```{r multigroup_stage}
+multi_group <- de_design(d, ~ Stage)
+```
+
+Here we used the formula *tilde* to define our predictor variables. `~ Stage` formula indicates that we are interested in features (lipid molecules) that are associated with `Stage`.
+
+```{r multigroup_stage_sig}
+significant_molecules(multi_group)
+```
+Surprisingly, Cancer Stage does not appear to affect lipid molecules profiled in this experiment.
+
+## Factorial analysis
+In complex experimental designs and clinical samples, we may need to correct for confounding variables. This is done simply by adding the variable to the formula in `de_design`. For example, below, we are interested in Cancer effect while correcting for *Race* effect.
+```{r}
+factorial_de <- de_design(d, ~ Race + SampleType, coef = "SampleTypeCancer")
+significant_molecules(factorial_de)
+plot_results_volcano(factorial_de)
+```
+
+In this case, we are seeing similar pattern as the two-group comparison, which indicates a small *Race* effect.
+
+Users interested in creating more complex design matrices are refered to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].
+
+# Multivariate analysis
+
+
+
+## Orthogonal multivariate analysis
+
+Supervised multivariate analyses, such as OPLS and OPLS-DA can be performed to determine which lipids are associated with a group (y-variable) of interest. In this example we use "Diet" as grouping, and display the results in a scores plot.
+
+```{r}
+mvaresults = mva(d, method = "OPLS-DA", group_col = "SampleType", groups=c("Benign", "Cancer"))
+plot_mva(mvaresults, color_by="SampleType")
+```
+
+We can also plot the loadings and display important lipids contributing to the separation between different (Diet) groups.
+
+```{r, eval=FALSE}
+plot_mva_loadings(mvaresults, color_by="Class", top.n=10)
+```
+
+Alternatively, we can extract top *N* lipids along with their annotations.
+
+```{r}
+top_lipids(mvaresults, top.n=10)
+```
+
+## Supervised multivariate analysis with continuous response variable
+OPLS-DA can only be applied to in two-group comparison settings. In some cases, we
+might be interested in a lipid molecules ....
+
+In this example, we will format Cancer Stage as a numeric vector.
+
+```{r plsda_stage}
+stage <- d$Stage
+stage[stage == "I"] <- 1
+stage[stage == "II"] <- 2
+stage[stage == "III"] <- 3
+stage[stage == "IV"] <- 4
+stage <- as.numeric(stage)
+stage
+```
+
+We can see `stage` contains missing values. We should filter them out first.
+
+```{r run_plsda}
+d_filtered <- d[, !is.na(stage)]
+stage <- stage[!is.na(stage)]
+
+mvaresults = mva(d_filtered, method = "OPLS", group_col = stage )
+plot_mva(mvaresults)
+```
+
+```{r}
+use_interactive_graphics(FALSE)
+plot_mva_loadings(mvaresults, color_by="Class", top.n=10)
+```
+
+
+## Enrichment analysis
+
+```{r}
+enrich_results = lsea(two_group, rank.by = "logFC")
+significant_lipidsets(enrich_results)
+```
+
+Visualization of enrichment analysis results. The enriched lipid classes are highlighted. 
+
+```{r}
+plot_class_enrichment(two_group, significant_lipidsets(enrich_results))
+```
+
+
+# Lipid chain analysis
+
+```{r}
+plot_trend(two_group)
+```
+
+# Session information
+```{r}
+sessionInfo()
+```
