@@ -68,7 +68,7 @@ remove_non_parsed_molecules <- function(data) {
 
 
 #' Rename molecules in a dataset
-#' This function enables users to rename selected molecules in the dataset, 
+#' This function enables users to rename selected molecules in the dataset,
 #' so that they can be parsed correctly by `lipidr` or modify the lipidclass.
 #' `lipidr` automatically updates the annotation for the renamed molecules.
 #'
@@ -76,7 +76,7 @@ remove_non_parsed_molecules <- function(data) {
 #' @param old A character vector of the molecule names to be renamed.
 #' @param new A character vector of the new molecule names.
 #'
-#' @return A SkylineExperiment object with molecules name and annotation 
+#' @return A SkylineExperiment object with molecules name and annotation
 #'   updated.
 #'
 #' @export
@@ -88,7 +88,7 @@ remove_non_parsed_molecules <- function(data) {
 #' update_molecule_names(data_normalized, old_names, new_names)
 update_molecule_names <- function(data, old, new) {
   updated_names <- to_df(data, "row") %>%
-    left_join(data.frame(Molecule=old, new_names=new)) %>%
+    left_join(data.frame(Molecule=old, new_names=new) %>% distinct()) %>%
     mutate(Molecule=coalesce(as.character(new_names), Molecule)) %>%
     select(-new_names)
 
