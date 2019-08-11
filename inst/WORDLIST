@@ -2,6 +2,7 @@ AppVeyor
 bioc
 bioconductor
 Ceramides
+CLs
 DataFrame
 de
 deoxycholic
@@ -24,12 +25,15 @@ logFC
 LSEA
 LysoPhosphatidylCholines
 MDS
+Metabolomics
 metabonomics
 MRM
 murine
+mwTab
 NMR
 OPLS
 PCoA
+PGs
 PhosphatidylCholines
 PQN
 saturations
@@ -39,8 +43,11 @@ SimpleList
 SkylineExperiment
 spectrometry
 SummarizedExperiment
+TGs
 TopTable
 unsaturation
+unsaturations
+untargeted
 usersguide
 www
 yy

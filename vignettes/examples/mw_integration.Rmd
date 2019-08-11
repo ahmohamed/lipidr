@@ -41,9 +41,9 @@ list_mw_studies(keyword = "lipid")
 ```
 
 # Download datasets
-Datasets can be easily downloaded and prased into `SkylineExperiment` object
+Datasets can be easily downloaded and parsed into `SkylineExperiment` object
 using `lipidr` function `fetch_mw_study()` by supplying a `study_id`. The
-exmaple shown in this vignette is from `ST001111` [link](https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&DataMode=AllData&StudyID=ST001111&StudyType=MS&ResultType=1). The dataset contains positive and netgative MS data for untargeted 
+example shown in this vignette is from `ST001111` [link](https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&DataMode=AllData&StudyID=ST001111&StudyType=MS&ResultType=1). The dataset contains positive and negative MS data for untargeted 
 lipidomics from different breast cancer tissues.
 
 ```{r fetch_study}
@@ -83,7 +83,7 @@ in untargeted datasets.
 mvaresults = mva(d, measure="Area", method="PCA")
 plot_mva(mvaresults, color_by="SampleType", components = c(1,2))
 ```
-We can see mild separation between benign and cancer samples, but not between cancer and metastatsis. We can also spot 2 outlier samples that we may want to consider checking closely. The low variace explained by `PC1` and `PC2`
+We can see mild separation between benign and cancer samples, but not between cancer and metastasis. We can also spot 2 outlier samples that we may want to consider checking closely. The low variance explained by `PC1` and `PC2`
 (cumulative 25%, displayed in the plot as `R2X`) indicate highly variable lipid profiles in these clinical samples.
 
 # Univariate Analysis
@@ -96,23 +96,23 @@ two_group <- de_analysis(d, Cancer-Benign, Cancer-Metastasis)
 plot_results_volcano(two_group)
 ```
 
-By quickly looking at the volcano plots, we can confirm the minute difference between cancer and metastatic samples. A fairly large difference is observed between cancer and benign samples, with PCs and PGs upregulated and CLs and TGs downregulated in cancer tissues.
+By quickly looking at the volcano plots, we can confirm the minute difference between cancer and metastatic samples. A fairly large difference is observed between cancer and benign samples, with PCs and PGs up-regulated and CLs and TGs down-regulated in cancer tissues.
 
 ## Multi-group comparison
-Instead of two-group comparison, we might be interested in lipids are differetially expressed in any group.
-We can perform ANOVA-style multigroup comparison using `de_design` function, which allows users to provide
+Instead of two-group comparison, we might be interested in lipids are differentially expressed in any group.
+We can perform ANOVA-style multi-group comparison using `de_design` function, which allows users to provide
 a custom *design matrix*. `de_design` is extremely helpful in complex experimental designs, where several
 factors should be accounted for in the analysis.
 
-In this exmaple, we will use cancer stage as our grouping variable. In our dataset, we can see samples with Stages I-IV. Using ANOVA-style analysis, we will identify all lipid molecules likely to be different among cancer stages.
+In this example, we will use cancer stage as our grouping variable. In our dataset, we can see samples with Stages I-IV. Using ANOVA-style analysis, we will identify all lipid molecules likely to be different among cancer stages.
 
-```{r multigroup_stage}
+```{r multi-group_stage}
 multi_group <- de_design(d, ~ Stage)
 ```
 
 Here we used the formula *tilde* to define our predictor variables. `~ Stage` formula indicates that we are interested in features (lipid molecules) that are associated with `Stage`.
 
-```{r multigroup_stage_sig}
+```{r multi-group_stage_sig}
 significant_molecules(multi_group)
 ```
 Surprisingly, Cancer Stage does not appear to affect lipid molecules profiled in this experiment.
@@ -127,7 +127,7 @@ plot_results_volcano(factorial_de)
 
 In this case, we are seeing similar pattern as the two-group comparison, which indicates a small *Race* effect.
 
-Users interested in creating more complex design matrices are refered to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].
+Users interested in creating more complex design matrices are referred to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].
 
 # Multivariate analysis
 
