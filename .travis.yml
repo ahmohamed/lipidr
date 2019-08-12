@@ -4,13 +4,23 @@ language: r
 
 matrix:
   include:
+    - os: osx
+      r: bioc-release
     - os: linux
       dist: trusty
       r: bioc-devel
     - stage: covr
-      script: Rscript -e 'covr::codecov(type="all")'
-    - os: osx
-      r: bioc-release
+      script: 
+        - Rscript -e 'covr::codecov(type="all")'
+        - Rscript -e 'pkgdown::build_site()'
+      deploy:
+        - provider: pages
+          skip-cleanup: true
+          github-token: $GITHUB_TOKEN
+          keep-history: false
+          local-dir: docs
+          on:
+            branch: feature/pkgdown
   allow_failures:
     - os: osx
 
