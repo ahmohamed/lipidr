@@ -30,27 +30,36 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
   molecules <- unique(molecules)
   not_in_db <- molecules[!molecules %in% def$Molecule]
 
-  if (length(not_in_db) == 0) {
-    return(def %>% filter(Molecule %in% molecules))
+
+  in_db <- def[, c("Molecule", "clean_name", "ambig", "not_matched", "istd")] %>%
+    filter(Molecule %in% molecules)
+
+  if (length(not_in_db) > 0) {
+    clean_ <- .clean_molecule_name(not_in_db)
+    if (any(clean_$not_matched)) {
+      if (no_match == "warn") {
+        warning(
+          "Some lipid names couldn't be parsed because they don't follow ",
+          "the pattern 'CLS xx:x/yy:y' \n    ",
+          paste0(clean_$Molecule[clean_$not_matched], collapse = ", ")
+        )
+      }
+    }
+
+    clean_ <- clean_ %>%
+      .full_join_silent(in_db)
+    #return(def %>% filter(Molecule %in% molecules))
+  } else {
+    clean_ <- in_db
   }
 
-  clean_ <- .clean_molecule_name(not_in_db)
-  if (any(clean_$not_matched)) {
-    if (no_match == "warn") {
-      warning(
-        "Some lipid names couldn't be parsed because they don't follow ",
-        "the pattern 'CLS xx:x/yy:y' \n    ",
-        paste0(clean_$Molecule[clean_$not_matched], collapse = ", ")
-      )
-    }
-  }
+
 
   ret <- clean_ %>%
     filter(!not_matched) %>%
     .parse_lipid_info() %>%
     .left_join_silent(.myDataEnv$lipidDefaults$class_info) %>%
-    mutate(Class = as.character(ifelse(is.na(Class), class_stub, Class))) %>%
-    .full_join_silent(def %>% filter(Molecule %in% molecules))
+    mutate(Class = as.character(ifelse(is.na(Class), class_stub, Class)))
 
   if (no_match != "remove") {
     ret <- ret %>% .full_join_silent(clean_)
