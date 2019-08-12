@@ -53,8 +53,24 @@ d
 ```
 
 
+Note the warning that some molecules were not parsed because their names did not follow the supported patterns. We can examine these molecules, remove them from the dataset or change their names, if desired.
+
+```{r update_names}
+# list non_parsed molecules
+non_parsed_molecules(d)
+
+# All of them are Ceramides, written with full chemical name
+# We can replace the first part with "Cer" using RegEx
+non_parsed <- non_parsed_molecules(d)
+new_names <- sub("^.* \\(", "Cer (", non_parsed)
+d <- update_molecule_names(d, old = non_parsed, new = new_names)
+
+# We can check once again to make sure all molecules were parsed correctly
+non_parsed_molecules(d)
+```
+
 We can have a look at the clinical data, which was conveniently
-parsed by `lipidr`.
+extracted from Metabolomics Workbench by `lipidr`.
 
 ```{r coldata}
 colData(d)
