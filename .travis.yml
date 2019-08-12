@@ -8,7 +8,7 @@ matrix:
       dist: trusty
       r: bioc-devel
     - stage: covr
-      script: Rscript -e 'covr::codecov(type="anystuff")'
+      script: Rscript -e 'covr::codecov(type="all")'
     - os: osx
       r: bioc-release
   allow_failures:
