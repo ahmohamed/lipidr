@@ -111,3 +111,21 @@ update_molecule_names <- function(data, old, new) {
   rowData(data) <- toDataFrame(updated_row_data, row.names.col = row_dimname)
   data
 }
+
+
+#' Remove molecules with CV larger that a threshold
+#'
+#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param cv.cutoff CV threshold (numeric).  Default is `20`%.
+#' @param measure Which measure used to calculate CV, usually Area (default).
+#'
+#' @return SkylineExperiment object with molecules filtered.
+#' @export
+#'
+#' @examples
+#' data(data_normalized)
+#' filter_by_cv(data_normalized)
+filter_by_cv <- function(data, cv.cutoff=20, measure="Area") {
+  keep_molecules <- apply(assay(data, measure), 1, .cv) < cv.cutoff
+  data[keep_molecules, ]
+}

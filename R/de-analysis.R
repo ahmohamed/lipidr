@@ -11,7 +11,7 @@
 #' @param ... Expressions, or character strings which can be parsed to
 #'   expressions, specifying contrasts. These are passed to
 #'   `limma::makeContrasts`.
-#' @param measure Name of the column containing sample names. Default is `Area`.
+#' @param measure Which measure to use as intensity, usually Area (default).
 #' @param group_col Name of the column containing sample groups. If not
 #'   provided, defaults to first sample annotation column.
 #'
