@@ -5,6 +5,7 @@ language: r
 matrix:
   include:
     - stage: covr
+      os: osx
       script: 
         - Rscript -e 'covr::codecov(type="all")'
         - R CMD INSTALL .
