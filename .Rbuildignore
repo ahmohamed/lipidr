@@ -1,3 +1,5 @@
+^docs$
+^_pkgdown\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
 ^data-raw$
@@ -7,3 +9,4 @@
 ^\.travis\.yml$
 ^\.git*
 ^\.BBSoptions$
+^vignettes/examples*

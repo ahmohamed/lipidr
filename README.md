@@ -1,6 +1,9 @@
+# lipidr <img src="man/figures/logo.png" align="right" alt="" width="120" />
+
 [![Travis-CI Build Status](https://travis-ci.org/ahmohamed/lipidr.svg?branch=master)](https://travis-ci.org/ahmohamed/lipidr)
 [![Coverage status](https://codecov.io/gh/ahmohamed/lipidr/branch/master/graph/badge.svg)](https://codecov.io/github/ahmohamed/lipidr?branch=master)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ahmohamed/lipidr?branch=master&svg=true)](https://ci.appveyor.com/project/ahmohamed/lipidr)
+[![BioC status](https://bioconductor.org/shields/years-in-bioc/lipidr.svg)](https://bioconductor.org/packages/lipidr/)
 
 # Analysis workflow for targeted lipidomics.
 
