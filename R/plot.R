@@ -308,6 +308,10 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #'   Area.Normalized, Height or Retention.Time. Default is `Area`.
 #' @param molecule_annotation The column name for lipid annotation, default to `Class`.
 #' @param sample_annotation The column name for sample annotation, default to `all`.
+#' @param scale character indicating if the values should be centered and
+#'   scaled in either the row direction or the column direction, or none.
+#'   Corresponding values are "row", "column" and "none".
+#' @param ... Additional parameters passed to [pheatmap::pheatmap()].
 #'
 #' @return A heatmap plot
 #' @export
@@ -316,7 +320,8 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #' data(data_normalized)
 #' plot_heatmap(data_normalized, sample_annotation = "group")
 plot_heatmap <- function(data, measure = "Area",
-  molecule_annotation = "Class", sample_annotation = "all") {
+  molecule_annotation = "Class", sample_annotation = "all",
+  scale = "column", ...) {
   if (!requireNamespace("pheatmap", quietly = TRUE)) {
     stop("Package 'pheatmap' must be installed for heatmap plots")
   }
@@ -339,7 +344,9 @@ plot_heatmap <- function(data, measure = "Area",
     }
   }
   pheatmap::pheatmap(assay(data, measure),
-    annotation_row = annotation_row, annotation_col = annotation_col)
+    annotation_row = annotation_row, annotation_col = annotation_col,
+    scale = scale, ...
+  )
 }
 
 .display_plot <- function(p) {
