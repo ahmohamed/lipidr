@@ -11,7 +11,7 @@
 #' @param ... Expressions, or character strings which can be parsed to
 #'   expressions, specifying contrasts. These are passed to
 #'   `limma::makeContrasts`.
-#' @param measure Name of the column containing sample names. Default is `Area`.
+#' @param measure Which measure to use as intensity, usually Area (default).
 #' @param group_col Name of the column containing sample groups. If not
 #'   provided, defaults to first sample annotation column.
 #'
@@ -89,9 +89,16 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   vfit <- lmFit(assay(data, measure), design)
 
   if (is.null(coef)) {
-    contr.matrix <- limma::makeContrasts(..., levels = colnames(design))
-    vfit <- limma::contrasts.fit(vfit, contrasts = contr.matrix)
-    coef <- setNames(seq_len(ncol(contr.matrix)), colnames(contr.matrix))
+    if (length(quos(...)) == 0) {
+      warning("No contrasts or coefficients are provided. ",
+        "ANOVA-style analysis will be performed using all group.")
+      #Exclude the first column (intercept)
+      coef <- list("ANOVA" = seq(2, ncol(design)))
+    } else {
+      contr.matrix <- limma::makeContrasts(..., levels = colnames(design))
+      vfit <- limma::contrasts.fit(vfit, contrasts = contr.matrix)
+      coef <- setNames(seq_len(ncol(contr.matrix)), colnames(contr.matrix))
+    }
   } else {
     if (!coef %in% colnames(design)) {
       stop(
@@ -111,6 +118,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   ) %>%
     bind_rows(.id = "contrast")
 
+  print(table(top$contrast))
   top <- to_df(data, dim = "row") %>%
     select(
       one_of("Molecule", "Class", "total_cl", "total_cs", "istd", dimname_x)
@@ -125,6 +133,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 #' @param de.results Output of [de_analysis()].
 #' @param p.cutoff Significance threshold.  Default is `0.05`.
 #' @param logFC.cutoff Cutoff limit for log2 fold change.  Default is `1`.
+#'   Ignored in multi-group (ANOVA-style) comparisons.
 #'
 #' @return `significant_molecules` returns a character vector with names of
 #'   significantly differentially changed lipids.
@@ -134,6 +143,15 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 #' significant_molecules(de_results)
 significant_molecules <- function(de.results, p.cutoff = 0.05,
                                   logFC.cutoff = 1) {
+  if (!"logFC" %in% colnames(de.results)) {
+    message("de.results contains ANOVA-style comparison.",
+      " LogFC cutoff will be ignored")
+    ret <- de.results %>%
+      filter(adj.P.Val < p.cutoff) %>%
+      (function(x) split(x$Molecule, x$contrast))
+    return(ret)
+  }
+
   de.results %>%
     filter(adj.P.Val < p.cutoff, abs(logFC) > logFC.cutoff) %>%
     (function(x) split(x$Molecule, x$contrast))
@@ -150,26 +168,34 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' @examples
 #' plot_results_volcano(de_results, show.labels = FALSE)
 plot_results_volcano <- function(de.results, show.labels = TRUE) {
-  de.results %>%
-    (function(.) {
-      p <- ggplot(., aes(logFC, -log10(adj.P.Val), color = Class, label = Molecule)) +
-        geom_point() +
-        geom_hline(yintercept = -log10(0.05), lty = 2) +
-        geom_vline(xintercept = c(1, -1), lty = 2) +
-        facet_wrap(~contrast)
-      if (show.labels) {
-        p + geom_text(
-          aes(
-            label = ifelse(
-              adj.P.Val < log10(0.05) & abs(logFC) > 1, Molecule, ""
-            )
-          ),
-          vjust = -.5, size = 3, color = "black"
-        )
-      }
-      .display_plot(p)
-    })
+
+
+  if (!"logFC" %in% colnames(de.results)) {
+    message("de.results contains ANOVA-style comparison.",
+            " Average Experssion will be plotted instead of logFC.")
+    p <- ggplot(de.results, aes(AveExpr, -log10(adj.P.Val), color = Class, label = Molecule)) +
+      geom_point()
+  } else {
+    p <- ggplot(de.results, aes(logFC, -log10(adj.P.Val), color = Class, label = Molecule)) +
+      geom_point() +
+      geom_vline(xintercept = c(1, -1), lty = 2)
+  }
+
+  p <- p +
+    geom_hline(yintercept = -log10(0.05), lty = 2) +
+    facet_wrap(~contrast)
+  if (show.labels) {
+    sig <- de.results$adj.P.Val < 0.05
+    if ("logFC" %in% colnames(de.results)) {
+      sig <- sig & abs(de.results$logFC) > 1
+    }
+    p + geom_text(
+      aes(label = ifelse(sig, Molecule, "")),
+      vjust = -.5, size = 3, color = "black"
+    )
+  }
+  .display_plot(p)
 }
 
 # colnames used in topTable
-utils::globalVariables(c("logFC", "P.Value", "adj.P.Val", "contrast"))
+utils::globalVariables(c("logFC", "AveExpr", "P.Value", "adj.P.Val", "contrast"))

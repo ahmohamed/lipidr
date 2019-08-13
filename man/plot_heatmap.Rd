@@ -7,7 +7,7 @@ Plots a hierarchically clustered heatmap showing selected sample and
 lipid molecule annotations.}
 \usage{
 plot_heatmap(data, measure = "Area", molecule_annotation = "Class",
-  sample_annotation = "all")
+  sample_annotation = "all", scale = "column", ...)
 }
 \arguments{
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
@@ -18,6 +18,12 @@ Area.Normalized, Height or Retention.Time. Default is \code{Area}.}
 \item{molecule_annotation}{The column name for lipid annotation, default to \code{Class}.}
 
 \item{sample_annotation}{The column name for sample annotation, default to \code{all}.}
+
+\item{scale}{character indicating if the values should be centered and
+scaled in either the row direction or the column direction, or none.
+Corresponding values are "row", "column" and "none".}
+
+\item{...}{Additional parameters passed to \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}}.}
 }
 \value{
 A heatmap plot
