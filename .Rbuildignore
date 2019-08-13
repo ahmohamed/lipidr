@@ -9,4 +9,3 @@
 ^\.travis\.yml$
 ^\.git*
 ^\.BBSoptions$
-^vignettes/examples*
