@@ -1,0 +1,80 @@
+template:
+  params:
+    bootswatch: united
+
+navbar:
+  type: default
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: Reference
+      href: reference/index.html
+    - text: Vignettes
+      menu:
+      - text: Overview of analysis workflow
+        href: articles/workflow.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/ahmohamed/lipidr
+
+reference:
+  - title: Input data
+    desc: Functions to read and input data in `lipidr`
+    contents:
+      - '`read_skyline`'
+      - '`as_skyline_experiment`'
+      - '`add_sample_annotation`'
+  - title: Preprocessing data
+    desc: Functions to summarise and normalize lipidomics datasets
+    contents:
+    - '`summarize_transitions`'
+    - '`normalize_istd`'
+    - '`normalize_pqn`'
+  - title: Quality control and data visualization
+    desc: Functions to visually QC your lipidomics datasets
+    contents:
+    - '`plot_lipidclass`'
+    - '`plot_molecules`'
+    - '`plot_samples`'
+  - title: Univariate analysis
+    desc: Perform univariate analysis for lipidomics datasets
+    contents:
+    - '`de_analysis`'
+    - '`de_design`'
+  - title: Multivariate analysis
+    desc: Perform and visualize PCA, PCoA and OPLS-DA for lipidomics datasets
+    contents:
+    - '`mva`'
+    - '`plot_mva_results`'
+    - '`plot_mva_loadings`'
+
+  - title: Enrichment analysis
+    desc: ~
+    contents:
+    - '`lsea`'
+    - '`plot_class_enrichment`'
+    - '`gen_lipidsets`'
+
+  - title: Clustring analysis
+    desc: ~
+    contents:
+    - '`plot_heatmap`'
+
+  - title: Lipid-centric analysis
+    desc: ~
+    contents:
+    - '`plot_chain_distribution`'
+    - '`plot_trend`'
+    - '`annotate_lipids`'
+
+  - title: SkylineExperiment object structure and manipulation
+    desc: ~
+    contents:
+    - '`SkylineExperiment-class`'
+    - '`SkylineExperiment`'
+    - '`is_logged`'
+
+  - title: Enable interactive graphics
+    desc: ~
+    contents:
+    - '`use_interactive_graphics`'
