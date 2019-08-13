@@ -45,7 +45,7 @@ reference:
     desc: Perform and visualize PCA, PCoA and OPLS-DA for lipidomics datasets
     contents:
     - '`mva`'
-    - '`plot_mva_results`'
+    - '`plot_mva`'
     - '`plot_mva_loadings`'
 
   - title: Enrichment analysis
