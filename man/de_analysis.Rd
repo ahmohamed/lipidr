@@ -38,7 +38,8 @@ the linear model is of interest.}
 
 \item{p.cutoff}{Significance threshold.  Default is \code{0.05}.}
 
-\item{logFC.cutoff}{Cutoff limit for log2 fold change.  Default is \code{1}.}
+\item{logFC.cutoff}{Cutoff limit for log2 fold change.  Default is \code{1}.
+Ignored in multi-group (ANOVA-style) comparisons.}
 
 \item{show.labels}{Whether labels should be displayed for
 significant lipids.  Default is \code{TRUE}.}

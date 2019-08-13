@@ -84,10 +84,14 @@ d <- set_normalized(d, "Area", TRUE)
 ```
 
 ## Quality control
-We look at total ion intensity for each sample.
+We look at total ion concentration (TIC) and distribution (boxplot) for each sample.
 ```{r}
 plot_samples(d, "tic")
+plot_samples(d, "boxplot")
 ```
+
+Although the TIC plot looks similar for all samples, we can spot two outlier samples with significantly large dispersion (samples `42` and `18`). We will keep the samples for now, but we may want to consider checking closely.
+
 
 Because there is no QC samples or technical replicates in this dataset, we cannot
 assess the %CV of molecules. Also, there is no need to `summarize_transitions`
@@ -99,8 +103,13 @@ in untargeted datasets.
 mvaresults = mva(d, measure="Area", method="PCA")
 plot_mva(mvaresults, color_by="SampleType", components = c(1,2))
 ```
-We can see mild separation between benign and cancer samples, but not between cancer and metastasis. We can also spot 2 outlier samples that we may want to consider checking closely. The low variance explained by `PC1` and `PC2`
-(cumulative 25%, displayed in the plot as `R2X`) indicate highly variable lipid profiles in these clinical samples.
+We can see mild separation between benign and cancer samples, but not between cancer and metastasis. We can also spot the sample outlier samples that should consider removing. The low variance explained by `PC1` and `PC2`
+(cumulative displayed in the plot as `R2X`) indicate highly variable lipid profiles in these clinical samples.
+
+```{r remove_outliers}
+keep_samples <- !colnames(d) %in% c("18", "42")
+d <- d[, keep_samples]
+```
 
 # Univariate Analysis
 ## Two group comparison
@@ -146,8 +155,6 @@ In this case, we are seeing similar pattern as the two-group comparison, which i
 Users interested in creating more complex design matrices are referred to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].
 
 # Multivariate analysis
-
-
 
 ## Orthogonal multivariate analysis
 
@@ -202,7 +209,7 @@ plot_mva_loadings(mvaresults, color_by="Class", top.n=10)
 ```
 
 
-## Enrichment analysis
+# Enrichment analysis
 
 ```{r}
 enrich_results = lsea(two_group, rank.by = "logFC")
@@ -215,11 +222,14 @@ Visualization of enrichment analysis results. The enriched lipid classes are hig
 plot_class_enrichment(two_group, significant_lipidsets(enrich_results))
 ```
 
-
 # Lipid chain analysis
-
 ```{r}
 plot_trend(two_group)
+```
+
+# Clustering
+```{r}
+plot_heatmap(d, cluster_rows=FALSE, show_rownames = FALSE)
 ```
 
 # Session information
