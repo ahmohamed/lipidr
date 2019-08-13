@@ -4,6 +4,11 @@ language: r
 
 matrix:
   include:
+    - os: linux
+      dist: trusty
+      r: bioc-devel
+    - os: osx
+      r: bioc-release
     - stage: covr
       os: osx
       script: 
@@ -17,7 +22,10 @@ matrix:
           keep-history: false
           local-dir: docs
           on:
-            branch: feature/pkgdown
+            branch: 
+              - master
+              - develop
+              - feature/pkgdown
   allow_failures:
     - os: osx
 
