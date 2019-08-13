@@ -9,7 +9,7 @@ matrix:
       r: bioc-devel
     - os: osx
       r: bioc-release
-    - stage: covr
+    - stage: Deploy
       os: osx
       script: 
         - Rscript -e 'covr::codecov(type="all")'
