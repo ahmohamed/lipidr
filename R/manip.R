@@ -116,7 +116,7 @@ update_molecule_names <- function(data, old, new) {
 #' Remove molecules with CV larger that a threshold
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
-#' @param cv.cutoff CV threshold (numeric).  Default is `20`%.
+#' @param cv.cutoff CV threshold (numeric).  Default is `20`.
 #' @param measure Which measure used to calculate CV, usually Area (default).
 #'
 #' @return SkylineExperiment object with molecules filtered.

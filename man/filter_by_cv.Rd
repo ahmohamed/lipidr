@@ -9,7 +9,7 @@ filter_by_cv(data, cv.cutoff = 20, measure = "Area")
 \arguments{
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
-\item{cv.cutoff}{CV threshold (numeric).  Default is \code{20}%.}
+\item{cv.cutoff}{CV threshold (numeric).  Default is \code{20}.}
 
 \item{measure}{Which measure used to calculate CV, usually Area (default).}
 }
