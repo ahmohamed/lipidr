@@ -12,6 +12,8 @@ vignette: >
   %\VignetteIndexEntry{lipidr_data_mining}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - figure/
 ---
 
 ```{r setup, include=FALSE}
@@ -19,16 +21,16 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width =
 library(knitr)
 library(widgetframe)
 library(rmarkdown)
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8, fig.path = "figure/")
 knitr::opts_chunk$set(widgetframe_isolate_widgets = TRUE)
 knit_print.data.frame = function(x, ...) {
   rmarkdown:::print.paged_df(rmarkdown::paged_table(x))
 }
 knit_print.DataFrame = function(x, ...) {
-    knit_print(as.data.frame(x))
+  knit_print(as.data.frame(x))
 }
 knit_print.Iheatmap = function(x, ...) {
-    knit_print(frameWidget(iheatmapr::to_widget(x), height = 800))
+  knit_print(frameWidget(iheatmapr::to_widget(x), height = 800))
 }
 
 registerS3method("knit_print", "data.frame", knit_print.data.frame)
