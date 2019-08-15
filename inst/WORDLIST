@@ -1,5 +1,6 @@
 AppVeyor
 bioc
+BioC
 bioconductor
 Ceramides
 CLs
@@ -13,6 +14,7 @@ edgeRUsersGuide
 elute
 eluted
 ggplot
+hclust
 https
 limma
 Limma
