@@ -16,8 +16,6 @@ setValidity("SkylineExperiment", function(object) {
 
   dn <- metadata$dimnames
   if (!is.character(dn) || length(dn) != 2) {
-    print(!is.character(dn))
-    print(length(dn != 2))
     msg <- "metadata should have a 'dimnames' character vector of length 2"
     errors <- c(errors, msg)
   }
