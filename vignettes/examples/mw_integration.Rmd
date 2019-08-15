@@ -28,7 +28,7 @@ knit_print.DataFrame = function(x, ...) {
     knit_print(as.data.frame(x))
 }
 knit_print.Iheatmap = function(x, ...) {
-    knit_print(frameWidget(iheatmapr::to_widget(x)))
+    knit_print(frameWidget(iheatmapr::to_widget(x), height = 800))
 }
 
 registerS3method("knit_print", "data.frame", knit_print.data.frame)
