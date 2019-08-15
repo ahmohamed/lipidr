@@ -103,7 +103,7 @@ colData(d)
 
 ### Data subsetting
 
-It is helpful to imagine SkylineExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is `d[rows, cols]`.
+It is helpful to imagine LipidomicsExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is `d[rows, cols]`.
 
 In the example below we select the first 10 transitions and 10 samples. We can check the `rowData` and `colData`.
 

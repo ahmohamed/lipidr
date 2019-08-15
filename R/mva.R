@@ -12,7 +12,7 @@ utils::globalVariables(c("molrank"))
 #' Blank samples are automatically detected (using TIC) and excluded.
 #' Missing data are imputed using average lipid intensity across all samples.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object created by [read_skyline()].
 #' @param measure Which measure to use as intensity, usually Area (default).
 #'   The measure should be already summarized and normalized.
 #' @param method Either PCA, PCoA, OPLS or OPLS-DA.  Default is `PCA`.
@@ -42,7 +42,7 @@ utils::globalVariables(c("molrank"))
 mva <- function(data, measure = "Area",
                 method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
                 group_col = NULL, groups = NULL, ...) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   method <- match.arg(method)
   data_f <- data[!rowData(data)$istd, !.is_blank(data)]

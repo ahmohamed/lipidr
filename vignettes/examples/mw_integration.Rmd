@@ -60,7 +60,7 @@ list_mw_studies(keyword = "lipid")
 ```
 
 # Download datasets
-Datasets can be easily downloaded and parsed into `SkylineExperiment` object
+Datasets can be easily downloaded and parsed into `LipidomicsExperiment` object
 using `lipidr` function `fetch_mw_study()` by supplying a `study_id`. The
 example shown in this vignette is from `ST001111` [link](https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&DataMode=AllData&StudyID=ST001111&StudyType=MS&ResultType=1). The dataset contains positive and negative MS data for untargeted 
 lipidomics from different breast cancer tissues.

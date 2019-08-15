@@ -7,7 +7,7 @@
 add_sample_annotation(data, annot_file)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{annot_file}{CSV file with at least 2 columns, sample names & group(s).}
 }
@@ -24,7 +24,7 @@ datadir <- system.file("extdata", package = "lipidr")
 filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 d <- read_skyline(filelist)
 
-# Add clinical info to existing SkylineExperiment object
+# Add clinical info to existing LipidomicsExperiment object
 clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 d <- add_sample_annotation(d, clinical_file)
 colData(d)

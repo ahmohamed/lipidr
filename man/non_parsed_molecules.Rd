@@ -7,7 +7,7 @@
 non_parsed_molecules(data)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 }
 \value{
 A character vector of the molecule names that could not be parsed.

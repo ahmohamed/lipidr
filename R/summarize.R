@@ -3,11 +3,11 @@
 #' Calculate a single intensity for molecules with multiple transitions,
 #' by determining the average or maximum intensity.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object created by [read_skyline()].
 #' @param method Choose to summarize multiple transitions by taking the average
 #'   or maximum intensity. Default is `max`
 #'
-#' @return A SkylineExperiment object with single intensities per lipid molecule
+#' @return A LipidomicsExperiment object with single intensities per lipid molecule
 #' @export
 #'
 #' @examples
@@ -18,7 +18,7 @@
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
 summarize_transitions <- function(data, method = c("max", "average")) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   if (is_summarized(data)) {
     stop("data is already summarized")
@@ -58,7 +58,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   attrs <- metadata(data)
   attrs$summarized <- TRUE
   attrs$dimnames[[1]] <- "MoleculeId"
-  SkylineExperiment(
+  LipidomicsExperiment(
     assay_list = assay_list,
     metadata = attrs,
     colData = colData(data),

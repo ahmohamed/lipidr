@@ -10,12 +10,12 @@ fetch_mw_study(study_id)
 \item{study_id}{The Metabolomics Workbench study ID.}
 }
 \value{
-A SkylineExperiment object containing clinical and lipid intensity
+A LipidomicsExperiment object containing clinical and lipid intensity
 data.
 }
 \description{
 This functions uses Metabolomics Workbench REST API to retrieve study
-data using a study ID. The function returns a SkylineExperiment where users
+data using a study ID. The function returns a LipidomicsExperiment where users
 can directly apply \code{lipidr} analysis workflow.
 }
 \examples{

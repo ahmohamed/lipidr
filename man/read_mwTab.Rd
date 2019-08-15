@@ -2,7 +2,7 @@
 % Please edit documentation in R/mw.R
 \name{read_mwTab}
 \alias{read_mwTab}
-\title{Parse mwTab file into a SkylineExperiment.}
+\title{Parse mwTab file into a LipidomicsExperiment.}
 \usage{
 read_mwTab(mwTab)
 }
@@ -10,11 +10,11 @@ read_mwTab(mwTab)
 \item{mwTab}{File path or url for a mwTab file.}
 }
 \value{
-A SkylineExperiment object containing clinical and lipid intensity
+A LipidomicsExperiment object containing clinical and lipid intensity
 data.
 }
 \description{
-Parse mwTab file into a SkylineExperiment.
+Parse mwTab file into a LipidomicsExperiment.
 }
 \seealso{
 Other Metabolomics Workbench: \code{\link{fetch_mw_study}},

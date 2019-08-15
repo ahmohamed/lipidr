@@ -16,7 +16,7 @@ significant_molecules(de.results, p.cutoff = 0.05, logFC.cutoff = 1)
 plot_results_volcano(de.results, show.labels = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}},
+\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}},
 should be normalized and log2 transformed.}
 
 \item{...}{Expressions, or character strings which can be parsed to

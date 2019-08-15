@@ -18,7 +18,7 @@ plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
 top_lipids(mvaresults, top.n = 10)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{measure}{Which measure to use as intensity, usually Area (default).
 The measure should be already summarized and normalized.}
@@ -102,7 +102,7 @@ mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
 # OPLS-DA
 mvaresults <- mva(
   data_normalized,
-  method = "OPLS-DA", group_col = "Diet", groups=c("HighFat", "Normal")
+  method = "OPLS-DA", group_col = "Diet", groups = c("HighFat", "Normal")
 )
 plot_mva(mvaresults, color_by = "group")
 plot_mva_loadings(mvaresults, color_by = "Class", top.n = 10)

@@ -7,10 +7,10 @@
 remove_non_parsed_molecules(data)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 }
 \value{
-A filtered SkylineExperiment object.
+A filtered LipidomicsExperiment object.
 }
 \description{
 Remove molecules that couldn't be parsed by \code{lipidr} from the dataset

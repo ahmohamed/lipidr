@@ -2,7 +2,7 @@
 % Please edit documentation in R/bioc.R
 \name{as_skyline_experiment}
 \alias{as_skyline_experiment}
-\title{Convert data.frame/matrix to SkylineExperiment}
+\title{Convert data.frame/matrix to LipidomicsExperiment}
 \usage{
 as_skyline_experiment(df, logged = FALSE, normalized = FALSE)
 }
@@ -18,8 +18,8 @@ is duplicated (has > 1 row).}
 \item{normalized}{Whether the data is normalized}
 }
 \value{
-SkylineExperiment
+LipidomicsExperiment
 }
 \description{
-Convert data.frame/matrix to SkylineExperiment
+Convert data.frame/matrix to LipidomicsExperiment
 }

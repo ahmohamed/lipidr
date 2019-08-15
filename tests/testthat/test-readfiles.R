@@ -39,7 +39,7 @@ context("test-readfiles-nopivot")
 test_that("Can read a single non-pivoted skyline file", {
   d <- read_skyline(f1)
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(19, 11))
@@ -55,7 +55,7 @@ test_that("Can read a single non-pivoted skyline file", {
 test_that("Can read multiple non-pivoted skyline file", {
   d <- read_skyline(c(f1, f2))
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
 
@@ -104,7 +104,7 @@ context("test-readfiles-pivoted")
 test_that("Can read a single pivoted skyline file", {
   d <- read_skyline(f3)
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(19, 11))
@@ -122,7 +122,7 @@ test_that("Can read multiple pivoted skyline file", {
   f3_ <- f3 %>% read.csv() %>% save_temp_csv()
   d <- read_skyline(c(f3_, f3))
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(38, 11))

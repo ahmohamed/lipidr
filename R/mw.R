@@ -43,12 +43,12 @@ utils::globalVariables(c("V1", "V2", "first_name", "last_name"))
 #' Download and parse full data for a study from Metabolomics Workbench.
 #'
 #' This functions uses Metabolomics Workbench REST API to retrieve study
-#' data using a study ID. The function returns a SkylineExperiment where users
+#' data using a study ID. The function returns a LipidomicsExperiment where users
 #' can directly apply `lipidr` analysis workflow.
 #'
 #' @param study_id The Metabolomics Workbench study ID.
 #'
-#' @return A SkylineExperiment object containing clinical and lipid intensity
+#' @return A LipidomicsExperiment object containing clinical and lipid intensity
 #'   data.
 #'
 #' @export
@@ -64,11 +64,11 @@ fetch_mw_study <- function(study_id) {
   read_mwTab(url)
 }
 
-#' Parse mwTab file into a SkylineExperiment.
+#' Parse mwTab file into a LipidomicsExperiment.
 #'
 #' @param mwTab File path or url for a mwTab file.
 #'
-#' @return A SkylineExperiment object containing clinical and lipid intensity
+#' @return A LipidomicsExperiment object containing clinical and lipid intensity
 #'   data.
 #'
 #' @export
@@ -82,13 +82,13 @@ read_mwTab <- function(mwTab) {
   combined
 }
 
-#' Parse a Metabolomics Workbench data matrix into a SkylineExperiment.
+#' Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.
 #' Data matrix downloaded from Metabolomics Workbench are parsed into
-#' a SkylineExperiment object to enable `lipidr` workflow analysis.
+#' a LipidomicsExperiment object to enable `lipidr` workflow analysis.
 #'
 #' @param file File path or url for the file containing the data matrix.
 #'
-#' @return A SkylineExperiment object containing clinical and lipid intensity
+#' @return A LipidomicsExperiment object containing clinical and lipid intensity
 #'   data.
 #'
 #' @export

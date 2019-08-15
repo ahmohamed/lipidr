@@ -10,14 +10,14 @@ so that they can be parsed correctly by \code{lipidr} or modify the lipid class.
 update_molecule_names(data, old, new)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{old}{A character vector of the molecule names to be renamed.}
 
 \item{new}{A character vector of the new molecule names.}
 }
 \value{
-A SkylineExperiment object with molecules name and annotation
+A LipidomicsExperiment object with molecules name and annotation
 updated.
 }
 \description{

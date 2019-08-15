@@ -4,7 +4,7 @@
 #' `tic` plots a bar chart for total sample intensity.\cr\cr
 #' `boxplot` plots a boxplot chart to examine the distribution of values
 #' per sample.
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object created by [read_skyline()].
 #' @param type plot type, either `tic` or `boxplot`. Default is `tic`.
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area.Normalized or Height. Default is `Area`
@@ -24,7 +24,7 @@
 #' )
 plot_samples <- function(data, type = c("tic", "boxplot"),
   measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
@@ -67,7 +67,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' in each class, but can also be used to look at different measures, such as
 #' `Retention.Time` or `Background`.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object created by [read_skyline()].
 #' @param type plot type, either `boxplot` or `sd`. Default is `boxplot`.
 #' @param measure Which measure to plot the distribution of: usually Area,
 #'   Area.Normalized, Height or Retention.Time. Default is `Area`
@@ -86,7 +86,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' plot_lipidclass(d_qc, "boxplot", "Retention.Time", log = FALSE)
 plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
@@ -217,7 +217,7 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' for each lipid, but can also be used to look at different measures, such as
 #' `Retention.Time` or `Background`.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object created by [read_skyline()].
 #' @param type plot type, either `cv`, `sd` or `boxplot`. Default is `cv`.
 #' @param measure Which measure to plot the distribution of: usually Area,
 #'   Area.Normalized or Height. Default is `Area`
@@ -248,7 +248,7 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' plot_molecules(d_istd_qc, "boxplot", "Retention.Time", log = FALSE)
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
@@ -302,7 +302,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #' Plots a hierarchically clustered heatmap showing selected sample and
 #' lipid molecule annotations.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object created by [read_skyline()].
 #' @param measure Which measure to plot the distribution of: usually Area,
 #'   Area.Normalized, Height or Retention.Time. Default is `Area`.
 #' @param molecule_annotation The column name for lipid annotation, default to `Class`.

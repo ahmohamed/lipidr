@@ -8,7 +8,7 @@ plot_molecules(data, type = c("cv", "sd", "boxplot"), measure = "Area",
   log = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 
 \item{type}{plot type, either \code{cv}, \code{sd} or \code{boxplot}. Default is \code{cv}.}
 

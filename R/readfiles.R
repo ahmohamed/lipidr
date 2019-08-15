@@ -3,7 +3,7 @@
 #' @param files Character vector with filepaths to
 #'   Skyline exported files in CSV format.
 #' @importFrom forcats fct_inorder
-#' @return SkylineExperiment object.
+#' @return LipidomicsExperiment object.
 #' @export
 #'
 #' @examples
@@ -39,7 +39,7 @@ read_skyline <- function(files) {
 
 #' Add sample annotation to Skyline data frame
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object created by [read_skyline()].
 #' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
 #' @return Skyline data.frame with sample group information.
@@ -52,7 +52,7 @@ read_skyline <- function(files) {
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
 #' 
-#' # Add clinical info to existing SkylineExperiment object
+#' # Add clinical info to existing LipidomicsExperiment object
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' colData(d)

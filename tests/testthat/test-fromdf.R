@@ -14,7 +14,7 @@ test_that("Can read dataframe with the first column as features, rest are sample
     rownames_to_column("Features") %>%
     select(Features, everything())
   d <- as_skyline_experiment(f1df)
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(19, 11))
@@ -30,7 +30,7 @@ test_that("Can read dataframe with the first column as features, rest are sample
 test_that("Can read dataframe with rownames as features, rest are samples", {
   f1df <- f1_matrix %>% as.data.frame()
   d <- as_skyline_experiment(f1df)
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(19, 11))
@@ -52,7 +52,7 @@ test_that("Can read dataframe with duplicate molecules", {
   f1df <- f1df %>% bind_rows(f1df[1:5, ])
 
   d <- as_skyline_experiment(f1df)
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(24, 11))
