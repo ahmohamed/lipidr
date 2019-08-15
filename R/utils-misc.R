@@ -31,6 +31,7 @@
 #' @param suffix A non-escaped suffix to use after each element
 #'
 #' @return regex-escaped string to be used for pattern matching
+#' @noRd
 .as_regex <- function(strings, collapse = FALSE, prefix = "", suffix = "") {
   ret <- gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", strings)
   if (collapse) {
