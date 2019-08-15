@@ -16,6 +16,16 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8)
+library(knitr)
+library(rmarkdown)
+knit_print.data.frame = function(x, ...) {
+  rmarkdown:::print.paged_df(rmarkdown::paged_table(x))
+}
+knit_print.DataFrame = function(x, ...) {
+    knit_print(as.data.frame(x))
+}
+registerS3method("knit_print", "data.frame", knit_print.data.frame)
+registerS3method("knit_print", "DataFrame", knit_print.DataFrame)
 ```
 # Introduction
 Through integration with Metabolomics Workbench API, `lipidr` allows users,
