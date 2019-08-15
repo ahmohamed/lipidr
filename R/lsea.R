@@ -46,7 +46,7 @@ lsea <- function(de.results,
       pathways = sets,
       stats = to_named_list(x, "Molecule", rank.by),
       ...
-  )) %>%
+    )) %>%
     bind_rows(.id = "contrast")
 
   res <- res %>% arrange(padj) %>% rename(set = pathway)
@@ -57,7 +57,7 @@ lsea <- function(de.results,
   return(res)
 }
 
-.gsea_fun <- function(pathways, stats, minSize=2, nperm=10000, ...) {
+.gsea_fun <- function(pathways, stats, minSize = 2, nperm = 10000, ...) {
   fgsea::fgsea(
     pathways = pathways, stats = stats,
     minSize = minSize, nperm = nperm, ...

@@ -106,8 +106,8 @@ remove_non_parsed_molecules <- function(data) {
 #' update_molecule_names(data_normalized, old_names, new_names)
 update_molecule_names <- function(data, old, new) {
   updated_names <- to_df(data, "row") %>%
-    left_join(data.frame(Molecule=old, new_names=new) %>% distinct()) %>%
-    mutate(Molecule=coalesce(as.character(new_names), Molecule)) %>%
+    left_join(data.frame(Molecule = old, new_names = new) %>% distinct()) %>%
+    mutate(Molecule = coalesce(as.character(new_names), Molecule)) %>%
     select(-new_names)
 
   updated_annot <- annotate_lipids(updated_names$Molecule)
@@ -135,7 +135,7 @@ update_molecule_names <- function(data, old, new) {
 #' @examples
 #' data(data_normalized)
 #' filter_by_cv(data_normalized)
-filter_by_cv <- function(data, cv.cutoff=20, measure="Area") {
+filter_by_cv <- function(data, cv.cutoff = 20, measure = "Area") {
   keep_molecules <- apply(assay(data, measure), 1, .cv) < cv.cutoff
   data[keep_molecules, ]
 }

@@ -62,7 +62,8 @@ SkylineExperiment <- function(assay_list, metadata,
     colData <- DataFrame(row.names = colnames(assay_list[[1]]))
   }
   se <- SummarizedExperiment(assay_list,
-    colData = colData, rowData = rowData, metadata = metadata)
+    colData = colData, rowData = rowData, metadata = metadata
+  )
   ret <- .SkylineExperiment(se)
   return(ret)
 }
@@ -79,7 +80,7 @@ SkylineExperiment <- function(assay_list, metadata,
 #'
 #' @return SkylineExperiment
 #' @export
-as_skyline_experiment <- function(df, logged=FALSE, normalized=FALSE) {
+as_skyline_experiment <- function(df, logged = FALSE, normalized = FALSE) {
   # if (!.is_skyline_export(df)) {
   #   #return(.to_summarized_experiment(d))
   # }
@@ -95,7 +96,8 @@ as_skyline_experiment <- function(df, logged=FALSE, normalized=FALSE) {
     rows <- sum(!annotate_lipids(rownames(df), no_match = "ignore")$not_matched)
   }
   if (first_col == 0 && rows == 0) {
-    stop("Data frame does not contain valid lipid names. ",
+    stop(
+      "Data frame does not contain valid lipid names. ",
       "Lipids features should be in rownames or the first column."
     )
   }
@@ -124,9 +126,9 @@ as_skyline_experiment <- function(df, logged=FALSE, normalized=FALSE) {
   assay_list <- as(assay_list, "SimpleList")
   mcols(assay_list) <- list(logged = logged, normalized = normalized)
   row_data <- DataFrame(
-    filename="dataframe",
+    filename = "dataframe",
     Molecule = molecules,
-    row.names=rownames(df)
+    row.names = rownames(df)
   ) %>%
     left_join(annotate_lipids(molecules))
   metadata <- list(
