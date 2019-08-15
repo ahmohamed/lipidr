@@ -7,7 +7,7 @@
 filter_by_cv(data, cv.cutoff = 20, measure = "Area")
 }
 \arguments{
-\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{cv.cutoff}{CV threshold (numeric).  Default is \code{20}.}
 

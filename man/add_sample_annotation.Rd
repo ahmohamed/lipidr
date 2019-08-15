@@ -7,12 +7,12 @@
 add_sample_annotation(data, annot_file)
 }
 \arguments{
-\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{annot_file}{CSV file with at least 2 columns, sample names & group(s).}
 }
 \value{
-Skyline data.frame with sample group information.
+LipidomicsExperiment with sample group information.
 }
 \description{
 Add sample annotation to Skyline data frame

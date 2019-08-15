@@ -12,7 +12,7 @@ utils::globalVariables(c("molrank"))
 #' Blank samples are automatically detected (using TIC) and excluded.
 #' Missing data are imputed using average lipid intensity across all samples.
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area (default).
 #'   The measure should be already summarized and normalized.
 #' @param method Either PCA, PCoA, OPLS or OPLS-DA.  Default is `PCA`.

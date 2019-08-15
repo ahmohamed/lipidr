@@ -109,7 +109,7 @@ read_mw_datamatrix <- function(file) {
   d$Molecule <- gsub(stereo, "", d$Molecule)
   d$Molecule <- sub("^(\\w+)-", "\\1", d$Molecule)
   d$Molecule <- sub("\\d+\\:\\d+ \\(", "\\(", d$Molecule)
-  d <- as_skyline_experiment(d)
+  d <- as_lipidomics_experiment(d)
   rownames(d) <- original_names
 
   col_data <- t(.data[1, ]) %>% as.data.frame()

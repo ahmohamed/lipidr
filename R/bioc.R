@@ -36,7 +36,7 @@ setValidity("LipidomicsExperiment", function(object) {
   if (length(errors) == 0) TRUE else errors
 })
 
-#' Constructor for Skyline experiment from list of assays
+#' Constructor for Lipidomics experiment from list of assays
 #'
 #' @param assay_list A list or SimpleList of matrix-like elements,
 #'   or a matrix-like object. Passed to [SummarizedExperiment()].
@@ -80,7 +80,7 @@ LipidomicsExperiment <- function(assay_list, metadata,
 #'
 #' @return LipidomicsExperiment
 #' @export
-as_skyline_experiment <- function(df, logged = FALSE, normalized = FALSE) {
+as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
   # if (!.is_skyline_export(df)) {
   #   #return(.to_summarized_experiment(d))
   # }

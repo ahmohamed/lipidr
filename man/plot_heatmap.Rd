@@ -11,7 +11,7 @@ plot_heatmap(data, measure = "Area", molecule_annotation = "Class",
   cluster_rows = "hclust", scale = "rows", ...)
 }
 \arguments{
-\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
 Area.Normalized, Height or Retention.Time. Default is \code{Area}.}

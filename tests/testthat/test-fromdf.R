@@ -13,7 +13,7 @@ test_that("Can read dataframe with the first column as features, rest are sample
     as.data.frame() %>%
     rownames_to_column("Features") %>%
     select(Features, everything())
-  d <- as_skyline_experiment(f1df)
+  d <- as_lipidomics_experiment(f1df)
   expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
@@ -29,7 +29,7 @@ test_that("Can read dataframe with the first column as features, rest are sample
 
 test_that("Can read dataframe with rownames as features, rest are samples", {
   f1df <- f1_matrix %>% as.data.frame()
-  d <- as_skyline_experiment(f1df)
+  d <- as_lipidomics_experiment(f1df)
   expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
@@ -51,7 +51,7 @@ test_that("Can read dataframe with duplicate molecules", {
 
   f1df <- f1df %>% bind_rows(f1df[1:5, ])
 
-  d <- as_skyline_experiment(f1df)
+  d <- as_lipidomics_experiment(f1df)
   expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
@@ -72,11 +72,11 @@ test_that("Gives error when no lipid names are provided", {
     rownames_to_column("Features") %>%
     select(-Features)
 
-  expect_error(as_skyline_experiment(f1df), "Data frame does not contain valid lipid names.")
+  expect_error(as_lipidomics_experiment(f1df), "Data frame does not contain valid lipid names.")
 })
 
 context("test-fromdf-todo")
 test_that("Skyline export as dataframe is not yet supported", {
   a <- read.csv("A1.csv")
-  expect_error(as_skyline_experiment(a))
+  expect_error(as_lipidomics_experiment(a))
 })

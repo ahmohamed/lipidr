@@ -2,7 +2,7 @@
 % Please edit documentation in R/bioc.R
 \name{LipidomicsExperiment}
 \alias{LipidomicsExperiment}
-\title{Constructor for Skyline experiment from list of assays}
+\title{Constructor for Lipidomics experiment from list of assays}
 \usage{
 LipidomicsExperiment(assay_list, metadata, colData = NULL,
   rowData = NULL)
@@ -30,5 +30,5 @@ must be equal to the number of rows of the matrices in assays.}
 LipidomicsExperiment object
 }
 \description{
-Constructor for Skyline experiment from list of assays
+Constructor for Lipidomics experiment from list of assays
 }

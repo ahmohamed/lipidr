@@ -1,6 +1,6 @@
 #' Functions to get and set attributes of LipidomicsExperiment objects
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to get / set attributes of.
 #' @param val Value to be assigned to the attribute.
 #'
@@ -58,7 +58,7 @@ set_summarized <- function(data, val) {
 
 #' Get a list of molecules that couldn't be parsed by `lipidr`
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #'
 #' @return A character vector of the molecule names that could not be parsed.
 #'
@@ -72,7 +72,7 @@ non_parsed_molecules <- function(data) {
 
 #' Remove molecules that couldn't be parsed by `lipidr` from the dataset
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #'
 #' @return A filtered LipidomicsExperiment object.
 #'
@@ -90,7 +90,7 @@ remove_non_parsed_molecules <- function(data) {
 #' so that they can be parsed correctly by `lipidr` or modify the lipid class.
 #' `lipidr` automatically updates the annotation for the renamed molecules.
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param old A character vector of the molecule names to be renamed.
 #' @param new A character vector of the new molecule names.
 #'
@@ -125,7 +125,7 @@ update_molecule_names <- function(data, old, new) {
 
 #' Remove molecules with CV larger that a threshold
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param cv.cutoff CV threshold (numeric).  Default is `20`.
 #' @param measure Which measure used to calculate CV, usually Area (default).
 #'

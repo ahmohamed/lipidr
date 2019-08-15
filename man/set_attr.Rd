@@ -22,7 +22,7 @@ is_summarized(data)
 set_summarized(data, val)
 }
 \arguments{
-\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to get / set attributes of.}
 

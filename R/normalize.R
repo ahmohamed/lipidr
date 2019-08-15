@@ -7,7 +7,7 @@
 #' The reference spectrum in this method is the average lipid abundance of all
 #' samples (excluding blanks).
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
@@ -65,7 +65,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr

@@ -7,7 +7,7 @@
 normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 }
 \arguments{
-\item{data}{LipidomicsExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to use as intensity, usually Area,
 Area.Normalized or Height. Default is \code{Area}.}

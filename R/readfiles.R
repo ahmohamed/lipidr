@@ -39,10 +39,10 @@ read_skyline <- function(files) {
 
 #' Add sample annotation to Skyline data frame
 #'
-#' @param data LipidomicsExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
-#' @return Skyline data.frame with sample group information.
+#' @return LipidomicsExperiment with sample group information.
 #' @export
 #'
 #' @examples
