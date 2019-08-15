@@ -85,7 +85,8 @@ remove_non_parsed_molecules <- function(data) {
 }
 
 
-#' Rename molecules in a dataset
+#' Rename molecules in a dataset.
+#'
 #' This function enables users to rename selected molecules in the dataset,
 #' so that they can be parsed correctly by `lipidr` or modify the lipid class.
 #' `lipidr` automatically updates the annotation for the renamed molecules.

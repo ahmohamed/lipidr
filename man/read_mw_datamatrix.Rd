@@ -2,9 +2,7 @@
 % Please edit documentation in R/mw.R
 \name{read_mw_datamatrix}
 \alias{read_mw_datamatrix}
-\title{Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.
-Data matrix downloaded from Metabolomics Workbench are parsed into
-a LipidomicsExperiment object to enable \code{lipidr} workflow analysis.}
+\title{Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.}
 \usage{
 read_mw_datamatrix(file)
 }
@@ -16,7 +14,6 @@ A LipidomicsExperiment object containing clinical and lipid intensity
 data.
 }
 \description{
-Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.
 Data matrix downloaded from Metabolomics Workbench are parsed into
 a LipidomicsExperiment object to enable \code{lipidr} workflow analysis.
 }

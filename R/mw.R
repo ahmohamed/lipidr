@@ -83,6 +83,7 @@ read_mwTab <- function(mwTab) {
 }
 
 #' Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.
+#'
 #' Data matrix downloaded from Metabolomics Workbench are parsed into
 #' a LipidomicsExperiment object to enable `lipidr` workflow analysis.
 #'

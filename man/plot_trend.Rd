@@ -2,10 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_trend}
 \alias{plot_trend}
-\title{Plot a regulation trend line  between logFC and chain annotation
-Fit and plot a regression line of (log2) fold changes and chain
-lengths or unsaturations. If multiple comparisons are included, one
-regression is plotted for each.}
+\title{Plot a regulation trend line  between logFC and chain annotation}
 \usage{
 plot_trend(de_results, annotation = c("length", "unsat"))
 }
@@ -18,7 +15,6 @@ plot_trend(de_results, annotation = c("length", "unsat"))
 A ggplot object.
 }
 \description{
-Plot a regulation trend line  between logFC and chain annotation
 Fit and plot a regression line of (log2) fold changes and chain
 lengths or unsaturations. If multiple comparisons are included, one
 regression is plotted for each.

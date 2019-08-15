@@ -2,10 +2,7 @@
 % Please edit documentation in R/manip.R
 \name{update_molecule_names}
 \alias{update_molecule_names}
-\title{Rename molecules in a dataset
-This function enables users to rename selected molecules in the dataset,
-so that they can be parsed correctly by \code{lipidr} or modify the lipid class.
-\code{lipidr} automatically updates the annotation for the renamed molecules.}
+\title{Rename molecules in a dataset.}
 \usage{
 update_molecule_names(data, old, new)
 }
@@ -21,7 +18,6 @@ A LipidomicsExperiment object with molecules name and annotation
 updated.
 }
 \description{
-Rename molecules in a dataset
 This function enables users to rename selected molecules in the dataset,
 so that they can be parsed correctly by \code{lipidr} or modify the lipid class.
 \code{lipidr} automatically updates the annotation for the renamed molecules.

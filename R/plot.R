@@ -117,6 +117,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
 }
 
 #' Plot logFC of lipids per class showing chain information
+#'
 #' Plot a chart of (log2) fold changes of lipids per class showing chain
 #' lengths and saturations. If multiple molecules with the same total chain
 #' length and saturation are present in the dataset, the `measure` is averaged,
@@ -167,6 +168,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 }
 
 #' Plot a regulation trend line  between logFC and chain annotation
+#'
 #' Fit and plot a regression line of (log2) fold changes and chain
 #' lengths or unsaturations. If multiple comparisons are included, one
 #' regression is plotted for each.

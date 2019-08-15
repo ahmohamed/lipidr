@@ -2,11 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_chain_distribution}
 \alias{plot_chain_distribution}
-\title{Plot logFC of lipids per class showing chain information
-Plot a chart of (log2) fold changes of lipids per class showing chain
-lengths and saturations. If multiple molecules with the same total chain
-length and saturation are present in the dataset, the \code{measure} is averaged,
-and the number of molecules is indicated on the plot.}
+\title{Plot logFC of lipids per class showing chain information}
 \usage{
 plot_chain_distribution(de_results, contrast = NULL, measure = "logFC")
 }
@@ -23,7 +19,6 @@ Adj.P.Val. Default is \code{logFC}}
 A ggplot object.
 }
 \description{
-Plot logFC of lipids per class showing chain information
 Plot a chart of (log2) fold changes of lipids per class showing chain
 lengths and saturations. If multiple molecules with the same total chain
 length and saturation are present in the dataset, the \code{measure} is averaged,
