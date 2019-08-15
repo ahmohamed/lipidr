@@ -4,7 +4,7 @@
 \alias{update_molecule_names}
 \title{Rename molecules in a dataset
 This function enables users to rename selected molecules in the dataset,
-so that they can be parsed correctly by \code{lipidr} or modify the lipidclass.
+so that they can be parsed correctly by \code{lipidr} or modify the lipid class.
 \code{lipidr} automatically updates the annotation for the renamed molecules.}
 \usage{
 update_molecule_names(data, old, new)
@@ -23,7 +23,7 @@ updated.
 \description{
 Rename molecules in a dataset
 This function enables users to rename selected molecules in the dataset,
-so that they can be parsed correctly by \code{lipidr} or modify the lipidclass.
+so that they can be parsed correctly by \code{lipidr} or modify the lipid class.
 \code{lipidr} automatically updates the annotation for the renamed molecules.
 }
 \examples{

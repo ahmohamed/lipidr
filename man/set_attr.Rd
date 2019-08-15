@@ -34,3 +34,8 @@ Modified SkylineExperiment.
 \description{
 Functions to get and set attributes of SkylineExperiment objects
 }
+\examples{
+data(data_normalized)
+is_logged(data_normalized, "Area")
+is_summarized(data_normalized)
+}

@@ -15,3 +15,7 @@ A filtered SkylineExperiment object.
 \description{
 Remove molecules that couldn't be parsed by \code{lipidr} from the dataset
 }
+\examples{
+data(data_normalized)
+remove_non_parsed_molecules(data_normalized)
+}

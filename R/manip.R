@@ -7,6 +7,10 @@
 #' @return Modified SkylineExperiment.
 #' @rdname set_attr
 #' @export
+#' @examples
+#' data(data_normalized)
+#' is_logged(data_normalized, "Area")
+#' is_summarized(data_normalized)
 is_logged <- function(data, measure) {
   assay_annot <- mcols(assays(data), use.names = TRUE)
   !is.null(assay_annot) && assay_annot[measure, "logged"]
@@ -56,9 +60,12 @@ set_summarized <- function(data, val) {
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
 #'
-#' @return A character vector of the molecule namaes that could not be parsed.
+#' @return A character vector of the molecule names that could not be parsed.
 #'
 #' @export
+#' @examples
+#' data(data_normalized)
+#' non_parsed_molecules(data_normalized)
 non_parsed_molecules <- function(data) {
   unique(rowData(data)$Molecule[rowData(data)$not_matched])
 }
@@ -70,6 +77,9 @@ non_parsed_molecules <- function(data) {
 #' @return A filtered SkylineExperiment object.
 #'
 #' @export
+#' @examples
+#' data(data_normalized)
+#' remove_non_parsed_molecules(data_normalized)
 remove_non_parsed_molecules <- function(data) {
   data[!rowData(data)$not_matched, ]
 }
@@ -77,7 +87,7 @@ remove_non_parsed_molecules <- function(data) {
 
 #' Rename molecules in a dataset
 #' This function enables users to rename selected molecules in the dataset,
-#' so that they can be parsed correctly by `lipidr` or modify the lipidclass.
+#' so that they can be parsed correctly by `lipidr` or modify the lipid class.
 #' `lipidr` automatically updates the annotation for the renamed molecules.
 #'
 #' @param data SkylineExperiment object created by [read_skyline()].
@@ -129,3 +139,5 @@ filter_by_cv <- function(data, cv.cutoff=20, measure="Area") {
   keep_molecules <- apply(assay(data, measure), 1, .cv) < cv.cutoff
   data[keep_molecules, ]
 }
+
+utils::globalVariables(c("new_names"))

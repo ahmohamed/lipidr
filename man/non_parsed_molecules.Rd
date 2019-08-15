@@ -10,8 +10,12 @@ non_parsed_molecules(data)
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
 }
 \value{
-A character vector of the molecule namaes that could not be parsed.
+A character vector of the molecule names that could not be parsed.
 }
 \description{
 Get a list of molecules that couldn't be parsed by \code{lipidr}
+}
+\examples{
+data(data_normalized)
+non_parsed_molecules(data_normalized)
 }
