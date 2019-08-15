@@ -104,6 +104,7 @@ add_sample_annotation <- function(data, annot_file) {
 #' @importFrom utils read.csv
 #' @importFrom tidyr gather spread separate
 #' @return std data.frame
+#' @noRd
 .read_skyline_file <- function(file) {
   original_data <- read.csv(file, stringsAsFactors = FALSE)
 
