@@ -310,8 +310,8 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #' @param sample_annotation The column name for sample annotation, default to `all`.
 #' @param scale character indicating if the values should be centered and
 #'   scaled in either the row direction or the column direction, or none.
-#'   Corresponding values are "row", "column" and "none".
-#' @param ... Additional parameters passed to [pheatmap::pheatmap()].
+#'   Corresponding values are "row", "cols" and "none".
+#' @param ... Additional parameters passed to [iheatmapr::iheatmap()].
 #'
 #' @return A heatmap plot
 #' @export
@@ -321,30 +321,34 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #' plot_heatmap(data_normalized, sample_annotation = "group")
 plot_heatmap <- function(data, measure = "Area",
   molecule_annotation = "Class", sample_annotation = "all",
-  scale = "column", ...) {
-  if (!requireNamespace("pheatmap", quietly = TRUE)) {
+  cluster_cols = "hclust", cluster_rows = "hclust",
+  scale = "rows", ...) {
+  if (!requireNamespace("iheatmapr", quietly = TRUE)) {
     stop("Package 'pheatmap' must be installed for heatmap plots")
   }
-  annotation_col = colData(data) %>% as.data.frame()
-  annotation_row = rowData(data) %>% as.data.frame()
+  col_annotation = colData(data) %>% as.data.frame()
+  row_annotation = rowData(data) %>% as.data.frame()
   if (sample_annotation != "all") {
     if (sample_annotation == FALSE) {
-      annotation_col = NULL
+      col_annotation = NULL
     } else {
-      annotation_col = annotation_col %>% 
+      col_annotation = col_annotation %>% 
         dplyr::select(!!sym(sample_annotation))
     }
   }
   if (molecule_annotation != "all") {
     if (molecule_annotation == FALSE) {
-      annotation_row = NULL
+      row_annotation = NULL
     } else {
-      annotation_row = annotation_row %>% 
+      row_annotation = row_annotation %>% 
         dplyr::select(!!sym(molecule_annotation))
     }
   }
-  pheatmap::pheatmap(assay(data, measure),
-    annotation_row = annotation_row, annotation_col = annotation_col,
+  dim_names = metadata(data)$dimnames
+  iheatmapr::iheatmap(assay(data, measure),
+    row_title = dim_names[[1]], col_title = dim_names[[2]],
+    cluster_cols = cluster_cols, cluster_rows = cluster_rows,
+    row_annotation = row_annotation, col_annotation = col_annotation,
     scale = scale, ...
   )
 }

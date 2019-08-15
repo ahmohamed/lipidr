@@ -162,7 +162,7 @@ plot_results_volcano(factorial_de)
 
 In this case, we are seeing similar pattern as the two-group comparison, which indicates a small *Race* effect.
 
-Users interested in creating more complex design matrices are referred to (Limma User Guide)[https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf] and (edgeR tutorial)[https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf].
+Users interested in creating more complex design matrices are referred to [Limma User Guide](https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf) and [edgeR tutorial](https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf).
 
 # Multivariate analysis
 
@@ -177,7 +177,7 @@ plot_mva(mvaresults, color_by="SampleType")
 
 We can also plot the loadings and display important lipids contributing to the separation between different (Diet) groups.
 
-```{r, eval=FALSE}
+```{r}
 plot_mva_loadings(mvaresults, color_by="Class", top.n=10)
 ```
 
@@ -239,7 +239,7 @@ plot_trend(two_group)
 
 # Clustering
 ```{r}
-plot_heatmap(d, cluster_rows=FALSE, show_rownames = FALSE)
+plot_heatmap(d, cluster_rows="none")
 ```
 
 # Session information
