@@ -25,9 +25,9 @@ library(lipidr)
 #   select(c(1:7, grep("A1_S[1-3][AB]|A1_TQC_[1-3]\\D|A1_Blank", colnames(.)))) %>%
 #   write.csv("tests/testthat/A1_pivot.csv")
 
-f1 = "A1.csv"
-f2 = "F2.csv"
-f3 = "A1_pivot.csv"
+f1 <- "A1.csv"
+f2 <- "F2.csv"
+f3 <- "A1_pivot.csv"
 
 save_temp_csv <- function(d) {
   file <- tempfile(fileext = ".csv")
@@ -39,7 +39,7 @@ context("test-readfiles-nopivot")
 test_that("Can read a single non-pivoted skyline file", {
   d <- read_skyline(f1)
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(19, 11))
@@ -49,13 +49,13 @@ test_that("Can read a single non-pivoted skyline file", {
   expect_equal(assayNames(d), c("Retention.Time", "Area", "Background"))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
-  expect_false( any(unlist(mcols(assays(d)))) )
+  expect_false(any(unlist(mcols(assays(d)))))
 })
 
 test_that("Can read multiple non-pivoted skyline file", {
   d <- read_skyline(c(f1, f2))
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
 
@@ -64,7 +64,7 @@ test_that("Can read multiple non-pivoted skyline file", {
   expect_equal(assayNames(d), c("Retention.Time", "Area", "Background"))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
-  expect_false( any(unlist(mcols(assays(d)))) )
+  expect_false(any(unlist(mcols(assays(d)))))
 })
 
 test_that("Can handle files with different columns", {
@@ -76,7 +76,7 @@ test_that("Can handle files with different columns", {
   expect_equal(assayNames(d), c("Retention.Time", "Area"))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
-  expect_false( any(unlist(mcols(assays(d)))) )
+  expect_false(any(unlist(mcols(assays(d)))))
 })
 
 context("test-readfiles-error-checking")
@@ -104,36 +104,36 @@ context("test-readfiles-pivoted")
 test_that("Can read a single pivoted skyline file", {
   d <- read_skyline(f3)
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(19, 11))
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), f3)
-  expect_true( all(c("Retention.Time", "Area", "Background") %in% assayNames(d)) )
-  expect_false( any(grepl("^Replicate", assayNames(d))) )
+  expect_true(all(c("Retention.Time", "Area", "Background") %in% assayNames(d)))
+  expect_false(any(grepl("^Replicate", assayNames(d))))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
-  expect_false( any(unlist(mcols(assays(d)))) )
+  expect_false(any(unlist(mcols(assays(d)))))
 })
 
 test_that("Can read multiple pivoted skyline file", {
   f3_ <- f3 %>% read.csv() %>% save_temp_csv()
   d <- read_skyline(c(f3_, f3))
 
-  expect_s4_class(d, "SkylineExperiment")
+  expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
   expect_s4_class(d, "SummarizedExperiment")
   expect_equal(dim(d), c(38, 11))
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), c(basename(f3_), f3))
-  expect_true( all(c("Retention.Time", "Area", "Background") %in% assayNames(d)) )
-  expect_false( any(grepl("^Replicate", assayNames(d))) )
+  expect_true(all(c("Retention.Time", "Area", "Background") %in% assayNames(d)))
+  expect_false(any(grepl("^Replicate", assayNames(d))))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
-  expect_false( any(unlist(mcols(assays(d)))) )
+  expect_false(any(unlist(mcols(assays(d)))))
 })
 
 test_that("Can handle multiple pivoted files with different columns", {
@@ -142,16 +142,15 @@ test_that("Can handle multiple pivoted files with different columns", {
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), c(basename(f_nobg), f3))
-  expect_true( all(c("Retention.Time", "Area") %in% assayNames(d)) )
-  expect_false( any(grepl("^Replicate", assayNames(d))) )
-  expect_false( any(grepl("Background", assayNames(d))) )
+  expect_true(all(c("Retention.Time", "Area") %in% assayNames(d)))
+  expect_false(any(grepl("^Replicate", assayNames(d))))
+  expect_false(any(grepl("Background", assayNames(d))))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
-  expect_false( any(unlist(mcols(assays(d)))) )
+  expect_false(any(unlist(mcols(assays(d)))))
 })
 
 context("test-readfiles-todo")
 test_that("Cannot mix pivoted and nonpivoted files", {
   expect_error(d <- read_skyline(c(f2, f3)), "can't be converted")
 })
-

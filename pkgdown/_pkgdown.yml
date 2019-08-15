@@ -25,7 +25,7 @@ reference:
     desc: Functions to read and input data in `lipidr`
     contents:
     - '`read_skyline`'
-    - '`as_skyline_experiment`'
+    - '`as_lipidomics_experiment`'
     - '`add_sample_annotation`'
     - '`fetch_mw_study`'
     - '`read_mwTab`'
@@ -77,11 +77,11 @@ reference:
     - '`fetch_mw_study`'
     - '`read_mwTab`'
     - '`read_mw_datamatrix`'
-  - title: SkylineExperiment object structure and manipulation
+  - title: LipidomicsExperiment object structure and manipulation
     desc: ~
     contents:
-    - '`SkylineExperiment-class`'
-    - '`SkylineExperiment`'
+    - '`LipidomicsExperiment-class`'
+    - '`LipidomicsExperiment`'
     - '`is_logged`'
     - '`update_molecule_names`'
     - '`filter_by_cv`'

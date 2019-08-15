@@ -8,7 +8,7 @@ plot_lipidclass(data, type = c("boxplot", "sd"), measure = "Area",
   log = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{type}{plot type, either \code{boxplot} or \code{sd}. Default is \code{boxplot}.}
 

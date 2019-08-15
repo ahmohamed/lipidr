@@ -23,7 +23,7 @@
 #'   "TG(16:0/18:1/18:1)"
 #' )
 #' annotate_lipids(lipid_list)
-annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
+annotate_lipids <- function(molecules, no_match = c("warn", "remove", "ignore")) {
   no_match <- match.arg(no_match)
   .data_internal("lipidDefaults")
   def <- .myDataEnv$lipidDefaults$clean_mols
@@ -48,7 +48,6 @@ annotate_lipids <- function(molecules, no_match=c("warn", "remove", "ignore")) {
 
     clean_ <- clean_ %>%
       .full_join_silent(in_db)
-    #return(def %>% filter(Molecule %in% molecules))
   } else {
     clean_ <- in_db
   }
@@ -182,4 +181,4 @@ utils::globalVariables(c(
   "total_cl", "total_cs",
   "Molecule", "clean_name", "ambig", "not_matched", "istd",
   "Class", "class_stub"
-  ))
+))

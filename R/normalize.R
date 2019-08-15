@@ -7,7 +7,7 @@
 #' The reference spectrum in this method is the average lipid abundance of all
 #' samples (excluding blanks).
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
@@ -17,7 +17,7 @@
 #' @param log Whether the normalized values should be log2 transformed. Default
 #'   is `TRUE`.
 #'
-#' @return A SkylineExperiment object with normalized values
+#' @return A LipidomicsExperiment object with normalized values
 #' @importFrom rlang sym UQ
 #' @export
 #' @references Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006).
@@ -65,7 +65,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area.Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
@@ -74,7 +74,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' @param log whether the normalized values should be log2 transformed. Default
 #'   is `TRUE`.
 #'
-#' @return A SkylineExperiment object with normalized values. Each molecule
+#' @return A LipidomicsExperiment object with normalized values. Each molecule
 #'     is normalized against the internal standard from the same class.
 #'
 #' @importFrom rlang sym UQ
@@ -87,7 +87,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
-#'
+#' 
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_norm_istd <- normalize_istd(
 #'   d_summarized,

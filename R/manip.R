@@ -1,10 +1,10 @@
-#' Functions to get and set attributes of SkylineExperiment objects
+#' Functions to get and set attributes of LipidomicsExperiment objects
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to get / set attributes of.
 #' @param val Value to be assigned to the attribute.
 #'
-#' @return Modified SkylineExperiment.
+#' @return Modified LipidomicsExperiment.
 #' @rdname set_attr
 #' @export
 #' @examples
@@ -58,7 +58,7 @@ set_summarized <- function(data, val) {
 
 #' Get a list of molecules that couldn't be parsed by `lipidr`
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #'
 #' @return A character vector of the molecule names that could not be parsed.
 #'
@@ -72,9 +72,9 @@ non_parsed_molecules <- function(data) {
 
 #' Remove molecules that couldn't be parsed by `lipidr` from the dataset
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #'
-#' @return A filtered SkylineExperiment object.
+#' @return A filtered LipidomicsExperiment object.
 #'
 #' @export
 #' @examples
@@ -90,11 +90,11 @@ remove_non_parsed_molecules <- function(data) {
 #' so that they can be parsed correctly by `lipidr` or modify the lipid class.
 #' `lipidr` automatically updates the annotation for the renamed molecules.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param old A character vector of the molecule names to be renamed.
 #' @param new A character vector of the new molecule names.
 #'
-#' @return A SkylineExperiment object with molecules name and annotation
+#' @return A LipidomicsExperiment object with molecules name and annotation
 #'   updated.
 #'
 #' @export
@@ -106,8 +106,8 @@ remove_non_parsed_molecules <- function(data) {
 #' update_molecule_names(data_normalized, old_names, new_names)
 update_molecule_names <- function(data, old, new) {
   updated_names <- to_df(data, "row") %>%
-    left_join(data.frame(Molecule=old, new_names=new) %>% distinct()) %>%
-    mutate(Molecule=coalesce(as.character(new_names), Molecule)) %>%
+    left_join(data.frame(Molecule = old, new_names = new) %>% distinct()) %>%
+    mutate(Molecule = coalesce(as.character(new_names), Molecule)) %>%
     select(-new_names)
 
   updated_annot <- annotate_lipids(updated_names$Molecule)
@@ -125,17 +125,17 @@ update_molecule_names <- function(data, old, new) {
 
 #' Remove molecules with CV larger that a threshold
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param cv.cutoff CV threshold (numeric).  Default is `20`.
 #' @param measure Which measure used to calculate CV, usually Area (default).
 #'
-#' @return SkylineExperiment object with molecules filtered.
+#' @return LipidomicsExperiment object with molecules filtered.
 #' @export
 #'
 #' @examples
 #' data(data_normalized)
 #' filter_by_cv(data_normalized)
-filter_by_cv <- function(data, cv.cutoff=20, measure="Area") {
+filter_by_cv <- function(data, cv.cutoff = 20, measure = "Area") {
   keep_molecules <- apply(assay(data, measure), 1, .cv) < cv.cutoff
   data[keep_molecules, ]
 }

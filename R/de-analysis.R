@@ -6,7 +6,7 @@
 #' design matrix, useful for complex experimental designs or for adjusting
 #' possible confounding variables.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()],
+#' @param data LipidomicsExperiment object,
 #'   should be normalized and log2 transformed.
 #' @param ... Expressions, or character strings which can be parsed to
 #'   expressions, specifying contrasts. These are passed to
@@ -24,7 +24,7 @@
 #' @examples
 #' # type ?normalize_pqn to see how to normalize and log2-transform your data
 #' data(data_normalized)
-#'
+#' 
 #' # Specifying contrasts
 #' de_results <- de_analysis(
 #'   data_normalized,
@@ -71,7 +71,7 @@ de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
 #'   coef = "groupHighFat_water",
 #'   measure = "Area"
 #' )
-#'
+#' 
 #' # Using design matrix
 #' design <- model.matrix(~group, data = colData(data_normalized))
 #' de_results_design <- de_design(
@@ -90,9 +90,11 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 
   if (is.null(coef)) {
     if (length(quos(...)) == 0) {
-      warning("No contrasts or coefficients are provided. ",
-        "ANOVA-style analysis will be performed using all group.")
-      #Exclude the first column (intercept)
+      warning(
+        "No contrasts or coefficients are provided. ",
+        "ANOVA-style analysis will be performed using all group."
+      )
+      # Exclude the first column (intercept)
       coef <- list("ANOVA" = seq(2, ncol(design)))
     } else {
       contr.matrix <- limma::makeContrasts(..., levels = colnames(design))
@@ -143,8 +145,10 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
 significant_molecules <- function(de.results, p.cutoff = 0.05,
                                   logFC.cutoff = 1) {
   if (!"logFC" %in% colnames(de.results)) {
-    message("de.results contains ANOVA-style comparison.",
-      " LogFC cutoff will be ignored")
+    message(
+      "de.results contains ANOVA-style comparison.",
+      " LogFC cutoff will be ignored"
+    )
     ret <- de.results %>%
       filter(adj.P.Val < p.cutoff) %>%
       (function(x) split(x$Molecule, x$contrast))
@@ -167,11 +171,11 @@ significant_molecules <- function(de.results, p.cutoff = 0.05,
 #' @examples
 #' plot_results_volcano(de_results, show.labels = FALSE)
 plot_results_volcano <- function(de.results, show.labels = TRUE) {
-
-
   if (!"logFC" %in% colnames(de.results)) {
-    message("de.results contains ANOVA-style comparison.",
-            " Average Experssion will be plotted instead of logFC.")
+    message(
+      "de.results contains ANOVA-style comparison.",
+      " Average Experssion will be plotted instead of logFC."
+    )
     p <- ggplot(de.results, aes(AveExpr, -log10(adj.P.Val), color = Class, label = Molecule)) +
       geom_point()
   } else {

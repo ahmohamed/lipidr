@@ -1,18 +1,18 @@
 #' Read Skyline exported files
 #'
-#' @param files Character vector with filepaths to 
+#' @param files Character vector with filepaths to
 #'   Skyline exported files in CSV format.
 #' @importFrom forcats fct_inorder
-#' @return SkylineExperiment object.
+#' @return LipidomicsExperiment object.
 #' @export
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#'
+#' 
 #' # all csv files
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#'
+#' 
 #' # View automatically generated lipid annotations
 #' rowData(d)
 read_skyline <- function(files) {
@@ -39,29 +39,29 @@ read_skyline <- function(files) {
 
 #' Add sample annotation to Skyline data frame
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param annot_file CSV file with at least 2 columns, sample names & group(s).
 #'
-#' @return Skyline data.frame with sample group information.
+#' @return LipidomicsExperiment with sample group information.
 #' @export
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#'
+#' 
 #' # all csv files
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#'
-#' # Add clinical info to existing SkylineExperiment object
+#' 
+#' # Add clinical info to existing LipidomicsExperiment object
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' colData(d)
 #' d$group
-#'
+#' 
 #' # Subset samples using clinical information
 #' # Note we are subsetting columns
 #' d[, d$group == "QC"]
-#'
+#' 
 #' # Subset lipids using lipid annotation
 #' # Note we are subsetting rows
 #' d[rowData(d)$istd, ]
@@ -104,6 +104,7 @@ add_sample_annotation <- function(data, annot_file) {
 #' @importFrom utils read.csv
 #' @importFrom tidyr gather spread separate
 #' @return std data.frame
+#' @noRd
 .read_skyline_file <- function(file) {
   original_data <- read.csv(file, stringsAsFactors = FALSE)
 

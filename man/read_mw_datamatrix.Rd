@@ -2,9 +2,9 @@
 % Please edit documentation in R/mw.R
 \name{read_mw_datamatrix}
 \alias{read_mw_datamatrix}
-\title{Parse a Metabolomics Workbench data matrix into a SkylineExperiment.
+\title{Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.
 Data matrix downloaded from Metabolomics Workbench are parsed into
-a SkylineExperiment object to enable \code{lipidr} workflow analysis.}
+a LipidomicsExperiment object to enable \code{lipidr} workflow analysis.}
 \usage{
 read_mw_datamatrix(file)
 }
@@ -12,13 +12,13 @@ read_mw_datamatrix(file)
 \item{file}{File path or url for the file containing the data matrix.}
 }
 \value{
-A SkylineExperiment object containing clinical and lipid intensity
+A LipidomicsExperiment object containing clinical and lipid intensity
 data.
 }
 \description{
-Parse a Metabolomics Workbench data matrix into a SkylineExperiment.
+Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.
 Data matrix downloaded from Metabolomics Workbench are parsed into
-a SkylineExperiment object to enable \code{lipidr} workflow analysis.
+a LipidomicsExperiment object to enable \code{lipidr} workflow analysis.
 }
 \seealso{
 Other Metabolomics Workbench: \code{\link{fetch_mw_study}},

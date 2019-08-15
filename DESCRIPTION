@@ -47,10 +47,8 @@ Suggests:
     ggrepel,
     plotly,
     iheatmapr,
-    covr,
     spelling,
-    testthat,
-    pkgdown
+    testthat
 VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization

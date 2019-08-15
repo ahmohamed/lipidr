@@ -4,7 +4,7 @@
 #' `tic` plots a bar chart for total sample intensity.\cr\cr
 #' `boxplot` plots a boxplot chart to examine the distribution of values
 #' per sample.
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param type plot type, either `tic` or `boxplot`. Default is `tic`.
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area.Normalized or Height. Default is `Area`
@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' plot_samples(data_normalized, type = "tic", "Area", log = TRUE)
 #' plot_samples(data_normalized, type = "tic", "Background", log = FALSE)
 #' plot_samples(
@@ -24,7 +24,7 @@
 #' )
 plot_samples <- function(data, type = c("tic", "boxplot"),
   measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
@@ -39,7 +39,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 }
 
 .plot_sample_tic <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Sample", measure)) + 
+  ggplot(dlong, aes_string("Sample", measure)) +
     stat_summary(fun.y = mean, geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -67,7 +67,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' in each class, but can also be used to look at different measures, such as
 #' `Retention.Time` or `Background`.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param type plot type, either `boxplot` or `sd`. Default is `boxplot`.
 #' @param measure Which measure to plot the distribution of: usually Area,
 #'   Area.Normalized, Height or Retention.Time. Default is `Area`
@@ -78,7 +78,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' @export
 #' @examples
 #' data(data_normalized)
-#'
+#' 
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' plot_lipidclass(d_qc, "sd", "Area", log = TRUE)
 #' plot_lipidclass(d_qc, "sd", "Retention.Time", log = FALSE)
@@ -86,7 +86,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' plot_lipidclass(d_qc, "boxplot", "Retention.Time", log = FALSE)
 plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
@@ -186,14 +186,14 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 #' )
 #' plot_trend(de_results, "length")
 plot_trend <- function(de_results, annotation = c("length", "unsat")) {
-  annotation = match.arg(annotation)
-  x = rlang::sym(ifelse(annotation == "length", "total_cl", "total_cs"))
-  x_lab = ifelse(annotation == "length", "Chain length", "Unsaturated bonds")
-  x_breaks = if (annotation == "length") seq(10,80,2) else seq(0,12,1)
+  annotation <- match.arg(annotation)
+  x <- rlang::sym(ifelse(annotation == "length", "total_cl", "total_cs"))
+  x_lab <- ifelse(annotation == "length", "Chain length", "Unsaturated bonds")
+  x_breaks <- if (annotation == "length") seq(10, 80, 2) else seq(0, 12, 1)
 
 
-  ggplot(de_results, aes(!!x, logFC, color=contrast)) +
-    geom_hline(color="black", yintercept = 0, lty=2) +
+  ggplot(de_results, aes(!!x, logFC, color = contrast)) +
+    geom_hline(color = "black", yintercept = 0, lty = 2) +
     geom_smooth(alpha = 0.2) +
     labs(x = x_lab, y = "logFC") +
     scale_x_continuous(breaks = x_breaks) +
@@ -217,7 +217,7 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' for each lipid, but can also be used to look at different measures, such as
 #' `Retention.Time` or `Background`.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param type plot type, either `cv`, `sd` or `boxplot`. Default is `cv`.
 #' @param measure Which measure to plot the distribution of: usually Area,
 #'   Area.Normalized or Height. Default is `Area`
@@ -229,12 +229,12 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' @examples
 #' data(data_normalized)
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
-#'
+#' 
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' plot_molecules(d_qc, "cv", "Area")
 #' plot_molecules(d_qc, "cv", "Retention.Time", log = FALSE)
-#'
+#' 
 #' # plot the variation in intensity, RT of ISTD (internal standards)
 #' #   in QC samples
 #' d_istd_qc <- data_normalized[
@@ -243,12 +243,12 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' ]
 #' plot_molecules(d_istd_qc, "sd", "Area")
 #' plot_molecules(d_istd_qc, "sd", "Retention.Time", log = FALSE)
-#'
+#' 
 #' plot_molecules(d_istd_qc, "boxplot")
 #' plot_molecules(d_istd_qc, "boxplot", "Retention.Time", log = FALSE)
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   measure = "Area", log = TRUE) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
@@ -286,7 +286,6 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("CV of", measure))
-
 }
 
 .plot_molecule_boxplot <- function(dlong, measure) {
@@ -303,15 +302,15 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #' Plots a hierarchically clustered heatmap showing selected sample and
 #' lipid molecule annotations.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to plot the distribution of: usually Area,
 #'   Area.Normalized, Height or Retention.Time. Default is `Area`.
 #' @param molecule_annotation The column name for lipid annotation, default to `Class`.
 #' @param sample_annotation The column name for sample annotation, default to `all`.
-#' @param cluster_cols "none","hclust", or "k-means" for no clustering, 
+#' @param cluster_cols "none","hclust", or "k-means" for no clustering,
 #'   hierarchical clustering, and k-means clustering of rows respectively.
 #'   Default is "hclust".
-#' @param cluster_rows "none","hclust", or "k-means" for no clustering, 
+#' @param cluster_rows "none","hclust", or "k-means" for no clustering,
 #'   hierarchical clustering, and k-means clustering of rows respectively.
 #'   Default is "hclust".
 #' @param scale character indicating if the values should be centered and
@@ -332,25 +331,25 @@ plot_heatmap <- function(data, measure = "Area",
   if (!requireNamespace("iheatmapr", quietly = TRUE)) {
     stop("Package 'pheatmap' must be installed for heatmap plots")
   }
-  col_annotation = colData(data) %>% as.data.frame()
-  row_annotation = rowData(data) %>% as.data.frame()
+  col_annotation <- colData(data) %>% as.data.frame()
+  row_annotation <- rowData(data) %>% as.data.frame()
   if (sample_annotation != "all") {
     if (sample_annotation == FALSE) {
-      col_annotation = NULL
+      col_annotation <- NULL
     } else {
-      col_annotation = col_annotation %>% 
+      col_annotation <- col_annotation %>%
         dplyr::select(!!sym(sample_annotation))
     }
   }
   if (molecule_annotation != "all") {
     if (molecule_annotation == FALSE) {
-      row_annotation = NULL
+      row_annotation <- NULL
     } else {
-      row_annotation = row_annotation %>% 
+      row_annotation <- row_annotation %>%
         dplyr::select(!!sym(molecule_annotation))
     }
   }
-  dim_names = metadata(data)$dimnames
+  dim_names <- metadata(data)$dimnames
   iheatmapr::iheatmap(assay(data, measure),
     row_title = dim_names[[1]], col_title = dim_names[[2]],
     cluster_cols = cluster_cols, cluster_rows = cluster_rows,

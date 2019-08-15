@@ -7,14 +7,14 @@
 filter_by_cv(data, cv.cutoff = 20, measure = "Area")
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{cv.cutoff}{CV threshold (numeric).  Default is \code{20}.}
 
 \item{measure}{Which measure used to calculate CV, usually Area (default).}
 }
 \value{
-SkylineExperiment object with molecules filtered.
+LipidomicsExperiment object with molecules filtered.
 }
 \description{
 Remove molecules with CV larger that a threshold

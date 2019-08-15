@@ -11,6 +11,10 @@ matrix:
       r: bioc-release
     - stage: Deploy
       os: osx
+      r_packages:
+        - pkgdown
+        - covr
+        - widgetframe
       script: 
         - Rscript -e 'covr::codecov(type="all")'
         - R CMD INSTALL .

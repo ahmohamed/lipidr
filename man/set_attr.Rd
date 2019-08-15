@@ -7,7 +7,7 @@
 \alias{set_normalized}
 \alias{is_summarized}
 \alias{set_summarized}
-\title{Functions to get and set attributes of SkylineExperiment objects}
+\title{Functions to get and set attributes of LipidomicsExperiment objects}
 \usage{
 is_logged(data, measure)
 
@@ -22,17 +22,17 @@ is_summarized(data)
 set_summarized(data, val)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to get / set attributes of.}
 
 \item{val}{Value to be assigned to the attribute.}
 }
 \value{
-Modified SkylineExperiment.
+Modified LipidomicsExperiment.
 }
 \description{
-Functions to get and set attributes of SkylineExperiment objects
+Functions to get and set attributes of LipidomicsExperiment objects
 }
 \examples{
 data(data_normalized)
