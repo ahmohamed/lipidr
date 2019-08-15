@@ -308,6 +308,12 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #'   Area.Normalized, Height or Retention.Time. Default is `Area`.
 #' @param molecule_annotation The column name for lipid annotation, default to `Class`.
 #' @param sample_annotation The column name for sample annotation, default to `all`.
+#' @param cluster_cols "none","hclust", or "k-means" for no clustering, 
+#'   hierarchical clustering, and k-means clustering of rows respectively.
+#'   Default is "hclust".
+#' @param cluster_rows "none","hclust", or "k-means" for no clustering, 
+#'   hierarchical clustering, and k-means clustering of rows respectively.
+#'   Default is "hclust".
 #' @param scale character indicating if the values should be centered and
 #'   scaled in either the row direction or the column direction, or none.
 #'   Corresponding values are "row", "cols" and "none".

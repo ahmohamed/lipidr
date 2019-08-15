@@ -7,7 +7,8 @@ Plots a hierarchically clustered heatmap showing selected sample and
 lipid molecule annotations.}
 \usage{
 plot_heatmap(data, measure = "Area", molecule_annotation = "Class",
-  sample_annotation = "all", scale = "column", ...)
+  sample_annotation = "all", cluster_cols = "hclust",
+  cluster_rows = "hclust", scale = "rows", ...)
 }
 \arguments{
 \item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
@@ -19,11 +20,19 @@ Area.Normalized, Height or Retention.Time. Default is \code{Area}.}
 
 \item{sample_annotation}{The column name for sample annotation, default to \code{all}.}
 
+\item{cluster_cols}{"none","hclust", or "k-means" for no clustering,
+hierarchical clustering, and k-means clustering of rows respectively.
+Default is "hclust".}
+
+\item{cluster_rows}{"none","hclust", or "k-means" for no clustering,
+hierarchical clustering, and k-means clustering of rows respectively.
+Default is "hclust".}
+
 \item{scale}{character indicating if the values should be centered and
 scaled in either the row direction or the column direction, or none.
-Corresponding values are "row", "column" and "none".}
+Corresponding values are "row", "cols" and "none".}
 
-\item{...}{Additional parameters passed to \code{\link[pheatmap:pheatmap]{pheatmap::pheatmap()}}.}
+\item{...}{Additional parameters passed to \code{\link[iheatmapr:iheatmap]{iheatmapr::iheatmap()}}.}
 }
 \value{
 A heatmap plot
