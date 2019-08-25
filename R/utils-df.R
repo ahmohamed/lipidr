@@ -36,7 +36,7 @@ to_num_matrix <- function(data, sample, feature, measure) {
 
 rownames_to_column <- function(df, var = "rowname") {
   stopifnot(is.data.frame(df))
-  df <- cbind(data.frame(rownames(df)), df)
+  df <- cbind(data.frame(rownames(df), stringsAsFactors = FALSE), df)
   colnames(df)[[1]] <- var
   rownames(df) <- NULL
   df
