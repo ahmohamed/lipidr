@@ -27,7 +27,7 @@ to_num_matrix <- function(data, sample, feature, measure) {
 }
 
 .replace_na_rowmean <- function(m) {
-  k <- which(is.na(m), arr.ind = TRUE)
+  k <- which(!is.finite(m), arr.ind = TRUE)
   if (length(k) > 0) {
     m[k] <- rowMeans(m, na.rm = TRUE)[k[, 1]]
   }

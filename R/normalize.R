@@ -32,7 +32,7 @@
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
-#' 
+#'
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_normalized <- normalize_pqn(
 #'   d_summarized,
@@ -87,7 +87,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
-#' 
+#'
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_norm_istd <- normalize_istd(
 #'   d_summarized,
@@ -143,5 +143,16 @@ normalize_istd <- function(data, measure = "Area",
       data <- data[, exclude]
     }
   }
+  assay_ <- assay(data, measure)
+  if (any(!is.finite(assay_))) {
+    warning(measure, " contains missing/non-finite values.",
+            " Replacing with mimnum detected value.")
+    assay_[!is.finite(assay_)] <- min(assay_, na.rm = TRUE)
+  }
+  if (any(assay_ < 1)) {
+    warning(measure, " contains values < 1. Replacing with 1.")
+    assay_[assay_ < 1] <- 1
+  }
+  assay(data, measure) <- assay_
   data
 }
