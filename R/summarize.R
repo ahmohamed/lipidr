@@ -26,7 +26,9 @@ summarize_transitions <- function(data, method = c("max", "average")) {
 
   method <- match.arg(method)
   multi_transitions <- to_df(data) %>%
+    mutate(Molecule = fct_inorder(Molecule)) %>%
     group_by_at(vars(-1, -matches("^Product")))
+
   transition_gps <- split(
     multi_transitions$TransitionId,
     multi_transitions %>% group_indices()
