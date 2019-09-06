@@ -28,10 +28,10 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
+  measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
   }
-  measure <- sym(measure)
   if (type == "tic") {
     return(.display_plot(.plot_sample_tic(dlong, measure)))
   }
@@ -91,10 +91,10 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
+  measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
   }
-  measure <- sym(measure)
   if (type == "sd") {
     return(.display_plot(.plot_class_sd(dlong, measure)))
   }
