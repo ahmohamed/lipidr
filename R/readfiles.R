@@ -9,11 +9,11 @@
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' 
+#'
 #' # all csv files
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#' 
+#'
 #' # View automatically generated lipid annotations
 #' rowData(d)
 read_skyline <- function(files) {
@@ -48,21 +48,21 @@ read_skyline <- function(files) {
 #'
 #' @examples
 #' datadir <- system.file("extdata", package = "lipidr")
-#' 
+#'
 #' # all csv files
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
-#' 
+#'
 #' # Add clinical info to existing LipidomicsExperiment object
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' colData(d)
 #' d$group
-#' 
+#'
 #' # Subset samples using clinical information
 #' # Note we are subsetting columns
 #' d[, d$group == "QC"]
-#' 
+#'
 #' # Subset lipids using lipid annotation
 #' # Note we are subsetting rows
 #' d[rowData(d)$istd, ]
@@ -115,11 +115,11 @@ add_sample_annotation <- function(data, annot_file) {
   original_data[original_data == "#N/A"] <- NA
 
   col_defs <- list(
-    class_cols = c("Protein.Name", "Protein"),
+    class_cols = c("Protein Name", "Protein"),
     molecule_cols = c(
       "Peptide Name", "Peptide", "Molecule Name", "Precursor Ion.Name"
     ),
-    replicate_cols = c("Replicate.Name", "Replicate"),
+    replicate_cols = c("Replicate Name", "Replicate"),
     intensity_cols = c("Area", "Height", "Area Normalized"),
     measure_cols = c(
       "Area", "Height", "Area Normalized", "Retention Time", "Background"

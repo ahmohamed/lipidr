@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_samples(data_normalized, type = "tic", "Area", log = TRUE)
 #' plot_samples(data_normalized, type = "tic", "Background", log = FALSE)
 #' plot_samples(
@@ -31,6 +31,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   if (log) {
     measure <- .check_log(data, measure)
   }
+  measure <- sym(measure)
   if (type == "tic") {
     return(.display_plot(.plot_sample_tic(dlong, measure)))
   }
@@ -39,7 +40,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 }
 
 .plot_sample_tic <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Sample", measure)) +
+  ggplot(dlong, aes(Sample, !!measure)) +
     stat_summary(fun.y = mean, geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -47,7 +48,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 }
 
 .plot_sample_boxplot <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() +
+  ggplot(dlong, aes(Sample, !!measure)) + geom_boxplot() +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
@@ -78,7 +79,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' plot_lipidclass(d_qc, "sd", "Area", log = TRUE)
 #' plot_lipidclass(d_qc, "sd", "Retention Time", log = FALSE)
@@ -93,7 +94,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   if (log) {
     measure <- .check_log(data, measure)
   }
-
+  measure <- sym(measure)
   if (type == "sd") {
     return(.display_plot(.plot_class_sd(dlong, measure)))
   }
@@ -102,15 +103,15 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
 }
 
 .plot_class_sd <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+  ggplot(dlong, aes(Class, !!measure, fill = Class)) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("SD of", measure))
+    ylab(paste("SD of", as_name(measure)))
 }
 
 .plot_class_boxplot <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+  ggplot(dlong, aes(Class, !!measure, fill = Class)) +
     geom_boxplot() +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
@@ -231,12 +232,12 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' @examples
 #' data(data_normalized)
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' plot_molecules(d_qc, "cv", "Area")
 #' plot_molecules(d_qc, "cv", "Retention Time", log = FALSE)
-#' 
+#'
 #' # plot the variation in intensity, RT of ISTD (internal standards)
 #' #   in QC samples
 #' d_istd_qc <- data_normalized[
@@ -245,7 +246,7 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' ]
 #' plot_molecules(d_istd_qc, "sd", "Area")
 #' plot_molecules(d_istd_qc, "sd", "Retention Time", log = FALSE)
-#' 
+#'
 #' plot_molecules(d_istd_qc, "boxplot")
 #' plot_molecules(d_istd_qc, "boxplot", "Retention Time", log = FALSE)
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
@@ -254,10 +255,10 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
+  measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
   }
-
   if (type == "cv") {
     return(.display_plot(.plot_molecule_cv(dlong, measure)))
   }
@@ -271,29 +272,29 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 .plot_molecule_sd <- function(dlong, measure) {
   ggplot(
     dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")
+    aes(Molecule, !!measure, fill = Class, color = Class)
   ) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("SD of", measure))
+    ylab(paste("SD of", as_name(measure)))
 }
 
 .plot_molecule_cv <- function(dlong, measure) {
   ggplot(
     dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")
+    aes(Molecule, !!measure, fill = Class, color = Class)
   ) +
     stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("CV of", measure))
+    ylab(paste("CV of", as_name(measure)))
 }
 
 .plot_molecule_boxplot <- function(dlong, measure) {
   ggplot(
     dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")
+    aes(Molecule, !!measure, fill = Class, color = Class)
   ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
