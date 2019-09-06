@@ -107,7 +107,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("SD of", as_name(measure)))
+    ylab(paste("SD of", as_label(measure)))
 }
 
 .plot_class_boxplot <- function(dlong, measure) {
@@ -277,7 +277,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("SD of", as_name(measure)))
+    ylab(paste("SD of", as_label(measure)))
 }
 
 .plot_molecule_cv <- function(dlong, measure) {
@@ -288,7 +288,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("CV of", as_name(measure)))
+    ylab(paste("CV of", as_label(measure)))
 }
 
 .plot_molecule_boxplot <- function(dlong, measure) {

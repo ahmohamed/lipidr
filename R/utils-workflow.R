@@ -1,4 +1,4 @@
-#' @importFrom rlang as_name
+#' @importFrom rlang as_name as_label
 .check_log <- function(d, measure) {
   if (measure == "Retention Time") {
     warning("Retention time should not be logged")
