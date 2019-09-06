@@ -7,7 +7,7 @@
 #' @param data LipidomicsExperiment object.
 #' @param type plot type, either `tic` or `boxplot`. Default is `tic`.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`
+#'   Area Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed. Default is `TRUE`
 #'
 #' @return A ggplot object.
@@ -20,7 +20,7 @@
 #' plot_samples(
 #'   data_normalized[, data_normalized$group == "QC"],
 #'   type = "boxplot",
-#'   measure = "Retention.Time", log = FALSE
+#'   measure = "Retention Time", log = FALSE
 #' )
 plot_samples <- function(data, type = c("tic", "boxplot"),
   measure = "Area", log = TRUE) {
@@ -59,18 +59,18 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' `sd` plots a bar chart for standard deviation of a certain measure in each
 #' class. This plot type is usually used to look at standard deviations of
 #' intensity in each class, but can also be used to look at different measures
-#' such as `Retention.Time`, to ensure all lipids are eluted within the expected
+#' such as `Retention Time`, to ensure all lipids are eluted within the expected
 #' range. To assess instrumental variation apply the function to technical
 #' quality control samples. \cr\cr
 #' `boxplot` Plots a boxplot chart to examine the distribution of values per
 #' class. This plot type is usually used to look at the intensity distribution
 #' in each class, but can also be used to look at different measures, such as
-#' `Retention.Time` or `Background`.
+#' `Retention Time` or `Background`.
 #'
 #' @param data LipidomicsExperiment object.
 #' @param type plot type, either `boxplot` or `sd`. Default is `boxplot`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized, Height or Retention.Time. Default is `Area`
+#'   Area Normalized, Height or Retention Time. Default is `Area`
 #' @param log Whether values should be log2 transformed. Default is `TRUE`
 #'   (Set FALSE for retention time).
 #'
@@ -81,9 +81,9 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' 
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' plot_lipidclass(d_qc, "sd", "Area", log = TRUE)
-#' plot_lipidclass(d_qc, "sd", "Retention.Time", log = FALSE)
+#' plot_lipidclass(d_qc, "sd", "Retention Time", log = FALSE)
 #' plot_lipidclass(d_qc, "boxplot", "Area", log = TRUE)
-#' plot_lipidclass(d_qc, "boxplot", "Retention.Time", log = FALSE)
+#' plot_lipidclass(d_qc, "boxplot", "Retention Time", log = FALSE)
 plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "LipidomicsExperiment"))
@@ -212,17 +212,17 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' `sd` plots a bar chart for standard deviations of a certain measure in each
 #' lipid. This plot type is usually used to look at standard deviation of
 #' intensity for each lipid, but can also be used to look at different
-#' measures such as `Retention.Time`, to ensure all lipids elute within
+#' measures such as `Retention Time`, to ensure all lipids elute within
 #' expected range. \cr\cr
 #' `boxplot` plots a boxplot chart to examine the distribution of values per
 #' lipid. This plot type is usually used to look at intensity distribution
 #' for each lipid, but can also be used to look at different measures, such as
-#' `Retention.Time` or `Background`.
+#' `Retention Time` or `Background`.
 #'
 #' @param data LipidomicsExperiment object.
 #' @param type plot type, either `cv`, `sd` or `boxplot`. Default is `cv`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height. Default is `Area`
+#'   Area Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed
 #'   (Set FALSE for retention time). Default is `TRUE`
 #'
@@ -235,7 +235,7 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' plot_molecules(d_qc, "cv", "Area")
-#' plot_molecules(d_qc, "cv", "Retention.Time", log = FALSE)
+#' plot_molecules(d_qc, "cv", "Retention Time", log = FALSE)
 #' 
 #' # plot the variation in intensity, RT of ISTD (internal standards)
 #' #   in QC samples
@@ -244,10 +244,10 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #'   data_normalized$group == "QC"
 #' ]
 #' plot_molecules(d_istd_qc, "sd", "Area")
-#' plot_molecules(d_istd_qc, "sd", "Retention.Time", log = FALSE)
+#' plot_molecules(d_istd_qc, "sd", "Retention Time", log = FALSE)
 #' 
 #' plot_molecules(d_istd_qc, "boxplot")
-#' plot_molecules(d_istd_qc, "boxplot", "Retention.Time", log = FALSE)
+#' plot_molecules(d_istd_qc, "boxplot", "Retention Time", log = FALSE)
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "LipidomicsExperiment"))
@@ -306,7 +306,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #'
 #' @param data LipidomicsExperiment object.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized, Height or Retention.Time. Default is `Area`.
+#'   Area Normalized, Height or Retention Time. Default is `Area`.
 #' @param molecule_annotation The column name for lipid annotation, default to `Class`.
 #' @param sample_annotation The column name for sample annotation, default to `all`.
 #' @param cluster_cols "none","hclust", or "k-means" for no clustering,

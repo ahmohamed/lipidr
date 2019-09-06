@@ -3,6 +3,7 @@
 #' @param files Character vector with filepaths to
 #'   Skyline exported files in CSV format.
 #' @importFrom forcats fct_inorder
+#' @importFrom data.table fread
 #' @return LipidomicsExperiment object.
 #' @export
 #'
@@ -66,7 +67,7 @@ read_skyline <- function(files) {
 #' # Note we are subsetting rows
 #' d[rowData(d)$istd, ]
 add_sample_annotation <- function(data, annot_file) {
-  annot <- read.csv(annot_file)
+  annot <- as.data.frame(fread(annot_file))
   stopifnot(ncol(annot) > 1)
 
   # check if any column is named "sample", otherwise take the first column
@@ -101,12 +102,11 @@ add_sample_annotation <- function(data, annot_file) {
 ###########################################################################
 #' Internal method to read skyline file
 #' @param file skyline exported file in CSV format
-#' @importFrom utils read.csv
 #' @importFrom tidyr gather spread separate
 #' @return std data.frame
 #' @noRd
 .read_skyline_file <- function(file) {
-  original_data <- read.csv(file, stringsAsFactors = FALSE)
+  original_data <- as.data.frame(fread(file, stringsAsFactors = FALSE))
 
   # Check it is not an empty file
   if (!nrow(original_data)) {
@@ -117,12 +117,12 @@ add_sample_annotation <- function(data, annot_file) {
   col_defs <- list(
     class_cols = c("Protein.Name", "Protein"),
     molecule_cols = c(
-      "Peptide.Name", "Peptide", "Molecule.Name", "Precursor.Ion.Name"
+      "Peptide Name", "Peptide", "Molecule Name", "Precursor Ion.Name"
     ),
     replicate_cols = c("Replicate.Name", "Replicate"),
-    intensity_cols = c("Area", "Height", "Area.Normalized"),
+    intensity_cols = c("Area", "Height", "Area Normalized"),
     measure_cols = c(
-      "Area", "Height", "Area.Normalized", "Retention.Time", "Background"
+      "Area", "Height", "Area Normalized", "Retention Time", "Background"
     )
   )
 

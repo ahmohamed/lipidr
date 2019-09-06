@@ -9,7 +9,7 @@
 #'
 #' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`.
+#'   Area Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
 #'   logical vector with the same length as samples. Default.
@@ -67,7 +67,7 @@ normalize_pqn <- function(data, measure = "Area",
 #'
 #' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`.
+#'   Area Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
 #'   logical vector with the same length as samples. Default.

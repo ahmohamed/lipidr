@@ -10,7 +10,7 @@ normalize_pqn(data, measure = "Area", exclude = "blank", log = TRUE)
 \item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to use as intensity, usually Area,
-Area.Normalized or Height. Default is \code{Area}.}
+Area Normalized or Height. Default is \code{Area}.}
 
 \item{exclude}{Samples to exclude, can be either: \cr
 "blank" - automatically detected blank samples and exclude them

@@ -1,5 +1,5 @@
 .check_log <- function(d, measure) {
-  if (measure == "Retention.Time") {
+  if (measure == "Retention Time") {
     warning("Retention time should not be logged")
   }
   if (is_logged(d, measure)) {

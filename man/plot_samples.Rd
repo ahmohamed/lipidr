@@ -13,7 +13,7 @@ plot_samples(data, type = c("tic", "boxplot"), measure = "Area",
 \item{type}{plot type, either \code{tic} or \code{boxplot}. Default is \code{tic}.}
 
 \item{measure}{Which measure to use as intensity, usually Area,
-Area.Normalized or Height. Default is \code{Area}}
+Area Normalized or Height. Default is \code{Area}}
 
 \item{log}{Whether values should be log2 transformed. Default is \code{TRUE}}
 }
@@ -34,6 +34,6 @@ plot_samples(data_normalized, type = "tic", "Background", log = FALSE)
 plot_samples(
   data_normalized[, data_normalized$group == "QC"],
   type = "boxplot",
-  measure = "Retention.Time", log = FALSE
+  measure = "Retention Time", log = FALSE
 )
 }
