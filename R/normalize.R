@@ -49,13 +49,7 @@ normalize_pqn <- function(data, measure = "Area",
     na.rm = TRUE
   )
   data <- set_normalized(data, measure, TRUE)
-
-  if (log && !is_logged(data, measure)) {
-    assay(data, measure) <- log2(assay(data, measure))
-    data <- set_logged(data, measure, TRUE)
-  }
-
-  return(data)
+  return(.log_data(data, measure, log))
 }
 
 #' Normalize each class by its corresponding internal standard(s).
@@ -123,13 +117,7 @@ normalize_istd <- function(data, measure = "Area",
 
     return(m[i, ] / f)
   })
-
-  if (log && !is_logged(data, measure)) {
-    assay(data, measure) <- log2(assay(data, measure))
-    data <- set_logged(data, measure, TRUE)
-  }
-
-  return(data)
+  return(.log_data(data, measure, log))
 }
 
 .prenormalize_check <- function(data, measure, exclude) {
@@ -154,5 +142,19 @@ normalize_istd <- function(data, measure = "Area",
     assay_[assay_ < 1] <- 1
   }
   assay(data, measure) <- assay_
+  data
+}
+
+
+.log_data <- function(data, measure, log) {
+  assay_ <- assay(data, measure)
+  if (any(assay_ < 1)) {
+    warning(measure, " contains values < 1. Replacing with 1.")
+    assay_[assay_ < 1] <- 1
+  }
+  if (log && !is_logged(data, measure)) {
+    assay(data, measure) <- log2(assay_)
+    data <- set_logged(data, measure, TRUE)
+  }
   data
 }
