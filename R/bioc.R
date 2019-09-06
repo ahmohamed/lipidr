@@ -187,6 +187,7 @@ to_long_format <- function(ds, measure = "Area") {
     gather(key = !!dims[[2]], value = !!measure, -!!dims[[1]]) %>%
     left_join(to_df(ds, "row")) %>%
     left_join(to_df(ds, "col")) %>%
+    mutate_at(vars(one_of("Molecule", "Sample")), factor) %>%
     mutate_at(vars(one_of("Molecule", "Sample")), fct_inorder)
 }
 
