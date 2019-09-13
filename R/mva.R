@@ -88,8 +88,8 @@ mva <- function(data, measure = "Area",
     }
 
     object <- run_opls(d, y = group_vector, ...)
-    scores <- data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1])
-    loadings <- data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1])
+    scores <- data.frame(p1=object@scoreMN[, 1], o1=object@orthoScoreMN[, 1])
+    loadings <- data.frame(p1=object@loadingMN[, 1], o1=object@orthoLoadingMN[, 1])
     class_name <- "opls"
   }
 
@@ -174,7 +174,7 @@ run_pca <- function(data,
   fig.pdfC = NULL, ...) {
   opls(
     data,
-    predI = nrow(data),
+    predI = min(dim(data)),
     scaleC = scaleC,
     fig.pdfC = fig.pdfC, ...
   )
@@ -281,18 +281,18 @@ plot_ropls_results <- function(mvaresults, components,
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' # PCA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCA")
 #' plot_mva(mvaresults, color_by = "group")
 #' # NOT RUN
 #' # plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))
-#' 
+#'
 #' # PCoA
 #' mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
 #' # NOT RUN
 #' # plot_mva(mvaresults, color_by = "group")
-#' 
+#'
 #' # OPLS-DA
 #' mvaresults <- mva(
 #'   data_normalized,
@@ -367,7 +367,7 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
   } else {
     p <- p + geom_text(
       vjust = -.5, size = 3, color = "black",
-      aes(label = ifelse(molrank > top.n, "", Molecule))
+      aes(label = ifelse(molrank > top.n, "", as.character(Molecule)))
     )
   }
 
@@ -444,14 +444,12 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
     as.data.frame() %>%
     rownames_to_column("LipidID")
 
-  if (!is.null(color_by)) {
-    row_data <- mvaresults$row_data %>%
-      as.data.frame() %>%
-      rownames_to_column("LipidID")
+  row_data <- mvaresults$row_data %>%
+    as.data.frame() %>%
+    rownames_to_column("LipidID")
 
-    mds_matrix <- mds_matrix %>%
-      .left_join_silent(row_data)
-  }
+  mds_matrix <- mds_matrix %>%
+    .left_join_silent(row_data)
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }
 
