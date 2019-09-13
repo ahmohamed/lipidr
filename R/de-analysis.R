@@ -125,6 +125,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
       one_of("Molecule", "Class", "total_cl", "total_cs", "istd", dimname_x)
     ) %>%
     .left_join_silent(top)
+  attr(top, 'measure') <- measure
   return(top)
 }
 
