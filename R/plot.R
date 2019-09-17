@@ -332,24 +332,22 @@ plot_heatmap <- function(data, measure = "Area",
   cluster_cols = "hclust", cluster_rows = "hclust",
   scale = "rows", ...) {
   if (!requireNamespace("iheatmapr", quietly = TRUE)) {
-    stop("Package 'pheatmap' must be installed for heatmap plots")
+    stop("Package 'iheatmapr' must be installed for heatmap plots")
   }
   col_annotation <- colData(data) %>% as.data.frame()
   row_annotation <- rowData(data) %>% as.data.frame()
-  if (sample_annotation != "all") {
-    if (sample_annotation == FALSE) {
+  if (!"all" %in% sample_annotation) {
+    if (is.null(sample_annotation) || FALSE %in% sample_annotation) {
       col_annotation <- NULL
     } else {
-      col_annotation <- col_annotation %>%
-        dplyr::select(!!sym(sample_annotation))
+      col_annotation <- col_annotation[, sample_annotation, drop=FALSE]
     }
   }
-  if (molecule_annotation != "all") {
-    if (molecule_annotation == FALSE) {
+  if (!"all" %in% molecule_annotation) {
+    if (is.null(molecule_annotation) || FALSE %in% molecule_annotation) {
       row_annotation <- NULL
     } else {
-      row_annotation <- row_annotation %>%
-        dplyr::select(!!sym(molecule_annotation))
+      row_annotation <- row_annotation[, molecule_annotation, drop=FALSE]
     }
   }
   dim_names <- metadata(data)$dimnames
