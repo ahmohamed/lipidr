@@ -9,6 +9,7 @@
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed. Default is `TRUE`
+#' @param color The column name of a sample annotation to be used as color
 #'
 #' @return A ggplot object.
 #' @export
@@ -230,6 +231,7 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #'   Area Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed
 #'   (Set FALSE for retention time). Default is `TRUE`
+#' @param color The column name of a row annotation to be used as color
 #'
 #' @return A ggplot object.
 #' @export

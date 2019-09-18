@@ -5,7 +5,7 @@
 \title{Informative plots to investigate individual lipid molecules}
 \usage{
 plot_molecules(data, type = c("cv", "sd", "boxplot"), measure = "Area",
-  log = TRUE)
+  log = TRUE, color = "Class")
 }
 \arguments{
 \item{data}{LipidomicsExperiment object.}
@@ -17,6 +17,8 @@ Area Normalized or Height. Default is \code{Area}}
 
 \item{log}{Whether values should be log2 transformed
 (Set FALSE for retention time). Default is \code{TRUE}}
+
+\item{color}{The column name of a row annotation to be used as color}
 }
 \value{
 A ggplot object.

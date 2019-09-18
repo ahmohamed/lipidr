@@ -9,7 +9,8 @@ add_sample_annotation(data, annot_file)
 \arguments{
 \item{data}{LipidomicsExperiment object.}
 
-\item{annot_file}{CSV file with at least 2 columns, sample names & group(s).}
+\item{annot_file}{CSV file or a data.frame with at least 2 columns,
+sample names & group(s).}
 }
 \value{
 LipidomicsExperiment with sample group information.

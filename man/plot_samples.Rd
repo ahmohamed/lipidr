@@ -5,7 +5,7 @@
 \title{Informative plots to investigate samples}
 \usage{
 plot_samples(data, type = c("tic", "boxplot"), measure = "Area",
-  log = TRUE)
+  log = TRUE, color = NULL)
 }
 \arguments{
 \item{data}{LipidomicsExperiment object.}
@@ -16,6 +16,8 @@ plot_samples(data, type = c("tic", "boxplot"), measure = "Area",
 Area Normalized or Height. Default is \code{Area}}
 
 \item{log}{Whether values should be log2 transformed. Default is \code{TRUE}}
+
+\item{color}{The column name of a sample annotation to be used as color}
 }
 \value{
 A ggplot object.
