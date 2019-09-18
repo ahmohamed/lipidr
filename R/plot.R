@@ -23,7 +23,7 @@
 #'   measure = "Retention Time", log = FALSE
 #' )
 plot_samples <- function(data, type = c("tic", "boxplot"),
-  measure = "Area", log = TRUE) {
+  measure = "Area", log = TRUE, color=NULL) {
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
@@ -32,23 +32,27 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   if (log) {
     measure <- .check_log(data, measure)
   }
+  if (is.null(color)) {
+    color <- ""
+  }
+  #color <- sym(color)
   if (type == "tic") {
-    return(.display_plot(.plot_sample_tic(dlong, measure)))
+    return(.display_plot(.plot_sample_tic(dlong, measure, color)))
   }
 
-  .display_plot(.plot_sample_boxplot(dlong, measure))
+  .display_plot(.plot_sample_boxplot(dlong, measure, color))
 }
 
-.plot_sample_tic <- function(dlong, measure) {
-  ggplot(dlong, aes(Sample, !!measure)) +
+.plot_sample_tic <- function(dlong, measure, color) {
+  ggplot(dlong, aes(Sample, !!measure, fill = !!sym(color))) +
     stat_summary(fun.y = mean, geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
 }
 
-.plot_sample_boxplot <- function(dlong, measure) {
-  ggplot(dlong, aes(Sample, !!measure)) + geom_boxplot() +
+.plot_sample_boxplot <- function(dlong, measure, color) {
+  ggplot(dlong, aes(Sample, !!measure, fill = !!sym(color))) + geom_boxplot() +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
@@ -250,7 +254,7 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' plot_molecules(d_istd_qc, "boxplot")
 #' plot_molecules(d_istd_qc, "boxplot", "Retention Time", log = FALSE)
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
-  measure = "Area", log = TRUE) {
+  measure = "Area", log = TRUE, color = "Class") {
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
@@ -259,20 +263,23 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   if (log) {
     measure <- .check_log(data, measure)
   }
+  if (is.null(color)) {
+    color <- ""
+  }
   if (type == "cv") {
-    return(.display_plot(.plot_molecule_cv(dlong, measure)))
+    return(.display_plot(.plot_molecule_cv(dlong, measure, color)))
   }
   else if (type == "sd") {
-    return(.display_plot(.plot_molecule_sd(dlong, measure)))
+    return(.display_plot(.plot_molecule_sd(dlong, measure, color)))
   }
 
-  .display_plot(.plot_molecule_boxplot(dlong, measure))
+  .display_plot(.plot_molecule_boxplot(dlong, measure, color))
 }
 
-.plot_molecule_sd <- function(dlong, measure) {
+.plot_molecule_sd <- function(dlong, measure, color) {
   ggplot(
     dlong,
-    aes(Molecule, !!measure, fill = Class, color = Class)
+    aes(Molecule, !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
@@ -280,10 +287,10 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     ylab(paste("SD of", as_label(measure)))
 }
 
-.plot_molecule_cv <- function(dlong, measure) {
+.plot_molecule_cv <- function(dlong, measure, color) {
   ggplot(
     dlong,
-    aes(Molecule, !!measure, fill = Class, color = Class)
+    aes(Molecule, !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
@@ -291,10 +298,10 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     ylab(paste("CV of", as_label(measure)))
 }
 
-.plot_molecule_boxplot <- function(dlong, measure) {
+.plot_molecule_boxplot <- function(dlong, measure, color) {
   ggplot(
     dlong,
-    aes(Molecule, !!measure, fill = Class, color = Class)
+    aes(Molecule, !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
