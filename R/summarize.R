@@ -53,6 +53,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   assay_list <- as(assay_list, "SimpleList")
   mcols(assay_list) <- mcols(assays(data))
 
+  # TODO: set Molecule(filename) as rownames
   row_data <- multi_transitions %>%
     cbind(group_idx = group_indices(.)) %>%
     summarise(rowname = first(group_idx)) %>%
