@@ -27,7 +27,7 @@
 #'   rank.by = "logFC", minSize = 4, nperm = 1000
 #' )
 lsea <- function(de.results,
-                 rank.by = c("logFC", "P.Value", "Adj.P.Val"), ...) {
+                 rank.by = c("logFC", "P.Value", "adj.P.Val"), ...) {
   rank.by <- match.arg(rank.by)
   rank_by_sym <- sym(rank.by)
 
