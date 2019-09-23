@@ -12,4 +12,8 @@ Result of \code{rhs(lhs, ...)}.
 \description{
 See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 }
+\examples{
+data(data_normalized)
+data_normalized \%>\% filter_by_cv()
+}
 \keyword{internal}

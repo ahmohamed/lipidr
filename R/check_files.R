@@ -1,3 +1,4 @@
+#' @importFrom utils read.table
 .is_tabular <- function(f) {
   col_count <- function(s) {
     tryCatch(
@@ -105,7 +106,7 @@
 }
 
 .is_num_matrix <- function(mat) {
-  if (!is.matrix(mat) || class(c(mat)) != 'numeric') {
+  if (!is.matrix(mat) || !is.numeric(c(mat))) {
     return (FALSE)
   }
   na_vals <- !is.na(mat)
