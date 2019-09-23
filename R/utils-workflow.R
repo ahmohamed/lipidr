@@ -1,11 +1,12 @@
+#' @importFrom rlang as_name as_label
 .check_log <- function(d, measure) {
-  if (measure == "Retention.Time") {
+  if (measure == "Retention Time") {
     warning("Retention time should not be logged")
   }
-  if (is_logged(d, measure)) {
+  if (is_logged(d, as_name(measure))) {
     return(measure)
   }
-  paste0("log2(", measure, ")")
+  quo(log2(!!measure))
 }
 .copy_attr <- function(d, original) {
   attr(d, "skyline") <- attr(original, "skyline")

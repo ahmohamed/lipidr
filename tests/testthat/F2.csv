@@ -1,4 +1,4 @@
-"","Peptide","Protein","Replicate","Precursor.Mz","Precursor.Charge","Product.Mz","Product.Charge","Fragment.Ion","Retention.Time","Area","Background","Peak.Rank"
+"","Peptide","Protein","Replicate","Precursor.Mz","Precursor.Charge","Product.Mz","Product.Charge","Fragment.Ion","Retention Time","Area","Background","Peak.Rank"
 "1","18:1(d7) Lyso PE","LPE","S1A",487.35,1,346.33,1,"Ion [346.330549/346.330549]","4.42","52585","2098","1"
 "2","18:1(d7) Lyso PE","LPE","S2A",487.35,1,346.33,1,"Ion [346.330549/346.330549]","4.42","41325","1811","1"
 "3","18:1(d7) Lyso PE","LPE","S3A",487.35,1,346.33,1,"Ion [346.330549/346.330549]","4.4","41386","1761","1"

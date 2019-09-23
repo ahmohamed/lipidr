@@ -8,6 +8,13 @@ test_that("Can match lipids that follow supported patterns", {
   expect_false(any(a$not_matched))
 })
 
+test_that("Can work with factors", {
+  a <- annotate_lipids(factor(mols))
+  expect_true(is.data.frame(a))
+  expect_equal(nrow(a), 4)
+  expect_false(any(a$not_matched))
+})
+
 test_that("Cannot match lipids that do not follow supported patterns", {
   expect_warning(a <- annotate_lipids(c("a", "b", "cde", "any 15")), "Some lipid names couldn't be parsed")
   expect_true(is.data.frame(a))

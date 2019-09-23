@@ -29,6 +29,7 @@ Imports:
     methods,
     stats,
     utils,
+    data.table,
     S4Vectors,
     rlang,
     dplyr,

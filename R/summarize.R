@@ -33,14 +33,17 @@ summarize_transitions <- function(data, method = c("max", "average")) {
     multi_transitions$TransitionId,
     multi_transitions %>% group_indices()
   )
-  sum_fun <- ifelse(method == "average", mean, max)
+  sum_fun <- function(x) {
+    if (all(is.na(x))) return (NA)
+    ifelse(method == "average", mean, max)(x, na.rm = TRUE)
+  }
 
   assay_list <- lapply(assays(data), function(m) {
     mret <- laply(transition_gps, function(x) {
       if (length(x) == 1) {
         return(m[x, ])
       } else {
-        return(apply(m[x, ], 2, sum_fun, na.rm = TRUE))
+        return(apply(m[x, ], 2, sum_fun))
       }
     })
     rownames(mret) <- names(transition_gps)
@@ -50,6 +53,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   assay_list <- as(assay_list, "SimpleList")
   mcols(assay_list) <- mcols(assays(data))
 
+  # TODO: set Molecule(filename) as rownames
   row_data <- multi_transitions %>%
     cbind(group_idx = group_indices(.)) %>%
     summarise(rowname = first(group_idx)) %>%

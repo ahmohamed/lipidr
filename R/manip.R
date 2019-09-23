@@ -108,7 +108,7 @@ remove_non_parsed_molecules <- function(data) {
 update_molecule_names <- function(data, old, new) {
   updated_names <- to_df(data, "row") %>%
     left_join(data.frame(Molecule = old, new_names = new) %>% distinct()) %>%
-    mutate(Molecule = coalesce(as.character(new_names), Molecule)) %>%
+    mutate(Molecule = coalesce(as.character(new_names), as.character(Molecule))) %>%
     select(-new_names)
 
   updated_annot <- annotate_lipids(updated_names$Molecule)

@@ -21,14 +21,14 @@ test_that("does not have an effect when no multi-transition are present", {
 
   d_summarized <- summarize_transitions(d)
   expect_equal(dim(d), dim(d_summarized))
-  expect_equal(assayNames(d_summarized), c("Retention.Time", "Area", "Background"))
+  expect_equal(assayNames(d_summarized), c("Retention Time", "Area", "Background"))
   expect_equal(metadata(d_summarized)$dimnames, c("MoleculeId", "Sample"))
   expect_true(metadata(d_summarized)$summarized)
   expect_false(any(unlist(mcols(assays(d_summarized)))))
 
   # Check assay matrices
   expect_assay_equal(d, d_summarized, "Area")
-  expect_assay_equal(d, d_summarized, "Retention.Time")
+  expect_assay_equal(d, d_summarized, "Retention Time")
 })
 
 test_that("Can summarize multi-transition molecules", {
@@ -45,7 +45,7 @@ test_that("Can summarize multi-transition molecules", {
 
   d_summarized <- summarize_transitions(d, method = "max")
   expect_equal(dim(d)[[1]] - 1, dim(d_summarized)[[1]])
-  expect_equal(assayNames(d_summarized), c("Retention.Time", "Area", "Background"))
+  expect_equal(assayNames(d_summarized), c("Retention Time", "Area", "Background"))
   expect_equal(metadata(d_summarized)$dimnames, c("MoleculeId", "Sample"))
   expect_true(metadata(d_summarized)$summarized)
   expect_false(any(unlist(mcols(assays(d_summarized)))))
@@ -56,7 +56,7 @@ test_that("Can summarize multi-transition molecules", {
   d_sum_non_dup <- d_summarized[!rowData(d_summarized)$Molecule %in% dup_mols, ]
   d_non_dup <- d[!rowData(d)$Molecule %in% dup_mols, ]
   expect_assay_equal(d_non_dup, d_sum_non_dup, "Area")
-  expect_assay_equal(d_non_dup, d_sum_non_dup, "Retention.Time")
+  expect_assay_equal(d_non_dup, d_sum_non_dup, "Retention Time")
 
   d_sum_dup <- d_summarized[rowData(d_summarized)$Molecule %in% dup_mols, ]
   area_dup <- assay(d_sum_dup, "Area")

@@ -24,7 +24,7 @@
 #' @examples
 #' # type ?normalize_pqn to see how to normalize and log2-transform your data
 #' data(data_normalized)
-#' 
+#'
 #' # Specifying contrasts
 #' de_results <- de_analysis(
 #'   data_normalized,
@@ -71,7 +71,7 @@ de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
 #'   coef = "groupHighFat_water",
 #'   measure = "Area"
 #' )
-#' 
+#'
 #' # Using design matrix
 #' design <- model.matrix(~group, data = colData(data_normalized))
 #' de_results_design <- de_design(
@@ -83,8 +83,12 @@ de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
 de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   if (is_formula(design)) {
     design <- model.matrix(design, data = colData(data))
-  } else if (!is.matrix(design)) {
+  }
+  if (!is.matrix(design)) {
     stop("design should be a matrix or formula")
+  }
+  if (!limma::is.fullrank(design)) {
+    stop("Tested variables are redundant (Design matrix is not full rank).")
   }
   vfit <- lmFit(assay(data, measure), design)
 
@@ -125,6 +129,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
       one_of("Molecule", "Class", "total_cl", "total_cs", "istd", dimname_x)
     ) %>%
     .left_join_silent(top)
+  attr(top, 'measure') <- measure
   return(top)
 }
 

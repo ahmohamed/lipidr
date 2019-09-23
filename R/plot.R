@@ -7,47 +7,53 @@
 #' @param data LipidomicsExperiment object.
 #' @param type plot type, either `tic` or `boxplot`. Default is `tic`.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`
+#'   Area Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed. Default is `TRUE`
+#' @param color The column name of a sample annotation to be used as color
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' plot_samples(data_normalized, type = "tic", "Area", log = TRUE)
 #' plot_samples(data_normalized, type = "tic", "Background", log = FALSE)
 #' plot_samples(
 #'   data_normalized[, data_normalized$group == "QC"],
 #'   type = "boxplot",
-#'   measure = "Retention.Time", log = FALSE
+#'   measure = "Retention Time", log = FALSE
 #' )
 plot_samples <- function(data, type = c("tic", "boxplot"),
-  measure = "Area", log = TRUE) {
+  measure = "Area", log = TRUE, color=NULL) {
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
+  measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
   }
+  if (is.null(color)) {
+    color <- ""
+  }
+  #color <- sym(color)
   if (type == "tic") {
-    return(.display_plot(.plot_sample_tic(dlong, measure)))
+    return(.display_plot(.plot_sample_tic(dlong, measure, color)))
   }
 
-  .display_plot(.plot_sample_boxplot(dlong, measure))
+  .display_plot(.plot_sample_boxplot(dlong, measure, color))
 }
 
-.plot_sample_tic <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Sample", measure)) +
+.plot_sample_tic <- function(dlong, measure, color) {
+  ggplot(dlong, aes(Sample, !!measure, fill = !!sym(color))) +
     stat_summary(fun.y = mean, geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
 }
 
-.plot_sample_boxplot <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Sample", measure)) + geom_boxplot() +
+.plot_sample_boxplot <- function(dlong, measure, color) {
+  ggplot(dlong, aes(Sample, !!measure, fill = !!sym(color))) + geom_boxplot() +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
@@ -59,18 +65,18 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' `sd` plots a bar chart for standard deviation of a certain measure in each
 #' class. This plot type is usually used to look at standard deviations of
 #' intensity in each class, but can also be used to look at different measures
-#' such as `Retention.Time`, to ensure all lipids are eluted within the expected
+#' such as `Retention Time`, to ensure all lipids are eluted within the expected
 #' range. To assess instrumental variation apply the function to technical
 #' quality control samples. \cr\cr
 #' `boxplot` Plots a boxplot chart to examine the distribution of values per
 #' class. This plot type is usually used to look at the intensity distribution
 #' in each class, but can also be used to look at different measures, such as
-#' `Retention.Time` or `Background`.
+#' `Retention Time` or `Background`.
 #'
 #' @param data LipidomicsExperiment object.
 #' @param type plot type, either `boxplot` or `sd`. Default is `boxplot`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized, Height or Retention.Time. Default is `Area`
+#'   Area Normalized, Height or Retention Time. Default is `Area`
 #' @param log Whether values should be log2 transformed. Default is `TRUE`
 #'   (Set FALSE for retention time).
 #'
@@ -78,22 +84,22 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 #' @export
 #' @examples
 #' data(data_normalized)
-#' 
+#'
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' plot_lipidclass(d_qc, "sd", "Area", log = TRUE)
-#' plot_lipidclass(d_qc, "sd", "Retention.Time", log = FALSE)
+#' plot_lipidclass(d_qc, "sd", "Retention Time", log = FALSE)
 #' plot_lipidclass(d_qc, "boxplot", "Area", log = TRUE)
-#' plot_lipidclass(d_qc, "boxplot", "Retention.Time", log = FALSE)
+#' plot_lipidclass(d_qc, "boxplot", "Retention Time", log = FALSE)
 plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   measure = "Area", log = TRUE) {
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
+  measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
   }
-
   if (type == "sd") {
     return(.display_plot(.plot_class_sd(dlong, measure)))
   }
@@ -102,15 +108,15 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
 }
 
 .plot_class_sd <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+  ggplot(dlong, aes(Class, !!measure, fill = Class)) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("SD of", measure))
+    ylab(paste("SD of", as_label(measure)))
 }
 
 .plot_class_boxplot <- function(dlong, measure) {
-  ggplot(dlong, aes_string("Class", measure, fill = "Class")) +
+  ggplot(dlong, aes(Class, !!measure, fill = Class)) +
     geom_boxplot() +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
@@ -212,31 +218,32 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #' `sd` plots a bar chart for standard deviations of a certain measure in each
 #' lipid. This plot type is usually used to look at standard deviation of
 #' intensity for each lipid, but can also be used to look at different
-#' measures such as `Retention.Time`, to ensure all lipids elute within
+#' measures such as `Retention Time`, to ensure all lipids elute within
 #' expected range. \cr\cr
 #' `boxplot` plots a boxplot chart to examine the distribution of values per
 #' lipid. This plot type is usually used to look at intensity distribution
 #' for each lipid, but can also be used to look at different measures, such as
-#' `Retention.Time` or `Background`.
+#' `Retention Time` or `Background`.
 #'
 #' @param data LipidomicsExperiment object.
 #' @param type plot type, either `cv`, `sd` or `boxplot`. Default is `cv`.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized or Height. Default is `Area`
+#'   Area Normalized or Height. Default is `Area`
 #' @param log Whether values should be log2 transformed
 #'   (Set FALSE for retention time). Default is `TRUE`
+#' @param color The column name of a row annotation to be used as color
 #'
 #' @return A ggplot object.
 #' @export
 #' @examples
 #' data(data_normalized)
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #   lipids in QC samples
 #' plot_molecules(d_qc, "cv", "Area")
-#' plot_molecules(d_qc, "cv", "Retention.Time", log = FALSE)
-#' 
+#' plot_molecules(d_qc, "cv", "Retention Time", log = FALSE)
+#'
 #' # plot the variation in intensity, RT of ISTD (internal standards)
 #' #   in QC samples
 #' d_istd_qc <- data_normalized[
@@ -244,56 +251,59 @@ plot_trend <- function(de_results, annotation = c("length", "unsat")) {
 #'   data_normalized$group == "QC"
 #' ]
 #' plot_molecules(d_istd_qc, "sd", "Area")
-#' plot_molecules(d_istd_qc, "sd", "Retention.Time", log = FALSE)
-#' 
+#' plot_molecules(d_istd_qc, "sd", "Retention Time", log = FALSE)
+#'
 #' plot_molecules(d_istd_qc, "boxplot")
-#' plot_molecules(d_istd_qc, "boxplot", "Retention.Time", log = FALSE)
+#' plot_molecules(d_istd_qc, "boxplot", "Retention Time", log = FALSE)
 plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
-  measure = "Area", log = TRUE) {
+  measure = "Area", log = TRUE, color = "Class") {
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure)
+  measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
   }
-
+  if (is.null(color)) {
+    color <- ""
+  }
   if (type == "cv") {
-    return(.display_plot(.plot_molecule_cv(dlong, measure)))
+    return(.display_plot(.plot_molecule_cv(dlong, measure, color)))
   }
   else if (type == "sd") {
-    return(.display_plot(.plot_molecule_sd(dlong, measure)))
+    return(.display_plot(.plot_molecule_sd(dlong, measure, color)))
   }
 
-  .display_plot(.plot_molecule_boxplot(dlong, measure))
+  .display_plot(.plot_molecule_boxplot(dlong, measure, color))
 }
 
-.plot_molecule_sd <- function(dlong, measure) {
+.plot_molecule_sd <- function(dlong, measure, color) {
   ggplot(
     dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")
+    aes(Molecule, !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     stat_summary(fun.y = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("SD of", measure))
+    ylab(paste("SD of", as_label(measure)))
 }
 
-.plot_molecule_cv <- function(dlong, measure) {
+.plot_molecule_cv <- function(dlong, measure, color) {
   ggplot(
     dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")
+    aes(Molecule, !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("CV of", measure))
+    ylab(paste("CV of", as_label(measure)))
 }
 
-.plot_molecule_boxplot <- function(dlong, measure) {
+.plot_molecule_boxplot <- function(dlong, measure, color) {
   ggplot(
     dlong,
-    aes_string("Molecule", measure, fill = "Class", color = "Class")
+    aes(Molecule, !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
     facet_wrap(~filename, scales = "free_y") +
@@ -306,7 +316,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 #'
 #' @param data LipidomicsExperiment object.
 #' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area.Normalized, Height or Retention.Time. Default is `Area`.
+#'   Area Normalized, Height or Retention Time. Default is `Area`.
 #' @param molecule_annotation The column name for lipid annotation, default to `Class`.
 #' @param sample_annotation The column name for sample annotation, default to `all`.
 #' @param cluster_cols "none","hclust", or "k-means" for no clustering,
@@ -331,24 +341,22 @@ plot_heatmap <- function(data, measure = "Area",
   cluster_cols = "hclust", cluster_rows = "hclust",
   scale = "rows", ...) {
   if (!requireNamespace("iheatmapr", quietly = TRUE)) {
-    stop("Package 'pheatmap' must be installed for heatmap plots")
+    stop("Package 'iheatmapr' must be installed for heatmap plots")
   }
   col_annotation <- colData(data) %>% as.data.frame()
   row_annotation <- rowData(data) %>% as.data.frame()
-  if (sample_annotation != "all") {
-    if (sample_annotation == FALSE) {
+  if (!"all" %in% sample_annotation) {
+    if (is.null(sample_annotation) || FALSE %in% sample_annotation) {
       col_annotation <- NULL
     } else {
-      col_annotation <- col_annotation %>%
-        dplyr::select(!!sym(sample_annotation))
+      col_annotation <- col_annotation[, sample_annotation, drop=FALSE]
     }
   }
-  if (molecule_annotation != "all") {
-    if (molecule_annotation == FALSE) {
+  if (!"all" %in% molecule_annotation) {
+    if (is.null(molecule_annotation) || FALSE %in% molecule_annotation) {
       row_annotation <- NULL
     } else {
-      row_annotation <- row_annotation %>%
-        dplyr::select(!!sym(molecule_annotation))
+      row_annotation <- row_annotation[, molecule_annotation, drop=FALSE]
     }
   }
   dim_names <- metadata(data)$dimnames

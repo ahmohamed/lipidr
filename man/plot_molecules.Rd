@@ -5,7 +5,7 @@
 \title{Informative plots to investigate individual lipid molecules}
 \usage{
 plot_molecules(data, type = c("cv", "sd", "boxplot"), measure = "Area",
-  log = TRUE)
+  log = TRUE, color = "Class")
 }
 \arguments{
 \item{data}{LipidomicsExperiment object.}
@@ -13,10 +13,12 @@ plot_molecules(data, type = c("cv", "sd", "boxplot"), measure = "Area",
 \item{type}{plot type, either \code{cv}, \code{sd} or \code{boxplot}. Default is \code{cv}.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
-Area.Normalized or Height. Default is \code{Area}}
+Area Normalized or Height. Default is \code{Area}}
 
 \item{log}{Whether values should be log2 transformed
 (Set FALSE for retention time). Default is \code{TRUE}}
+
+\item{color}{The column name of a row annotation to be used as color}
 }
 \value{
 A ggplot object.
@@ -30,12 +32,12 @@ retention time, in QC samples. \cr\cr
 \code{sd} plots a bar chart for standard deviations of a certain measure in each
 lipid. This plot type is usually used to look at standard deviation of
 intensity for each lipid, but can also be used to look at different
-measures such as \code{Retention.Time}, to ensure all lipids elute within
+measures such as \code{Retention Time}, to ensure all lipids elute within
 expected range. \cr\cr
 \code{boxplot} plots a boxplot chart to examine the distribution of values per
 lipid. This plot type is usually used to look at intensity distribution
 for each lipid, but can also be used to look at different measures, such as
-\code{Retention.Time} or \code{Background}.
+\code{Retention Time} or \code{Background}.
 }
 \examples{
 data(data_normalized)
@@ -44,7 +46,7 @@ d_qc <- data_normalized[, data_normalized$group == "QC"]
 # plot the variation in intensity and retention time of all measured
 #   lipids in QC samples
 plot_molecules(d_qc, "cv", "Area")
-plot_molecules(d_qc, "cv", "Retention.Time", log = FALSE)
+plot_molecules(d_qc, "cv", "Retention Time", log = FALSE)
 
 # plot the variation in intensity, RT of ISTD (internal standards)
 #   in QC samples
@@ -53,8 +55,8 @@ d_istd_qc <- data_normalized[
   data_normalized$group == "QC"
 ]
 plot_molecules(d_istd_qc, "sd", "Area")
-plot_molecules(d_istd_qc, "sd", "Retention.Time", log = FALSE)
+plot_molecules(d_istd_qc, "sd", "Retention Time", log = FALSE)
 
 plot_molecules(d_istd_qc, "boxplot")
-plot_molecules(d_istd_qc, "boxplot", "Retention.Time", log = FALSE)
+plot_molecules(d_istd_qc, "boxplot", "Retention Time", log = FALSE)
 }

@@ -35,18 +35,33 @@ save_temp_csv <- function(d) {
   file
 }
 
+expect_valid_lipidex <- function(d, dim) {
+  act <- quasi_label(rlang::enquo(d), arg = "object")
+  act_val_lab <- paste(methods::is(d), collapse = "/")
+  if (!is(act$val, "LipidomicsExperiment")) {
+    fail(sprintf("%s inherits from `%s` not `%s`.",
+      act$lab, act_val_lab, "LipidomicsExperiment"))
+  }
+
+  if (!is(act$val, "SummarizedExperiment")) {
+    fail(sprintf("%s inherits from `%s` not `%s`.",
+      act$lab, act_val_lab, "SummarizedExperiment"))
+  }
+
+  if (!validObject(d)) {
+    fail(sprintf("%s is not a valid LipidomicsExperiment object.", act$lab))
+  }
+  expect_equal(dim(d), dim)
+}
+
 context("test-readfiles-nopivot")
 test_that("Can read a single non-pivoted skyline file", {
   d <- read_skyline(f1)
-
-  expect_s4_class(d, "LipidomicsExperiment")
-  expect_true(validObject(d))
-  expect_s4_class(d, "SummarizedExperiment")
-  expect_equal(dim(d), c(19, 11))
+  expect_valid_lipidex(d, c(19, 11))
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), f1)
-  expect_equal(assayNames(d), c("Retention.Time", "Area", "Background"))
+  expect_equal(assayNames(d), c("Retention Time", "Area", "Background"))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
   expect_false(any(unlist(mcols(assays(d)))))
@@ -61,19 +76,73 @@ test_that("Can read multiple non-pivoted skyline file", {
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), c(f1, f2))
-  expect_equal(assayNames(d), c("Retention.Time", "Area", "Background"))
+  expect_equal(assayNames(d), c("Retention Time", "Area", "Background"))
+  expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
+  expect_false(metadata(d)$summarized)
+  expect_false(any(unlist(mcols(assays(d)))))
+})
+
+test_that("Can read data.frame input", {
+  d <- read_skyline(data.table::fread(f1) %>% as.data.frame)
+  expect_valid_lipidex(d, c(19, 11))
+
+  row_data <- rowData(d)
+  expect_equal(unique(row_data$filename), c("dataset"))
+  expect_equal(assayNames(d), c("Retention Time", "Area", "Background"))
+  expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
+  expect_false(metadata(d)$summarized)
+  expect_false(any(unlist(mcols(assays(d)))))
+})
+
+test_that("Can read multiple data.frame inputs", {
+  df1 <- data.table::fread(f1) %>% as.data.frame
+  df2 <- data.table::fread(f2) %>% as.data.frame
+  d <- read_skyline(list(df1, df2))
+  expect_valid_lipidex(d, c(22, 11))
+
+  row_data <- rowData(d)
+  expect_equal(unique(row_data$filename), c("dataset 1", "dataset 2"))
+  expect_equal(assayNames(d), c("Retention Time", "Area", "Background"))
+  expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
+  expect_false(metadata(d)$summarized)
+  expect_false(any(unlist(mcols(assays(d)))))
+})
+
+test_that("Can read mixed files and data.frame inputs", {
+  df1 <- data.table::fread(f1) %>% as.data.frame
+  d <- read_skyline(list(df1, f2))
+  expect_valid_lipidex(d, c(22, 11))
+
+  row_data <- rowData(d)
+  expect_equal(unique(row_data$filename), c("dataset 1", f2))
+  expect_equal(assayNames(d), c("Retention Time", "Area", "Background"))
+  expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
+  expect_false(metadata(d)$summarized)
+  expect_false(any(unlist(mcols(assays(d)))))
+})
+
+test_that("Will used provided names when provided", {
+  df1 <- data.table::fread(f1) %>% as.data.frame
+  d <- read_skyline(list(first=df1, second=f2))
+  expect_valid_lipidex(d, c(22, 11))
+
+  row_data <- rowData(d)
+  expect_equal(unique(row_data$filename), c("first", "second"))
+  expect_equal(assayNames(d), c("Retention Time", "Area", "Background"))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
   expect_false(any(unlist(mcols(assays(d)))))
 })
 
 test_that("Can handle files with different columns", {
-  f_nobg <- f1 %>% read.csv() %>% select(-Background) %>% save_temp_csv()
+  f_nobg <- f1 %>%
+    data.table::fread() %>% as.data.frame %>%
+    select(-Background) %>% save_temp_csv()
   expect_warning(d <- read_skyline(c(f_nobg, f2)), "Some columns were not available in all files")
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), c(basename(f_nobg), f2))
-  expect_equal(assayNames(d), c("Retention.Time", "Area"))
+  expect_equal(assayNames(d), c("Retention Time", "Area"))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
   expect_false(any(unlist(mcols(assays(d)))))
@@ -81,37 +150,33 @@ test_that("Can handle files with different columns", {
 
 context("test-readfiles-error-checking")
 test_that("Errors for empty files", {
-  fempty <- f1 %>% read.csv() %>% filter(FALSE) %>% save_temp_csv()
+  fempty <- f1 %>% data.table::fread() %>% as.data.frame %>% filter(FALSE) %>% save_temp_csv()
   expect_error(read_skyline(fempty), "does not have any data.$")
 })
 
 test_that("Errors when missing an intensity column", {
-  ferror <- f1 %>% read.csv() %>% select(-Area) %>% save_temp_csv()
-  expect_error(read_skyline(ferror), "At least one of these columns")
+  ferror <- f1 %>% data.table::fread() %>% as.data.frame %>% select(-Area) %>% save_temp_csv()
+  expect_error(read_skyline(ferror), "Data should have one of these measures exported")
 })
 
 test_that("Errors when missing a molecule column", {
-  ferror <- f1 %>% read.csv() %>% select(-Peptide) %>% save_temp_csv()
-  expect_error(read_skyline(ferror), "At least one of these columns")
+  ferror <- f1 %>% data.table::fread() %>% as.data.frame %>% select(-Peptide) %>% save_temp_csv()
+  expect_error(read_skyline(ferror), "Data should have one of these columns with molecule names")
 })
 
 test_that("Errors when missing a replicate column", {
-  ferror <- f1 %>% read.csv() %>% select(-Replicate) %>% save_temp_csv()
+  ferror <- f1 %>% data.table::fread() %>% as.data.frame %>% select(-Replicate) %>% save_temp_csv()
   expect_error(read_skyline(ferror), "either export Replicate column or pivot by replicates")
 })
 
 context("test-readfiles-pivoted")
 test_that("Can read a single pivoted skyline file", {
   d <- read_skyline(f3)
-
-  expect_s4_class(d, "LipidomicsExperiment")
-  expect_true(validObject(d))
-  expect_s4_class(d, "SummarizedExperiment")
-  expect_equal(dim(d), c(19, 11))
+  expect_valid_lipidex(d, c(19, 11))
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), f3)
-  expect_true(all(c("Retention.Time", "Area", "Background") %in% assayNames(d)))
+  expect_true(all(c("Retention Time", "Area", "Background") %in% assayNames(d)))
   expect_false(any(grepl("^Replicate", assayNames(d))))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
@@ -119,17 +184,13 @@ test_that("Can read a single pivoted skyline file", {
 })
 
 test_that("Can read multiple pivoted skyline file", {
-  f3_ <- f3 %>% read.csv() %>% save_temp_csv()
+  f3_ <- f3 %>% data.table::fread() %>% as.data.frame %>% save_temp_csv()
   d <- read_skyline(c(f3_, f3))
-
-  expect_s4_class(d, "LipidomicsExperiment")
-  expect_true(validObject(d))
-  expect_s4_class(d, "SummarizedExperiment")
-  expect_equal(dim(d), c(38, 11))
+  expect_valid_lipidex(d, c(38, 11))
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), c(basename(f3_), f3))
-  expect_true(all(c("Retention.Time", "Area", "Background") %in% assayNames(d)))
+  expect_true(all(c("Retention Time", "Area", "Background") %in% assayNames(d)))
   expect_false(any(grepl("^Replicate", assayNames(d))))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
   expect_false(metadata(d)$summarized)
@@ -137,12 +198,12 @@ test_that("Can read multiple pivoted skyline file", {
 })
 
 test_that("Can handle multiple pivoted files with different columns", {
-  f_nobg <- f3 %>% read.csv() %>% select(-matches("Background")) %>% save_temp_csv()
+  f_nobg <- f3 %>% data.table::fread() %>% as.data.frame %>% select(-matches("Background")) %>% save_temp_csv()
   expect_warning(d <- read_skyline(c(f_nobg, f3)), "Some columns were not available in all files")
 
   row_data <- rowData(d)
   expect_equal(unique(row_data$filename), c(basename(f_nobg), f3))
-  expect_true(all(c("Retention.Time", "Area") %in% assayNames(d)))
+  expect_true(all(c("Retention Time", "Area") %in% assayNames(d)))
   expect_false(any(grepl("^Replicate", assayNames(d))))
   expect_false(any(grepl("Background", assayNames(d))))
   expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
@@ -150,7 +211,242 @@ test_that("Can handle multiple pivoted files with different columns", {
   expect_false(any(unlist(mcols(assays(d)))))
 })
 
+context("test-readfiles-sample_annot")
+gen_sample_annot <- function(d) {
+  samples <- colnames(d)
+  groups <- c("A", "A", "A", "B", "B", "B", "Blank", "Blank", "QC", "QC", "QC")
+  data.frame(Sample=samples, Group=groups, stringsAsFactors = FALSE)
+}
+test_that("Can add sample annotations using csv file", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  d <- add_sample_annotation(d, save_temp_csv(df))
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+})
+test_that("Will give error for non-tabular files", {
+  file <- tempfile(fileext = ".csv")
+  f2 %>% data.table::fread() %>% as.data.frame %>%
+    write.table(file = file, row.names = FALSE)
+
+  expect_error(read_skyline(file), 'Data should be tabular in CSV or tab-delimited format.')
+})
+test_that("Can add sample annotations using data.frame", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  d <- add_sample_annotation(d, df)
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+})
+
+test_that("Can add sample annotations when samples are not in order", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  df_shuffle <- df[sample(1:nrow(df), nrow(df), replace = FALSE), ]
+  d <- add_sample_annotation(d, df_shuffle)
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+})
+
+test_that("Will generate warning when no column is named Sample", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  df_rename <- df %>% rename(SS=Sample)
+  expect_warning(d <- add_sample_annotation(d, df_rename), "No column named 'Sample'")
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+})
+
+test_that("Can add annotation when Sample column is not 1st", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  df_reorder <- df[, c(2,1)]
+  d <- add_sample_annotation(d, df_reorder)
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+})
+
+test_that("Will generate error when not all samples are present", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  df_missing <- df[-1,]
+  expect_error(d <- add_sample_annotation(d, df_missing), 'All sample names must be in the first column')
+})
+
+test_that("Can handle factors", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  df_factor <- df %>% mutate_all(as.factor)
+  d <- add_sample_annotation(d, df_factor)
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+  expect_true(is.character(col_data$Group))
+})
+
+test_that("Can handle duplicate annotation columns", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  d <- add_sample_annotation(d, df)
+  expect_warning(d <- add_sample_annotation(d, df), 'These annotation columns already exist in data')
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+})
+
+test_that("Can add non-duplicate annotation columns", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d)
+  d <- add_sample_annotation(d, df)
+  df2 <- df %>% mutate(Group2=Group)
+  expect_warning(d <- add_sample_annotation(d, df2), 'These annotation columns already exist in data')
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group", "Group2"))
+  expect_equal(col_data$Group2, df$Group)
+})
+
+context("test-readfiles-nummatrix")
+test_that("Can read numeric matrix as LipidomicsExp", {
+  d <- read_skyline(f1)
+
+  # rownames are not molecules
+  mat <- assay(d, "Area")
+  expect_equal(.get_mol_dim(mat), "none")
+  expect_equal(.get_mol_dim(t(mat)), "none")
+  expect_equal(.get_mol_dim(rownames_to_column(as.data.frame(mat))), "none")
+
+  # set rownames to Molecule names
+  rownames(mat) <- rowData(d)$Molecule
+  expect_equal(.get_mol_dim(mat), "row_names")
+  expect_equal(.get_mol_dim(t(mat)), "col_names")
+  expect_equal(.get_mol_dim(rownames_to_column(as.data.frame(mat))), "first_col")
+
+
+  d <- as_lipidomics_experiment(mat)
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+
+  d <- as_lipidomics_experiment(t(mat))
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+
+  d <- as_lipidomics_experiment(rownames_to_column(as.data.frame(mat)))
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+})
+
+test_that("Can convert character matrix to numeric", {
+  d <- read_skyline(f1)
+
+  # rownames are not molecules
+  mat <- assay(d, "Area")
+  storage.mode(mat) <- storage.mode(mat) <- 'character'
+  rownames(mat) <- rowData(d)$Molecule
+  expect_equal(.get_mol_dim(mat), "row_names")
+  expect_equal(.get_mol_dim(t(mat)), "col_names")
+  expect_equal(.get_mol_dim(rownames_to_column(as.data.frame(mat))), "first_col")
+
+
+  d <- as_lipidomics_experiment(mat)
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+
+
+  d <- as_lipidomics_experiment(t(mat))
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+
+  d <- as_lipidomics_experiment(rownames_to_column(as.data.frame(mat)))
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+})
+
+test_that("Can convert character matrix to numeric", {
+  d <- read_skyline(f1)
+
+  # rownames are not molecules
+  mat <- assay(d, "Area")
+  storage.mode(mat) <- storage.mode(mat) <- 'character'
+  rownames(mat) <- rowData(d)$Molecule
+  mat[1:26] <- letters #replace numerical values with characters
+  expect_equal(.get_mol_dim(mat), "row_names")
+  expect_equal(.get_mol_dim(t(mat)), "col_names")
+  expect_equal(.get_mol_dim(rownames_to_column(as.data.frame(mat))), "first_col")
+
+
+  expect_warning(d <- as_lipidomics_experiment(mat), 'NAs introduced by coercion')
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+  expect_true(all(is.na(assay(d, "Area")[1:26])))
+
+  expect_warning(d <- as_lipidomics_experiment(t(mat)), 'NAs introduced by coercion')
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+  expect_true(all(is.na(assay(d, "Area")[1:26])))
+
+  expect_warning(d <- as_lipidomics_experiment(rownames_to_column(as.data.frame(mat))), 'NAs introduced by coercion')
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+  expect_true(all(is.na(assay(d, "Area")[1:26])))
+})
+
+test_that("Gives error if dataset is not numeric", {
+  d <- read_skyline(f1)
+
+  # rownames are not molecules
+  mat <- assay(d, "Area")
+  storage.mode(mat) <- storage.mode(mat) <- 'character'
+  rownames(mat) <- rowData(d)$Molecule
+  mat[1:length(mat)] <- paste(c(mat), 's') #replace numerical values with characters
+  expect_equal(.get_mol_dim(mat), "row_names")
+  expect_equal(.get_mol_dim(t(mat)), "col_names")
+  expect_equal(.get_mol_dim(rownames_to_column(as.data.frame(mat))), "first_col")
+
+
+  expect_error(
+    suppressWarnings(as_lipidomics_experiment(mat)),
+    'Dataset is not numeric'
+  )
+  expect_error(
+    suppressWarnings(as_lipidomics_experiment(t(mat))),
+    'Dataset is not numeric'
+  )
+  expect_error(
+    suppressWarnings(as_lipidomics_experiment(rownames_to_column(as.data.frame(mat)))),
+    'Dataset is not numeric'
+  )
+})
 context("test-readfiles-todo")
 test_that("Cannot mix pivoted and nonpivoted files", {
-  expect_error(d <- read_skyline(c(f2, f3)), "can't be converted")
+  # expect_error(d <- read_skyline(c(f2, f3)), "can't be converted")
 })

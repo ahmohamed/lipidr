@@ -14,7 +14,7 @@ plot_heatmap(data, measure = "Area", molecule_annotation = "Class",
 \item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
-Area.Normalized, Height or Retention.Time. Default is \code{Area}.}
+Area Normalized, Height or Retention Time. Default is \code{Area}.}
 
 \item{molecule_annotation}{The column name for lipid annotation, default to \code{Class}.}
 

@@ -9,7 +9,7 @@
 #'
 #' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`.
+#'   Area Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
 #'   logical vector with the same length as samples. Default.
@@ -49,13 +49,7 @@ normalize_pqn <- function(data, measure = "Area",
     na.rm = TRUE
   )
   data <- set_normalized(data, measure, TRUE)
-
-  if (log && !is_logged(data, measure)) {
-    assay(data, measure) <- log2(assay(data, measure))
-    data <- set_logged(data, measure, TRUE)
-  }
-
-  return(data)
+  return(.log_data(data, measure, log))
 }
 
 #' Normalize each class by its corresponding internal standard(s).
@@ -67,7 +61,7 @@ normalize_pqn <- function(data, measure = "Area",
 #'
 #' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`.
+#'   Area Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
 #'   logical vector with the same length as samples. Default.
@@ -123,13 +117,7 @@ normalize_istd <- function(data, measure = "Area",
 
     return(m[i, ] / f)
   })
-
-  if (log && !is_logged(data, measure)) {
-    assay(data, measure) <- log2(assay(data, measure))
-    data <- set_logged(data, measure, TRUE)
-  }
-
-  return(data)
+  return(.log_data(data, measure, log))
 }
 
 .prenormalize_check <- function(data, measure, exclude) {
@@ -140,7 +128,8 @@ normalize_istd <- function(data, measure = "Area",
     if (exclude == "blank") {
       data <- data[, !.is_blank(data)]
     } else {
-      data <- data[, exclude]
+      excluded_cols <- colnames(data[, exclude])
+      data <- data[, !colnames(data) %in% excluded_cols]
     }
   }
   assay_ <- assay(data, measure)
@@ -154,5 +143,19 @@ normalize_istd <- function(data, measure = "Area",
     assay_[assay_ < 1] <- 1
   }
   assay(data, measure) <- assay_
+  data
+}
+
+
+.log_data <- function(data, measure, log) {
+  assay_ <- assay(data, measure)
+  if (any(assay_ < 1)) {
+    warning(measure, " contains values < 1. Replacing with 1.")
+    assay_[assay_ < 1] <- 1
+  }
+  if (log && !is_logged(data, measure)) {
+    assay(data, measure) <- log2(assay_)
+    data <- set_logged(data, measure, TRUE)
+  }
   data
 }

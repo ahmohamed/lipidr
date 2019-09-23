@@ -81,54 +81,59 @@ LipidomicsExperiment <- function(assay_list, metadata,
 #' @return LipidomicsExperiment
 #' @export
 as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
-  # if (!.is_skyline_export(df)) {
-  #   #return(.to_summarized_experiment(d))
-  # }
-  first_col <- 0
-  if (is.factor(df[, 1])) {
-    df[, 1] <- as.character(df[, 1])
+  if (!is.data.frame(df) && !is.matrix(df)) {
+    stop("Dataset should be either a data.frame or a matrix.")
   }
-  if (is.character(df[, 1])) {
-    first_col <- sum(!annotate_lipids(df[, 1], no_match = "ignore")$not_matched)
+
+  if (.is_skyline(df)) {
+    return(read_skyline(df))
   }
-  rows <- 0
-  if (is.character(rownames(df))) {
-    rows <- sum(!annotate_lipids(rownames(df), no_match = "ignore")$not_matched)
-  }
-  if (first_col == 0 && rows == 0) {
+
+  mol_dim <- .get_mol_dim(df)
+  if (mol_dim == "none") {
     stop(
       "Data frame does not contain valid lipid names. ",
       "Lipids features should be in rownames or the first column."
     )
   }
 
-  if (first_col > rows) {
-    # Molecules are in the first column
+  if (mol_dim == 'first_col') {
     molecules <- df[, 1]
-    if (sum(duplicated(molecules))) {
-      row_dimname <- "TransitionId"
-      summarized <- FALSE
-      df <- df[, -1]
-    } else {
-      row_dimname <- "MoleculeId"
-      summarized <- TRUE
-      rownames(df) <- df[, 1]
-      df <- df[, -1]
-    }
+    df <- df[, -1]
   } else {
-    # Molecules are in the rownames
+    if (mol_dim == 'col_names') {
+      df <- t(df)
+    }
     molecules <- rownames(df)
-    row_dimname <- "MoleculeId"
-    summarized <- TRUE
+  }
+
+  if (!is.data.frame(df)) {
+    df <- as.data.frame(df)
   }
   df <- df %>% mutate_if(is.factor, as.character)
-  assay_list <- list(Area = data.matrix(df, rownames.force = TRUE))
+
+  data_mat <- data.matrix(df, rownames.force = TRUE)
+  if (!.is_num_matrix(data_mat)) {
+    stop('Dataset is not numeric.')
+  }
+
+  if (sum(duplicated(molecules)) > 0) {
+    row_dimname <- "TransitionId"
+    summarized <- FALSE
+  } else {
+    row_dimname <- "MoleculeId"
+    summarized <- TRUE
+    rownames(data_mat) <- molecules
+  }
+
+
+  assay_list <- list(Area = data_mat)
   assay_list <- as(assay_list, "SimpleList")
   mcols(assay_list) <- list(logged = logged, normalized = normalized)
   row_data <- DataFrame(
     filename = "dataframe",
     Molecule = molecules,
-    row.names = rownames(df)
+    row.names = rownames(data_mat)
   ) %>%
     left_join(annotate_lipids(molecules))
   metadata <- list(
@@ -187,13 +192,14 @@ to_long_format <- function(ds, measure = "Area") {
     gather(key = !!dims[[2]], value = !!measure, -!!dims[[1]]) %>%
     left_join(to_df(ds, "row")) %>%
     left_join(to_df(ds, "col")) %>%
+    mutate_at(vars(one_of("Molecule", "Sample")), factor) %>%
     mutate_at(vars(one_of("Molecule", "Sample")), fct_inorder)
 }
 
 #' @importFrom S4Vectors DataFrame
 toDataFrame <- function(df, row.names.col = "rowname") {
   nm <- data.frame(df)[, row.names.col]
-  df <- df[, !(colnames(df) %in% row.names.col)]
+  df <- df[, !(colnames(df) %in% row.names.col), drop=FALSE]
   DataFrame(df, row.names = nm)
 }
 

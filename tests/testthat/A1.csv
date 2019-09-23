@@ -1,4 +1,4 @@
-"","Peptide","Protein","Replicate","Precursor.Mz","Precursor.Charge","Product.Mz","Product.Charge","Fragment.Ion","Retention.Time","Area","Background","Peak.Rank"
+"","Peptide","Protein","Replicate","Precursor.Mz","Precursor.Charge","Product.Mz","Product.Charge","Fragment.Ion","Retention Time","Area","Background","Peak.Rank"
 "1","PE 34:1","PE","S1A",718.5,1,577.5,1,"Ion [577.500549/577.500549]","3.95","119262","3146","1"
 "2","PE 34:1","PE","S2A",718.5,1,577.5,1,"Ion [577.500549/577.500549]","3.95","160307","3307","1"
 "3","PE 34:1","PE","S3A",718.5,1,577.5,1,"Ion [577.500549/577.500549]","3.95","151440","4577","1"
