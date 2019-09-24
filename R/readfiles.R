@@ -202,12 +202,12 @@ add_sample_annotation <- function(data, annot_file) {
   measures_pattern <- .as_regex(measures, collapse = TRUE)
 
   colnames(original_data) <- sub(
-    paste0("\\.(", measures_pattern, ")"),
+    paste0("(", measures_pattern, ")"),
     "###\\1",
     colnames(original_data)
   )
 
-  ret <- original_data
+  ret <- original_data %>% mutate(TransitionId=seq_len(n()))
   ret <- ret %>%
     gather("sample.measure", "value", sample_cols) %>%
     separate(
@@ -215,6 +215,7 @@ add_sample_annotation <- function(data, annot_file) {
       into = c("Sample", "measure"),
       sep = "###", extra = "merge"
     ) %>%
+    mutate(Sample=trimws(Sample)) %>%
     spread(measure, value)
 
   if (any(colnames(ret) %in% col_defs$replicate_cols)) {

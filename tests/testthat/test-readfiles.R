@@ -210,6 +210,21 @@ test_that("Can handle multiple pivoted files with different columns", {
   expect_false(metadata(d)$summarized)
   expect_false(any(unlist(mcols(assays(d)))))
 })
+test_that("Can handle duplicate molecules", {
+  f3_double <- f3 %>% data.table::fread() %>% as.data.frame %>% rbind(., .) %>% save_temp_csv()
+  d <- read_skyline(f3_double)
+  expect_valid_lipidex(d, c(38, 11))
+
+  row_data <- rowData(d)
+  expect_equal(unique(row_data$filename), basename(f3_double))
+  expect_true(all(c("Retention Time", "Area", "Background") %in% assayNames(d)))
+  expect_false(any(grepl("^Replicate", assayNames(d))))
+  expect_equal(metadata(d)$dimnames, c("TransitionId", "Sample"))
+  expect_false(metadata(d)$summarized)
+  expect_false(any(unlist(mcols(assays(d)))))
+  d_sum <- summarize_transitions(d)
+  expect_valid_lipidex(d_sum, c(19, 11))
+})
 
 context("test-readfiles-sample_annot")
 gen_sample_annot <- function(d) {
@@ -343,6 +358,7 @@ test_that("Can read numeric matrix as LipidomicsExp", {
   expect_equal(.get_mol_dim(rownames_to_column(as.data.frame(mat))), "first_col")
 
 
+
   d <- as_lipidomics_experiment(mat)
   expect_valid_lipidex(d, c(19, 11))
   expect_equal(rownames(d), rownames(mat))
@@ -354,6 +370,18 @@ test_that("Can read numeric matrix as LipidomicsExp", {
   expect_equal(class(c(assay(d, "Area"))), 'numeric')
 
   d <- as_lipidomics_experiment(rownames_to_column(as.data.frame(mat)))
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+
+
+  ## Data.frame
+  d <- as_lipidomics_experiment(mat %>% as.data.frame())
+  expect_valid_lipidex(d, c(19, 11))
+  expect_equal(rownames(d), rownames(mat))
+  expect_equal(class(c(assay(d, "Area"))), 'numeric')
+
+  d <- as_lipidomics_experiment(t(mat) %>% as.data.frame())
   expect_valid_lipidex(d, c(19, 11))
   expect_equal(rownames(d), rownames(mat))
   expect_equal(class(c(assay(d, "Area"))), 'numeric')
@@ -445,6 +473,13 @@ test_that("Gives error if dataset is not numeric", {
     suppressWarnings(as_lipidomics_experiment(rownames_to_column(as.data.frame(mat)))),
     'Dataset is not numeric'
   )
+})
+test_that(".check_lipids_molecules can handle drop=FALSE", {
+  d <- read_skyline(f1)
+  mat <- assay(d, "Area")
+  rownames(mat) <- rowData(d)$Molecule
+  first_col <- rownames_to_column(as.data.frame(mat))
+  expect_true(.have_lipids_molecules(first_col[, 1, drop=FALSE]), "first_col")
 })
 context("test-readfiles-todo")
 test_that("Cannot mix pivoted and nonpivoted files", {

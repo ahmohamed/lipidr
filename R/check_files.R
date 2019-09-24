@@ -79,6 +79,8 @@
 }
 
 .have_lipids_molecules <- function(mols) {
+  # correcting for edge case where df[,1, drop=FALSE] is passed
+  mols <- unlist(mols) 
   matched <- !annotate_lipids(mols, no_match = "ignore")$not_matched
   if ((sum(matched) / length(mols)) < 0.5) {
     return(FALSE)
