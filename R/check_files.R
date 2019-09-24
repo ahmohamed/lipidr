@@ -121,7 +121,7 @@
 col_defs <- list(
   class_cols = c("Protein Name", "Protein"),
   molecule_cols = c(
-    "Peptide Name", "Peptide", "Molecule Name", "Precursor Ion.Name"
+    "Peptide Name", "Peptide", "Molecule Name", "Precursor Ion Name"
   ),
   replicate_cols = c("Replicate Name", "Replicate"),
   intensity_cols = c("Area", "Height", "Area Normalized"),
