@@ -44,10 +44,17 @@ normalize_pqn <- function(data, measure = "Area",
   m <- assay(data, measure)
 
   # factor_n = median ( lipid_i_n/ avg(lipid_i) )
-  assay(data, measure) <- m / apply(
+  factor_n <- apply(
     m / rowMeans(m, na.rm = TRUE), 2, median,
     na.rm = TRUE
   )
+  normalized_m <- apply(m, 1, function(x) x/factor_n) %>% t()
+  rownames(normalized_m) <- rownames(m)
+  assay(data, measure) <- normalized_m
+  # assay(data, measure) <- m / apply(
+  #   m / rowMeans(m, na.rm = TRUE), 2, median,
+  #   na.rm = TRUE
+  # )
   data <- set_normalized(data, measure, TRUE)
   return(.log_data(data, measure, log))
 }
@@ -101,9 +108,10 @@ normalize_istd <- function(data, measure = "Area",
   mistd <- mistd / rowMeans(mistd, na.rm = TRUE)
 
   # per class:
+  x_dimname <- metadata(data)$dimnames[[1]]
   istd_list <- to_df(data) %>%
     group_by(filename, Class) %>%
-    mutate(istd_list = list(as.character(MoleculeId[istd]))) %>%
+    mutate(istd_list = list(as.character( (!!sym(x_dimname))[istd] ))) %>%
     .$istd_list
 
   assay(data, measure) <- laply(seq_along(istd_list), function(i) {
@@ -125,7 +133,7 @@ normalize_istd <- function(data, measure = "Area",
     stop(measure, " is already normalized")
   }
   if (!is.null(exclude)) {
-    if (exclude == "blank") {
+    if (length(exclude) == 1 && "blank" %in% exclude) {
       data <- data[, !.is_blank(data)]
     } else {
       excluded_cols <- colnames(data[, exclude])
@@ -138,10 +146,10 @@ normalize_istd <- function(data, measure = "Area",
             " Replacing with mimnum detected value.")
     assay_[!is.finite(assay_)] <- min(assay_, na.rm = TRUE)
   }
-  if (any(assay_ < 1)) {
-    warning(measure, " contains values < 1. Replacing with 1.")
-    assay_[assay_ < 1] <- 1
-  }
+  # if (any(assay_ < 1)) {
+  #   warning(measure, " contains values < 1. Replacing with 1.")
+  #   assay_[assay_ < 1] <- 1
+  # }
   assay(data, measure) <- assay_
   data
 }
