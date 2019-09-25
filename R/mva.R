@@ -276,6 +276,8 @@ plot_ropls_results <- function(mvaresults, components,
 #' @param color_by Sample annotation (or lipid annotation in case of
 #'   `plot_mva_loadings`) to use as color. Defaults to individual samples /
 #'   lipids
+#' @param ellipse Whether to plot ellipses around groups
+#' @param hotelling Whether to plot Hotelling T2.
 #'
 #' @return `plot_mva` returns a ggplot of the sample scores.
 #' @export
@@ -299,10 +301,13 @@ plot_ropls_results <- function(mvaresults, components,
 #'   method = "OPLS-DA", group_col = "Diet", groups = c("HighFat", "Normal")
 #' )
 #' plot_mva(mvaresults, color_by = "group")
-plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
+plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL,
+  ellipse = TRUE, hotelling = TRUE) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   if (!inherits(mvaresults, "pcoa")) {
-    return(plot_ropls_results(mvaresults, components, color_by))
+    return(
+      plot_ropls_results(mvaresults, components, color_by, ellipse, hotelling)
+    )
   }
 
   ret <- .get_mds_matrix(mvaresults, components, color_by)
