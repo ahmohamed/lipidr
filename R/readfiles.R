@@ -91,7 +91,7 @@ add_sample_annotation <- function(data, annot_file) {
   .check_sample_annotation(data, annot)
 
   # check if any column is named "sample", otherwise take the first column
-  sample_col <- grep("Sample", colnames(annot), ignore.case = TRUE, value = TRUE)
+  sample_col <- grep("^Sample$", colnames(annot), ignore.case = TRUE, value = TRUE)
   if (length(sample_col) > 0) {
     sample_col <- sample_col[[1]]
   } else {
@@ -113,7 +113,7 @@ add_sample_annotation <- function(data, annot_file) {
 
     annot <- annot[, !colnames(annot) %in% annot_cols_exist, drop=FALSE]
   }
-
+  annot <- distinct(annot)
   colData(data) <- col_data %>% left_join(annot, by = c(rowname = sample_col))
 
   data
