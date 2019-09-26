@@ -249,6 +249,15 @@ test_that("Will give error for non-tabular files", {
 
   expect_error(read_skyline(file), 'Data should be tabular in CSV or tab-delimited format.')
 })
+
+test_that("Can handle files with missing values in columns", {
+  file <- f2 %>% data.table::fread() %>% as.data.frame %>%
+    mutate(newcol <- ifelse(1:nrow(.) %% 2 == 0,  NA, 1)) %>%
+    save_temp_csv()
+
+  expect_valid_lipidex(read_skyline(file), c(19, 11))
+})
+
 test_that("Can add sample annotations using data.frame", {
   d <- read_skyline(f1)
   df <- gen_sample_annot(d)

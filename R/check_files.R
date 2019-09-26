@@ -2,7 +2,9 @@
 .is_tabular <- function(f) {
   col_count <- function(s) {
     tryCatch(
-      read.table(f, nrows = 10, sep=s) %>% ncol(),
+      read.table(f, nrows = 10, sep=s,
+        header = TRUE, quote = "\"", dec = ".",
+        fill = TRUE, comment.char = "") %>% ncol(),
       error = function(e){return(0)}
     )
   }
@@ -80,7 +82,7 @@
 
 .have_lipids_molecules <- function(mols) {
   # correcting for edge case where df[,1, drop=FALSE] is passed
-  mols <- unlist(mols) 
+  mols <- unlist(mols)
   matched <- !annotate_lipids(mols, no_match = "ignore")$not_matched
   if ((sum(matched) / length(mols)) < 0.5) {
     return(FALSE)
@@ -124,8 +126,8 @@ col_defs <- list(
     "Peptide Name", "Peptide", "Molecule Name", "Precursor Ion Name"
   ),
   replicate_cols = c("Replicate Name", "Replicate"),
-  intensity_cols = c("Area", "Height", "Area Normalized"),
+  intensity_cols = c("Area", "Height", "Area Normalized", "Normalized Area"),
   measure_cols = c(
-    "Area", "Height", "Area Normalized", "Retention Time", "Background"
+    "Area", "Height", "Area Normalized", "Normalized Area", "Retention Time", "Background"
   )
 )
