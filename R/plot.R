@@ -345,18 +345,21 @@ plot_heatmap <- function(data, measure = "Area",
   }
   col_annotation <- colData(data) %>% as.data.frame()
   row_annotation <- rowData(data) %>% as.data.frame()
+  check_na <- function(c) is.numeric(c) && any(is.na(c))
   if (!"all" %in% sample_annotation) {
     if (is.null(sample_annotation) || FALSE %in% sample_annotation) {
       col_annotation <- NULL
     } else {
-      col_annotation <- col_annotation[, sample_annotation, drop=FALSE]
+      col_annotation <- col_annotation[, sample_annotation, drop=FALSE] %>%
+        mutate_if(check_na, as.character)
     }
   }
   if (!"all" %in% molecule_annotation) {
     if (is.null(molecule_annotation) || FALSE %in% molecule_annotation) {
       row_annotation <- NULL
     } else {
-      row_annotation <- row_annotation[, molecule_annotation, drop=FALSE]
+      row_annotation <- row_annotation[, molecule_annotation, drop=FALSE] %>%
+        mutate_if(check_na, as.character)
     }
   }
   dim_names <- metadata(data)$dimnames
