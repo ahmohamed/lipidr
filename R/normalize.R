@@ -138,6 +138,9 @@ normalize_istd <- function(data, measure = "Area",
     } else {
       excluded_cols <- colnames(data[, exclude])
       data <- data[, !colnames(data) %in% excluded_cols]
+      if (ncol(data) == 0) {
+        stop("You cannot exclude all samples.")
+      }
     }
   }
   assay_ <- assay(data, measure)

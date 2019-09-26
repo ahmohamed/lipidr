@@ -27,7 +27,7 @@ expect_assay_equal <- function(e1, e2, measure) {
   expect_equal(mat, sum_mat[rownames(mat), ] )
 }
 
-context("test-normlize")
+context("test-normalize")
 test_that("Can be applied to both summarized and unsuammrized datasets", {
   expect_valid_lipidex(d, c(22,11))
   expect_valid_lipidex(
@@ -125,6 +125,15 @@ test_that("Values in excluded samples donot affect normlization", {
   d_norm <- suppressWarnings(normalize_pqn(d, measure = "Area", exclude=excluded, log = TRUE))
   d2_norm <- suppressWarnings(normalize_pqn(d2, measure = "Area", exclude=excluded, log = TRUE))
   expect_assay_equal(d_norm, d2_norm, "Area")
+})
+
+test_that("Gives error when all samples are excluded", {
+  excluded <- colnames(d)
+
+  expect_error(
+    normalize_pqn(d, measure = "Area", exclude=excluded, log = TRUE),
+    'You cannot exclude all samples'
+  )
 })
 
 test_that("PQN can correct for dilution factors", {
