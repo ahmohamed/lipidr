@@ -365,7 +365,7 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
     ylimits <- max(abs(mds_matrix[, 3])) * 1.1
 
     p <- p + ggrepel::geom_label_repel(
-      aes(label = ifelse(molrank > top.n, "", Molecule)),
+      aes(label = ifelse(molrank > top.n, "", as.character(Molecule))),
       size = 2.4, direction = "both", segment.alpha = 0.6,
       label.padding = 0.15, force = 0.5
     ) + xlim(-xlimits, xlimits) + ylim(-ylimits, ylimits)
