@@ -251,7 +251,7 @@ test_that("Will give error for non-tabular files", {
 })
 
 test_that("Can handle files with missing values in columns", {
-  file <- f2 %>% data.table::fread() %>% as.data.frame %>%
+  file <- f1 %>% data.table::fread() %>% as.data.frame %>%
     mutate(newcol <- ifelse(1:nrow(.) %% 2 == 0,  NA, 1)) %>%
     save_temp_csv()
 

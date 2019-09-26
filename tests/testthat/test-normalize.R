@@ -106,6 +106,21 @@ test_that("Excludes blanks by default", {
   expect_false(any(c("Blank_1", "Blank_2") %in% colnames(d_norm)))
 })
 
+test_that("Excludes blanks for other measures", {
+  d2 <- d
+  assay(d2, "newAssay") <- assay(d2, "Area")
+  d2 <- d2 %>% set_normalized("newAssay", FALSE) %>% set_logged("newAssay", FALSE)
+  d_norm <- suppressWarnings(normalize_pqn(d2, measure = "newAssay", log = TRUE))
+  expect_valid_lipidex(d_norm, c(22,9))
+  expect_false(any(c("Blank_1", "Blank_2") %in% colnames(d_norm)))
+})
+
+test_that("Gives error if measure is not in dataset", {
+  expect_error(
+    normalize_pqn(d, measure = "newAssay", log = TRUE),
+    'newAssay is not in the dataset.'
+  )
+})
 test_that("Can exclude selected samples", {
   expect_valid_lipidex(d, c(22,11))
   excluded <- c("TQC_1", "TQC_2", "TQC_3")

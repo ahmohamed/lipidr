@@ -129,12 +129,15 @@ normalize_istd <- function(data, measure = "Area",
 }
 
 .prenormalize_check <- function(data, measure, exclude) {
+  if (!measure %in% assayNames(data)) {
+    stop(measure, " is not in the dataset.")
+  }
   if (is_normalized(data, measure)) {
-    stop(measure, " is already normalized")
+    stop(measure, " is already normalized.")
   }
   if (!is.null(exclude)) {
     if (length(exclude) == 1 && "blank" %in% exclude) {
-      data <- data[, !.is_blank(data)]
+      data <- data[, !.is_blank(data, measure)]
     } else {
       excluded_cols <- colnames(data[, exclude])
       data <- data[, !colnames(data) %in% excluded_cols]
