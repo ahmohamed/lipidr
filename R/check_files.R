@@ -131,3 +131,9 @@ col_defs <- list(
     "Area", "Height", "Area Normalized", "Normalized Area", "Retention Time", "Background"
   )
 )
+
+.read_tabular <- function(f) {
+  .check_tabular(f)
+  fread(f, na.strings = c("", "NA", "#NA"), strip.white = TRUE, fill = TRUE) %>%
+    as.data.frame()
+}

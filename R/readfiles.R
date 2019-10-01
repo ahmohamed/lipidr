@@ -82,8 +82,7 @@ read_skyline <- function(files) {
 #' d[rowData(d)$istd, ]
 add_sample_annotation <- function(data, annot_file) {
   if(!is.data.frame(annot_file)) {
-    .check_tabular(annot_file)
-    annot <- as.data.frame(fread(annot_file))
+    annot <- .read_tabular(annot_file)
   } else {
     annot <- annot_file %>% mutate_if(is.factor, as.character)
   }
@@ -127,8 +126,7 @@ add_sample_annotation <- function(data, annot_file) {
 #' @noRd
 .read_skyline_file <- function(file) {
   if(!is.data.frame(file)) {
-    .check_tabular(file)
-    original_data <- as.data.frame(fread(file, stringsAsFactors = FALSE))
+    original_data <- .read_tabular(file)
   } else {
     original_data <- file
   }

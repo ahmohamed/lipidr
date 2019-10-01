@@ -50,6 +50,10 @@ laply <- function(l, fun) {
   ret.mat
 }
 
+fix_all_na <- function(df) {
+  df %>% mutate_if(function(x) all(is.na(x)),.funs = function(x) "NA")
+}
+
 .silent <- function(f) {
   return(function(...) suppressWarnings(suppressMessages(f(...))))
 }

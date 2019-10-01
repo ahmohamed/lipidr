@@ -102,7 +102,7 @@ normalize_istd <- function(data, measure = "Area",
     stop("No internal standards found in your lipid list.")
   }
   m <- assay(data, measure)
-  mistd <- m[istd, ]
+  mistd <- m[istd, , drop=FALSE]
 
   # istd_n = istd_ni / mean(istd_i)
   mistd <- mistd / rowMeans(mistd, na.rm = TRUE)

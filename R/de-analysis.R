@@ -44,7 +44,10 @@ de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
 
   group <- colData(data)[[group_col]]
   if (!all(symbols %in% as.character(group))) {
-    stop("Some of the constrasts variables are not present in group_col")
+    stop(
+      "These of the constrast variables are not present in ", group_col, ": ",
+      paste(symbols[!symbols %in% as.character(group)], collapse=", ")
+    )
   }
   data <- data[, group %in% symbols]
 
@@ -83,6 +86,14 @@ de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
 de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   if (is_formula(design)) {
     design <- model.matrix(design, data = colData(data))
+    if (!identical(colnames(data), rownames(design))) {
+      warning(
+        'These samples are not present in the design matrix: ',
+        paste(colnames(data) [!colnames(data) %in% rownames(design)], collapse = ", "),
+        '. Possibly because the grouping columns have missing values.'
+      )
+      data <- data[, rownames(design)]
+    }
   }
   if (!is.matrix(design)) {
     stop("design should be a matrix or formula")
@@ -90,6 +101,7 @@ de_design <- function(data, design, ..., coef = NULL, measure = "Area") {
   if (!limma::is.fullrank(design)) {
     stop("Tested variables are redundant (Design matrix is not full rank).")
   }
+
   vfit <- lmFit(assay(data, measure), design)
 
   if (is.null(coef)) {

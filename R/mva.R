@@ -45,7 +45,7 @@ mva <- function(data, measure = "Area",
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   method <- match.arg(method)
-  data_f <- data[!rowData(data)$istd, !.is_blank(data)]
+  data_f <- data[!rowData(data)$istd, !.is_blank(data, measure)]
   d <- data_f %>%
     assay(measure) %>%
     .replace_na_rowmean() %>%
@@ -158,25 +158,29 @@ get_group_vector_opls <- function(data_f, group_col, groups, method) {
 run_opls <- function(data, y,
   predI = 1, orthoI = 1,
   scaleC = "standard",
-  fig.pdfC = NULL, ...) {
+  fig.pdfC = NULL, info.txtC=NULL, ...) {
   opls(
     data,
     y = y,
     predI = predI, orthoI = orthoI,
     scaleC = scaleC,
-    fig.pdfC = fig.pdfC, ...
+    fig.pdfC = fig.pdfC,
+    crossvalI=min(nrow(data), 7),
+    info.txtC=info.txtC, ...
   )
 }
 
 run_pca <- function(data,
   predI = NA,
   scaleC = "standard",
-  fig.pdfC = NULL, ...) {
+  fig.pdfC = NULL, info.txtC=NULL, ...) {
   opls(
     data,
     predI = min(dim(data)),
     scaleC = scaleC,
-    fig.pdfC = fig.pdfC, ...
+    fig.pdfC = fig.pdfC,
+    info.txtC=info.txtC,
+    crossvalI=min(nrow(data), 7), ...
   )
 }
 
@@ -454,7 +458,8 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
     rownames_to_column("LipidID")
 
   mds_matrix <- mds_matrix %>%
-    .left_join_silent(row_data)
+    .left_join_silent(row_data) %>%
+    fix_all_na()
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }
 
@@ -484,5 +489,6 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
     mds_matrix <- mds_matrix %>%
       .left_join_silent(col_data)
   }
+  mds_matrix %>% fix_all_na()
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }

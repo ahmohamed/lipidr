@@ -28,7 +28,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure)
+  dlong <- to_long_format(data, measure) %>% fix_all_na()
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -95,7 +95,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure)
+  dlong <- to_long_format(data, measure) %>% fix_all_na()
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -149,6 +149,8 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
                                     measure = "logFC") {
   if (is.null(contrast)) {
     use_contrast <- de_results$contrast[[1]]
+  } else {
+    use_contrast <- contrast
   }
   measure <- sym(measure)
 
@@ -260,7 +262,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure)
+  dlong <- to_long_format(data, measure) %>% fix_all_na()
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -343,8 +345,8 @@ plot_heatmap <- function(data, measure = "Area",
   if (!requireNamespace("iheatmapr", quietly = TRUE)) {
     stop("Package 'iheatmapr' must be installed for heatmap plots")
   }
-  col_annotation <- colData(data) %>% as.data.frame()
-  row_annotation <- rowData(data) %>% as.data.frame()
+  col_annotation <- colData(data) %>% as.data.frame() %>% fix_all_na()
+  row_annotation <- rowData(data) %>% as.data.frame() %>% fix_all_na()
   check_na <- function(c) is.numeric(c) && any(is.na(c))
   if (!"all" %in% sample_annotation) {
     if (is.null(sample_annotation) || FALSE %in% sample_annotation) {
