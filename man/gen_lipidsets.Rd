@@ -4,10 +4,13 @@
 \alias{gen_lipidsets}
 \title{Generate lipid sets from lipid molecule names}
 \usage{
-gen_lipidsets(molecules)
+gen_lipidsets(molecules, min_size = 2)
 }
 \arguments{
 \item{molecules}{A character vector containing lipid molecule names.}
+
+\item{min_size}{Minimum number of molecules in a set to be included
+in enrichemnt.}
 }
 \value{
 List of lipid sets

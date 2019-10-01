@@ -2,6 +2,8 @@
 #'
 #' @param de.results Output of [de_analysis()].
 #' @param rank.by Statistic used to rank the lipid list.  Default is `logFC`.
+#' @param min_size Minimum number of molecules in a set to be included
+#'   in enrichemnt.
 #' @param ... Extra parameters passed to [fgsea::fgsea()].
 #'
 #' @return `lsea` returns enrichment results (data.frame) as returned from
@@ -24,14 +26,17 @@
 #' )
 #' enrich_results <- lsea(
 #'   de_results,
-#'   rank.by = "logFC", minSize = 4, nperm = 1000
+#'   rank.by = "logFC", min_size = 4, nperm = 1000
 #' )
 lsea <- function(de.results,
-                 rank.by = c("logFC", "P.Value", "adj.P.Val"), ...) {
+  rank.by = c("logFC", "P.Value", "adj.P.Val"), min_size = 2, ...) {
   rank.by <- match.arg(rank.by)
   rank_by_sym <- sym(rank.by)
 
-  sets <- gen_lipidsets(de.results$Molecule)
+  sets <- gen_lipidsets(de.results, min_size)
+  if (length(unlist(sets)) == 0) {
+    stop('Unable to generate lipid sets, possibly because of missing annotations.')
+  }
 
   de.results <- de.results %>%
     arrange(-!!rank_by_sym) %>%
@@ -45,6 +50,7 @@ lsea <- function(de.results,
     .gsea_fun(
       pathways = sets,
       stats = to_named_list(x, "Molecule", rank.by),
+      minSize = min_size,
       ...
     )) %>%
     bind_rows(.id = "contrast")
@@ -77,7 +83,7 @@ lsea <- function(de.results,
 #' @examples
 #' sig_lipidsets <- significant_lipidsets(enrich_results)
 significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
-                                  size.cutoff = 2) {
+  size.cutoff = 2) {
   enrich.results %>%
     filter(padj < p.cutoff, size > size.cutoff) %>%
     (function(x) split(x$set, x$contrast))
@@ -98,7 +104,7 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 #' @examples
 #' plot_class_enrichment(de_results, sig_lipidsets)
 plot_class_enrichment <- function(de.results, significant.sets,
-                                  measure = "logFC") {
+  measure = "logFC") {
   significant.sets <- lapply(
     significant.sets,
     function(c) sub("^Class_", "", c[grep("^Class_", c)])
@@ -122,6 +128,8 @@ plot_class_enrichment <- function(de.results, significant.sets,
 #' Generate lipid sets from lipid molecule names
 #'
 #' @param molecules A character vector containing lipid molecule names.
+#' @param min_size Minimum number of molecules in a set to be included
+#'   in enrichemnt.
 #'
 #' @return List of lipid sets
 #' @export
@@ -130,18 +138,38 @@ plot_class_enrichment <- function(de.results, significant.sets,
 #' data(data_normalized)
 #' molecules <- rowData(data_normalized)$Molecule
 #' gen_lipidsets(molecules)
-gen_lipidsets <- function(molecules) {
-  data_ <- annotate_lipids(molecules) %>%
+gen_lipidsets <- function(molecules, min_size=2) {
+  if (is.data.frame(molecules) &&
+    all(c( "Molecule", "Class", "total_cl", "total_cs") %in% colnames(molecules))
+    ) {
+    df <- molecules
+  } else {
+    df <- annotate_lipids(molecules)
+  }
+  clean_df <- df %>%
     filter(!istd) %>%
-    distinct(Molecule, Class, total_cl, total_cs) %>%
-    gather("collection", "value", Class, total_cl, total_cs) %>%
-    unite("set", collection, value, sep = "_")
+    distinct(Molecule, Class, total_cl, total_cs)
 
-  split(as.character(data_$Molecule), data_$set)
+  data_  <- clean_df%>%
+    gather("collection", "value", Class, total_cl, total_cs) %>%
+    filter(!is.na(value)) %>% # Remove NA sets
+    unite("set", collection, value, sep = "_") %>%
+    group_by(set) %>% filter(n() >= min_size)
+
+  sets <- split(as.character(data_$Molecule), data_$set)
+  lens <- lapply(sets, length) == length(unique(unlist(sets)))
+  if (any(lens)) {
+    warning(
+      'These sets contained all molecules, and were excluded: ',
+      paste(names(sets[lens]), collapse = ", ")
+    )
+    sets <- sets[!lens]
+  }
+  sets
 }
 
 # colnames used internally in gen.lipidset
-utils::globalVariables(c("collection", "value"))
+utils::globalVariables(c("collection", "value", "set"))
 
 # colnames output by fgsea
 utils::globalVariables(c("padj", "size", "pathway"))

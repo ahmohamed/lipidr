@@ -37,18 +37,21 @@ test_workflow <- function(d, clin_file=NULL, measure="Area", group_col=NULL, gro
     opls <- mva(d_nona, measure, method = "OPLS-DA", group_col = group_col, groups = groups)
     p <- plot_mva(opls, color_by = group_col)
 
-    # comparison <- paste(groups, collapse = " - ")
+    comparison <- paste(groups, collapse = " - ")
     de_results <- de_analysis(d, ..., measure=measure, group_col = group_col)
     significant_molecules(de_results)
     p <- plot_results_volcano(de_results, TRUE)
     p <- plot_trend(de_results)
 
-    lsea(de_results, rank.by = "logFC")
-    lsea(de_results, rank.by = "P.Value")
-    enrich <- lsea(de_results, rank.by = "adj.P.Val")
-    p <- plot_class_enrichment(de_results, significant_lipidsets(enrich))
-    p <- plot_chain_distribution(de_results, contrast = comparison, measure = "logFC")
-    p <- plot_chain_distribution(de_results, contrast = comparison, measure = "adj.P.Val")
+    sets <- gen_lipidsets(de_results)
+    if (length(sets) > 0) {
+      lsea(de_results, rank.by = "logFC")
+      lsea(de_results, rank.by = "P.Value")
+      enrich <- lsea(de_results, rank.by = "adj.P.Val")
+      p <- plot_class_enrichment(de_results, significant_lipidsets(enrich))
+      p <- plot_chain_distribution(de_results, contrast = comparison, measure = "logFC")
+      p <- plot_chain_distribution(de_results, contrast = comparison, measure = "adj.P.Val")
+    }
   }
   if (!is.null(group_col)) {
     de_results <- de_design(d, design = as.formula(paste0("~+", group_col)), measure=measure)
