@@ -7,10 +7,10 @@
 normalize_istd(data, measure = "Area", exclude = "blank", log = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to use as intensity, usually Area,
-Area.Normalized or Height. Default is \code{Area}.}
+Area Normalized or Height. Default is \code{Area}.}
 
 \item{exclude}{Samples to exclude, can be either: \cr
 "blank" - automatically detected blank samples and exclude them
@@ -20,7 +20,7 @@ logical vector with the same length as samples. Default.}
 is \code{TRUE}.}
 }
 \value{
-A SkylineExperiment object with normalized values. Each molecule
+A LipidomicsExperiment object with normalized values. Each molecule
 is normalized against the internal standard from the same class.
 }
 \description{

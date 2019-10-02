@@ -3,11 +3,11 @@
 #' Calculate a single intensity for molecules with multiple transitions,
 #' by determining the average or maximum intensity.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param method Choose to summarize multiple transitions by taking the average
 #'   or maximum intensity. Default is `max`
 #'
-#' @return A SkylineExperiment object with single intensities per lipid molecule
+#' @return A LipidomicsExperiment object with single intensities per lipid molecule
 #' @export
 #'
 #' @examples
@@ -18,27 +18,32 @@
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
 summarize_transitions <- function(data, method = c("max", "average")) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
-  if (metadata(data)$summarized) {
+  if (is_summarized(data)) {
     stop("data is already summarized")
   }
 
   method <- match.arg(method)
   multi_transitions <- to_df(data) %>%
+    mutate(Molecule = fct_inorder(Molecule)) %>%
     group_by_at(vars(-1, -matches("^Product")))
+
   transition_gps <- split(
     multi_transitions$TransitionId,
     multi_transitions %>% group_indices()
   )
-  sum_fun <- ifelse(method == "average", mean, max)
+  sum_fun <- function(x) {
+    if (all(is.na(x))) return (NA)
+    ifelse(method == "average", mean, max)(x, na.rm = TRUE)
+  }
 
   assay_list <- lapply(assays(data), function(m) {
     mret <- laply(transition_gps, function(x) {
       if (length(x) == 1) {
         return(m[x, ])
       } else {
-        return(apply(m[x, ], 2, sum_fun, na.rm = TRUE))
+        return(apply(m[x, ], 2, sum_fun))
       }
     })
     rownames(mret) <- names(transition_gps)
@@ -48,6 +53,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   assay_list <- as(assay_list, "SimpleList")
   mcols(assay_list) <- mcols(assays(data))
 
+  # TODO: set Molecule(filename) as rownames
   row_data <- multi_transitions %>%
     cbind(group_idx = group_indices(.)) %>%
     summarise(rowname = first(group_idx)) %>%
@@ -58,7 +64,7 @@ summarize_transitions <- function(data, method = c("max", "average")) {
   attrs <- metadata(data)
   attrs$summarized <- TRUE
   attrs$dimnames[[1]] <- "MoleculeId"
-  SkylineExperiment(
+  LipidomicsExperiment(
     assay_list = assay_list,
     metadata = attrs,
     colData = colData(data),

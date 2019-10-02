@@ -10,7 +10,8 @@
 mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS",
   "OPLS-DA"), group_col = NULL, groups = NULL, ...)
 
-plot_mva(mvaresults, components = c(1, 2), color_by = NULL)
+plot_mva(mvaresults, components = c(1, 2), color_by = NULL,
+  ellipse = TRUE, hotelling = TRUE)
 
 plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
   top.n = nrow(mvaresults$loadings))
@@ -18,7 +19,7 @@ plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
 top_lipids(mvaresults, top.n = 10)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{measure}{Which measure to use as intensity, usually Area (default).
 The measure should be already summarized and normalized.}
@@ -42,6 +43,10 @@ OPLS-DA results. Default is first 2 components.}
 \item{color_by}{Sample annotation (or lipid annotation in case of
 \code{plot_mva_loadings}) to use as color. Defaults to individual samples /
 lipids}
+
+\item{ellipse}{Whether to plot ellipses around groups}
+
+\item{hotelling}{Whether to plot Hotelling T2.}
 
 \item{top.n}{Number of top ranked features to highlight in the plot.
 If omitted, returns top 10 lipids.}
@@ -102,7 +107,7 @@ mvaresults <- mva(data_normalized, measure = "Area", method = "PCoA")
 # OPLS-DA
 mvaresults <- mva(
   data_normalized,
-  method = "OPLS-DA", group_col = "Diet", groups=c("HighFat", "Normal")
+  method = "OPLS-DA", group_col = "Diet", groups = c("HighFat", "Normal")
 )
 plot_mva(mvaresults, color_by = "group")
 plot_mva_loadings(mvaresults, color_by = "Class", top.n = 10)

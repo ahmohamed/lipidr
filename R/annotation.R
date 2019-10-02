@@ -8,6 +8,8 @@
 #' where zz:z indicates the combined chain length and unsaturation information.
 #'
 #' @param molecules A character vector containing lipid molecule names.
+#' @param no_match How to handle lipids that cannot be parsed? Default is
+#'   to give warnings.
 #' @return A data.frame with lipid annotations as columns. Input lipid names
 #'   are given in a column named "Molecule".
 #'
@@ -21,32 +23,47 @@
 #'   "TG(16:0/18:1/18:1)"
 #' )
 #' annotate_lipids(lipid_list)
-annotate_lipids <- function(molecules) {
+annotate_lipids <- function(molecules, no_match = c("warn", "remove", "ignore")) {
+  no_match <- match.arg(no_match)
   .data_internal("lipidDefaults")
   def <- .myDataEnv$lipidDefaults$clean_mols
+  molecules <- unique(as.character(molecules))
   not_in_db <- molecules[!molecules %in% def$Molecule]
 
-  if (length(not_in_db) == 0) {
-    def %>%
-      filter(Molecule %in% molecules) %>%
-      return()
+
+  in_db <- def[, c("Molecule", "clean_name", "ambig", "not_matched", "istd")] %>%
+    filter(Molecule %in% molecules)
+
+  if (length(not_in_db) > 0) {
+    clean_ <- .clean_molecule_name(not_in_db)
+    if (any(clean_$not_matched)) {
+      if (no_match == "warn") {
+        warning(
+          "Some lipid names couldn't be parsed because they don't follow ",
+          "the pattern 'CLS xx:x/yy:y' \n    ",
+          paste0(clean_$Molecule[clean_$not_matched], collapse = ", ")
+        )
+      }
+    }
+
+    clean_ <- clean_ %>%
+      .full_join_silent(in_db)
+  } else {
+    clean_ <- in_db
   }
 
-  clean_ <- .clean_molecule_name(not_in_db)
-  if (any(clean_$not_matched)) {
-    warning(
-      "Some lipid names couldn't be parsed because they don't follow ",
-      "the pattern 'CLS xx:x/yy:y' \n    ",
-      clean_$Molecule[clean_$not_matched]
-    )
-  }
 
-  clean_ %>%
+
+  ret <- clean_ %>%
     filter(!not_matched) %>%
     .parse_lipid_info() %>%
     .left_join_silent(.myDataEnv$lipidDefaults$class_info) %>%
-    .full_join_silent(def %>% filter(Molecule %in% molecules)) %>%
-    return()
+    mutate(Class = as.character(ifelse(is.na(Class), class_stub, Class)))
+
+  if (no_match != "remove") {
+    ret <- ret %>% .full_join_silent(clean_)
+  }
+  ret
 }
 
 #### Internal functions ############################################
@@ -122,13 +139,14 @@ annotate_lipids <- function(molecules) {
         paste0(
           p$class, "[ -]",
           p$chain, "([/-]", p$chain, ")?",
+          "([/-]", p$chain, ")?",
           "([/-]", p$chain, ")?.*$"
         ),
-        "\\1#$#\\2#$#\\4#$#\\6", first_mol
+        "\\1#$#\\2#$#\\4#$#\\6#$#\\8", first_mol
       )
     ) %>%
     separate(
-      first_mol, c("class_stub", "chain1", "chain2", "chain3"),
+      first_mol, c("class_stub", "chain1", "chain2", "chain3", "chain4"),
       sep = "#\\$#"
     ) %>%
     separate(
@@ -143,10 +161,14 @@ annotate_lipids <- function(molecules) {
       chain3, c("l_3", "s_3"),
       sep = "\\:", remove = FALSE, convert = TRUE, fill = "right"
     ) %>%
+    separate(
+      chain4, c("l_4", "s_4"),
+      sep = "\\:", remove = FALSE, convert = TRUE, fill = "right"
+    ) %>%
     rowwise() %>%
     mutate(
-      total_cl = sum(l_1, l_2, l_3, na.rm = TRUE),
-      total_cs = sum(s_1, s_2, s_3, na.rm = TRUE)
+      total_cl = sum(l_1, l_2, l_3, l_4, na.rm = TRUE),
+      total_cs = sum(s_1, s_2, s_3, s_4, na.rm = TRUE)
     ) %>%
     ungroup()
 }
@@ -154,9 +176,9 @@ annotate_lipids <- function(molecules) {
 # Defined as lipid annotations
 utils::globalVariables(c(
   "first_mol",
-  "chain1", "chain2", "chain3",
-  "l_1", "s_1", "l_2", "s_2", "l_3", "s_3",
+  "chain1", "chain2", "chain3", "chain4",
+  "l_1", "s_1", "l_2", "s_2", "l_3", "s_3", "l_4", "s_4",
   "total_cl", "total_cs",
   "Molecule", "clean_name", "ambig", "not_matched", "istd",
-  "Class"
-  ))
+  "Class", "class_stub"
+))

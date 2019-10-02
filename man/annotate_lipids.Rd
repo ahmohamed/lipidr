@@ -4,10 +4,13 @@
 \alias{annotate_lipids}
 \title{Parse molecule names to extract lipid class and chain information.}
 \usage{
-annotate_lipids(molecules)
+annotate_lipids(molecules, no_match = c("warn", "remove", "ignore"))
 }
 \arguments{
 \item{molecules}{A character vector containing lipid molecule names.}
+
+\item{no_match}{How to handle lipids that cannot be parsed? Default is
+to give warnings.}
 }
 \value{
 A data.frame with lipid annotations as columns. Input lipid names

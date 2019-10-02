@@ -8,12 +8,12 @@ plot_lipidclass(data, type = c("boxplot", "sd"), measure = "Area",
   log = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}}.}
+\item{data}{LipidomicsExperiment object.}
 
 \item{type}{plot type, either \code{boxplot} or \code{sd}. Default is \code{boxplot}.}
 
 \item{measure}{Which measure to plot the distribution of: usually Area,
-Area.Normalized, Height or Retention.Time. Default is \code{Area}}
+Area Normalized, Height or Retention Time. Default is \code{Area}}
 
 \item{log}{Whether values should be log2 transformed. Default is \code{TRUE}
 (Set FALSE for retention time).}
@@ -26,20 +26,20 @@ A ggplot object.
 \code{sd} plots a bar chart for standard deviation of a certain measure in each
 class. This plot type is usually used to look at standard deviations of
 intensity in each class, but can also be used to look at different measures
-such as \code{Retention.Time}, to ensure all lipids are eluted within the expected
+such as \code{Retention Time}, to ensure all lipids are eluted within the expected
 range. To assess instrumental variation apply the function to technical
 quality control samples. \cr\cr
 \code{boxplot} Plots a boxplot chart to examine the distribution of values per
 class. This plot type is usually used to look at the intensity distribution
-in eachclass, but can also be used to look at different measures, such as
-\code{Retention.Time} or \code{Background}.
+in each class, but can also be used to look at different measures, such as
+\code{Retention Time} or \code{Background}.
 }
 \examples{
 data(data_normalized)
 
 d_qc <- data_normalized[, data_normalized$group == "QC"]
 plot_lipidclass(d_qc, "sd", "Area", log = TRUE)
-plot_lipidclass(d_qc, "sd", "Retention.Time", log = FALSE)
+plot_lipidclass(d_qc, "sd", "Retention Time", log = FALSE)
 plot_lipidclass(d_qc, "boxplot", "Area", log = TRUE)
-plot_lipidclass(d_qc, "boxplot", "Retention.Time", log = FALSE)
+plot_lipidclass(d_qc, "boxplot", "Retention Time", log = FALSE)
 }

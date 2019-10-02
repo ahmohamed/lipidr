@@ -2,7 +2,7 @@
 title: "Workflow"
 author:
 - name: Ahmed Mohamed
-  affiliation: Prescision & Systems Biomedicine, QIMR Berghofer, Australia
+  affiliation: Precision & Systems Biomedicine, QIMR Berghofer, Australia
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -103,7 +103,7 @@ colData(d)
 
 ### Data subsetting
 
-It is helpful to imagine SkylineExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is `d[rows, cols]`.
+It is helpful to imagine LipidomicsExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is `d[rows, cols]`.
 
 In the example below we select the first 10 transitions and 10 samples. We can check the `rowData` and `colData`.
 
@@ -152,7 +152,7 @@ plot_samples(d, type = "tic", log = TRUE)
 We can also look at intensity and retention time distributions for each lipid molecule using `plot_molecules(type = boxplot)`. It is recommended to assess the variation across quality control samples.
 
 ```{r, fig.width=10, fig.height=6}
-plot_molecules(d_qc, "sd", measure = "Retention.Time", log = FALSE)
+plot_molecules(d_qc, "sd", measure = "Retention Time", log = FALSE)
 plot_molecules(d_qc, "cv", measure = "Area")
 ```
 

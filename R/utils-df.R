@@ -23,12 +23,11 @@ to_num_matrix <- function(data, sample, feature, measure) {
   data %>%
     select(!!sample, !!feature, !!measure) %>%
     spread(!!sample, !!measure) %>%
-    to_rownames_(as.character(feature)) %>%
-    return()
+    to_rownames_(as.character(feature))
 }
 
 .replace_na_rowmean <- function(m) {
-  k <- which(is.na(m), arr.ind = TRUE)
+  k <- which(!is.finite(m), arr.ind = TRUE)
   if (length(k) > 0) {
     m[k] <- rowMeans(m, na.rm = TRUE)[k[, 1]]
   }
@@ -37,7 +36,7 @@ to_num_matrix <- function(data, sample, feature, measure) {
 
 rownames_to_column <- function(df, var = "rowname") {
   stopifnot(is.data.frame(df))
-  df <- cbind(data.frame(rownames(df)), df)
+  df <- cbind(data.frame(rownames(df), stringsAsFactors = FALSE), df)
   colnames(df)[[1]] <- var
   rownames(df) <- NULL
   df
@@ -49,6 +48,10 @@ laply <- function(l, fun) {
   ret.mat <- ret %>% unlist() %>% matrix(nrow = length(l), byrow = TRUE)
   colnames(ret.mat) <- names(ret[[1]])
   ret.mat
+}
+
+fix_all_na <- function(df) {
+  df %>% mutate_if(function(x) all(is.na(x)),.funs = function(x) "NA")
 }
 
 .silent <- function(f) {

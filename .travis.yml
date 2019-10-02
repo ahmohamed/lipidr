@@ -9,6 +9,27 @@ matrix:
       r: bioc-devel
     - os: osx
       r: bioc-release
+    - stage: Deploy
+      os: osx
+      r_packages:
+        - pkgdown
+        - covr
+        - widgetframe
+      script: 
+        - Rscript -e 'covr::codecov(type="all")'
+        - R CMD INSTALL .
+        - Rscript -e 'pkgdown::build_site()'
+      deploy:
+        - provider: pages
+          skip-cleanup: true
+          github-token: $GITHUB_TOKEN
+          keep-history: false
+          local-dir: docs
+          on:
+            branch: 
+              - master
+              - develop
+              - feature/pkgdown
   allow_failures:
     - os: osx
 
@@ -18,13 +39,8 @@ env:
  global:
    - CRAN: http://cran.rstudio.com
 
-r_github_packages: tidyverse/ggplot2
-
 notifications:
   email:
     on_success: change
     on_failure: change
-
-after_success:
-  - Rscript -e 'covr::codecov(type="all")'
   

@@ -1,9 +1,10 @@
 #' Read Skyline exported files
 #'
-#' @param files Character vector with filepaths to 
+#' @param files Character vector with filepaths to
 #'   Skyline exported files in CSV format.
 #' @importFrom forcats fct_inorder
-#' @return SkylineExperiment object.
+#' @importFrom data.table fread
+#' @return LipidomicsExperiment object.
 #' @export
 #'
 #' @examples
@@ -16,7 +17,19 @@
 #' # View automatically generated lipid annotations
 #' rowData(d)
 read_skyline <- function(files) {
-  names(files) <- basename(files)
+  if (is.data.frame(files)) {
+    files <- list(dataset=files)
+  }
+  if (is.null(names(files))) {
+    char_files <- sapply(files, is.character)
+    if (any(char_files)) {
+      names(files)[char_files] <- basename(unlist(files[char_files]))
+    }
+    if (any(!char_files)) {
+      names(files)[!char_files] <- paste('dataset', seq_along(files[!char_files]))
+    }
+  }
+
   datalist <- lapply(files, .read_skyline_file) %>% .uniform_attrs()
 
   original_data <- datalist %>%
@@ -27,6 +40,7 @@ read_skyline <- function(files) {
     .copy_attr(datalist) %>%
     .to_summarized_experiment()
 
+  .check_lipids_molecules(rowData(original_data)$Molecule)
   message(
     "Successfully read ", length(files), " methods.\n",
     "Your data contain ", ncol(original_data), " samples, ",
@@ -39,10 +53,11 @@ read_skyline <- function(files) {
 
 #' Add sample annotation to Skyline data frame
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
-#' @param annot_file CSV file with at least 2 columns, sample names & group(s).
+#' @param data LipidomicsExperiment object.
+#' @param annot_file CSV file or a data.frame with at least 2 columns,
+#'   sample names & group(s).
 #'
-#' @return Skyline data.frame with sample group information.
+#' @return LipidomicsExperiment with sample group information.
 #' @export
 #'
 #' @examples
@@ -52,7 +67,7 @@ read_skyline <- function(files) {
 #' filelist <- list.files(datadir, "data.csv", full.names = TRUE)
 #' d <- read_skyline(filelist)
 #'
-#' # Add clinical info to existing SkylineExperiment object
+#' # Add clinical info to existing LipidomicsExperiment object
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' colData(d)
@@ -66,13 +81,18 @@ read_skyline <- function(files) {
 #' # Note we are subsetting rows
 #' d[rowData(d)$istd, ]
 add_sample_annotation <- function(data, annot_file) {
-  annot <- read.csv(annot_file)
+  if(!is.data.frame(annot_file)) {
+    annot <- .read_tabular(annot_file)
+  } else {
+    annot <- annot_file %>% mutate_if(is.factor, as.character)
+  }
   stopifnot(ncol(annot) > 1)
+  .check_sample_annotation(data, annot)
 
   # check if any column is named "sample", otherwise take the first column
-  sample_col <- grep("Sample", colnames(annot), ignore.case = TRUE)
+  sample_col <- grep("^Sample$", colnames(annot), ignore.case = TRUE, value = TRUE)
   if (length(sample_col) > 0) {
-    sample_col <- colnames(annot)[sample_col][[1]]
+    sample_col <- sample_col[[1]]
   } else {
     warning("No column named 'Sample', taking the first column as sample names")
     sample_col <- colnames(annot)[[1]]
@@ -90,9 +110,9 @@ add_sample_annotation <- function(data, annot_file) {
 
     if (length(annot_cols) == 0) return(data)
 
-    annot <- annot[, !colnames(annot) %in% annot_cols_exist]
+    annot <- annot[, !colnames(annot) %in% annot_cols_exist, drop=FALSE]
   }
-
+  annot <- distinct(annot)
   colData(data) <- col_data %>% left_join(annot, by = c(rowname = sample_col))
 
   data
@@ -101,30 +121,26 @@ add_sample_annotation <- function(data, annot_file) {
 ###########################################################################
 #' Internal method to read skyline file
 #' @param file skyline exported file in CSV format
-#' @importFrom utils read.csv
 #' @importFrom tidyr gather spread separate
 #' @return std data.frame
+#' @noRd
 .read_skyline_file <- function(file) {
-  original_data <- read.csv(file, stringsAsFactors = FALSE)
+  if(!is.data.frame(file)) {
+    original_data <- .read_tabular(file)
+  } else {
+    original_data <- file
+  }
+
+  .check_skyline(original_data)
+
+  # Check it is not an empty file
+  if (!nrow(original_data)) {
+    stop("file ", file, " does not have any data.")
+  }
   original_data[original_data == "#N/A"] <- NA
 
-  col_defs <- list(
-    class_cols = c("Protein.Name", "Protein"),
-    molecule_cols = c(
-      "Peptide.Name", "Peptide", "Molecule.Name", "Precursor.Ion.Name"
-    ),
-    replicate_cols = c("Replicate.Name", "Replicate"),
-    intensity_cols = c("Area", "Height", "Area.Normalized"),
-    measure_cols = c(
-      "Area", "Height", "Area.Normalized", "Retention.Time", "Background"
-    )
-  )
-
-  .col_exists(original_data, col_defs$class_cols)
   molecule_col <- .col_exists(original_data, col_defs$molecule_cols)[[1]]
   colnames(original_data)[[ molecule_col ]] <- "Molecule"
-
-  .col_exists(original_data, col_defs$intensity_cols)
 
   if (.is_pivoted(original_data, col_defs$intensity_cols)) {
     return(.read_pivoted(original_data, col_defs))
@@ -184,13 +200,12 @@ add_sample_annotation <- function(data, annot_file) {
   measures_pattern <- .as_regex(measures, collapse = TRUE)
 
   colnames(original_data) <- sub(
-    paste0("\\.(", measures_pattern, ")"),
+    paste0("(", measures_pattern, ")"),
     "###\\1",
     colnames(original_data)
   )
 
-  ret <- original_data
-  ret[, sample_cols] <- sapply(ret[, sample_cols], as.numeric)
+  ret <- original_data %>% mutate(TransitionId=seq_len(n()))
   ret <- ret %>%
     gather("sample.measure", "value", sample_cols) %>%
     separate(
@@ -198,7 +213,14 @@ add_sample_annotation <- function(data, annot_file) {
       into = c("Sample", "measure"),
       sep = "###", extra = "merge"
     ) %>%
+    mutate(Sample=trimws(Sample)) %>%
     spread(measure, value)
+
+  if (any(colnames(ret) %in% col_defs$replicate_cols)) {
+    ret <- ret[, !colnames(ret) %in% col_defs$replicate_cols]
+    measures <- measures[!measures %in% col_defs$replicate_cols]
+  }
+  ret <- ret %>% mutate_at(vars(one_of(measures)), as.numeric)
 
   attr(ret, "skyline") <- list(
     skyline = TRUE,
@@ -218,7 +240,7 @@ add_sample_annotation <- function(data, annot_file) {
   if (throws && length(col_idx) == 0) {
     stop(
       "At least one of these columns should be exported from Skyline report.",
-      cols
+      paste(cols, collapse = ", ")
     )
   }
   col_idx

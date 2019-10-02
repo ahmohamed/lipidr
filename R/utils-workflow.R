@@ -1,11 +1,12 @@
+#' @importFrom rlang as_name as_label
 .check_log <- function(d, measure) {
-  if (measure == "Retention.Time") {
+  if (measure == "Retention Time") {
     warning("Retention time should not be logged")
   }
-  if (mcols(assays(d), use.names = TRUE)[measure, "logged"]) {
+  if (is_logged(d, as_name(measure))) {
     return(measure)
   }
-  paste0("log2(", measure, ")")
+  quo(log2(!!measure))
 }
 .copy_attr <- function(d, original) {
   attr(d, "skyline") <- attr(original, "skyline")
@@ -21,7 +22,10 @@
   common_cols <- Reduce(intersect, cols)
   omitted_cols <- all_cols[!all_cols %in% common_cols]
   if (length(omitted_cols) > 0) {
-    warning("Some columns were not available in all files. ", omitted_cols)
+    warning(
+      "Some columns were not available in all files. ",
+      paste(omitted_cols, collapse = ", ")
+    )
   }
 
   ret <- bind_rows(datalist, .id = "filename") %>%

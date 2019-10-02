@@ -12,7 +12,7 @@ utils::globalVariables(c("molrank"))
 #' Blank samples are automatically detected (using TIC) and excluded.
 #' Missing data are imputed using average lipid intensity across all samples.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area (default).
 #'   The measure should be already summarized and normalized.
 #' @param method Either PCA, PCoA, OPLS or OPLS-DA.  Default is `PCA`.
@@ -42,10 +42,10 @@ utils::globalVariables(c("molrank"))
 mva <- function(data, measure = "Area",
                 method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
                 group_col = NULL, groups = NULL, ...) {
-  stopifnot(inherits(data, "SkylineExperiment"))
+  stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   method <- match.arg(method)
-  data_f <- data[!rowData(data)$istd, !.is_blank(data)]
+  data_f <- data[!rowData(data)$istd, !.is_blank(data, measure)]
   d <- data_f %>%
     assay(measure) %>%
     .replace_na_rowmean() %>%
@@ -58,24 +58,7 @@ mva <- function(data, measure = "Area",
       group_col <- NULL
     }
   }
-
-  if (method == "PCA") {
-    object <- prcomp(d, scale = TRUE)
-    return(structure(list(
-      scores = object$x,
-      loadings = object$rotation,
-      variance = object$stdev,
-      var.pct = round((object$sdev^2) / sum(object$sdev^2), 3) * 100,
-      method = "PCA",
-      row_data = rowData(data_f),
-      col_data = colData(data_f),
-      group_col = group_col
-    ),
-    class = c("mvaResults", "pca"),
-    original_object = object
-    ))
-  }
-  else if (method == "PCoA") {
+  if (method == "PCoA") {
     return(structure(list(
       scores = cmdscale(dist(d)),
       method = "PCoA",
@@ -87,6 +70,44 @@ mva <- function(data, measure = "Area",
     ))
   }
 
+  if (method == "PCA") {
+    object <- run_pca(d, ...)
+    scores <- as.data.frame(object@scoreMN)
+    loadings <- as.data.frame(object@loadingMN)
+    class_name <- "pca"
+  } else {
+    # OPLS & OPLS-DA require a y (group) vector
+    group_vector <- get_group_vector_opls(data_f, group_col, groups, method)
+
+    # By now we know that group_vector is of correct type
+    # groups, if provided, have correct type and values.
+    if (!is.null(groups)) {
+      data_f <- data_f[, group_vector %in% groups]
+      d <- d[group_vector %in% groups, ]
+      group_vector <- fct_drop(group_vector[group_vector %in% groups])
+    }
+
+    object <- run_opls(d, y = group_vector, ...)
+    scores <- data.frame(p1=object@scoreMN[, 1], o1=object@orthoScoreMN[, 1])
+    loadings <- data.frame(p1=object@loadingMN[, 1], o1=object@orthoLoadingMN[, 1])
+    class_name <- "opls"
+  }
+
+  return(structure(list(
+    scores = scores,
+    loadings = loadings,
+    summary = object@modelDF,
+    method = method,
+    row_data = rowData(data_f),
+    col_data = colData(data_f),
+    group_col = group_col
+  ),
+  class = c("mvaResults", class_name),
+  original_object = object
+  ))
+}
+
+get_group_vector_opls <- function(data_f, group_col, groups, method) {
   # method either "OPLS" or "OPLS-DA"
   if (is.null(group_col)) {
     stop("Please add clinical data or specify a group column")
@@ -131,46 +152,41 @@ mva <- function(data, measure = "Area",
       stop("Provided groups are not in the grouping column.")
     }
   }
-  # By now we know that group_vector is of correct type
-  # groups, if provided, have correct type and values.
-  if (!is.null(groups)) {
-    data_f <- data_f[, group_vector %in% groups]
-    d <- d[group_vector %in% groups, ]
-    group_vector <- fct_drop(group_vector[group_vector %in% groups])
-  }
-  object <- run_opls(d, y = group_vector, ...)
-
-  return(structure(list(
-    scores = data.frame(object@scoreMN[, 1], object@orthoScoreMN[, 1]),
-    loadings = data.frame(object@loadingMN[, 1], object@orthoLoadingMN[, 1]),
-    summary = object@modelDF,
-    method = method,
-    row_data = rowData(data_f),
-    col_data = colData(data_f),
-    group_col = group_col
-  ),
-  class = c("mvaResults", "opls"),
-  original_object = object
-  ))
-
+  group_vector
 }
 
 run_opls <- function(data, y,
-                     predI = 1, orthoI = 1,
-                     scaleC = "standard",
-                     fig.pdfC = NULL, ...) {
+  predI = 1, orthoI = 1,
+  scaleC = "standard",
+  fig.pdfC = NULL, info.txtC=NULL, ...) {
   opls(
     data,
     y = y,
     predI = predI, orthoI = orthoI,
     scaleC = scaleC,
-    fig.pdfC = fig.pdfC, ...
+    fig.pdfC = fig.pdfC,
+    crossvalI=min(nrow(data), 7),
+    info.txtC=info.txtC, ...
+  )
+}
+
+run_pca <- function(data,
+  predI = NA,
+  scaleC = "standard",
+  fig.pdfC = NULL, info.txtC=NULL, ...) {
+  opls(
+    data,
+    predI = min(dim(data)),
+    scaleC = scaleC,
+    fig.pdfC = fig.pdfC,
+    info.txtC=info.txtC,
+    crossvalI=min(nrow(data), 7), ...
   )
 }
 
 #' @importFrom stats var qf median dist
-plot_opls <- function(mvaresults, components,
-                      color_by, ellipse = TRUE, hotelling = TRUE) {
+plot_ropls_results <- function(mvaresults, components,
+  color_by, ellipse = TRUE, hotelling = TRUE) {
   ret <- .get_mds_matrix(mvaresults, components, color_by)
   d <- ret$mds_matrix
   color_by <- ret$color_by
@@ -201,32 +217,57 @@ plot_opls <- function(mvaresults, components,
     )
   }
   sm <- mvaresults$summary
+
+  if (inherits(mvaresults, "pca")) {
+    x_comp <- paste0("PC", components[[1]], ":")
+    x_lab <- paste(x_comp, sm[components[[1]], "R2X"] * 100, "%")
+    y_comp <- paste0("PC", components[[2]], ":")
+    y_lab <- paste(y_comp, sm[components[[2]], "R2X"] * 100, "%")
+  } else {
+    x_lab <- paste("p1:", sm["p1", "R2X"] * 100, "%")
+    y_lab <- paste("o1:", sm["o1", "R2X"] * 100, "%")
+  }
+
   p <- p + geom_hline(yintercept = 0, color = "gray") +
     geom_vline(xintercept = 0, color = "gray") +
     geom_point(size = 3) +
-    xlab(paste("p1:", sm["p1", "R2X"] * 100, "%")) +
-    ylab(paste("o1:", sm["o1", "R2X"] * 100, "%")) +
+    xlab(x_lab) +
+    ylab(y_lab) +
     labs(color = "Group", fill = "Group") +
-    theme_grey(base_size = 10) +
-    annotate(
+    theme_grey(base_size = 10)
+
+  # Model annoatations
+  if (inherits(mvaresults, "pca")) {
+    p <- p +
+      annotate(
+        "text",
+        x = Inf, y = Inf,
+        # Total variace accounted for until component n
+        label = paste("R2X:", sm[max(components), "R2X(cum)"]),
+        vjust = 1, hjust = 1, size = 3
+      )
+  }
+  else {
+    p <- p + annotate(
       "text",
       x = Inf, y = Inf,
+      # Total variace accounted for until component n
       label = paste("R2X:", sm["sum", "R2X(cum)"]),
       vjust = 1, hjust = 1, size = 3
     ) +
-    annotate(
-      "text",
-      x = Inf, y = Inf,
-      label = paste("R2Y:", sm["sum", "R2Y(cum)"]),
-      vjust = 2.5, hjust = 1, size = 3
-    ) +
-    annotate(
-      "text",
-      x = Inf, y = Inf,
-      label = paste("Q2:", sm["sum", "Q2(cum)"]),
-      vjust = 4, hjust = 1, size = 3
-    )
-
+      annotate(
+        "text",
+        x = Inf, y = Inf,
+        label = paste("R2Y:", sm["sum", "R2Y(cum)"]),
+        vjust = 2.5, hjust = 1, size = 3
+      ) +
+      annotate(
+        "text",
+        x = Inf, y = Inf,
+        label = paste("Q2:", sm["sum", "Q2(cum)"]),
+        vjust = 4, hjust = 1, size = 3
+      )
+  }
   .display_plot(p)
 }
 
@@ -239,6 +280,8 @@ plot_opls <- function(mvaresults, components,
 #' @param color_by Sample annotation (or lipid annotation in case of
 #'   `plot_mva_loadings`) to use as color. Defaults to individual samples /
 #'   lipids
+#' @param ellipse Whether to plot ellipses around groups
+#' @param hotelling Whether to plot Hotelling T2.
 #'
 #' @return `plot_mva` returns a ggplot of the sample scores.
 #' @export
@@ -259,13 +302,16 @@ plot_opls <- function(mvaresults, components,
 #' # OPLS-DA
 #' mvaresults <- mva(
 #'   data_normalized,
-#'   method = "OPLS-DA", group_col = "Diet", groups=c("HighFat", "Normal")
+#'   method = "OPLS-DA", group_col = "Diet", groups = c("HighFat", "Normal")
 #' )
 #' plot_mva(mvaresults, color_by = "group")
-plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
+plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL,
+  ellipse = TRUE, hotelling = TRUE) {
   stopifnot(inherits(mvaresults, "mvaResults"))
-  if (inherits(mvaresults, "opls")) {
-    return(plot_opls(mvaresults, components, color_by))
+  if (!inherits(mvaresults, "pcoa")) {
+    return(
+      plot_ropls_results(mvaresults, components, color_by, ellipse, hotelling)
+    )
   }
 
   ret <- .get_mds_matrix(mvaresults, components, color_by)
@@ -279,17 +325,6 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
   )) + geom_point(size = 3, pch = 16) +
     geom_text(vjust = -.5, size = 3, color = "black")
 
-  if (inherits(mvaresults, "pca") && !is.null(mvaresults$var.pct)) {
-    xlabel <- paste(
-      cols[[2]],
-      "(", mvaresults$var.pct[[ components[[1]] ]], "%)"
-    )
-    ylabel <- paste(
-      cols[[3]],
-      "(", mvaresults$var.pct[[ components[[2]] ]], "%)"
-    )
-    p <- p + xlab(xlabel) + ylab(ylabel)
-  }
   .display_plot(p)
 }
 
@@ -306,8 +341,8 @@ plot_mva <- function(mvaresults, components = c(1, 2), color_by = NULL) {
 #' @examples
 #' plot_mva_loadings(mvaresults, color_by = "Class", top.n = 10)
 plot_mva_loadings <- function(mvaresults, components = c(1, 2),
-                              color_by = NULL,
-                              top.n = nrow(mvaresults$loadings)) {
+  color_by = NULL,
+  top.n = nrow(mvaresults$loadings)) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   stopifnot(inherits(mvaresults, "opls"))
   ret <- .get_loading_matrix(mvaresults, components, color_by)
@@ -334,14 +369,14 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
     ylimits <- max(abs(mds_matrix[, 3])) * 1.1
 
     p <- p + ggrepel::geom_label_repel(
-      aes(label = ifelse(molrank > top.n, "", Molecule)),
+      aes(label = ifelse(molrank > top.n, "", as.character(Molecule))),
       size = 2.4, direction = "both", segment.alpha = 0.6,
       label.padding = 0.15, force = 0.5
     ) + xlim(-xlimits, xlimits) + ylim(-ylimits, ylimits)
   } else {
     p <- p + geom_text(
       vjust = -.5, size = 3, color = "black",
-      aes(label = ifelse(molrank > top.n, "", Molecule))
+      aes(label = ifelse(molrank > top.n, "", as.character(Molecule)))
     )
   }
 
@@ -411,21 +446,20 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
 }
 
 .get_loading_matrix <- function(mvaresults, components = c(1, 2),
-                                color_by = NULL) {
+  color_by = NULL) {
   stopifnot(inherits(mvaresults, "mvaResults"))
   mds_matrix <- mvaresults$loadings[, components]
   mds_matrix <- mds_matrix %>%
     as.data.frame() %>%
     rownames_to_column("LipidID")
 
-  if (!is.null(color_by)) {
-    row_data <- mvaresults$row_data %>%
-      as.data.frame() %>%
-      rownames_to_column("LipidID")
+  row_data <- mvaresults$row_data %>%
+    as.data.frame() %>%
+    rownames_to_column("LipidID")
 
-    mds_matrix <- mds_matrix %>%
-      .left_join_silent(row_data)
-  }
+  mds_matrix <- mds_matrix %>%
+    .left_join_silent(row_data) %>%
+    fix_all_na()
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }
 
@@ -455,5 +489,6 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
     mds_matrix <- mds_matrix %>%
       .left_join_silent(col_data)
   }
+  mds_matrix %>% fix_all_na()
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }

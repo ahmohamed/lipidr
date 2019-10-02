@@ -16,14 +16,14 @@ significant_molecules(de.results, p.cutoff = 0.05, logFC.cutoff = 1)
 plot_results_volcano(de.results, show.labels = TRUE)
 }
 \arguments{
-\item{data}{SkylineExperiment object created by \code{\link[=read_skyline]{read_skyline()}},
+\item{data}{LipidomicsExperiment object,
 should be normalized and log2 transformed.}
 
 \item{...}{Expressions, or character strings which can be parsed to
 expressions, specifying contrasts. These are passed to
 \code{limma::makeContrasts}.}
 
-\item{measure}{Name of the column containing sample names. Default is \code{Area}.}
+\item{measure}{Which measure to use as intensity, usually Area (default).}
 
 \item{group_col}{Name of the column containing sample groups. If not
 provided, defaults to first sample annotation column.}
@@ -38,7 +38,8 @@ the linear model is of interest.}
 
 \item{p.cutoff}{Significance threshold.  Default is \code{0.05}.}
 
-\item{logFC.cutoff}{Cutoff limit for log2 fold change.  Default is \code{1}.}
+\item{logFC.cutoff}{Cutoff limit for log2 fold change.  Default is \code{1}.
+Ignored in multi-group (ANOVA-style) comparisons.}
 
 \item{show.labels}{Whether labels should be displayed for
 significant lipids.  Default is \code{TRUE}.}

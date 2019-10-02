@@ -1,6 +1,6 @@
 Package: lipidr
 Title: Lipidomics Analysis Workflow in R
-Version: 1.1.0
+Version: 1.99.1
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
@@ -29,6 +29,7 @@ Imports:
     methods,
     stats,
     utils,
+    data.table,
     S4Vectors,
     rlang,
     dplyr,
@@ -46,8 +47,9 @@ Suggests:
     BiocStyle,
     ggrepel,
     plotly,
-    covr,
-    spelling
+    iheatmapr,
+    spelling,
+    testthat
 VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization

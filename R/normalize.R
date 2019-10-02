@@ -7,9 +7,9 @@
 #' The reference spectrum in this method is the average lipid abundance of all
 #' samples (excluding blanks).
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`.
+#'   Area Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
 #'   logical vector with the same length as samples. Default.
@@ -17,7 +17,7 @@
 #' @param log Whether the normalized values should be log2 transformed. Default
 #'   is `TRUE`.
 #'
-#' @return A SkylineExperiment object with normalized values
+#' @return A LipidomicsExperiment object with normalized values
 #' @importFrom rlang sym UQ
 #' @export
 #' @references Dieterle, F., Ross, A., Schlotterbeck, G., & Senn, H. (2006).
@@ -32,7 +32,7 @@
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
-#' 
+#'
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_normalized <- normalize_pqn(
 #'   d_summarized,
@@ -44,18 +44,19 @@ normalize_pqn <- function(data, measure = "Area",
   m <- assay(data, measure)
 
   # factor_n = median ( lipid_i_n/ avg(lipid_i) )
-  assay(data, measure) <- m / apply(
+  factor_n <- apply(
     m / rowMeans(m, na.rm = TRUE), 2, median,
     na.rm = TRUE
   )
-  mcols(assays(data), use.names = TRUE)[measure, "normalized"] <- TRUE
-
-  if (log && !mcols(assays(data), use.names = TRUE)[measure, "logged"]) {
-    assay(data, measure) <- log2(assay(data, measure))
-    mcols(assays(data), use.names = TRUE)[measure, "logged"] <- TRUE
-  }
-
-  return(data)
+  normalized_m <- apply(m, 1, function(x) x/factor_n) %>% t()
+  rownames(normalized_m) <- rownames(m)
+  assay(data, measure) <- normalized_m
+  # assay(data, measure) <- m / apply(
+  #   m / rowMeans(m, na.rm = TRUE), 2, median,
+  #   na.rm = TRUE
+  # )
+  data <- set_normalized(data, measure, TRUE)
+  return(.log_data(data, measure, log))
 }
 
 #' Normalize each class by its corresponding internal standard(s).
@@ -65,16 +66,16 @@ normalize_pqn <- function(data, measure = "Area",
 #' of the same lipid class. If no corresponding internal standard is found
 #' the average of all measured internal standards is used instead.
 #'
-#' @param data SkylineExperiment object created by [read_skyline()].
+#' @param data LipidomicsExperiment object.
 #' @param measure Which measure to use as intensity, usually Area,
-#'   Area.Normalized or Height. Default is `Area`.
+#'   Area Normalized or Height. Default is `Area`.
 #' @param exclude Samples to exclude, can be either: \cr
 #'   "blank" - automatically detected blank samples and exclude them
 #'   logical vector with the same length as samples. Default.
 #' @param log whether the normalized values should be log2 transformed. Default
 #'   is `TRUE`.
 #'
-#' @return A SkylineExperiment object with normalized values. Each molecule
+#' @return A LipidomicsExperiment object with normalized values. Each molecule
 #'     is normalized against the internal standard from the same class.
 #'
 #' @importFrom rlang sym UQ
@@ -87,7 +88,7 @@ normalize_pqn <- function(data, measure = "Area",
 #' clinical_file <- system.file("extdata", "clin.csv", package = "lipidr")
 #' d <- add_sample_annotation(d, clinical_file)
 #' d_summarized <- summarize_transitions(d, method = "average")
-#' 
+#'
 #' # Normalize data that have been summarized (single value per molecule).
 #' data_norm_istd <- normalize_istd(
 #'   d_summarized,
@@ -101,15 +102,16 @@ normalize_istd <- function(data, measure = "Area",
     stop("No internal standards found in your lipid list.")
   }
   m <- assay(data, measure)
-  mistd <- m[istd, ]
+  mistd <- m[istd, , drop=FALSE]
 
   # istd_n = istd_ni / mean(istd_i)
   mistd <- mistd / rowMeans(mistd, na.rm = TRUE)
 
   # per class:
+  x_dimname <- metadata(data)$dimnames[[1]]
   istd_list <- to_df(data) %>%
     group_by(filename, Class) %>%
-    mutate(istd_list = list(as.character(MoleculeId[istd]))) %>%
+    mutate(istd_list = list(as.character( (!!sym(x_dimname))[istd] ))) %>%
     .$istd_list
 
   assay(data, measure) <- laply(seq_along(istd_list), function(i) {
@@ -123,25 +125,51 @@ normalize_istd <- function(data, measure = "Area",
 
     return(m[i, ] / f)
   })
-
-  if (log && !mcols(assays(data), use.names = TRUE)[measure, "logged"]) {
-    assay(data, measure) <- log2(assay(data, measure))
-    mcols(assays(data), use.names = TRUE)[measure, "logged"] <- TRUE
-  }
-
-  return(data)
+  return(.log_data(data, measure, log))
 }
 
 .prenormalize_check <- function(data, measure, exclude) {
-  if (mcols(assays(data), use.names = TRUE)[measure, "normalized"]) {
-    stop(measure, " is already normalized")
+  if (!measure %in% assayNames(data)) {
+    stop(measure, " is not in the dataset.")
+  }
+  if (is_normalized(data, measure)) {
+    stop(measure, " is already normalized.")
   }
   if (!is.null(exclude)) {
-    if (exclude == "blank") {
-      data <- data[, !.is_blank(data)]
+    if (length(exclude) == 1 && "blank" %in% exclude) {
+      data <- data[, !.is_blank(data, measure)]
     } else {
-      data <- data[, exclude]
+      excluded_cols <- colnames(data[, exclude])
+      data <- data[, !colnames(data) %in% excluded_cols]
+      if (ncol(data) == 0) {
+        stop("You cannot exclude all samples.")
+      }
     }
+  }
+  assay_ <- assay(data, measure)
+  if (any(!is.finite(assay_))) {
+    warning(measure, " contains missing/non-finite values.",
+            " Replacing with mimnum detected value.")
+    assay_[!is.finite(assay_)] <- min(assay_, na.rm = TRUE)
+  }
+  # if (any(assay_ < 1)) {
+  #   warning(measure, " contains values < 1. Replacing with 1.")
+  #   assay_[assay_ < 1] <- 1
+  # }
+  assay(data, measure) <- assay_
+  data
+}
+
+
+.log_data <- function(data, measure, log) {
+  assay_ <- assay(data, measure)
+  if (any(assay_ < 1)) {
+    warning(measure, " contains values < 1. Replacing with 1.")
+    assay_[assay_ < 1] <- 1
+  }
+  if (log && !is_logged(data, measure)) {
+    assay(data, measure) <- log2(assay_)
+    data <- set_logged(data, measure, TRUE)
   }
   data
 }

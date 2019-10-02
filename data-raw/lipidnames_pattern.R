@@ -12,9 +12,11 @@ lipidnames_pattern$isotope <- "(\\((d\\d)|(IS)\\))"
 lipidnames_pattern$notes <- "(\\(.+\\))"
 lipidnames_pattern$mol <- paste0(
   lipidnames_pattern$class, "[ -]",
-  lipidnames_pattern$chain, "([/-_]", lipidnames_pattern$chain,
-  ")?\\s*", "([/-_]", lipidnames_pattern$chain,
-  ")?\\s*", lipidnames_pattern$notes, "?"
+  lipidnames_pattern$chain,
+  "([/-_]", lipidnames_pattern$chain, ")?\\s*",
+  "([/-_]", lipidnames_pattern$chain, ")?\\s*",
+  "([/-_]", lipidnames_pattern$chain, ")?\\s*",
+  lipidnames_pattern$notes, "?"
 )
 lipidnames_pattern$istd <- paste0(
   "^", lipidnames_pattern$mol, ".*", lipidnames_pattern$isotope
