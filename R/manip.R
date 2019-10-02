@@ -13,7 +13,7 @@
 #' is_summarized(data_normalized)
 is_logged <- function(data, measure) {
   assay_annot <- mcols(assays(data), use.names = TRUE)
-  !is.null(assay_annot) && assay_annot[measure, "logged"]
+  !is.null(assay_annot) && TRUE %in% assay_annot[measure, "logged"]
 }
 
 #' @rdname set_attr
@@ -30,7 +30,7 @@ set_logged <- function(data, measure, val) {
 #' @export
 is_normalized <- function(data, measure) {
   assay_annot <- mcols(assays(data), use.names = TRUE)
-  !is.null(assay_annot) && assay_annot[measure, "normalized"]
+  !is.null(assay_annot) && TRUE %in% assay_annot[measure, "normalized"]
 }
 
 #' @rdname set_attr

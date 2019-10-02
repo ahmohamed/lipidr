@@ -191,3 +191,18 @@ test_that("ISTD can correct for specific classes", {
   expect_equal(m[LPEs, "S1A"], m[LPEs, "Snew"]) # corrected
   expect_equal(m[!LPEs & !istd, "S1A"] / 10, m[!LPEs & !istd, "Snew"]) # not corrected
 })
+
+test_that("ISTD will error if no istd molecules are found", {
+  d2 <- d
+  rowData(d2)$istd <- FALSE
+  expect_error(normalize_istd(d2), 'No internal standards found in your lipid list.')
+})
+
+test_that("Normalization will give error if measure is normalized", {
+  d2 <- normalize_pqn(d, measure="Area")
+  expect_error(normalize_pqn(d2, measure="Area"), 'Area is already normalized.')
+  expect_error(normalize_istd(d2, measure="Area"), 'Area is already normalized.')
+
+  assay(d2, "Area2") <- assay(d2, "Area")
+  d2 <- normalize_pqn(d2, measure = "Area2", log = FALSE)
+})
