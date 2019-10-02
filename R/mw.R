@@ -1,20 +1,20 @@
-# Metabolomics Workbench integraation.
-
-#' Retrieve list of lipidomics studies from Metabolomics Workbench.
+#' Metabolomics Workbench integration
 #'
-#' This functions uses Metabolomics Workbench REST API to retrieve summaries
-#' of lipidomics studies.
+#' These functions use Metabolomics Workbench REST API to support data
+#' mining of publicly available lipidomics datasets.
+#'
+#' @describeIn mw retrieves a list of lipidomics studies from Metabolomics
+#' Workbench.
 #'
 #' @param keyword A keyword to search for in Metabolomics Workbench studies.
 #'
-#' @return A data frame with studies matching the keyword. Study ID, title,
-#'   author and details are retrieved.
+#' @return `list_mw_studies` returns a data frame with studies matching the keyword.
+#'   Study ID, title, author and details are retrieved.
 #'
 #' @importFrom tidyr unite spread unnest
 #' @importFrom rlang syms !!!
 #' @importFrom utils read.delim
 #' @export
-#' @family Metabolomics Workbench
 #'
 #' @examples
 #' # list_mw_studies()
@@ -40,20 +40,16 @@ list_mw_studies <- function(keyword = "lipid") {
 utils::globalVariables(c("V1", "V2", "first_name", "last_name"))
 
 
-#' Download and parse full data for a study from Metabolomics Workbench.
-#'
-#' This functions uses Metabolomics Workbench REST API to retrieve study
-#' data using a study ID. The function returns a LipidomicsExperiment where users
-#' can directly apply `lipidr` analysis workflow.
+#' @describeIn mw downloads and parse full data for a study from Metabolomics
+#' Workbench using a study ID. The function returns a LipidomicsExperiment
+#' where users can directly apply `lipidr` analysis workflow.
 #'
 #' @param study_id The Metabolomics Workbench study ID.
 #'
-#' @return A LipidomicsExperiment object containing clinical and lipid intensity
-#'   data.
+#' @return All other functions return a LipidomicsExperiment object containing
+#'   clinical and lipid intensity data.
 #'
 #' @export
-#' @family Metabolomics Workbench
-#'
 #' @examples
 #' # fetch_mw_study("ST001111")
 fetch_mw_study <- function(study_id) {
@@ -64,15 +60,10 @@ fetch_mw_study <- function(study_id) {
   read_mwTab(url)
 }
 
-#' Parse mwTab file into a LipidomicsExperiment.
+#' @describeIn mw parses mwTab file into a LipidomicsExperiment.
 #'
 #' @param mwTab File path or url for a mwTab file.
-#'
-#' @return A LipidomicsExperiment object containing clinical and lipid intensity
-#'   data.
-#'
 #' @export
-#' @family Metabolomics Workbench
 read_mwTab <- function(mwTab) {
   txt <- readLines(mwTab)
   analyses <- .mw_analysis_lists(txt)
@@ -82,18 +73,12 @@ read_mwTab <- function(mwTab) {
   combined
 }
 
-#' Parse a Metabolomics Workbench data matrix into a LipidomicsExperiment.
-#'
-#' Data matrix downloaded from Metabolomics Workbench are parsed into
+#' @describeIn mw parses a Metabolomics Workbench data matrix into a
+#' LipidomicsExperiment. Data matrix downloaded from Metabolomics Workbench are parsed into
 #' a LipidomicsExperiment object to enable `lipidr` workflow analysis.
 #'
 #' @param file File path or url for the file containing the data matrix.
-#'
-#' @return A LipidomicsExperiment object containing clinical and lipid intensity
-#'   data.
-#'
 #' @export
-#' @family Metabolomics Workbench
 read_mw_datamatrix <- function(file) {
   .data <- read.delim(
     file,
