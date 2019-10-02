@@ -192,6 +192,34 @@ test_that("ISTD can correct for specific classes", {
   expect_equal(m[!LPEs & !istd, "S1A"] / 10, m[!LPEs & !istd, "Snew"]) # not corrected
 })
 
+test_that("ISTD will take average if multiple istds are found for a specific class", {
+  d2 <- cbind(d, d[,1])
+  colnames(d2)[[12]] <- 'Snew'
+
+  # add another istd for PEs
+  d2 <- rbind(d2, d2[rowData(d)$istd & rowData(d)$Class == "PE", ])
+  rownames(d2)[nrow(d2)] <- "new_istd"
+
+  istd <- rowData(d2)$istd
+  m <- assay(d2, "Area")
+  m[istd, ] <- 1
+  assay(d2, "Area") <- m
+
+  d_norm <- suppressWarnings(normalize_istd(d2, measure = "Area", log = FALSE))
+  expect_valid_lipidex(d_norm, c(23,10))
+  expect_assay_equal(d_norm, d2[, colnames(d_norm)], "Area")
+
+  PEs <- rowData(d2)$Class == "PE"
+  m[, 1] <- m[, 1] * 10
+  m[istd & !PEs, 1] <- 1
+  m["new_istd", ] <- m["new_istd", ] * 2 # Modify the istd while keeping ratio to average the same
+  assay(d2, "Area") <- m
+  d_norm <- suppressWarnings(normalize_istd(d2, measure = "Area", log = FALSE))
+  m2 <- assay(d_norm, "Area")
+  expect_equal(m2[PEs, "S1A"], m2[PEs, "Snew"]) # corrected
+  expect_equal(m2[!PEs & !istd, "S1A"] / 10, m2[!PEs & !istd, "Snew"]) # not corrected
+})
+
 test_that("ISTD will error if no istd molecules are found", {
   d2 <- d
   rowData(d2)$istd <- FALSE

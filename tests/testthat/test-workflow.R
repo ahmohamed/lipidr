@@ -61,26 +61,30 @@ test_workflow <- function(d, clin_file=NULL, measure="Area", group_col=NULL, gro
   }
 }
 context("test-workflow")
-# test_that("Can run workflow with skyline non-pivot", {
-#   file = "A1.csv"
-#   d <- read_skyline(file)
-#   test_workflow(d)
-# })
-#
-# test_that("Can run workflow with multiple skyline non-pivot", {
-#   file = list("A1.csv", "F2.csv")
-#   d <- read_skyline(file)
-#   test_workflow(d)
-# })
-#
-# test_that("Can run workflow with skyline non-pivot and sample annotations", {
-#   file = "A1.csv"
-#   d <- read_skyline(file)
-#   df <- gen_sample_annot(d)
-#   test_workflow(d, clin_file=df, measure="Area", group_col = "Group", groups = c("A", "B"), A-B)
-# })
+test_that("Can run workflow with skyline non-pivot", {
+  skip_on_bioc()
+  file = "A1.csv"
+  d <- read_skyline(file)
+  test_workflow(d)
+})
+
+test_that("Can run workflow with multiple skyline non-pivot", {
+  skip_on_bioc()
+  file = list("A1.csv", "F2.csv")
+  d <- read_skyline(file)
+  test_workflow(d)
+})
+
+test_that("Can run workflow with skyline non-pivot and sample annotations", {
+  skip_on_bioc()
+  file = "A1.csv"
+  d <- read_skyline(file)
+  df <- gen_sample_annot(d)
+  test_workflow(d, clin_file=df, measure="Area", group_col = "Group", groups = c("A", "B"), A-B)
+})
 
 test_that("Can run workflow with skyline pivot and sample annotations", {
+  skip_on_bioc()
   file = "A1_pivot.csv"
   d <- read_skyline(file)
   df <- gen_sample_annot(d)
@@ -88,6 +92,7 @@ test_that("Can run workflow with skyline pivot and sample annotations", {
 })
 
 test_that("Can run workflow with with measure other than Area", {
+  skip_on_bioc()
   file = .read_tabular("A1.csv") %>% rename("Normalized Area"=Area) %>% save_temp_csv()
   d <- read_skyline(file)
   df <- gen_sample_annot(d)
@@ -96,6 +101,7 @@ test_that("Can run workflow with with measure other than Area", {
 
 # num matrix
 test_that("Can run workflow with with num matrix", {
+  skip_on_bioc()
   file = "A1.csv"
   d <- read_skyline(file)
   d <- assay(d, "Area") %>% `row.names<-`(rowData(d)$Molecule) %>% as_lipidomics_experiment()
@@ -104,6 +110,7 @@ test_that("Can run workflow with with num matrix", {
 
 # num matrix with annot
 test_that("Can run workflow with with num matrix with sample annot", {
+  skip_on_bioc()
   file = .read_tabular("A1.csv") %>% rename("Normalized Area"=Area) %>% save_temp_csv()
   d <- read_skyline(file)
   df <- gen_sample_annot(d)
@@ -113,6 +120,7 @@ test_that("Can run workflow with with num matrix with sample annot", {
 
 # group_col missing vals
 test_that("Can run workflow with where some sample annot are missing", {
+  skip_on_bioc()
   file = .read_tabular("A1.csv") %>% rename("Normalized Area"=Area) %>%
     mutate(Peptide=ifelse(1:nrow(.) %% 2 == 0,  NA, Peptide)) %>%
     save_temp_csv(quote=FALSE, na = "")
@@ -125,6 +133,7 @@ test_that("Can run workflow with where some sample annot are missing", {
 
 # Mols missing vals
 test_that("Can run workflow with where some molecules are missing", {
+  skip_on_bioc()
   file = .read_tabular("A1.csv") %>% rename("Normalized Area"=Area) %>%
     mutate(Peptide=ifelse(1:nrow(.) %% 3 == 0,  NA, Peptide)) %>%
     save_temp_csv(quote=FALSE, na = "")
@@ -137,6 +146,7 @@ test_that("Can run workflow with where some molecules are missing", {
 
 # all non-lipid
 test_that("Can run workflow with all non-lipid molecules in Skyline format", {
+  skip_on_bioc()
   file = .read_tabular("A1.csv") %>% rename("Normalized Area"=Area) %>%
     mutate(Peptide=paste0("any", Peptide, "any")) %>%
     save_temp_csv(quote=FALSE, na = "")
