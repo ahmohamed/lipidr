@@ -25,7 +25,7 @@ test_that("can fetch study by id", {
     res <- fetch_mw_study("ST001111"),
     "Some lipid names couldn't be parsed"
   )
-  expect_valid_lipidex(c(777, 118))
+  expect_valid_lipidex(res, c(777, 118))
   row_data <- rowData(res)
   expect_equal(unique(row_data$filename), c("AN001805", "AN001806"))
   expect_lt(sum(row_data$not_matched), 10)
