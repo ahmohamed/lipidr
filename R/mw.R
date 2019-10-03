@@ -17,7 +17,9 @@
 #' @export
 #'
 #' @examples
-#' # list_mw_studies()
+#' \dontrun{
+#' list_mw_studies()
+#' }
 list_mw_studies <- function(keyword = "lipid") {
   cols <- c(
     "study_id", "study_title", "study_type",
@@ -51,7 +53,9 @@ utils::globalVariables(c("V1", "V2", "first_name", "last_name"))
 #'
 #' @export
 #' @examples
-#' # fetch_mw_study("ST001111")
+#' \dontrun{
+#' fetch_mw_study("ST001111")
+#' }
 fetch_mw_study <- function(study_id) {
   url <- paste0(
     "https://www.metabolomicsworkbench.org/rest/study/study_id/",

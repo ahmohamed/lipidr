@@ -16,7 +16,7 @@ matrix:
         - covr
         - widgetframe
       script: 
-        - Rscript -e 'covr::codecov(type="all")'
+        - Rscript -e 'covr::codecov(type="all", commentDontrun=FALSE)'
         - R CMD INSTALL .
         - Rscript -e 'pkgdown::build_site()'
       deploy:

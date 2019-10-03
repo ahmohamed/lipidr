@@ -52,6 +52,10 @@ a LipidomicsExperiment object to enable \code{lipidr} workflow analysis.
 }}
 
 \examples{
-# list_mw_studies()
-# fetch_mw_study("ST001111")
+\dontrun{
+list_mw_studies()
+}
+\dontrun{
+fetch_mw_study("ST001111")
+}
 }
