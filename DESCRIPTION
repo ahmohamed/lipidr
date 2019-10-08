@@ -1,6 +1,6 @@
 Package: lipidr
-Title: Lipidomics Analysis Workflow in R
-Version: 1.99.1
+Title: Data Mining and Analysis of Lipidomics datasets
+Version: 1.99.2
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
@@ -16,12 +16,15 @@ Authors@R: c(
         email = "Jeffrey.Molendijk@qimrberghofer.edu.au", role = "aut"
     ))
 Description: lipidr an easy-to-use R package implementing a complete workflow 
-    for downstream analysis of lipidomics data. lipidr parses results exported 
-    from Skyline directly into R, allowing integration into current analysis 
-    frameworks. lipidr allows data inspection, normalization, univariate and
-    multivariate analysis, displaying informative visualizations. lipidr also
-    implements a novel Lipid Set Enrichment Analysis (LSEA), harnessing 
-    molecular information such as lipid class, chain length and unsaturation.    
+    for downstream analysis of targeted and untargeted lipidomics data. 
+    lipidomics results can be imported into lipidr as a numerical matrix or
+    a Skyline export, allowing integration into current analysis 
+    frameworks. Data mining of lipidomics datasets is enabled through 
+    integration with Metabolomics Workbench API. lipidr allows data inspection, 
+    normalization, univariate and multivariate analysis, displaying informative
+    visualizations. lipidr also implements a novel Lipid Set Enrichment 
+    Analysis (LSEA), harnessing molecular information such as lipid class, 
+    chain length and unsaturation.
 Depends: 
     R (>= 3.6.0),
     SummarizedExperiment
