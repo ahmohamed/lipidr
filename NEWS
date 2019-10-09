@@ -1,0 +1,6 @@
+lipidr 1.99.2
+===========
+* Breaking changes: changed the core object to LipidomicsExperiment.
+* Added support for both targeted and untargeted lipidomics analysis.
+* lipidr can accept numerical matrix as input.
+* Added integration with Metabolomics Workbench API for enable data mining.
