@@ -9,7 +9,7 @@
 
 ## Overall workflow
 
-![Workflow](man/figures/workflow.png)
+<img src="man/figures/workflow.png" width="400">
 
 ## Input
 `lipidr` implements a series of functions to facilitate inspection,
