@@ -27,7 +27,7 @@ Univariate analysis can be performed using any of the loaded clinical variables,
 ## Multivariate Analysis
 `lipidr` implements PCA, PCoA and OPLS(DA) to reveal patterns in data and discover variables related to an outcome of interest. Top associated lipids as well as scores and loadings plots can be interactively investigated using `lipidr`.
 
-# Install `lipidr`
+# Install *lipidr*
 ## From Bioconductor
 In R console, type:
 
