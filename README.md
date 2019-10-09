@@ -24,7 +24,7 @@ analysis and visualization of targeted and untargeted lipidomics datasets. `lipi
 `lipidr` generates various plots, such as box plots or PCA, for quality control of samples and measured lipids. Lipids can be filtered by their %CV.  Normalization methods with and without internal standards are also supported.
 
 ## Univariate Analysis
-Univariate analysis can be performed using any of the loaded clinical variables, which can be readily visualized as volcano plots. Multi-group comparisons and adjusting for confounding variables is also supported (refer to examples on [www.lipidr.org]()). A novel lipid set enrichment analysis is implemented to detect preferential regulation of certain lipid classes, chain lengths or saturation patterns. Plots for visualization of enrichment results are also implemented.
+Univariate analysis can be performed using any of the loaded clinical variables, which can be readily visualized as volcano plots. Multi-group comparisons and adjusting for confounding variables is also supported (refer to examples on [www.lipidr.org](https://www.lipidr.org/)). A novel lipid set enrichment analysis is implemented to detect preferential regulation of certain lipid classes, chain lengths or saturation patterns. Plots for visualization of enrichment results are also implemented.
 
 ## Multivariate Analysis
 `lipidr` implements PCA, PCoA and OPLS(DA) to reveal patterns in data and discover variables related to an outcome of interest. Top associated lipids as well as scores and loadings plots can be interactively investigated using `lipidr`.
