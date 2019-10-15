@@ -10,7 +10,8 @@ matrix:
     - os: osx
       r: bioc-release
     - stage: Deploy
-      os: osx
+      os: linux
+      dist: trusty
       r_packages:
         - pkgdown
         - covr

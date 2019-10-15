@@ -7,14 +7,12 @@ navbar:
   left:
     - icon: fa-home fa-lg
       href: index.html
-    - text: Getting Started
-      href: articles/examples/getting_started.html
     - text: Reference
       href: reference/index.html
     - text: Examples
       menu:
       - text: Effect of diet on serum lipids in mice (Targeted lipidomics)
-        href: articles/examples/targeted_mice.html
+        href: articles/workflow.html
       - text: Data mining from Matabolomics Workbench (Breast cancer dataset)
         href: articles/examples/mw_integration.html
 
