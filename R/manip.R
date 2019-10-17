@@ -142,7 +142,7 @@ filter_by_cv <- function(data, cv.cutoff = 20, measure = "Area") {
 }
 
 
-#' Used to filter out molecules that read below a density threshold.
+#' Used to filter out molecules that read below a intensity threshold compared to blanks.
 #'
 #' @param data LipidomicsExperiment object. 
 #' @param fold.cutoff Fold Chain threshold (numeric). Default is '10'.
