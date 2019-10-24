@@ -155,7 +155,12 @@ filter_by_cv <- function(data, cv.cutoff = 20, measure = "Area") {
 #' data(data_normalized)
 #' filter_by_blanks(data_normalized)
 filter_by_blanks <- function(data, fold.cutoff = 10, measure = "Area") {
-  blanks <- lipidr:::.is_blank(data)
+  blanks <- .is_blank(data)
+  
+  if (!any(blanks)){
+    stop("there are no blanks")
+  }
+  
   blanks.molecule <- assay(data[,blanks], measure)
   blanks.molecule[is.na(blanks.molecule)] <- 0
   blanks.mean <- rowMeans(blanks.molecule)

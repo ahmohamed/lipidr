@@ -10,7 +10,7 @@ expect_assay_equal <- function(e1, e2, measure) {
   expect_equal(mat, sum_mat[rownames(mat), ] )
 }
 
-context("test-summarize_transitiions")
+context("test-summarize_transitions")
 test_that("does not have an effect when no multi-transition are present", {
   expect_s4_class(d, "LipidomicsExperiment")
   expect_true(validObject(d))
