@@ -5,7 +5,7 @@
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ahmohamed/lipidr?branch=master&svg=true)](https://ci.appveyor.com/project/ahmohamed/lipidr)
 [![BioC status](https://bioconductor.org/shields/years-in-bioc/lipidr.svg)](https://bioconductor.org/packages/lipidr/)
 
-[Full guide at lipidr.org](https://www.lipidr.org/)
+## See full guide at [lipidr.org](https://www.lipidr.org/)
 
 ## Overall workflow
 
