@@ -56,6 +56,7 @@ NULL
 #' @docType data
 #' @name lipidDefaults
 #' @family lipidr datasets
+#' @usage data(lipidDefaults)
 #' @examples
 #' data(lipidDefaults)
 "lipidDefaults"
@@ -73,6 +74,7 @@ NULL
 #' @docType data
 #' @name data_normalized
 #' @family lipidr datasets
+#' @usage data(data_normalized)
 #' @examples
 #' data(data_normalized)
 "data_normalized"
@@ -85,6 +87,7 @@ NULL
 #' @docType data
 #' @name lipidnames_pattern
 #' @family lipidr datasets
+#' @usage data(lipidnames_pattern)
 #' @examples
 #' data(lipidnames_pattern)
 "lipidnames_pattern"
@@ -109,12 +112,12 @@ NULL
 #' @examples
 #' data(data_normalized)
 #' use_interactive_graphics()
-#' 
+#'
 #' # plot the variation in intensity and retention time of all measured
 #' #  lipids in QC samples
 #' d_qc <- data_normalized[, data_normalized$group == "QC"]
 #' # plot_molecules(d_qc, "cv", "Area")
-#' 
+#'
 #' # turn off interactivity
 #' use_interactive_graphics(interactive = FALSE)
 use_interactive_graphics <- function(interactive = TRUE) {

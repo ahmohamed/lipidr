@@ -8,7 +8,7 @@ A set of default mappings and annotation used internally to correctly parse
 lipid molecule names.}
 \format{An object of class \code{list} of length 2.}
 \usage{
-lipidDefaults
+data(lipidDefaults)
 }
 \description{
 Default values for lipidr internal functions

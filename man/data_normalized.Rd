@@ -6,7 +6,7 @@
 \title{Example dataset (normalized and log2 transformed)}
 \format{An object of class \code{LipidomicsExperiment} with 278 rows and 56 columns.}
 \usage{
-data_normalized
+data(data_normalized)
 }
 \description{
 A dataset containing MRM mass spectrometry-based lipidomics data from murine

@@ -6,7 +6,7 @@
 \title{Patterns used in parsing lipid names}
 \format{An object of class \code{list} of length 8.}
 \usage{
-lipidnames_pattern
+data(lipidnames_pattern)
 }
 \description{
 A collection of patterns to extract lipid class and chain information
