@@ -108,9 +108,10 @@ as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
   }
 
   if (!is.data.frame(df)) {
-    df <- as.data.frame(df)
+    df <- as.data.frame(df, stringAsFactors=FALSE)
   }
-  df <- df %>% mutate_if(is.factor, as.character)
+  df <- df %>% mutate_if(is.factor, as.character) %>%
+    mutate_all(as.numeric)
 
   data_mat <- data.matrix(df, rownames.force = TRUE)
   if (!.is_num_matrix(data_mat)) {
