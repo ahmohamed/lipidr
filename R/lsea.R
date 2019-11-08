@@ -100,6 +100,7 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 #'   Adj.P.Val. Default is `logFC`.
 #'
 #' @return `plot_class_enrichment` returns a ggplot object.
+#' @importFrom forcats fct_recode
 #' @export
 #' @examples
 #' plot_class_enrichment(de_results, sig_lipidsets)
@@ -113,13 +114,18 @@ plot_class_enrichment <- function(de.results, significant.sets,
     annotate_lipids() %>%
     .left_join_silent(de.results) %>%
     group_by(contrast) %>%
-    mutate(Significant = Class %in% significant.sets[[ contrast[[1]] ]]) %>%
+    mutate(Significant = factor(
+      Class %in% significant.sets[[ contrast[[1]] ]], levels = c(TRUE, FALSE)
+    )) %>%
+    mutate(Enrichment = fct_recode(
+      Significant, "Significant"="TRUE", "Not significant"="FALSE")
+    ) %>%
     ungroup()
 
-  p <- ggplot(de_results, aes_string("Class", measure, color = "Significant")) +
+  p <- ggplot(de_results, aes_string("Class", measure, color = "Enrichment")) +
     geom_boxplot() + geom_hline(yintercept = 0, lty = 2) +
     facet_wrap(~contrast, scales = "free_x") +
-    scale_color_manual(values = c("black", "red")) +
+    scale_color_manual(values = c(`Not significant`="black", `Significant`="red"), drop=FALSE) +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 
   .display_plot(p)
