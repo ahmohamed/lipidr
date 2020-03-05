@@ -25,6 +25,17 @@ test_that("Can add sample annotations using data.frame", {
   expect_equal(col_data$Group, df$Group)
 })
 
+test_that("Can add sample annotations using tibble", {
+  d <- read_skyline(f1)
+  df <- gen_sample_annot(d) %>% as_tibble()
+  d <- add_sample_annotation(d, df)
+  expect_valid_lipidex(d, c(19, 11))
+
+  col_data <- colData(d)
+  expect_equal(colnames(col_data), c("Group"))
+  expect_equal(col_data$Group, df$Group)
+})
+
 test_that("Can add sample annotations when samples are not in order", {
   d <- read_skyline(f1)
   df <- gen_sample_annot(d)

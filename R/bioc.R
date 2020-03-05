@@ -98,7 +98,7 @@ as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
   }
 
   if (mol_dim == 'first_col') {
-    molecules <- df[, 1]
+    molecules <- df[[1]]
     df <- df[, -1]
   } else {
     if (mol_dim == 'col_names') {

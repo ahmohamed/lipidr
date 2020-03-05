@@ -66,7 +66,7 @@
   if("Sample" %in% colnames(df)) {
     sample_col <- df$Sample
   } else {
-    sample_col <- df[,1]
+    sample_col <- df[[1]]
   }
 
   all(colnames(data) %in% as.character(sample_col))
@@ -98,7 +98,7 @@
 .get_mol_dim <- function(df) {
   possible <- list(
     row_names = rownames(df),
-    first_col = df[,1],
+    first_col = df[[1]],
     col_names = colnames(df)
   )
   for (i in seq_along(possible)) {

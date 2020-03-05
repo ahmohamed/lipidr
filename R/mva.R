@@ -365,8 +365,8 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
     scale_alpha_manual(values = c(1, 0.5))
 
   if (requireNamespace("ggrepel", quietly = TRUE)) {
-    xlimits <- max(abs(mds_matrix[, 2])) * 1.25
-    ylimits <- max(abs(mds_matrix[, 3])) * 1.1
+    xlimits <- max(abs(mds_matrix[[2]])) * 1.25
+    ylimits <- max(abs(mds_matrix[[3]])) * 1.1
 
     p <- p + ggrepel::geom_label_repel(
       aes(label = ifelse(molrank > top.n, "", as.character(Molecule))),
@@ -397,7 +397,7 @@ top_lipids <- function(mvaresults, top.n = 10) {
 
   ret <- .get_loading_matrix(mvaresults, c(1, 2), "Molecule")
   mds_matrix <- ret$mds_matrix
-  mds_matrix$molrank <- rank(-abs(mds_matrix[, 2]))
+  mds_matrix$molrank <- rank(-abs(mds_matrix[[2]]))
   mds_matrix <- mds_matrix[, -c(1, 2, 3)]
   mds_matrix %>%
     filter(molrank <= top.n) %>%

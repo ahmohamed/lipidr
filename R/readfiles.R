@@ -84,7 +84,8 @@ add_sample_annotation <- function(data, annot_file) {
   if(!is.data.frame(annot_file)) {
     annot <- .read_tabular(annot_file)
   } else {
-    annot <- annot_file %>% mutate_if(is.factor, as.character)
+    annot <- annot_file %>% mutate_if(is.factor, as.character) %>%
+      as.data.frame()
   }
   stopifnot(ncol(annot) > 1)
   .check_sample_annotation(data, annot)
