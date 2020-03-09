@@ -198,7 +198,9 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
 plot_trend <- function(de_results, annotation = c("length", "unsat")) {
   annotation <- match.arg(annotation)
   x <- rlang::sym(ifelse(annotation == "length", "total_cl", "total_cs"))
-  x_lab <- ifelse(annotation == "length", "Chain length", "Unsaturated bonds")
+  x_lab <- ifelse(
+    annotation == "length", "Total chain length", "Total unsaturated bonds"
+  )
   x_breaks <- if (annotation == "length") seq(10, 80, 2) else seq(0, 12, 1)
 
 
