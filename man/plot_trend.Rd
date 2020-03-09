@@ -15,7 +15,7 @@ plot_trend(de_results, annotation = c("length", "unsat"))
 A ggplot object.
 }
 \description{
-Fit and plot a regression line of (log2) fold changes and chain
+Fit and plot a regression line of (log2) fold changes and total chain
 lengths or unsaturations. If multiple comparisons are included, one
 regression is plotted for each.
 }

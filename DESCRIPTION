@@ -24,7 +24,7 @@ Description: lipidr an easy-to-use R package implementing a complete workflow
     normalization, univariate and multivariate analysis, displaying informative
     visualizations. lipidr also implements a novel Lipid Set Enrichment 
     Analysis (LSEA), harnessing molecular information such as lipid class, 
-    chain length and unsaturation.
+    total chain length and unsaturation.
 Depends: 
     R (>= 3.6.0),
     SummarizedExperiment

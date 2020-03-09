@@ -20,8 +20,8 @@ A ggplot object.
 }
 \description{
 Plot a chart of (log2) fold changes of lipids per class showing chain
-lengths and saturations. If multiple molecules with the same total chain
-length and saturation are present in the dataset, the \code{measure} is averaged,
+lengths and unsaturations. If multiple molecules with the same total chain
+length and unsaturation are present in the dataset, the \code{measure} is averaged,
 and the number of molecules is indicated on the plot.
 }
 \examples{

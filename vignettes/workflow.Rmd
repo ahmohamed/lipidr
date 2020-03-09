@@ -40,7 +40,7 @@ without internal standards are also supported.
 Differential analysis can be performed using any of the loaded clinical
 variables, which can be readily visualized as volcano plots. A novel lipid
 set enrichment analysis (LSEA) is implemented to detect preferential
-enrichment of certain lipid classes, chain lengths or saturation patterns.
+enrichment of certain lipid classes, total chain lengths or unsaturation patterns.
 Plots for the visualization of enrichment results are also implemented.
 
 This vignette provides a step by step guide for downstream analysis of targeted
@@ -280,7 +280,7 @@ For more details on creating design matrices for different experimental designs,
 
 ## Enrichment analysis
 
-`lipidr` automatically generates sets of lipids based on lipid class, chain length and saturation. Measured lipids are then ranked by their fold change, or p-value using results from differential analysis.
+`lipidr` automatically generates sets of lipids based on lipid class, total chain length and unsaturation. Measured lipids are then ranked by their fold change, or p-value using results from differential analysis.
 
 ```{r}
 enrich_results = lsea(de_results, rank.by = "logFC")
@@ -294,8 +294,8 @@ plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
 ```
 
 
-`lipidr` can also plot fold changes of lipids per class showing chain lengths
-and saturations. Number on the plot indicate multiple lipids measured with
+`lipidr` can also plot fold changes of lipids per class showing total chain lengths
+and unsaturations. Number on the plot indicate multiple lipids measured with
 the same chain properties.
 
 ```{r, fig.height=8}
