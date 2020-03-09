@@ -109,12 +109,12 @@ normalize_istd <- function(data, measure = "Area",
 
   # per class:
   x_dimname <- metadata(data)$dimnames[[1]]
-  istd_list <- to_df(data) %>%
+  istd_df <- to_df(data) %>%
     group_by(filename, Class) %>%
-    mutate(istd_list = list(as.character( (!!sym(x_dimname))[istd] ))) %>%
-    .$istd_list
+    mutate(istd_list = list(as.character( (!!sym(x_dimname))[istd] )))
+  istd_list <-  istd_df$istd_list
 
-  assay(data, measure) <- laply(seq_along(istd_list), function(i) {
+  ret <- laply(seq_along(istd_list), function(i) {
     if (length(istd_list[[i]]) == 0) {
       f <- 1
     } else if (length(istd_list[[i]]) == 1) {
@@ -125,6 +125,9 @@ normalize_istd <- function(data, measure = "Area",
 
     return(m[i, ] / f)
   })
+
+  rownames(ret) <- istd_df[[x_dimname]]
+  assay(data, measure) <- ret
   return(.log_data(data, measure, log))
 }
 
