@@ -104,10 +104,10 @@ read_mw_datamatrix <- function(file) {
 
   col_data <- t(.data[1, ]) %>% as.data.frame()
   colnames(col_data)[[1]] <- "Factors"
-  col_data <- col_data %>%
-    slice(-1) %>%
+  col_data <- col_data[-1, , drop=FALSE] %>%
     rownames_to_column("Sample") %>%
     .unnest_key_value(Factors, kv_sep = "\\:", list_sep = "\\|") %>%
+    as.data.frame() %>%
     `rownames<-`(.$Sample) %>%
     DataFrame()
   colData(d) <- col_data[colnames(d), -1, drop = FALSE]
@@ -154,7 +154,7 @@ read_mw_datamatrix <- function(file) {
   col <- enquo(col)
   .data %>%
     mutate(col = strsplit(as.character(!!col), list_sep)) %>%
-    unnest(col) %>%
+    unnest(col) %>%  mutate(col=trimws(col)) %>%
     separate(col, c("annot", "val"), sep = kv_sep) %>%
     mutate(annot = ifelse(annot == "Sample", "SampleType", annot)) %>%
     spread(annot, val) %>%
