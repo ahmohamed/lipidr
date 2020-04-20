@@ -136,7 +136,7 @@ as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
     Molecule = molecules,
     row.names = rownames(data_mat)
   ) %>%
-    left_join(annotate_lipids(molecules))
+    left_join(annotate_lipids(molecules), by='Molecule')
   metadata <- list(
     summarized = summarized,
     dimnames = c(row_dimname, "Sample")
@@ -173,7 +173,7 @@ as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
     distinct()
   row_data <- toDataFrame(row_data, row.names.col = "TransitionId")
   row_data <- row_data[ row.names(assay_list[[1]]), ]
-  row_data <- row_data %>% left_join(annotate_lipids(row_data$Molecule))
+  row_data <- row_data %>% left_join(annotate_lipids(row_data$Molecule), by='Molecule')
   metadata <- list(summarized = FALSE, dimnames = c("TransitionId", "Sample"))
 
   LipidomicsExperiment(
@@ -191,8 +191,8 @@ to_long_format <- function(ds, measure = "Area") {
     as.data.frame() %>%
     rownames_to_column(dims[[1]]) %>%
     gather(key = !!dims[[2]], value = !!measure, -!!dims[[1]]) %>%
-    left_join(to_df(ds, "row")) %>%
-    left_join(to_df(ds, "col")) %>%
+    left_join(to_df(ds, "row"), by=dims[[1]]) %>%
+    left_join(to_df(ds, "col"), by=dims[[2]]) %>%
     mutate_at(vars(one_of("Molecule", "Sample")), factor) %>%
     mutate_at(vars(one_of("Molecule", "Sample")), fct_inorder)
 }
