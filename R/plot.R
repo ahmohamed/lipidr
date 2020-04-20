@@ -367,7 +367,7 @@ plot_heatmap <- function(data, measure = "Area",
     }
   }
   dim_names <- metadata(data)$dimnames
-  iheatmapr::iheatmap(assay(data, measure),
+  iheatmapr::iheatmap(assay(data, measure), y=as.character(rowData(data)$Molecule),
     row_title = dim_names[[1]], col_title = dim_names[[2]],
     cluster_cols = cluster_cols, cluster_rows = cluster_rows,
     row_annotation = row_annotation, col_annotation = col_annotation,
