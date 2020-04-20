@@ -11,8 +11,34 @@
 <img src="man/figures/workflow.png" width="400">
 
 ## Input
-`lipidr` implements a series of functions to facilitate inspection,
-analysis and visualization of targeted and untargeted lipidomics datasets. `lipidr` takes exported Skyline CSV or a numerical matrix as input, allowing for multiple methods to be analyzed together. Sample annotations, such as sample group or other clinical information can be easily loaded as a CSV file or a data frame.
+### Numerical Matrix
+To use `lipidr` for your analysis using numerical matrix as input, you need 2 files: 
+
+1. Numerical table where lipids are rows and samples are columns. Lipid names should be in the first column, and sample names are in the first row. ([see example here](inst/extdata/brca_matrix.csv))
+2. A table with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. ([see example here](inst/extdata/brca_clin.csv))
+
+<img src="man/figures/num_matrix.png" width="800">
+
+`lipidr` can convert these 2 files to `LipidomicsExperiment` as follows:
+
+```r
+d <- as_lipidomics_experiment(read.csv("data_matrix.csv"))
+d <- add_sample_annotation(d, "data_clin.csv")
+```
+
+### Export from Skyline
+Here `lipidr` also requires 2 files:
+
+1. Results exported from Skyline as CSV file (see image below). ([see example here](inst/extdata/A1_data.csv))
+2. A table / CSV file with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. ([see example here](inst/extdata/clin.csv))
+
+<img src="man/figures/skyline_export.png" width="800">
+
+In `lipidr`:
+```r
+d <- read_skyline("Skyline_export.csv")
+d <- add_sample_annotation(d, "data_clin.csv")
+```
 
 ## LipidomicsExperiment Object
 `lipidr` represents lipidomics datasets as a LipidomicsExperiment, which extends [SummarizedExperiment](http://bioconductor.org/packages/SummarizedExperiment/), to facilitate integration with other Bioconductor packages. 
