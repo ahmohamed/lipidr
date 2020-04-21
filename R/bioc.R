@@ -106,6 +106,7 @@ as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
     }
     molecules <- rownames(df)
   }
+  .check_duplicate_mols(molecules)
 
   if (!is.data.frame(df)) {
     df <- as.data.frame(df, stringAsFactors=FALSE)
