@@ -1,6 +1,6 @@
 Package: lipidr
 Title: Data Mining and Analysis of Lipidomics Datasets
-Version: 2.1.5
+Version: 2.2.0
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
