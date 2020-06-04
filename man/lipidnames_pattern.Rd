@@ -4,7 +4,9 @@
 \name{lipidnames_pattern}
 \alias{lipidnames_pattern}
 \title{Patterns used in parsing lipid names}
-\format{An object of class \code{list} of length 8.}
+\format{
+An object of class \code{list} of length 8.
+}
 \usage{
 data(lipidnames_pattern)
 }
@@ -16,8 +18,10 @@ from lipid names. Used internally by the package.
 data(lipidnames_pattern)
 }
 \seealso{
-Other lipidr datasets: \code{\link{data_normalized}},
-  \code{\link{lipidDefaults}}, \code{\link{lipidr-data}}
+Other lipidr datasets: 
+\code{\link{data_normalized}},
+\code{\link{lipidDefaults}},
+\code{\link{lipidr-data}}
 }
 \concept{lipidr datasets}
 \keyword{datasets}

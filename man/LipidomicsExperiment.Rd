@@ -4,8 +4,7 @@
 \alias{LipidomicsExperiment}
 \title{Constructor for Lipidomics experiment from list of assays}
 \usage{
-LipidomicsExperiment(assay_list, metadata, colData = NULL,
-  rowData = NULL)
+LipidomicsExperiment(assay_list, metadata, colData = NULL, rowData = NULL)
 }
 \arguments{
 \item{assay_list}{A list or SimpleList of matrix-like elements,

@@ -6,7 +6,9 @@
 \title{Default values for lipidr internal functions
 A set of default mappings and annotation used internally to correctly parse
 lipid molecule names.}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \usage{
 data(lipidDefaults)
 }
@@ -19,9 +21,10 @@ lipid molecule names.
 data(lipidDefaults)
 }
 \seealso{
-Other lipidr datasets: \code{\link{data_normalized}},
-  \code{\link{lipidnames_pattern}},
-  \code{\link{lipidr-data}}
+Other lipidr datasets: 
+\code{\link{data_normalized}},
+\code{\link{lipidnames_pattern}},
+\code{\link{lipidr-data}}
 }
 \concept{lipidr datasets}
 \keyword{datasets}

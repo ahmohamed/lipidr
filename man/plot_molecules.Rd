@@ -4,8 +4,13 @@
 \alias{plot_molecules}
 \title{Informative plots to investigate individual lipid molecules}
 \usage{
-plot_molecules(data, type = c("cv", "sd", "boxplot"), measure = "Area",
-  log = TRUE, color = "Class")
+plot_molecules(
+  data,
+  type = c("cv", "sd", "boxplot"),
+  measure = "Area",
+  log = TRUE,
+  color = "Class"
+)
 }
 \arguments{
 \item{data}{LipidomicsExperiment object.}
@@ -32,12 +37,12 @@ retention time, in QC samples. \cr\cr
 \code{sd} plots a bar chart for standard deviations of a certain measure in each
 lipid. This plot type is usually used to look at standard deviation of
 intensity for each lipid, but can also be used to look at different
-measures such as \code{Retention Time}, to ensure all lipids elute within
+measures such as \verb{Retention Time}, to ensure all lipids elute within
 expected range. \cr\cr
 \code{boxplot} plots a boxplot chart to examine the distribution of values per
 lipid. This plot type is usually used to look at intensity distribution
 for each lipid, but can also be used to look at different measures, such as
-\code{Retention Time} or \code{Background}.
+\verb{Retention Time} or \code{Background}.
 }
 \examples{
 data(data_normalized)

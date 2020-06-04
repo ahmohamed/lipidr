@@ -6,9 +6,16 @@
 Plots a hierarchically clustered heatmap showing selected sample and
 lipid molecule annotations.}
 \usage{
-plot_heatmap(data, measure = "Area", molecule_annotation = "Class",
-  sample_annotation = "all", cluster_cols = "hclust",
-  cluster_rows = "hclust", scale = "rows", ...)
+plot_heatmap(
+  data,
+  measure = "Area",
+  molecule_annotation = "Class",
+  sample_annotation = "all",
+  cluster_cols = "hclust",
+  cluster_rows = "hclust",
+  scale = "rows",
+  ...
+)
 }
 \arguments{
 \item{data}{LipidomicsExperiment object.}

@@ -6,8 +6,12 @@
 \alias{plot_class_enrichment}
 \title{Lipid set enrichment analysis (LSEA)}
 \usage{
-lsea(de.results, rank.by = c("logFC", "P.Value", "adj.P.Val"),
-  min_size = 2, ...)
+lsea(
+  de.results,
+  rank.by = c("logFC", "P.Value", "adj.P.Val"),
+  min_size = 2,
+  ...
+)
 
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 

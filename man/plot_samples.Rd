@@ -4,8 +4,13 @@
 \alias{plot_samples}
 \title{Informative plots to investigate samples}
 \usage{
-plot_samples(data, type = c("tic", "boxplot"), measure = "Area",
-  log = TRUE, color = NULL)
+plot_samples(
+  data,
+  type = c("tic", "boxplot"),
+  measure = "Area",
+  log = TRUE,
+  color = NULL
+)
 }
 \arguments{
 \item{data}{LipidomicsExperiment object.}
