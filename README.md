@@ -62,7 +62,7 @@ if (!requireNamespace("BiocManager", quietly=TRUE))
 BiocManager::install("lipidr")  
 ```
 
-## Install development version from Github
+## Install development version from GitHub
 In R console, type:
 
 ```r

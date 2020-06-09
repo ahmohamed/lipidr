@@ -23,7 +23,7 @@ plot_class_enrichment(de.results, significant.sets, measure = "logFC")
 \item{rank.by}{Statistic used to rank the lipid list.  Default is \code{logFC}.}
 
 \item{min_size}{Minimum number of molecules in a set to be included
-in enrichemnt.}
+in enrichment.}
 
 \item{...}{Extra parameters passed to \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.}
 
