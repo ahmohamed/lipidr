@@ -140,5 +140,19 @@ test_that(".check_lipids_molecules can handle drop=FALSE", {
   mat <- assay(d, "Area")
   rownames(mat) <- rowData(d)$Molecule
   first_col <- rownames_to_column(as.data.frame(mat))
-  expect_true(.have_lipids_molecules(first_col[, 1, drop=FALSE]), "first_col")
+  expect_true(.have_lipids_molecules(first_col[, 1, drop=FALSE]))
+})
+
+test_that("Gives warnings when molecules are duplicated", {
+  d <- read_skyline(f1)
+  mat <- assay(d, "Area")
+  rownames(mat) <- rowData(d)$Molecule
+  first_col <- rownames_to_column(as.data.frame(mat))
+  dup = rbind(first_col, first_col, first_col)
+  expect_true(.have_lipids_molecules(dup$rowname))
+  expect_equal(.get_mol_dim(dup), "first_col")
+  expect_warning(d <- as_lipidomics_experiment(dup),
+    '38 Duplicate lipid names detected.'
+  )
+  expect_valid_lipidex(d, c(19*3, 11))
 })

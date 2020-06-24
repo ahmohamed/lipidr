@@ -10,7 +10,7 @@ gen_lipidsets(molecules, min_size = 2)
 \item{molecules}{A character vector containing lipid molecule names.}
 
 \item{min_size}{Minimum number of molecules in a set to be included
-in enrichemnt.}
+in enrichment.}
 }
 \value{
 List of lipid sets

@@ -4,8 +4,7 @@
 \alias{plot_lipidclass}
 \title{Informative plots to investigate lipid classes}
 \usage{
-plot_lipidclass(data, type = c("boxplot", "sd"), measure = "Area",
-  log = TRUE)
+plot_lipidclass(data, type = c("boxplot", "sd"), measure = "Area", log = TRUE)
 }
 \arguments{
 \item{data}{LipidomicsExperiment object.}
@@ -26,13 +25,13 @@ A ggplot object.
 \code{sd} plots a bar chart for standard deviation of a certain measure in each
 class. This plot type is usually used to look at standard deviations of
 intensity in each class, but can also be used to look at different measures
-such as \code{Retention Time}, to ensure all lipids are eluted within the expected
+such as \verb{Retention Time}, to ensure all lipids are eluted within the expected
 range. To assess instrumental variation apply the function to technical
 quality control samples. \cr\cr
 \code{boxplot} Plots a boxplot chart to examine the distribution of values per
 class. This plot type is usually used to look at the intensity distribution
 in each class, but can also be used to look at different measures, such as
-\code{Retention Time} or \code{Background}.
+\verb{Retention Time} or \code{Background}.
 }
 \examples{
 data(data_normalized)

@@ -17,8 +17,9 @@ See below for detailed description of each dataset.
 data(data_normalized)
 }
 \seealso{
-Other lipidr datasets: \code{\link{data_normalized}},
-  \code{\link{lipidDefaults}},
-  \code{\link{lipidnames_pattern}}
+Other lipidr datasets: 
+\code{\link{data_normalized}},
+\code{\link{lipidDefaults}},
+\code{\link{lipidnames_pattern}}
 }
 \concept{lipidr datasets}

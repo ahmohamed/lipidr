@@ -4,7 +4,9 @@
 \name{data_normalized}
 \alias{data_normalized}
 \title{Example dataset (normalized and log2 transformed)}
-\format{An object of class \code{LipidomicsExperiment} with 278 rows and 56 columns.}
+\format{
+An object of class \code{LipidomicsExperiment} with 278 rows and 56 columns.
+}
 \usage{
 data(data_normalized)
 }
@@ -21,9 +23,10 @@ generate this dataset.
 data(data_normalized)
 }
 \seealso{
-Other lipidr datasets: \code{\link{lipidDefaults}},
-  \code{\link{lipidnames_pattern}},
-  \code{\link{lipidr-data}}
+Other lipidr datasets: 
+\code{\link{lipidDefaults}},
+\code{\link{lipidnames_pattern}},
+\code{\link{lipidr-data}}
 }
 \concept{lipidr datasets}
 \keyword{datasets}

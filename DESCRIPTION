@@ -1,6 +1,6 @@
 Package: lipidr
 Title: Data Mining and Analysis of Lipidomics Datasets
-Version: 2.1.3
+Version: 2.3.2
 Authors@R: c(
     person(
         "Ahmed", "Mohamed", 
@@ -57,7 +57,7 @@ VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization
 Language: en-US
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/ahmohamed/lipidr
 BugReports: https://github.com/ahmohamed/lipidr/issues/

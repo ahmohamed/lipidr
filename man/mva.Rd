@@ -7,14 +7,29 @@
 \alias{top_lipids}
 \title{Perform multivariate analyses to investigate sample clustering}
 \usage{
-mva(data, measure = "Area", method = c("PCA", "PCoA", "OPLS",
-  "OPLS-DA"), group_col = NULL, groups = NULL, ...)
+mva(
+  data,
+  measure = "Area",
+  method = c("PCA", "PCoA", "OPLS", "OPLS-DA"),
+  group_col = NULL,
+  groups = NULL,
+  ...
+)
 
-plot_mva(mvaresults, components = c(1, 2), color_by = NULL,
-  ellipse = TRUE, hotelling = TRUE)
+plot_mva(
+  mvaresults,
+  components = c(1, 2),
+  color_by = NULL,
+  ellipse = TRUE,
+  hotelling = TRUE
+)
 
-plot_mva_loadings(mvaresults, components = c(1, 2), color_by = NULL,
-  top.n = nrow(mvaresults$loadings))
+plot_mva_loadings(
+  mvaresults,
+  components = c(1, 2),
+  color_by = NULL,
+  top.n = nrow(mvaresults$loadings)
+)
 
 top_lipids(mvaresults, top.n = 10)
 }

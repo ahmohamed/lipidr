@@ -6,8 +6,12 @@
 \alias{plot_class_enrichment}
 \title{Lipid set enrichment analysis (LSEA)}
 \usage{
-lsea(de.results, rank.by = c("logFC", "P.Value", "adj.P.Val"),
-  min_size = 2, ...)
+lsea(
+  de.results,
+  rank.by = c("logFC", "P.Value", "adj.P.Val"),
+  min_size = 2,
+  ...
+)
 
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 
@@ -19,7 +23,7 @@ plot_class_enrichment(de.results, significant.sets, measure = "logFC")
 \item{rank.by}{Statistic used to rank the lipid list.  Default is \code{logFC}.}
 
 \item{min_size}{Minimum number of molecules in a set to be included
-in enrichemnt.}
+in enrichment.}
 
 \item{...}{Extra parameters passed to \code{\link[fgsea:fgsea]{fgsea::fgsea()}}.}
 

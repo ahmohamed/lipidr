@@ -3,7 +3,7 @@
 #' @param de.results Output of [de_analysis()].
 #' @param rank.by Statistic used to rank the lipid list.  Default is `logFC`.
 #' @param min_size Minimum number of molecules in a set to be included
-#'   in enrichemnt.
+#'   in enrichment.
 #' @param ... Extra parameters passed to [fgsea::fgsea()].
 #'
 #' @return `lsea` returns enrichment results (data.frame) as returned from
@@ -135,7 +135,7 @@ plot_class_enrichment <- function(de.results, significant.sets,
 #'
 #' @param molecules A character vector containing lipid molecule names.
 #' @param min_size Minimum number of molecules in a set to be included
-#'   in enrichemnt.
+#'   in enrichment.
 #'
 #' @return List of lipid sets
 #' @export
@@ -178,4 +178,4 @@ gen_lipidsets <- function(molecules, min_size=2) {
 utils::globalVariables(c("collection", "value", "set"))
 
 # colnames output by fgsea
-utils::globalVariables(c("padj", "size", "pathway"))
+utils::globalVariables(c("padj", "size", "pathway", "Significant"))

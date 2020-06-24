@@ -1,0 +1,21 @@
+Sample,SampleType,Race,Stage,Tumor.Type
+S1,Cancer,White,II,IDC
+S2,Cancer,White,II,IDC
+S3,Benign,Black,III,NA
+S4,Metastasis,White,III,IDC
+S5,Benign,White,I,IDC
+S6,Benign,White,II,IDC
+S7,Metastasis,Black,IV,Other
+S8,Cancer,White,III,IDC
+S9,Cancer,White,NA,IDC
+S10,Cancer,White,II,IDC
+S11,Benign,White,II,Other
+S12,Cancer,White,NA,IDC
+S13,Cancer,White,I,IDC
+S14,Benign,White,III,IDC
+S15,Benign,Black.Hispanic.Indian or Alaskan,III,NA
+S16,Benign,Black.White,III,IDC
+S17,Benign,White,II,IDC
+S18,Benign,White,I,IDC
+S19,Cancer,Black,III,IDC
+S20,Benign,White,II,IDC

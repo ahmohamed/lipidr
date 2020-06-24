@@ -84,7 +84,7 @@
   # correcting for edge case where df[,1, drop=FALSE] is passed
   mols <- unlist(mols)
   matched <- !annotate_lipids(mols, no_match = "ignore")$not_matched
-  if ((sum(matched) / length(mols)) < 0.5) {
+  if ((sum(matched) / length(matched)) < 0.5) {
     return(FALSE)
   }
   return(TRUE)
@@ -94,7 +94,13 @@
     warning('More that 50% of molecule names cannot be parsed as lipids.')
   }
 }
-
+.check_duplicate_mols <- function(mols) {
+  n_duplicates <- sum(duplicated(mols))
+  if(n_duplicates > 0) {
+    msg <- 'Duplicate lipid names detected. Consider renaming if they represent different molecules. Ex: PC xx:y (1), PC xx:y (2), ...'
+    warning(paste(n_duplicates, msg))
+  }
+}
 .get_mol_dim <- function(df) {
   possible <- list(
     row_names = rownames(df),
