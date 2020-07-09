@@ -45,7 +45,7 @@ de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
   group <- colData(data)[[group_col]]
   if (!all(symbols %in% as.character(group))) {
     stop(
-      "These of the constrast variables are not present in ", group_col, ": ",
+      "These constrast variables are not present in ", group_col, " column: ",
       paste(symbols[!symbols %in% as.character(group)], collapse=", ")
     )
   }
