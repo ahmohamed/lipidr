@@ -304,7 +304,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     scale_x_discrete(labels=dlong$Molecule) +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    ylab(paste("CV of", as_label(measure)))
+    ylab(paste("%CV of", as_label(measure)))
 }
 
 .plot_molecule_boxplot <- function(dlong, measure, color, mol_dimname) {
