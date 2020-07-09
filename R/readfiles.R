@@ -127,7 +127,7 @@ add_sample_annotation <- function(data, annot_file) {
 #' @noRd
 .read_skyline_file <- function(file) {
   if(!is.data.frame(file)) {
-    original_data <- .read_tabular(file)
+    original_data <- .read_tabular(file, sep = ",")
   } else {
     original_data <- file
   }

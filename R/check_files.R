@@ -138,8 +138,9 @@ col_defs <- list(
   )
 )
 
-.read_tabular <- function(f) {
+.read_tabular <- function(f, sep = "auto") {
   .check_tabular(f)
-  fread(f, na.strings = c("", "NA", "#NA"), strip.white = TRUE, fill = TRUE) %>%
+  fread(f, na.strings = c("", "NA", "#NA"), 
+    strip.white = TRUE, fill = TRUE, sep = sep) %>%
     as.data.frame()
 }
