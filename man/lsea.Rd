@@ -60,7 +60,7 @@ The results also contain the following attributes: \itemize{
 \code{significant_lipidsets} returns a list of character vectors of
 significantly enriched sets for each contrast.
 
-\code{plot_class_enrichment} returns a ggplot object.
+\code{plot_enrichment} returns a ggplot object.
 }
 \description{
 Lipid set enrichment analysis (LSEA)

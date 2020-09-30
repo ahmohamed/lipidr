@@ -108,7 +108,7 @@ plot_class_enrichment <- function(de.results, significant.sets,
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
 #'   Adj.P.Val. Default is `logFC`.
 #'
-#' @return `plot_class_enrichment` returns a ggplot object.
+#' @return `plot_enrichment` returns a ggplot object.
 #' @importFrom forcats fct_recode
 #' @export
 #' @examples

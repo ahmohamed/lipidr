@@ -240,7 +240,13 @@ significant_lipidsets(enrich_results)
 Visualization of enrichment analysis results. The enriched lipid classes are highlighted. 
 
 ```{r}
-plot_class_enrichment(two_group, significant_lipidsets(enrich_results))
+plot_enrichment(two_group, significant_lipidsets(enrich_results), annotation="class")
+```
+
+Alternatively, we can highlight chain lengths that were significantly enriched.
+
+```{r}
+plot_enrichment(two_group, significant_lipidsets(enrich_results), annotation="length")
 ```
 
 # Lipid chain analysis

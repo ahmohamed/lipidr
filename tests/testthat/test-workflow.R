@@ -48,7 +48,9 @@ test_workflow <- function(d, clin_file=NULL, measure="Area", group_col=NULL, gro
       lsea(de_results, rank.by = "logFC")
       lsea(de_results, rank.by = "P.Value")
       enrich <- lsea(de_results, rank.by = "adj.P.Val")
-      p <- plot_class_enrichment(de_results, significant_lipidsets(enrich))
+      p <- plot_enrichment(de_results, significant_lipidsets(enrich), annotation="class")
+      p <- plot_enrichment(de_results, significant_lipidsets(enrich), annotation="length")
+      p <- plot_enrichment(de_results, significant_lipidsets(enrich), annotation="unsat")
       p <- plot_chain_distribution(de_results, contrast = comparison, measure = "logFC")
       p <- plot_chain_distribution(de_results, contrast = comparison, measure = "adj.P.Val")
     }
