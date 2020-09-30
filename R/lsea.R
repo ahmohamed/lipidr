@@ -95,7 +95,7 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 plot_class_enrichment <- function(de.results, significant.sets,
   measure = "logFC") {
   .Deprecated("plot_enrichment")
-  plot_enrichment(de.results, significant.sets, measure)
+  plot_enrichment(de.results, significant.sets, measure=measure)
 }
 
 #' @describeIn lsea is usually used to look at log2 fold change

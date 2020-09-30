@@ -287,10 +287,11 @@ enrich_results = lsea(de_results, rank.by = "logFC")
 significant_lipidsets(enrich_results)
 ```
 
-Visualization of enrichment analysis results. The enriched lipid classes and chain lengths are highlighted. 
+Visualization of enrichment analysis results. The enriched lipid classes and chain unsaturations are highlighted. 
 
 ```{r, fig.width=6, fig.height=5}
-plot_class_enrichment(de_results, significant_lipidsets(enrich_results))
+plot_enrichment(de_results, significant_lipidsets(enrich_results), annotation="class")
+plot_enrichment(de_results, significant_lipidsets(enrich_results), annotation="unsat")
 ```
 
 
