@@ -47,6 +47,8 @@ Default is \code{2}.}
 
 \item{measure}{Which measure to plot the distribution of: logFC, P.Value,
 Adj.P.Val. Default is \code{logFC}.}
+
+\item{annotation}{Which lipid set collection to plot.}
 }
 \value{
 \code{lsea} returns enrichment results (data.frame) as returned from
