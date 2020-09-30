@@ -5,13 +5,13 @@ language: r
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: bionic
       r: bioc-devel
     - os: osx
       r: bioc-release
     - stage: Deploy
       os: linux
-      dist: trusty
+      dist: bionic
       r_packages:
         - pkgdown
         - covr
