@@ -14,8 +14,8 @@
 ### Numerical Matrix
 To use `lipidr` for your analysis using numerical matrix as input, you need 2 files: 
 
-1. Numerical table where lipids are rows and samples are columns. Lipid names should be in the first column, and sample names are in the first row. ([see example here](inst/extdata/brca_matrix.csv))
-2. A table with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. ([see example here](inst/extdata/brca_clin.csv))
+1. Numerical table where lipids are rows and samples are columns. Lipid names should be in the first column, and sample names are in the first row. ([see example here](https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/brca_matrix.csv))
+2. A table with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. ([see example here](https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/brca_clin.csv))
 
 <img src="man/figures/num_matrix.png" width="800">
 
@@ -29,8 +29,8 @@ d <- add_sample_annotation(d, "data_clin.csv")
 ### Export from Skyline
 Here `lipidr` also requires 2 files:
 
-1. Results exported from Skyline as CSV file (see image below). ([see example here](inst/extdata/A1_data.csv))
-2. A table / CSV file with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. ([see example here](inst/extdata/clin.csv))
+1. Results exported from Skyline as CSV file (see image below). ([see example here](https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/A1_data.csv))
+2. A table / CSV file with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. ([see example here](https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/clin.csv))
 
 <img src="man/figures/skyline_export.png" width="800">
 
@@ -70,3 +70,22 @@ library(devtools)
 install_github("ahmohamed/lipidr")
 ```
 
+## Using Docker
+You can use `lipidr` in a containerized form by pulling the image from docker hub.
+
+```
+docker pull ahmohamed/lipidr
+docker run -e PASSWORD=bioc -p 8787:8787 ahmohamed/lipidr:latest
+```
+
+In your browser, navigate to RStudio will be available on your web browser at `http://localhost:8787`. The USER is fixed to always being `rstudio`. The password in the above command is given as `bioc` but it can be set to anything. For more information on how-to-use, refer to [Bioconductor help page](https://www.bioconductor.org/help/docker/).
+
+You can access your local files by mapping to the container:
+
+```
+docker run -e PASSWORD=bioc -p 8787:8787 \
+  -v "path/to/data_folder":"/home/rstudio/data_folder" \
+  ahmohamed/lipidr:latest
+```
+
+You should see `data_folder` in your working directory.
