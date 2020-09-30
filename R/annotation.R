@@ -73,6 +73,9 @@ annotate_lipids <- function(molecules, no_match = c("warn", "remove", "ignore"))
   p <- .myDataEnv$lipidnames_pattern
   olipids <- trimws(lipids_list)
 
+  # 15-MHDA --> 17:0
+  olipids <- sub("15-MHDA", "17:0", olipids)
+
   # PC(O-32:0) --> PCO-32:0
   p2 <- paste0(p$class, "[ -]*\\(", "([OP]-\\d{1,2}:\\d{1,2}[^)]*)", "\\)")
   olipids <- gsub(p2, "\\1\\2", olipids)
@@ -111,6 +114,9 @@ annotate_lipids <- function(molecules, no_match = c("warn", "remove", "ignore"))
   # Trim
   olipids <- sub(" NEG$", "", olipids)
   olipids <- sub(" ID\\d+$", "", olipids)
+
+  # [] --> ()
+  olipids <- sub("\\[(.*)\\]", "(\\1)", olipids)
 
   is_istd <- grepl(p$istd, olipids) |
     lipids_list %in% p$istd_list |
