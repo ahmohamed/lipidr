@@ -4,6 +4,7 @@
 \alias{lsea}
 \alias{significant_lipidsets}
 \alias{plot_class_enrichment}
+\alias{plot_enrichment}
 \title{Lipid set enrichment analysis (LSEA)}
 \usage{
 lsea(
@@ -16,6 +17,13 @@ lsea(
 significant_lipidsets(enrich.results, p.cutoff = 0.05, size.cutoff = 2)
 
 plot_class_enrichment(de.results, significant.sets, measure = "logFC")
+
+plot_enrichment(
+  de.results,
+  significant.sets,
+  annotation = c("class", "length", "unsat"),
+  measure = "logFC"
+)
 }
 \arguments{
 \item{de.results}{Output of \code{\link[=de_analysis]{de_analysis()}}.}
@@ -61,9 +69,10 @@ Lipid set enrichment analysis (LSEA)
 \itemize{
 \item \code{significant_lipidsets}: gets a list of significantly changed lipid sets
 
-\item \code{plot_class_enrichment}: is usually used to look at log2 fold change
-distribution of lipids in each class, marking significantly enriched classes.
-Can also be used to plot \code{P.Value} or \code{Adj.P.Val}.
+\item \code{plot_enrichment}: is usually used to look at log2 fold change
+distribution of lipids in each class, chain length or unsaturation,
+marking significantly enriched sets. It can also be used to plot \code{P.Value}
+or \code{Adj.P.Val}.
 }}
 
 \examples{
@@ -78,5 +87,6 @@ enrich_results <- lsea(
   rank.by = "logFC", min_size = 4, nperm = 1000
 )
 sig_lipidsets <- significant_lipidsets(enrich_results)
-plot_class_enrichment(de_results, sig_lipidsets)
+plot_enrichment(de_results, sig_lipidsets, annotation="class")
+plot_enrichment(de_results, sig_lipidsets, annotation="length")
 }

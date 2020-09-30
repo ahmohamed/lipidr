@@ -90,9 +90,18 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 }
 
 
+#' @export
+#' @rdname lsea
+plot_class_enrichment <- function(de.results, significant.sets,
+  measure = "logFC") {
+  .Deprecated("plot_enrichment")
+  plot_enrichment(de.results, significant.sets, measure)
+}
+
 #' @describeIn lsea is usually used to look at log2 fold change
-#' distribution of lipids in each class, marking significantly enriched classes.
-#' Can also be used to plot `P.Value` or `Adj.P.Val`.
+#' distribution of lipids in each class, chain length or unsaturation,
+#' marking significantly enriched sets. It can also be used to plot `P.Value`
+#' or `Adj.P.Val`.
 #'
 #' @param significant.sets List of significantly changed lipid sets
 #'   (output of [significant_lipidsets()]).
@@ -103,26 +112,34 @@ significant_lipidsets <- function(enrich.results, p.cutoff = 0.05,
 #' @importFrom forcats fct_recode
 #' @export
 #' @examples
-#' plot_class_enrichment(de_results, sig_lipidsets)
-plot_class_enrichment <- function(de.results, significant.sets,
-  measure = "logFC") {
+#' plot_enrichment(de_results, sig_lipidsets, annotation="class")
+#' plot_enrichment(de_results, sig_lipidsets, annotation="length")
+plot_enrichment <- function(de.results, significant.sets,
+  annotation=c("class", "length", "unsat"), measure = "logFC") {
+
+  annotation <- match.arg(annotation)
+  collection <- c(class="Class", length="total_cl", unsat="total_cs")[[annotation]]
+  prefix = paste0("^", collection, "_")
+
   significant.sets <- lapply(
     significant.sets,
-    function(c) sub("^Class_", "", c[grep("^Class_", c)])
+    function(c) sub(prefix, "", c[grep(prefix, c)])
   )
-  de_results <- de.results$Molecule %>%
-    annotate_lipids() %>%
-    .left_join_silent(de.results) %>%
-    group_by(contrast) %>%
+  de_results <- de.results %>% group_by(contrast) %>%
     mutate(Significant = factor(
-      Class %in% significant.sets[[ contrast[[1]] ]], levels = c(TRUE, FALSE)
+      as.character(!!sym(collection)) %in% significant.sets[[ contrast[[1]] ]],
+      levels = c(TRUE, FALSE)
     )) %>%
     mutate(Enrichment = fct_recode(
       Significant, "Significant"="TRUE", "Not significant"="FALSE")
     ) %>%
-    ungroup()
+    ungroup() %>%
+    mutate(
+      collection = as.character(!!sym(collection)),
+      measure = !!sym(measure),
+    )
 
-  p <- ggplot(de_results, aes_string("Class", measure, color = "Enrichment")) +
+  p <- ggplot(de_results, aes(collection, measure, color = Enrichment)) +
     geom_boxplot() + geom_hline(yintercept = 0, lty = 2) +
     facet_wrap(~contrast, scales = "free_x") +
     scale_color_manual(values = c(`Not significant`="black", `Significant`="red"), drop=FALSE) +
