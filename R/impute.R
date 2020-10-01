@@ -4,15 +4,15 @@
 #' @param measure Which measure to use as intensity, usually Area,
 #'   Area Normalized or Height. Default is `Area`.
 #' @param method The imputation method to use. All methods are wrappers for
-#' [imputeLCMD] package. These include \itemize{
-#'   \item knn    Wraps [imputeLCMD:impute.knn]. Default. This requires an
+#' `imputeLCMD` package. These include \itemize{
+#'   \item knn    Wraps [imputeLCMD::impute.wrapper.KNN()]. Default. This requires an
 #'   additional argument `K` (Number of neighbors used to infer the missing data).
-#'   \item svd    Wraps [imputeLCMD:impute.wrapper.SVD]. This requires an
+#'   \item svd    Wraps [imputeLCMD::impute.wrapper.SVD()]. This requires an
 #'   additional argument `K` (Number of principal components to use).
-#'   \item mle    Wraps [imputeLCMD:impute.wrapper.MLE],
-#'   \item minDet    Wraps [imputeLCMD:impute.MinDet],
-#'   \item minProb    Wraps [imputeLCMD:impute.MinProb],
-#'   \item zero    Wraps [imputeLCMD:impute.ZERO],
+#'   \item mle    Wraps [imputeLCMD::impute.wrapper.MLE()],
+#'   \item minDet    Wraps [imputeLCMD::impute.MinDet()],
+#'   \item minProb    Wraps [imputeLCMD::impute.MinProb()],
+#'   \item zero    Wraps [imputeLCMD::impute.ZERO()],
 #'  }
 
 #' @param ... Other arguments passed to the imputation method.

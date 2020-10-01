@@ -18,15 +18,15 @@ impute_na(
 Area Normalized or Height. Default is \code{Area}.}
 
 \item{method}{The imputation method to use. All methods are wrappers for
-\link{imputeLCMD} package. These include \itemize{
-\item knn    Wraps \link{imputeLCMD:impute.knn}. Default. This requires an
+\code{imputeLCMD} package. These include \itemize{
+\item knn    Wraps \code{\link[imputeLCMD:impute.wrapper.KNN]{imputeLCMD::impute.wrapper.KNN()}}. Default. This requires an
 additional argument \code{K} (Number of neighbors used to infer the missing data).
-\item svd    Wraps \link{imputeLCMD:impute.wrapper.SVD}. This requires an
+\item svd    Wraps \code{\link[imputeLCMD:impute.wrapper.SVD]{imputeLCMD::impute.wrapper.SVD()}}. This requires an
 additional argument \code{K} (Number of principal components to use).
-\item mle    Wraps \link{imputeLCMD:impute.wrapper.MLE},
-\item minDet    Wraps \link{imputeLCMD:impute.MinDet},
-\item minProb    Wraps \link{imputeLCMD:impute.MinProb},
-\item zero    Wraps \link{imputeLCMD:impute.ZERO},
+\item mle    Wraps \code{\link[imputeLCMD:impute.wrapper.MLE]{imputeLCMD::impute.wrapper.MLE()}},
+\item minDet    Wraps \code{\link[imputeLCMD:impute.MinDet]{imputeLCMD::impute.MinDet()}},
+\item minProb    Wraps \code{\link[imputeLCMD:impute.MinProb]{imputeLCMD::impute.MinProb()}},
+\item zero    Wraps \code{\link[imputeLCMD:impute.ZERO]{imputeLCMD::impute.ZERO()}},
 }}
 
 \item{...}{Other arguments passed to the imputation method.}
