@@ -107,6 +107,7 @@ plot_class_enrichment <- function(de.results, significant.sets,
 #'   (output of [significant_lipidsets()]).
 #' @param measure Which measure to plot the distribution of: logFC, P.Value,
 #'   Adj.P.Val. Default is `logFC`.
+#' @param annotation Which lipid set collection to plot.
 #'
 #' @return `plot_enrichment` returns a ggplot object.
 #' @importFrom forcats fct_recode
@@ -195,4 +196,4 @@ gen_lipidsets <- function(molecules, min_size=2) {
 utils::globalVariables(c("collection", "value", "set"))
 
 # colnames output by fgsea
-utils::globalVariables(c("padj", "size", "pathway", "Significant"))
+utils::globalVariables(c("padj", "size", "pathway", "Significant", "Enrichment"))
