@@ -42,6 +42,7 @@ Imports:
     limma,
     fgsea,
     ropls,
+    imputeLCMD,
     magrittr
 License: MIT + file LICENSE
 Suggests: 

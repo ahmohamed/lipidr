@@ -31,9 +31,10 @@ reference:
     - '`read_mwTab`'
     - '`read_mw_datamatrix`'
   - title: Preprocessing data
-    desc: Functions to summarise and normalize lipidomics datasets
+    desc: Functions to summarise, impute and normalize lipidomics datasets
     contents:
     - '`summarize_transitions`'
+    - '`impute_na`'
     - '`normalize_istd`'
     - '`normalize_pqn`'
   - title: Quality control and data visualization
@@ -58,7 +59,7 @@ reference:
     desc: ~
     contents:
     - '`lsea`'
-    - '`plot_class_enrichment`'
+    - '`plot_enrichment`'
     - '`gen_lipidsets`'
   - title: Clustring analysis
     desc: ~
