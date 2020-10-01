@@ -56,9 +56,6 @@ impute_na <- function(data, measure = "Area",
 
   mat <- assay(data, measure)
   mat <- fun(mat, ...)
-  if (method == "knn") {
-    mat <- mat$data
-  }
   if (method == "QRILC") {
     mat <- mat[[1]]
   }
