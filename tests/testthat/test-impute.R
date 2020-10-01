@@ -15,7 +15,8 @@ test_that("Can impute with different methods", {
     impute_na(d, "Area", "minDet"),
     impute_na(d, "Area", "QRILC"),
     impute_na(d, "Area", "mle"),
-    impute_na(d, "Area", "svd", 10)
+    impute_na(d, "Area", "svd", 10),
+    impute_na(d, "Area", "knn", 10)
   )
   lapply(methods, function(d_imputed) {
     expect_valid_lipidex(d_imputed, c(19, 11))

@@ -5,7 +5,8 @@
 #'   Area Normalized or Height. Default is `Area`.
 #' @param method The imputation method to use. All methods are wrappers for
 #' [imputeLCMD] package. These include \itemize{
-#'   \item knn    Wraps [imputeLCMD:impute.knn]. Default.
+#'   \item knn    Wraps [imputeLCMD:impute.knn]. Default. This requires an
+#'   additional argument `K` (Number of neighbors used to infer the missing data).
 #'   \item svd    Wraps [imputeLCMD:impute.wrapper.SVD]. This requires an
 #'   additional argument `K` (Number of principal components to use).
 #'   \item mle    Wraps [imputeLCMD:impute.wrapper.MLE],
@@ -25,7 +26,7 @@
 #' data(data_normalized)
 #'
 #' # Replace with values calculated using K-nearest neighbors
-#' impute_na(data_normalized, "Area", "knn")
+#' impute_na(data_normalized, "Area", "knn", 10)
 #'
 #' # Replace with values calculated from the first K principal components
 #' impute_na(data_normalized, "Area", "svd", 3)
