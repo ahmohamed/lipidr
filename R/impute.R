@@ -42,7 +42,7 @@
 #'
 #' # Replace with randomly drawn values from a Gaussian distribution
 #' # cerntered around a minimal value
-#' impute_na(data_normalized, "Area", "minProp")
+#' impute_na(data_normalized, "Area", "minProb")
 #'
 #' # Replace with zero (not recommended)
 #' impute_na(data_normalized, "Area", "zero")
