@@ -18,7 +18,7 @@
 #'
 #' @return LipidomicsExperiment object with missing values imputed.
 #' @export
-#' @importFrom imputeLCMD impute.knn impute.wrapper.SVD impute.wrapper.MLE
+#' @importFrom imputeLCMD impute.wrapper.KNN impute.wrapper.SVD impute.wrapper.MLE
 #' @importFrom imputeLCMD impute.QRILC impute.MinDet impute.MinProb impute.ZERO
 #'
 #' @examples
@@ -48,7 +48,7 @@
 impute_na <- function(data, measure = "Area",
   method = c("knn", "svd", "mle", "QRILC", "minDet", "minProb", "zero"), ...) {
   method <- match.arg(method)
-  fun <- c(knn=impute.knn, svd=impute.wrapper.SVD, mle=impute.wrapper.MLE,
+  fun <- c(knn=impute.wrapper.KNN, svd=impute.wrapper.SVD, mle=impute.wrapper.MLE,
     QRILC=impute.QRILC, minDet=impute.MinDet, minProb=impute.MinProb,
     zero=impute.ZERO
   )[[method]]
