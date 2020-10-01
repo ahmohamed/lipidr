@@ -137,7 +137,7 @@ test_that("Can run workflow with where some sample annot are missing", {
 test_that("Can run workflow with where some molecules are missing", {
   skip_on_bioc()
   file = .read_tabular("A1.csv") %>% rename("Normalized Area"=Area) %>%
-    mutate(Peptide=ifelse(1:nrow(.) %% 3 == 0,  NA, Peptide)) %>%
+    mutate(Peptide=ifelse(1:nrow(.) %% 10 == 0,  NA, Peptide)) %>%
     save_temp_csv(quote=FALSE, na = "")
 
   d <- read_skyline(file)
