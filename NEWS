@@ -1,3 +1,8 @@
+lipidr 2.4
+===========
+* Added imputation function for untargeted lipidomics datasets
+* Added function to boxplot enriched lipidsets related to chain length and unsaturation
+
 lipidr 1.99.2
 ===========
 * Breaking changes: changed the core object to LipidomicsExperiment.
