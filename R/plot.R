@@ -29,7 +29,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
-    mutate_if(is.factor, is.character)
+    mutate_if(is.factor, as.character)
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -97,7 +97,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
-    mutate_if(is.factor, is.character)
+    mutate_if(is.factor, as.character)
   
   measure <- sym(measure)
   if (log) {
@@ -268,7 +268,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   validObject(data)
   type <- match.arg(type)
   dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
-    mutate_if(is.factor, is.character)
+    mutate_if(is.factor, as.character)
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
