@@ -28,7 +28,8 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure) %>% fix_all_na()
+  dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
+    mutate_if(is.factor, is.character)
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -46,7 +47,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 
 .plot_sample_tic <- function(dlong, measure, color) {
   ggplot(dlong, aes(Sample, !!measure, fill = !!sym(color))) +
-    stat_summary(fun.y = mean, geom = "bar") +
+    stat_summary(fun = mean, geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     guides(size = FALSE)
@@ -95,7 +96,9 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure) %>% fix_all_na()
+  dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
+    mutate_if(is.factor, is.character)
+  
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -109,7 +112,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
 
 .plot_class_sd <- function(dlong, measure) {
   ggplot(dlong, aes(Class, !!measure, fill = Class)) +
-    stat_summary(fun.y = sd, geom = "bar") +
+    stat_summary(fun = sd, geom = "bar") +
     facet_wrap(~filename, scales = "free_x") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("SD of", as_label(measure)))
@@ -264,7 +267,8 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure) %>% fix_all_na()
+  dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
+    mutate_if(is.factor, is.character)
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -288,7 +292,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     dlong,
     aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
-    stat_summary(fun.y = sd, geom = "bar") +
+    stat_summary(fun = sd, geom = "bar") +
     scale_x_discrete(labels=dlong$Molecule) +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
@@ -300,7 +304,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     dlong,
     aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
-    stat_summary(fun.y = .cv, geom = "bar") + coord_flip() +
+    stat_summary(fun = .cv, geom = "bar") + coord_flip() +
     scale_x_discrete(labels=dlong$Molecule) +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
