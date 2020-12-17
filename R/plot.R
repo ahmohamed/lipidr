@@ -28,8 +28,7 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
-    mutate_if(is.factor, as.character)
+  dlong <- to_long_format(data, measure) %>% fix_all_na() 
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -96,8 +95,7 @@ plot_lipidclass <- function(data, type = c("boxplot", "sd"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
-    mutate_if(is.factor, as.character)
+  dlong <- to_long_format(data, measure) %>% fix_all_na() 
   
   measure <- sym(measure)
   if (log) {
@@ -267,8 +265,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   stopifnot(inherits(data, "LipidomicsExperiment"))
   validObject(data)
   type <- match.arg(type)
-  dlong <- to_long_format(data, measure) %>% fix_all_na() %>% 
-    mutate_if(is.factor, as.character)
+  dlong <- to_long_format(data, measure) %>% fix_all_na()
   measure <- sym(measure)
   if (log) {
     measure <- .check_log(data, measure)
@@ -293,7 +290,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     stat_summary(fun = sd, geom = "bar") +
-    scale_x_discrete(labels=dlong$Molecule) +
+    scale_x_discrete(labels=as.character(dlong$Molecule)) +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("SD of", as_label(measure)))
@@ -305,7 +302,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     stat_summary(fun = .cv, geom = "bar") + coord_flip() +
-    scale_x_discrete(labels=dlong$Molecule) +
+    scale_x_discrete(labels=as.character(dlong$Molecule)) +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("%CV of", as_label(measure)))
@@ -317,7 +314,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
   ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
-    scale_x_discrete(labels=dlong$Molecule) +
+    scale_x_discrete(labels=as.character(dlong$Molecule)) +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 }
