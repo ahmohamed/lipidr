@@ -66,7 +66,7 @@ lsea <- function(de.results,
 .gsea_fun <- function(pathways, stats, minSize = 2, nperm = 10000, ...) {
   fgsea::fgsea(
     pathways = pathways, stats = stats,
-    minSize = minSize, nperm = nperm, ...
+    minSize = minSize, ...
   )
 }
 

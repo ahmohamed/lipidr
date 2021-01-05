@@ -158,7 +158,7 @@ get_group_vector_opls <- function(data_f, group_col, groups, method) {
 run_opls <- function(data, y,
   predI = 1, orthoI = 1,
   scaleC = "standard",
-  fig.pdfC = NULL, info.txtC=NULL, ...) {
+  fig.pdfC = 'none', info.txtC='none', ...) {
   opls(
     data,
     y = y,
@@ -173,7 +173,7 @@ run_opls <- function(data, y,
 run_pca <- function(data,
   predI = NA,
   scaleC = "standard",
-  fig.pdfC = NULL, info.txtC=NULL, ...) {
+  fig.pdfC = 'none', info.txtC='none', ...) {
   opls(
     data,
     predI = min(dim(data)),

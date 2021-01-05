@@ -194,8 +194,8 @@ to_long_format <- function(ds, measure = "Area") {
     gather(key = !!dims[[2]], value = !!measure, -!!dims[[1]]) %>%
     left_join(to_df(ds, "row"), by=dims[[1]]) %>%
     left_join(to_df(ds, "col"), by=dims[[2]]) %>%
-    mutate_at(vars(one_of("Molecule", "Sample")), factor) %>%
-    mutate_at(vars(one_of("Molecule", "Sample")), fct_inorder)
+    mutate_at(vars(one_of("Molecule", "Sample", dims[[1]])), factor) %>%
+    mutate_at(vars(one_of("Molecule", "Sample", dims[[1]])), fct_inorder)
 }
 
 #' @importFrom S4Vectors DataFrame
