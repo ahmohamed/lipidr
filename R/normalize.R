@@ -166,11 +166,12 @@ normalize_istd <- function(data, measure = "Area",
 
 .log_data <- function(data, measure, log) {
   assay_ <- assay(data, measure)
-  if (any(assay_ < 1)) {
-    warning(measure, " contains values < 1. Replacing with 1.")
-    assay_[assay_ < 1] <- 1
-  }
   if (log && !is_logged(data, measure)) {
+    # Only check assay < 1 if not already logged
+    if (any(assay_ < 1)) {
+      warning(measure, " contains values < 1. Replacing with 1.")
+      assay_[assay_ < 1] <- 1
+    }
     assay(data, measure) <- log2(assay_)
     data <- set_logged(data, measure, TRUE)
   }

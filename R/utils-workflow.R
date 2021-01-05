@@ -42,7 +42,12 @@
 }
 
 .is_blank <- function(data, measure = "Area") {
-  tic <- colSums(assay(data, measure), na.rm = TRUE)
+  mat <- assay(data, measure)
+  if (is_logged(data, measure)) {
+    mat <- 2 ^ mat
+  }
+
+  tic <- colSums(mat, na.rm = TRUE)
 
   (median(tic) / tic) > 50
 }
