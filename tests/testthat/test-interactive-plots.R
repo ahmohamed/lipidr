@@ -11,4 +11,5 @@ test_that("Interactive plots work", {
   plot_lipidclass(data_normalized, 'sd')
   plot_lipidclass(data_normalized, 'boxplot')
   expect_true(TRUE) # Needed so devtools doesn't think it's an empty test.
+  use_interactive_graphics(FALSE) # Switch off interactive graphics
 })

@@ -167,7 +167,7 @@ plot_chain_distribution <- function(de_results, contrast = NULL,
     group_by(Class, total_cl, total_cs) %>%
     summarise(!!measure := mean(!!measure), nmolecules = n())
 
-  p <- ggplot(de_results, aes(total_cs, total_cl, fill = logFC)) + geom_tile() +
+  p <- ggplot(de_results, aes(total_cs, total_cl, fill = !!measure)) + geom_tile() +
     facet_wrap(~Class) +
     xlab("Total chain unsaturation") + ylab("Total chain length") +
     scale_fill_gradient2(midpoint = 0) +
