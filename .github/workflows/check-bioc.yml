@@ -193,10 +193,10 @@ jobs:
           remotes::install_cran("covr")
         shell: Rscript {0}
 
-      - name: Install pkgdown
+      - name: Install pkgdown and deps
         if: github.ref == 'refs/heads/feature/github-actions' && env.run_pkgdown == 'true' && runner.os == 'Linux'
         run: |
-          remotes::install_cran("pkgdown")
+          remotes::install_cran("pkgdown", "widgetframe")
         shell: Rscript {0}
 
       - name: Session info
