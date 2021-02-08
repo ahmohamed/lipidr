@@ -8,6 +8,7 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^\.git*
+^\.github$
 ^\.BBSoptions$
 ^\Dockerfile$
 ^vignettes/examples*
