@@ -196,7 +196,7 @@ jobs:
       - name: Install pkgdown and deps
         if: github.ref == 'refs/heads/feature/github-actions' && env.run_pkgdown == 'true' && runner.os == 'Linux'
         run: |
-          remotes::install_cran("pkgdown", "widgetframe")
+          remotes::install_cran(c("pkgdown", "widgetframe"))
         shell: Rscript {0}
 
       - name: Session info
