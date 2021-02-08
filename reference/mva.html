@@ -88,7 +88,7 @@ Missing data are imputed using average lipid intensity across all samples." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
       </span>
     </div>
 
@@ -96,7 +96,7 @@ Missing data are imputed using average lipid intensity across all samples." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -122,7 +122,7 @@ Missing data are imputed using average lipid intensity across all samples." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ahmohamed/lipidr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -274,7 +274,7 @@ to investigate feature importance.</p></li>
 
 <span class='co'># PCA</span>
 <span class='va'>mvaresults</span> <span class='op'>&lt;-</span> <span class='fu'>mva</span><span class='op'>(</span><span class='va'>data_normalized</span>, measure <span class='op'>=</span> <span class='st'>"Area"</span>, method <span class='op'>=</span> <span class='st'>"PCA"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'info.txtC = NULL' argument value is deprecated; use 'info.txtC = 'none'' instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'fig.pdfC = NULL' argument value is deprecated; use 'fig.pdfC = 'none'' instead.</span></div><div class='input'><span class='fu'>plot_mva</span><span class='op'>(</span><span class='va'>mvaresults</span>, color_by <span class='op'>=</span> <span class='st'>"group"</span><span class='op'>)</span>
+<span class='fu'>plot_mva</span><span class='op'>(</span><span class='va'>mvaresults</span>, color_by <span class='op'>=</span> <span class='st'>"group"</span><span class='op'>)</span>
 </div><div class='img'><img src='mva-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># NOT RUN</span>
 <span class='co'># plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))</span>
 
@@ -288,9 +288,9 @@ to investigate feature importance.</p></li>
   <span class='va'>data_normalized</span>,
   method <span class='op'>=</span> <span class='st'>"OPLS-DA"</span>, group_col <span class='op'>=</span> <span class='st'>"Diet"</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"HighFat"</span>, <span class='st'>"Normal"</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'info.txtC = NULL' argument value is deprecated; use 'info.txtC = 'none'' instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'fig.pdfC = NULL' argument value is deprecated; use 'fig.pdfC = 'none'' instead.</span></div><div class='input'><span class='fu'>plot_mva</span><span class='op'>(</span><span class='va'>mvaresults</span>, color_by <span class='op'>=</span> <span class='st'>"group"</span><span class='op'>)</span>
+<span class='fu'>plot_mva</span><span class='op'>(</span><span class='va'>mvaresults</span>, color_by <span class='op'>=</span> <span class='st'>"group"</span><span class='op'>)</span>
 </div><div class='img'><img src='mva-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_mva_loadings</span><span class='op'>(</span><span class='va'>mvaresults</span>, color_by <span class='op'>=</span> <span class='st'>"Class"</span>, top.n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='img'><img src='mva-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>top_lipids</span><span class='op'>(</span><span class='va'>mvaresults</span>, top.n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider increasing max.overlaps</span></div><div class='img'><img src='mva-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>top_lipids</span><span class='op'>(</span><span class='va'>mvaresults</span>, top.n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       filename        Molecule Precursor.Mz Precursor.Charge    clean_name
 #&gt; 1  F1_data.csv Cer d18:1/C16:0        538.7                1 Cer 18:1/16:0
 #&gt; 2  F1_data.csv Cer d18:1/C18:0        566.7                1 Cer 18:1/18:0

@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -116,7 +116,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ahmohamed/lipidr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -244,8 +244,8 @@ or <code>Adj.P.Val</code>.</p></li>
   <span class='va'>de_results</span>,
   rank.by <span class='op'>=</span> <span class='st'>"logFC"</span>, min_size <span class='op'>=</span> <span class='fl'>4</span>, nperm <span class='op'>=</span> <span class='fl'>1000</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: You are trying to run fgseaSimple. It is recommended to use fgseaMultilevel. To run fgseaMultilevel, you need to remove the nperm argument in the fgsea function call.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are ties in the preranked stats (5.78% of the list).</span>
-#&gt; <span class='warning'>The order of those tied genes will be arbitrary, which may produce unexpected results.</span></div><div class='input'><span class='va'>sig_lipidsets</span> <span class='op'>&lt;-</span> <span class='fu'>significant_lipidsets</span><span class='op'>(</span><span class='va'>enrich_results</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: There are ties in the preranked stats (5.78% of the list).</span>
+#&gt; <span class='warning'>The order of those tied genes will be arbitrary, which may produce unexpected results.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For some pathways, in reality P-values are less than 1e-10. You can set the `eps` argument to zero for better estimation.</span></div><div class='input'><span class='va'>sig_lipidsets</span> <span class='op'>&lt;-</span> <span class='fu'>significant_lipidsets</span><span class='op'>(</span><span class='va'>enrich_results</span><span class='op'>)</span>
 <span class='fu'>plot_enrichment</span><span class='op'>(</span><span class='va'>de_results</span>, <span class='va'>sig_lipidsets</span>, annotation<span class='op'>=</span><span class='st'>"class"</span><span class='op'>)</span>
 </div><div class='img'><img src='lsea-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_enrichment</span><span class='op'>(</span><span class='va'>de_results</span>, <span class='va'>sig_lipidsets</span>, annotation<span class='op'>=</span><span class='st'>"length"</span><span class='op'>)</span>
 </div><div class='img'><img src='lsea-2.png' alt='' width='700' height='433' /></div></pre>

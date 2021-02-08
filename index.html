@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -82,7 +82,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/ahmohamed/lipidr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -99,14 +99,14 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r" class="section level1">
+<div id="lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r" class="anchor"></a><em>lipidr</em>: Data Mining and Analysis of Lipidomics Datasets in R <img src="reference/figures/logo.png" align="right" alt="" width="120">
+<a href="#lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r-" class="anchor"></a><em>lipidr</em>: Data Mining and Analysis of Lipidomics Datasets in R <img src="reference/figures/logo.png" align="right" alt="" width="120">
 </h1></div>
 
-<div id="see-full-guide-at-lipidr-org" class="section level2">
+<div id="see-full-guide-at-lipidrorg" class="section level2">
 <h2 class="hasAnchor">
-<a href="#see-full-guide-at-lipidr-org" class="anchor"></a>See full guide at <a href="https://www.lipidr.org/">lipidr.org</a>
+<a href="#see-full-guide-at-lipidrorg" class="anchor"></a>See full guide at <a href="https://www.lipidr.org/">lipidr.org</a>
 </h2>
 </div>
 <div id="overall-workflow" class="section level2">
@@ -127,9 +127,9 @@
 </ol>
 <p><img src="reference/figures/num_matrix.png" width="800"></p>
 <p><code>lipidr</code> can convert these 2 files to <code>LipidomicsExperiment</code> as follows:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_lipidomics_experiment.html">as_lipidomics_experiment</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"data_matrix.csv"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_lipidomics_experiment.html">as_lipidomics_experiment</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"data_matrix.csv"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="export-from-skyline" class="section level3">
 <h3 class="hasAnchor">
@@ -141,9 +141,9 @@
 </ol>
 <p><img src="reference/figures/skyline_export.png" width="800"></p>
 <p>In <code>lipidr</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="st">"Skyline_export.csv"</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="st">"Skyline_export.csv"</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="lipidomicsexperiment-object" class="section level2">
@@ -151,9 +151,9 @@
 <a href="#lipidomicsexperiment-object" class="anchor"></a>LipidomicsExperiment Object</h2>
 <p><code>lipidr</code> represents lipidomics datasets as a LipidomicsExperiment, which extends <a href="http://bioconductor.org/packages/SummarizedExperiment/">SummarizedExperiment</a>, to facilitate integration with other Bioconductor packages.</p>
 </div>
-<div id="quality-control-plotting" class="section level2">
+<div id="quality-control--plotting" class="section level2">
 <h2 class="hasAnchor">
-<a href="#quality-control-plotting" class="anchor"></a>Quality control &amp; plotting</h2>
+<a href="#quality-control--plotting" class="anchor"></a>Quality control &amp; plotting</h2>
 <p><code>lipidr</code> generates various plots, such as box plots or PCA, for quality control of samples and measured lipids. Lipids can be filtered by their %CV. Normalization methods with and without internal standards are also supported.</p>
 </div>
 <div id="univariate-analysis" class="section level2">
@@ -175,18 +175,18 @@
 <h2 class="hasAnchor">
 <a href="#from-bioconductor" class="anchor"></a>From Bioconductor</h2>
 <p>In R console, type:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </pre></div>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </code></pre></div>
 </div>
 <div id="install-development-version-from-github" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install-development-version-from-github" class="anchor"></a>Install development version from GitHub</h2>
 <p>In R console, type:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>   
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>   
+<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="using-docker" class="section level2">
 <h2 class="hasAnchor">

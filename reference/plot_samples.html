@@ -85,7 +85,7 @@ per sample." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ per sample." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -119,7 +119,7 @@ per sample." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ahmohamed/lipidr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -190,8 +190,8 @@ Area Normalized or Height. Default is <code>Area</code></p></td>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>data_normalized</span><span class='op'>)</span>
 
 <span class='fu'>plot_samples</span><span class='op'>(</span><span class='va'>data_normalized</span>, type <span class='op'>=</span> <span class='st'>"tic"</span>, <span class='st'>"Area"</span>, log <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='img'><img src='plot_samples-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_samples</span><span class='op'>(</span><span class='va'>data_normalized</span>, type <span class='op'>=</span> <span class='st'>"tic"</span>, <span class='st'>"Background"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_samples-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_samples</span><span class='op'>(</span>
+</div><div class='img'><img src='plot_samples-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_samples</span><span class='op'>(</span><span class='va'>data_normalized</span>, type <span class='op'>=</span> <span class='st'>"tic"</span>, <span class='st'>"Background"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_samples-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_samples</span><span class='op'>(</span>
   <span class='va'>data_normalized</span><span class='op'>[</span>, <span class='va'>data_normalized</span><span class='op'>$</span><span class='va'>group</span> <span class='op'>==</span> <span class='st'>"QC"</span><span class='op'>]</span>,
   type <span class='op'>=</span> <span class='st'>"boxplot"</span>,
   measure <span class='op'>=</span> <span class='st'>"Retention Time"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span>

@@ -95,7 +95,7 @@ Retention Time or Background." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ Retention Time or Background." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -129,7 +129,7 @@ Retention Time or Background." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ahmohamed/lipidr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -214,8 +214,8 @@ Area Normalized or Height. Default is <code>Area</code></p></td>
 <span class='co'># plot the variation in intensity and retention time of all measured</span>
 <span class='co'>#   lipids in QC samples</span>
 <span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_qc</span>, <span class='st'>"cv"</span>, <span class='st'>"Area"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='img'><img src='plot_molecules-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_qc</span>, <span class='st'>"cv"</span>, <span class='st'>"Retention Time"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_molecules-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='plot_molecules-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_qc</span>, <span class='st'>"cv"</span>, <span class='st'>"Retention Time"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_molecules-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot the variation in intensity, RT of ISTD (internal standards)</span>
 <span class='co'>#   in QC samples</span>
 <span class='va'>d_istd_qc</span> <span class='op'>&lt;-</span> <span class='va'>data_normalized</span><span class='op'>[</span>
@@ -223,8 +223,8 @@ Area Normalized or Height. Default is <code>Area</code></p></td>
   <span class='va'>data_normalized</span><span class='op'>$</span><span class='va'>group</span> <span class='op'>==</span> <span class='st'>"QC"</span>
 <span class='op'>]</span>
 <span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_istd_qc</span>, <span class='st'>"sd"</span>, <span class='st'>"Area"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='img'><img src='plot_molecules-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_istd_qc</span>, <span class='st'>"sd"</span>, <span class='st'>"Retention Time"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_molecules-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='plot_molecules-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_istd_qc</span>, <span class='st'>"sd"</span>, <span class='st'>"Retention Time"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_summary).</span></div><div class='img'><img src='plot_molecules-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_istd_qc</span>, <span class='st'>"boxplot"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_molecules-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_molecules</span><span class='op'>(</span><span class='va'>d_istd_qc</span>, <span class='st'>"boxplot"</span>, <span class='st'>"Retention Time"</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing non-finite values (stat_boxplot).</span></div><div class='img'><img src='plot_molecules-6.png' alt='' width='700' height='433' /></div></pre>
