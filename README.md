@@ -1,6 +1,6 @@
 # *lipidr*: Data Mining and Analysis of Lipidomics Datasets in R <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-[![Travis-CI Build Status](https://travis-ci.org/ahmohamed/lipidr.svg?branch=master)](https://travis-ci.org/ahmohamed/lipidr)
+[![R-CMD-check](https://github.com/ahmohamed/lipidr/workflows/BiocCheck/badge.svg)](https://github.com/ahmohamed/lipidr/actions)
 [![Coverage status](https://codecov.io/gh/ahmohamed/lipidr/branch/master/graph/badge.svg)](https://codecov.io/github/ahmohamed/lipidr?branch=master)
 [![BioC status](https://bioconductor.org/shields/years-in-bioc/lipidr.svg)](https://bioconductor.org/packages/lipidr/)
 
