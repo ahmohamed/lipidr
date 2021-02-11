@@ -189,13 +189,13 @@ jobs:
         shell: Rscript {0}
 
       - name: Install covr
-        if: github.ref == 'refs/heads/master' && env.run_covr == 'true' && runner.os == 'Linux'
+        if: github.ref == 'refs/heads/master' && env.run_covr == 'true' && runner.os == 'Linux' && matrix.config.r != 'devel'
         run: |
           remotes::install_cran("covr")
         shell: Rscript {0}
 
       - name: Install pkgdown and deps
-        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
+        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux' && matrix.config.r != 'devel'
         run: |
           remotes::install_cran(c("pkgdown", "widgetframe"))
         shell: Rscript {0}
@@ -241,17 +241,17 @@ jobs:
         shell: Rscript {0}
 
       - name: Test coverage
-        if: github.ref == 'refs/heads/master' && env.run_covr == 'true' && runner.os == 'Linux'
+        if: github.ref == 'refs/heads/master' && env.run_covr == 'true' && runner.os == 'Linux' && matrix.config.r != 'devel'
         run: |
           covr::codecov(type="all", commentDontrun=FALSE)
         shell: Rscript {0}
 
       - name: Install package
-        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
+        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux' && matrix.config.r != 'devel'
         run: R CMD INSTALL .
 
       - name: Deploy package
-        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
+        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux' && matrix.config.r != 'devel'
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
