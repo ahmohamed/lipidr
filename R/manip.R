@@ -141,4 +141,35 @@ filter_by_cv <- function(data, cv.cutoff = 20, measure = "Area") {
   data[keep_molecules, ]
 }
 
+
+#' Used to filter out molecules that read below a intensity threshold compared to blanks.
+#'
+#' @param data LipidomicsExperiment object. 
+#' @param fold.cutoff Fold Chain threshold (numeric). Default is '10'.
+#' @param measure Which is used to measure fold chain, usually log2(Area) (default).
+#'
+#' @return LipidomicsExperiment object with molecules filtered
+#' @export
+#'
+#' @examples
+#' data(data_normalized)
+#' filter_by_blanks(data_normalized)
+filter_by_blanks <- function(data, fold.cutoff = 10, measure = "Area") {
+  blanks <- .is_blank(data)
+  
+  if (!any(blanks)){
+    stop("there are no blanks")
+  }
+  
+  blanks.molecule <- assay(data[,blanks], measure)
+  blanks.molecule[is.na(blanks.molecule)] <- 0
+  blanks.mean <- rowMeans(blanks.molecule)
+  
+  nblanks.molecule <- assay(data[,!blanks], measure)
+  nblanks.mean <- rowMeans(nblanks.molecule, na.rm=T)
+  
+  keep.molecules <- nblanks.mean > blanks.mean*fold.cutoff
+  data[keep.molecules,]
+  
+}
 utils::globalVariables(c("new_names"))

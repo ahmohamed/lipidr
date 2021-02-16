@@ -53,7 +53,7 @@ Suggests:
     plotly,
     iheatmapr,
     spelling,
-    testthat
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization
