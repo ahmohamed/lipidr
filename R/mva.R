@@ -365,14 +365,16 @@ plot_mva_loadings <- function(mvaresults, components = c(1, 2),
     scale_alpha_manual(values = c(1, 0.5))
 
   if (requireNamespace("ggrepel", quietly = TRUE)) {
-    xlimits <- max(abs(mds_matrix[[2]])) * 1.25
-    ylimits <- max(abs(mds_matrix[[3]])) * 1.1
+    xlimits <- max(abs(mds_matrix[[2]])) * 2
+    ylimits <- max(abs(mds_matrix[[3]])) * 1.5
 
-    p <- p + ggrepel::geom_label_repel(
-      aes(label = ifelse(molrank > top.n, "", as.character(Molecule))),
-      size = 2.4, direction = "both", segment.alpha = 0.6,
-      label.padding = 0.15, force = 0.5
-    ) + xlim(-xlimits, xlimits) + ylim(-ylimits, ylimits)
+    p <- p + xlim(-xlimits, xlimits) + ylim(-ylimits, ylimits) + 
+      ggrepel::geom_label_repel(
+        aes(label = ifelse(molrank > top.n, "", as.character(Molecule))),
+        size = 2.4, direction = "both", segment.alpha = 0.6,
+        label.padding = 0.15, force = 0.5,
+        max.overlaps = 1000, show.legend = FALSE
+      ) 
   } else {
     p <- p + geom_text(
       vjust = -.5, size = 3, color = "black",

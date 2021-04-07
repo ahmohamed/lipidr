@@ -193,8 +193,8 @@ plot_results_volcano <- function(de.results, show.labels = TRUE) {
       "de.results contains ANOVA-style comparison.",
       " Average Experssion will be plotted instead of logFC."
     )
-    p <- ggplot(de.results, aes(AveExpr, -log10(adj.P.Val), color = Class, label = Molecule)) +
-      geom_point()
+    p <- ggplot(de.results, aes(`Average Intensity`, -log10(adj.P.Val), color = Class, label = Molecule)) +
+      geom_point() + xlab("Average Intensity")
   } else {
     p <- ggplot(de.results, aes(logFC, -log10(adj.P.Val), color = Class, label = Molecule)) +
       geom_point() +
@@ -218,4 +218,4 @@ plot_results_volcano <- function(de.results, show.labels = TRUE) {
 }
 
 # colnames used in topTable
-utils::globalVariables(c("logFC", "AveExpr", "P.Value", "adj.P.Val", "contrast"))
+utils::globalVariables(c("logFC", "Average Intensity", "P.Value", "adj.P.Val", "contrast"))

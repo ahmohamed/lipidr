@@ -120,6 +120,7 @@ plot_enrichment <- function(de.results, significant.sets,
 
   annotation <- match.arg(annotation)
   collection <- c(class="Class", length="total_cl", unsat="total_cs")[[annotation]]
+  x_label <- c(class="Lipid Class", length="Total Chain Length", unsat="Total Chain Unsaturation")[[annotation]]
   prefix = paste0("^", collection, "_")
 
   significant.sets <- lapply(
@@ -144,6 +145,7 @@ plot_enrichment <- function(de.results, significant.sets,
     geom_boxplot() + geom_hline(yintercept = 0, lty = 2) +
     facet_wrap(~contrast, scales = "free_x") +
     scale_color_manual(values = c(`Not significant`="black", `Significant`="red"), drop=FALSE) +
+    labs(x=x_label, y=measure) +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 
   .display_plot(p)

@@ -367,8 +367,8 @@ plot_heatmap <- function(data, measure = "Area",
     if (is.null(molecule_annotation) || FALSE %in% molecule_annotation) {
       row_annotation <- NULL
     } else {
-      row_annotation <- row_annotation[, molecule_annotation, drop=FALSE] %>%
-        mutate_if(check_na, as.character)
+      row_annotation <- row_annotation[, molecule_annotation, drop=FALSE] #%>%
+        # mutate_if(check_na, as.character)
     }
   }
   dim_names <- metadata(data)$dimnames
