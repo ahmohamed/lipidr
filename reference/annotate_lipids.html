@@ -87,7 +87,7 @@ where zz:z indicates the combined chain length and unsaturation information." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.2</span>
       </span>
     </div>
 
@@ -181,16 +181,16 @@ are given in a column named "Molecule".</p>
   <span class='st'>"TG(16:0/18:1/18:1)"</span>
 <span class='op'>)</span>
 <span class='fu'>annotate_lipids</span><span class='op'>(</span><span class='va'>lipid_list</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 21</span><span>
-#&gt;   Molecule    clean_name   ambig not_matched istd  class_stub chain1   l_1   s_1
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Lyso PE 18… LPE 18:1(d7) FALSE FALSE       TRUE  LPE        18:1      18     1
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> PE(32:0)    PE 32:0      FALSE FALSE       FALSE PE         32:0      32     0
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Cer(d18:0/… Cer 18:0/22… FALSE FALSE       FALSE Cer        18:0      18     0
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> TG(16:0/18… TG 16:0/18:… FALSE FALSE       FALSE TG         16:0      16     0
-#&gt; </span><span style='color: #949494;'># … with 12 more variables: chain2 &lt;chr&gt;, l_2 &lt;int&gt;, s_2 &lt;int&gt;, chain3 &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   l_3 &lt;int&gt;, s_3 &lt;int&gt;, chain4 &lt;chr&gt;, l_4 &lt;lgl&gt;, s_4 &lt;lgl&gt;, total_cl &lt;int&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   total_cs &lt;int&gt;, Class &lt;chr&gt;</span><span></div></span></pre>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 21</span><span>
+#&gt;   Molecule clean_name ambig not_matched istd  class_stub chain1   l_1   s_1
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Lyso PE… LPE 18:1(… FALSE FALSE       TRUE  LPE        18:1      18     1
+#&gt; </span><span style='color: #555555;'>2</span><span> PE(32:0) PE 32:0    FALSE FALSE       FALSE PE         32:0      32     0
+#&gt; </span><span style='color: #555555;'>3</span><span> Cer(d18… Cer 18:0/… FALSE FALSE       FALSE Cer        18:0      18     0
+#&gt; </span><span style='color: #555555;'>4</span><span> TG(16:0… TG 16:0/1… FALSE FALSE       FALSE TG         16:0      16     0
+#&gt; </span><span style='color: #555555;'># … with 12 more variables: chain2 </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, l_2 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, s_2 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, chain3 </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   l_3 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, s_3 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, chain4 </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, l_4 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, s_4 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, total_cl </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   total_cs </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, Class </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
