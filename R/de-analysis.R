@@ -41,7 +41,10 @@ de_analysis <- function(data, ..., measure = "Area", group_col = NULL) {
   }
 
   symbols <- as.character(.quos_syms(quos(...)))
-
+  if (length(symbols) == 0) {
+    stop("No contrasts provided")
+  }
+  
   group <- colData(data)[[group_col]]
   if (!all(symbols %in% as.character(group))) {
     stop(
@@ -193,7 +196,7 @@ plot_results_volcano <- function(de.results, show.labels = TRUE) {
       "de.results contains ANOVA-style comparison.",
       " Average Experssion will be plotted instead of logFC."
     )
-    p <- ggplot(de.results, aes(`Average Intensity`, -log10(adj.P.Val), color = Class, label = Molecule)) +
+    p <- ggplot(de.results, aes(AveExpr, -log10(adj.P.Val), color = Class, label = Molecule)) +
       geom_point() + xlab("Average Intensity")
   } else {
     p <- ggplot(de.results, aes(logFC, -log10(adj.P.Val), color = Class, label = Molecule)) +
