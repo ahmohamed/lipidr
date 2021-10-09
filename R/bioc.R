@@ -77,10 +77,11 @@ LipidomicsExperiment <- function(assay_list, metadata,
 #'   is duplicated (has > 1 row).
 #' @param logged Whether the data is log-transformed
 #' @param normalized Whether the data is normalized
+#' @param force Force parsing of lipid names even if they not correctly formatted
 #'
 #' @return LipidomicsExperiment
 #' @export
-as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
+as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE, force = FALSE) {
   if (!is.data.frame(df) && !is.matrix(df)) {
     stop("Dataset should be either a data.frame or a matrix.")
   }
@@ -90,11 +91,13 @@ as_lipidomics_experiment <- function(df, logged = FALSE, normalized = FALSE) {
   }
 
   mol_dim <- .get_mol_dim(df)
-  if (mol_dim == "none") {
+  if (mol_dim == "none" && !force) {
     stop(
       "Data frame does not contain valid lipid names. ",
       "Lipids features should be in rownames or the first column."
     )
+  } else {
+    mol_dim = 'first_col'
   }
 
   if (mol_dim == 'first_col') {

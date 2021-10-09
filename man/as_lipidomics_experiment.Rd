@@ -4,7 +4,7 @@
 \alias{as_lipidomics_experiment}
 \title{Convert data.frame/matrix to LipidomicsExperiment}
 \usage{
-as_lipidomics_experiment(df, logged = FALSE, normalized = FALSE)
+as_lipidomics_experiment(df, logged = FALSE, normalized = FALSE, force = FALSE)
 }
 \arguments{
 \item{df}{A data.frame or matrix where rows are lipids and columns
@@ -16,6 +16,8 @@ is duplicated (has > 1 row).}
 \item{logged}{Whether the data is log-transformed}
 
 \item{normalized}{Whether the data is normalized}
+
+\item{force}{Force parsing of lipid names even if they not correctly formatted}
 }
 \value{
 LipidomicsExperiment
