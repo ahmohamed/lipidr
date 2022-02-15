@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.9.1</span>
       </span>
     </div>
 
@@ -47,7 +49,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -72,8 +74,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ahmohamed/lipidr">
-    <span class="fas fa-github fa-lg"></span>
+  <a href="https://github.com/ahmohamed/lipidr" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -87,15 +89,15 @@
 
       
 
-      </header><script src="workflow_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Workflow</h1>
-                        <h4 class="author">Ahmed Mohamed</h4>
+                        <h4 data-toc-skip class="author">Ahmed Mohamed</h4>
             <address class="author_afil">
-      Precision &amp; Systems Biomedicine, QIMR Berghofer, Australia<br><h4 class="date">2021-06-06</h4>
+      Precision &amp; Systems Biomedicine, QIMR Berghofer, Australia<br><h4 data-toc-skip class="date">2022-02-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ahmohamed/lipidr/blob/master/vignettes/workflow.Rmd"><code>vignettes/workflow.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ahmohamed/lipidr/blob/HEAD/vignettes/workflow.Rmd" class="external-link"><code>vignettes/workflow.Rmd</code></a></small>
       <div class="hidden name"><code>workflow.Rmd</code></div>
 
     </address>
@@ -103,370 +105,370 @@
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p><code>lipidr</code> implements a series of functions to facilitate inspection, analysis and visualization of targeted lipidomics datasets. <code>lipidr</code> takes exported Skyline CSV as input, allowing for multiple methods to be analyzed together.</p>
-<div id="input" class="section level2">
-<h2 class="hasAnchor">
-<a href="#input" class="anchor"></a>Input</h2>
+<div class="section level3">
+<h3 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a>
+</h3>
 <p><code>lipidr</code> represents Skyline files as SummarizedExperiment objects, which can easily be integrated with a wide variety of Bioconductor packages. Sample annotations, such as sample group or other clinical information can be loaded.</p>
 </div>
-<div id="quality-control-visualization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quality-control-visualization" class="anchor"></a>Quality control &amp; visualization</h2>
+<div class="section level3">
+<h3 id="quality-control-visualization">Quality control &amp; visualization<a class="anchor" aria-label="anchor" href="#quality-control-visualization"></a>
+</h3>
 <p><code>lipidr</code> generates various plots, such as PCA score plots and box plots, for quality control of samples and measured lipids. Normalization methods with and without internal standards are also supported.</p>
 </div>
-<div id="differential-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#differential-analysis" class="anchor"></a>Differential Analysis</h2>
+<div class="section level3">
+<h3 id="differential-analysis">Differential Analysis<a class="anchor" aria-label="anchor" href="#differential-analysis"></a>
+</h3>
 <p>Differential analysis can be performed using any of the loaded clinical variables, which can be readily visualized as volcano plots. A novel lipid set enrichment analysis (LSEA) is implemented to detect preferential enrichment of certain lipid classes, total chain lengths or unsaturation patterns. Plots for the visualization of enrichment results are also implemented.</p>
 <p>This vignette provides a step by step guide for downstream analysis of targeted lipidomics data, exported from Skyline.</p>
 </div>
 </div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
-<div id="from-bioconductor" class="section level2">
-<h2 class="hasAnchor">
-<a href="#from-bioconductor" class="anchor"></a>From Bioconductor</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="section level3">
+<h3 id="from-bioconductor">From Bioconductor<a class="anchor" aria-label="anchor" href="#from-bioconductor"></a>
+</h3>
 <p>In R console, type:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </code></pre></div>
 </div>
-<div id="from-github-using-devtools" class="section level2">
-<h2 class="hasAnchor">
-<a href="#from-github-using-devtools" class="anchor"></a>From GitHub using devtools</h2>
+<div class="section level3">
+<h3 id="from-github-using-devtools">From GitHub using devtools<a class="anchor" aria-label="anchor" href="#from-github-using-devtools"></a>
+</h3>
 <p>In R console, type:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>   
-<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>   
+<span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="analysis-workflow" class="section level1">
-<h1 class="hasAnchor">
-<a href="#analysis-workflow" class="anchor"></a>Analysis Workflow</h1>
-<div id="example-study" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-study" class="anchor"></a>Example Study</h2>
+<div class="section level2">
+<h2 id="analysis-workflow">Analysis Workflow<a class="anchor" aria-label="anchor" href="#analysis-workflow"></a>
+</h2>
+<div class="section level3">
+<h3 id="example-study">Example Study<a class="anchor" aria-label="anchor" href="#example-study"></a>
+</h3>
 <p>In this workflow, we will use serum lipidomics data from mice fed a normal or high-fat diet. Mice were fed a normal or high-fat diet (<code>Diet</code> column) and had access to normal drinking water or drinking water containing the bile acid deoxycholic acid (<code>BileAcid</code> column). Lipid peaks were integrated using Skyline and exported as CSV files.</p>
 </div>
-<div id="data-import-manipulation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-import-manipulation" class="anchor"></a>Data Import &amp; manipulation</h2>
-<div id="exporting-files-from-skyline" class="section level3">
-<h3 class="hasAnchor">
-<a href="#exporting-files-from-skyline" class="anchor"></a>Exporting files from Skyline</h3>
+<div class="section level3">
+<h3 id="data-import-manipulation">Data Import &amp; manipulation<a class="anchor" aria-label="anchor" href="#data-import-manipulation"></a>
+</h3>
+<div class="section level4">
+<h4 id="exporting-files-from-skyline">Exporting files from Skyline<a class="anchor" aria-label="anchor" href="#exporting-files-from-skyline"></a>
+</h4>
 <p>Integrated peaks should be exported from each Skyline file through File =&gt; Export =&gt; Report. Selecting <code>Transition Results</code> ensures that necessary information is exported from Skyline. Otherwise, you should ensure that peak <code>Area</code> or <code>Height</code> or a similar measure is exported. Regardless of the <code>measure</code> you choose for intensity, you can use <code>lipidr</code> workflow.</p>
 <p><code>Replicates</code> should either be exported, or the <code>Pivot Replicate Name</code> option must be used.</p>
 </div>
-<div id="reading-files-into-r" class="section level3">
-<h3 class="hasAnchor">
-<a href="#reading-files-into-r" class="anchor"></a>Reading files into R</h3>
+<div class="section level4">
+<h4 id="reading-files-into-r">Reading files into R<a class="anchor" aria-label="anchor" href="#reading-files-into-r"></a>
+</h4>
 <p><code>lipidr</code> can read multiple CSV files from different analysis methods together. Using our example dataset, three Skyline CSV files are used as input to <code>read.skyline</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">datadir</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"lipidr"</span><span class="op">)</span>
-<span class="va">filelist</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"data.csv"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># all csv files</span>
+<code class="sourceCode R"><span class="va">datadir</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"lipidr"</span><span class="op">)</span>
+<span class="va">filelist</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"data.csv"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># all csv files</span>
 
 <span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="../reference/read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="va">filelist</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
-<pre><code>## class: LipidomicsExperiment 
-## dim: 279 58 
-## metadata(2): summarized dimnames
-## assays(3): Retention Time Area Background
-## rownames(279): 1 2 ... 278 279
-## rowData names(26): filename Molecule ... total_cs Class
-## colnames(58): S1A S2A ... TQC_11 TQC_12
-## colData names(0):</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## class: LipidomicsExperiment </span>
+<span class="co">## dim: 279 58 </span>
+<span class="co">## metadata(2): summarized dimnames</span>
+<span class="co">## assays(3): Retention Time Area Background</span>
+<span class="co">## rownames(279): 1 2 ... 278 279</span>
+<span class="co">## rowData names(26): filename Molecule ... total_cs Class</span>
+<span class="co">## colnames(58): S1A S2A ... TQC_11 TQC_12</span>
+<span class="co">## colData names(0):</span></code></pre>
 <p>Datasets are represented in R as <code>SummarizedExperiment</code>s to facilitate integration other Bioconductor packages.</p>
 </div>
-<div id="adding-sample-annotation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#adding-sample-annotation" class="anchor"></a>Adding sample annotation</h3>
+<div class="section level4">
+<h4 id="adding-sample-annotation">Adding sample annotation<a class="anchor" aria-label="anchor" href="#adding-sample-annotation"></a>
+</h4>
 <p>Sample annotation can be prepared in Excel and saved as CSV. The table should have at least two columns, first indicating sample names and other columns indicating clinical variables.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">clinical_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"clin.csv"</span>, package<span class="op">=</span><span class="st">"lipidr"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">clinical_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"clin.csv"</span>, package<span class="op">=</span><span class="st">"lipidr"</span><span class="op">)</span>
 
 <span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="../reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">clinical_file</span><span class="op">)</span>
-<span class="fu">colData</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 58 rows and 3 columns
-##                   group        Diet    BileAcid
-##             &lt;character&gt; &lt;character&gt; &lt;character&gt;
-## S1A    NormalDiet_water      Normal       water
-## S2A    NormalDiet_water      Normal       water
-## S3A    NormalDiet_water      Normal       water
-## S4A    NormalDiet_water      Normal       water
-## S5A    NormalDiet_water      Normal       water
-## ...                 ...         ...         ...
-## TQC_8                QC          QC          QC
-## TQC_9                QC          QC          QC
-## TQC_10               QC          QC          QC
-## TQC_11               QC          QC          QC
-## TQC_12               QC          QC          QC</code></pre>
+<span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 58 rows and 3 columns</span>
+<span class="co">##                   group        Diet    BileAcid</span>
+<span class="co">##             &lt;character&gt; &lt;character&gt; &lt;character&gt;</span>
+<span class="co">## S1A    NormalDiet_water      Normal       water</span>
+<span class="co">## S2A    NormalDiet_water      Normal       water</span>
+<span class="co">## S3A    NormalDiet_water      Normal       water</span>
+<span class="co">## S4A    NormalDiet_water      Normal       water</span>
+<span class="co">## S5A    NormalDiet_water      Normal       water</span>
+<span class="co">## ...                 ...         ...         ...</span>
+<span class="co">## TQC_8                QC          QC          QC</span>
+<span class="co">## TQC_9                QC          QC          QC</span>
+<span class="co">## TQC_10               QC          QC          QC</span>
+<span class="co">## TQC_11               QC          QC          QC</span>
+<span class="co">## TQC_12               QC          QC          QC</span></code></pre>
 </div>
-<div id="data-subsetting" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data-subsetting" class="anchor"></a>Data subsetting</h3>
+<div class="section level4">
+<h4 id="data-subsetting">Data subsetting<a class="anchor" aria-label="anchor" href="#data-subsetting"></a>
+</h4>
 <p>It is helpful to imagine LipidomicsExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is <code>d[rows, cols]</code>.</p>
 <p>In the example below we select the first 10 transitions and 10 samples. We can check the <code>rowData</code> and <code>colData</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_subset</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>
-<span class="fu">rowData</span><span class="op">(</span><span class="va">d_subset</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 10 rows and 26 columns
-##       filename    Molecule Precursor.Mz Precursor.Charge Product.Mz
-##    &lt;character&gt; &lt;character&gt;    &lt;numeric&gt;        &lt;integer&gt;  &lt;numeric&gt;
-## 1  A1_data.csv     PE 32:0        692.5                1      551.5
-## 2  A1_data.csv     PE 32:1        690.5                1      549.5
-## 3  A1_data.csv     PE 32:2        688.5                1      547.5
-## 4  A1_data.csv     PE 34:1        718.5                1      577.5
-## 5  A1_data.csv PE 34:1 NEG        716.5                1      196.0
-## 6  A1_data.csv     PE 34:2        716.5                1      575.5
-## 7  A1_data.csv     PE 34:3        714.5                1      573.5
-## 8  A1_data.csv     PE 36:0        748.6                1      607.6
-## 9  A1_data.csv     PE 36:1        746.6                1      605.6
-## 10 A1_data.csv PE 36:1 NEG        744.6                1      196.0
-##    Product.Charge clean_name     ambig not_matched      istd  class_stub
-##         &lt;integer&gt;   &lt;factor&gt; &lt;logical&gt;   &lt;logical&gt; &lt;logical&gt; &lt;character&gt;
-## 1               1    PE 32:0     FALSE       FALSE     FALSE          PE
-## 2               1    PE 32:1     FALSE       FALSE     FALSE          PE
-## 3               1    PE 32:2     FALSE       FALSE     FALSE          PE
-## 4               1    PE 34:1     FALSE       FALSE     FALSE          PE
-## 5               1    PE 34:1     FALSE       FALSE     FALSE          PE
-## 6               1    PE 34:2     FALSE       FALSE     FALSE          PE
-## 7               1    PE 34:3     FALSE       FALSE     FALSE          PE
-## 8               1    PE 36:0     FALSE       FALSE     FALSE          PE
-## 9               1    PE 36:1     FALSE       FALSE     FALSE          PE
-## 10              1    PE 36:1     FALSE       FALSE     FALSE          PE
-##         chain1       l_1       s_1      chain2       l_2       s_2      chain3
-##    &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;
-## 1         32:0        32         0                    NA        NA            
-## 2         32:1        32         1                    NA        NA            
-## 3         32:2        32         2                    NA        NA            
-## 4         34:1        34         1                    NA        NA            
-## 5         34:1        34         1                    NA        NA            
-## 6         34:2        34         2                    NA        NA            
-## 7         34:3        34         3                    NA        NA            
-## 8         36:0        36         0                    NA        NA            
-## 9         36:1        36         1                    NA        NA            
-## 10        36:1        36         1                    NA        NA            
-##          l_3       s_3      chain4       l_4       s_4  total_cl  total_cs
-##    &lt;logical&gt; &lt;logical&gt; &lt;character&gt; &lt;logical&gt; &lt;logical&gt; &lt;integer&gt; &lt;integer&gt;
-## 1         NA        NA                    NA        NA        32         0
-## 2         NA        NA                    NA        NA        32         1
-## 3         NA        NA                    NA        NA        32         2
-## 4         NA        NA                    NA        NA        34         1
-## 5         NA        NA                    NA        NA        34         1
-## 6         NA        NA                    NA        NA        34         2
-## 7         NA        NA                    NA        NA        34         3
-## 8         NA        NA                    NA        NA        36         0
-## 9         NA        NA                    NA        NA        36         1
-## 10        NA        NA                    NA        NA        36         1
-##          Class
-##    &lt;character&gt;
-## 1           PE
-## 2           PE
-## 3           PE
-## 4           PE
-## 5           PE
-## 6           PE
-## 7           PE
-## 8           PE
-## 9           PE
-## 10          PE</code></pre>
+<span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d_subset</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 10 rows and 26 columns</span>
+<span class="co">##       filename    Molecule Precursor.Mz Precursor.Charge Product.Mz</span>
+<span class="co">##    &lt;character&gt; &lt;character&gt;    &lt;numeric&gt;        &lt;integer&gt;  &lt;numeric&gt;</span>
+<span class="co">## 1  A1_data.csv     PE 32:0        692.5                1      551.5</span>
+<span class="co">## 2  A1_data.csv     PE 32:1        690.5                1      549.5</span>
+<span class="co">## 3  A1_data.csv     PE 32:2        688.5                1      547.5</span>
+<span class="co">## 4  A1_data.csv     PE 34:1        718.5                1      577.5</span>
+<span class="co">## 5  A1_data.csv PE 34:1 NEG        716.5                1      196.0</span>
+<span class="co">## 6  A1_data.csv     PE 34:2        716.5                1      575.5</span>
+<span class="co">## 7  A1_data.csv     PE 34:3        714.5                1      573.5</span>
+<span class="co">## 8  A1_data.csv     PE 36:0        748.6                1      607.6</span>
+<span class="co">## 9  A1_data.csv     PE 36:1        746.6                1      605.6</span>
+<span class="co">## 10 A1_data.csv PE 36:1 NEG        744.6                1      196.0</span>
+<span class="co">##    Product.Charge clean_name     ambig not_matched      istd  class_stub</span>
+<span class="co">##         &lt;integer&gt;   &lt;factor&gt; &lt;logical&gt;   &lt;logical&gt; &lt;logical&gt; &lt;character&gt;</span>
+<span class="co">## 1               1    PE 32:0     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 2               1    PE 32:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 3               1    PE 32:2     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 4               1    PE 34:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 5               1    PE 34:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 6               1    PE 34:2     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 7               1    PE 34:3     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 8               1    PE 36:0     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 9               1    PE 36:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 10              1    PE 36:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">##         chain1       l_1       s_1      chain2       l_2       s_2      chain3</span>
+<span class="co">##    &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;</span>
+<span class="co">## 1         32:0        32         0                    NA        NA            </span>
+<span class="co">## 2         32:1        32         1                    NA        NA            </span>
+<span class="co">## 3         32:2        32         2                    NA        NA            </span>
+<span class="co">## 4         34:1        34         1                    NA        NA            </span>
+<span class="co">## 5         34:1        34         1                    NA        NA            </span>
+<span class="co">## 6         34:2        34         2                    NA        NA            </span>
+<span class="co">## 7         34:3        34         3                    NA        NA            </span>
+<span class="co">## 8         36:0        36         0                    NA        NA            </span>
+<span class="co">## 9         36:1        36         1                    NA        NA            </span>
+<span class="co">## 10        36:1        36         1                    NA        NA            </span>
+<span class="co">##          l_3       s_3      chain4       l_4       s_4  total_cl  total_cs</span>
+<span class="co">##    &lt;logical&gt; &lt;logical&gt; &lt;character&gt; &lt;logical&gt; &lt;logical&gt; &lt;integer&gt; &lt;integer&gt;</span>
+<span class="co">## 1         NA        NA                    NA        NA        32         0</span>
+<span class="co">## 2         NA        NA                    NA        NA        32         1</span>
+<span class="co">## 3         NA        NA                    NA        NA        32         2</span>
+<span class="co">## 4         NA        NA                    NA        NA        34         1</span>
+<span class="co">## 5         NA        NA                    NA        NA        34         1</span>
+<span class="co">## 6         NA        NA                    NA        NA        34         2</span>
+<span class="co">## 7         NA        NA                    NA        NA        34         3</span>
+<span class="co">## 8         NA        NA                    NA        NA        36         0</span>
+<span class="co">## 9         NA        NA                    NA        NA        36         1</span>
+<span class="co">## 10        NA        NA                    NA        NA        36         1</span>
+<span class="co">##          Class</span>
+<span class="co">##    &lt;character&gt;</span>
+<span class="co">## 1           PE</span>
+<span class="co">## 2           PE</span>
+<span class="co">## 3           PE</span>
+<span class="co">## 4           PE</span>
+<span class="co">## 5           PE</span>
+<span class="co">## 6           PE</span>
+<span class="co">## 7           PE</span>
+<span class="co">## 8           PE</span>
+<span class="co">## 9           PE</span>
+<span class="co">## 10          PE</span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">colData</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 58 rows and 3 columns
-##                   group        Diet    BileAcid
-##             &lt;character&gt; &lt;character&gt; &lt;character&gt;
-## S1A    NormalDiet_water      Normal       water
-## S2A    NormalDiet_water      Normal       water
-## S3A    NormalDiet_water      Normal       water
-## S4A    NormalDiet_water      Normal       water
-## S5A    NormalDiet_water      Normal       water
-## ...                 ...         ...         ...
-## TQC_8                QC          QC          QC
-## TQC_9                QC          QC          QC
-## TQC_10               QC          QC          QC
-## TQC_11               QC          QC          QC
-## TQC_12               QC          QC          QC</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 58 rows and 3 columns</span>
+<span class="co">##                   group        Diet    BileAcid</span>
+<span class="co">##             &lt;character&gt; &lt;character&gt; &lt;character&gt;</span>
+<span class="co">## S1A    NormalDiet_water      Normal       water</span>
+<span class="co">## S2A    NormalDiet_water      Normal       water</span>
+<span class="co">## S3A    NormalDiet_water      Normal       water</span>
+<span class="co">## S4A    NormalDiet_water      Normal       water</span>
+<span class="co">## S5A    NormalDiet_water      Normal       water</span>
+<span class="co">## ...                 ...         ...         ...</span>
+<span class="co">## TQC_8                QC          QC          QC</span>
+<span class="co">## TQC_9                QC          QC          QC</span>
+<span class="co">## TQC_10               QC          QC          QC</span>
+<span class="co">## TQC_11               QC          QC          QC</span>
+<span class="co">## TQC_12               QC          QC          QC</span></code></pre>
 <p>We can also apply conditional selections (<em>indexing</em>). For example, we can select all quality control samples.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_qc</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>, <span class="va">d</span><span class="op">$</span><span class="va">group</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span>
-<span class="fu">rowData</span><span class="op">(</span><span class="va">d_qc</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 279 rows and 26 columns
-##        filename         Molecule Precursor.Mz Precursor.Charge Product.Mz
-##     &lt;character&gt;      &lt;character&gt;    &lt;numeric&gt;        &lt;integer&gt;  &lt;numeric&gt;
-## 1   A1_data.csv          PE 32:0        692.5                1      551.5
-## 2   A1_data.csv          PE 32:1        690.5                1      549.5
-## 3   A1_data.csv          PE 32:2        688.5                1      547.5
-## 4   A1_data.csv          PE 34:1        718.5                1      577.5
-## 5   A1_data.csv      PE 34:1 NEG        716.5                1      196.0
-## ...         ...              ...          ...              ...        ...
-## 275 F2_data.csv       PC(P-40:3)      824.600                1     184.10
-## 276 F2_data.csv       PC(P-40:4)      822.600                1     184.10
-## 277 F2_data.csv       PC(P-40:5)      820.600                1     184.10
-## 278 F2_data.csv       PC(P-40:6)      818.600                1     184.10
-## 279 F2_data.csv 15:0-18:1(d7) PC      753.615                1     184.07
-##     Product.Charge       clean_name     ambig not_matched      istd  class_stub
-##          &lt;integer&gt;         &lt;factor&gt; &lt;logical&gt;   &lt;logical&gt; &lt;logical&gt; &lt;character&gt;
-## 1                1          PE 32:0     FALSE       FALSE     FALSE          PE
-## 2                1          PE 32:1     FALSE       FALSE     FALSE          PE
-## 3                1          PE 32:2     FALSE       FALSE     FALSE          PE
-## 4                1          PE 34:1     FALSE       FALSE     FALSE          PE
-## 5                1          PE 34:1     FALSE       FALSE     FALSE          PE
-## ...            ...              ...       ...         ...       ...         ...
-## 275              1 PCP-40:3             FALSE       FALSE     FALSE         PCP
-## 276              1 PCP-40:4             FALSE       FALSE     FALSE         PCP
-## 277              1 PCP-40:5             FALSE       FALSE     FALSE         PCP
-## 278              1 PCP-40:6             FALSE       FALSE     FALSE         PCP
-## 279              1 PC 15:0-18:1(d7)     FALSE       FALSE      TRUE          PC
-##          chain1       l_1       s_1      chain2       l_2       s_2      chain3
-##     &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;
-## 1          32:0        32         0                    NA        NA            
-## 2          32:1        32         1                    NA        NA            
-## 3          32:2        32         2                    NA        NA            
-## 4          34:1        34         1                    NA        NA            
-## 5          34:1        34         1                    NA        NA            
-## ...         ...       ...       ...         ...       ...       ...         ...
-## 275        40:3        40         3                    NA        NA            
-## 276        40:4        40         4                    NA        NA            
-## 277        40:5        40         5                    NA        NA            
-## 278        40:6        40         6                    NA        NA            
-## 279        15:0        15         0        18:1        18         1            
-##           l_3       s_3      chain4       l_4       s_4  total_cl  total_cs
-##     &lt;logical&gt; &lt;logical&gt; &lt;character&gt; &lt;logical&gt; &lt;logical&gt; &lt;integer&gt; &lt;integer&gt;
-## 1          NA        NA                    NA        NA        32         0
-## 2          NA        NA                    NA        NA        32         1
-## 3          NA        NA                    NA        NA        32         2
-## 4          NA        NA                    NA        NA        34         1
-## 5          NA        NA                    NA        NA        34         1
-## ...       ...       ...         ...       ...       ...       ...       ...
-## 275        NA        NA                    NA        NA        40         3
-## 276        NA        NA                    NA        NA        40         4
-## 277        NA        NA                    NA        NA        40         5
-## 278        NA        NA                    NA        NA        40         6
-## 279        NA        NA                    NA        NA        33         1
-##           Class
-##     &lt;character&gt;
-## 1            PE
-## 2            PE
-## 3            PE
-## 4            PE
-## 5            PE
-## ...         ...
-## 275          PC
-## 276          PC
-## 277          PC
-## 278          PC
-## 279          PC</code></pre>
+<span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d_qc</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 279 rows and 26 columns</span>
+<span class="co">##        filename         Molecule Precursor.Mz Precursor.Charge Product.Mz</span>
+<span class="co">##     &lt;character&gt;      &lt;character&gt;    &lt;numeric&gt;        &lt;integer&gt;  &lt;numeric&gt;</span>
+<span class="co">## 1   A1_data.csv          PE 32:0        692.5                1      551.5</span>
+<span class="co">## 2   A1_data.csv          PE 32:1        690.5                1      549.5</span>
+<span class="co">## 3   A1_data.csv          PE 32:2        688.5                1      547.5</span>
+<span class="co">## 4   A1_data.csv          PE 34:1        718.5                1      577.5</span>
+<span class="co">## 5   A1_data.csv      PE 34:1 NEG        716.5                1      196.0</span>
+<span class="co">## ...         ...              ...          ...              ...        ...</span>
+<span class="co">## 275 F2_data.csv       PC(P-40:3)      824.600                1     184.10</span>
+<span class="co">## 276 F2_data.csv       PC(P-40:4)      822.600                1     184.10</span>
+<span class="co">## 277 F2_data.csv       PC(P-40:5)      820.600                1     184.10</span>
+<span class="co">## 278 F2_data.csv       PC(P-40:6)      818.600                1     184.10</span>
+<span class="co">## 279 F2_data.csv 15:0-18:1(d7) PC      753.615                1     184.07</span>
+<span class="co">##     Product.Charge       clean_name     ambig not_matched      istd  class_stub</span>
+<span class="co">##          &lt;integer&gt;         &lt;factor&gt; &lt;logical&gt;   &lt;logical&gt; &lt;logical&gt; &lt;character&gt;</span>
+<span class="co">## 1                1          PE 32:0     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 2                1          PE 32:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 3                1          PE 32:2     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 4                1          PE 34:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## 5                1          PE 34:1     FALSE       FALSE     FALSE          PE</span>
+<span class="co">## ...            ...              ...       ...         ...       ...         ...</span>
+<span class="co">## 275              1 PCP-40:3             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 276              1 PCP-40:4             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 277              1 PCP-40:5             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 278              1 PCP-40:6             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 279              1 PC 15:0-18:1(d7)     FALSE       FALSE      TRUE          PC</span>
+<span class="co">##          chain1       l_1       s_1      chain2       l_2       s_2      chain3</span>
+<span class="co">##     &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;</span>
+<span class="co">## 1          32:0        32         0                    NA        NA            </span>
+<span class="co">## 2          32:1        32         1                    NA        NA            </span>
+<span class="co">## 3          32:2        32         2                    NA        NA            </span>
+<span class="co">## 4          34:1        34         1                    NA        NA            </span>
+<span class="co">## 5          34:1        34         1                    NA        NA            </span>
+<span class="co">## ...         ...       ...       ...         ...       ...       ...         ...</span>
+<span class="co">## 275        40:3        40         3                    NA        NA            </span>
+<span class="co">## 276        40:4        40         4                    NA        NA            </span>
+<span class="co">## 277        40:5        40         5                    NA        NA            </span>
+<span class="co">## 278        40:6        40         6                    NA        NA            </span>
+<span class="co">## 279        15:0        15         0        18:1        18         1            </span>
+<span class="co">##           l_3       s_3      chain4       l_4       s_4  total_cl  total_cs</span>
+<span class="co">##     &lt;logical&gt; &lt;logical&gt; &lt;character&gt; &lt;logical&gt; &lt;logical&gt; &lt;integer&gt; &lt;integer&gt;</span>
+<span class="co">## 1          NA        NA                    NA        NA        32         0</span>
+<span class="co">## 2          NA        NA                    NA        NA        32         1</span>
+<span class="co">## 3          NA        NA                    NA        NA        32         2</span>
+<span class="co">## 4          NA        NA                    NA        NA        34         1</span>
+<span class="co">## 5          NA        NA                    NA        NA        34         1</span>
+<span class="co">## ...       ...       ...         ...       ...       ...       ...       ...</span>
+<span class="co">## 275        NA        NA                    NA        NA        40         3</span>
+<span class="co">## 276        NA        NA                    NA        NA        40         4</span>
+<span class="co">## 277        NA        NA                    NA        NA        40         5</span>
+<span class="co">## 278        NA        NA                    NA        NA        40         6</span>
+<span class="co">## 279        NA        NA                    NA        NA        33         1</span>
+<span class="co">##           Class</span>
+<span class="co">##     &lt;character&gt;</span>
+<span class="co">## 1            PE</span>
+<span class="co">## 2            PE</span>
+<span class="co">## 3            PE</span>
+<span class="co">## 4            PE</span>
+<span class="co">## 5            PE</span>
+<span class="co">## ...         ...</span>
+<span class="co">## 275          PC</span>
+<span class="co">## 276          PC</span>
+<span class="co">## 277          PC</span>
+<span class="co">## 278          PC</span>
+<span class="co">## 279          PC</span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">colData</span><span class="op">(</span><span class="va">d_qc</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 12 rows and 3 columns
-##              group        Diet    BileAcid
-##        &lt;character&gt; &lt;character&gt; &lt;character&gt;
-## TQC_1           QC          QC          QC
-## TQC_2           QC          QC          QC
-## TQC_3           QC          QC          QC
-## TQC_4           QC          QC          QC
-## TQC_5           QC          QC          QC
-## ...            ...         ...         ...
-## TQC_8           QC          QC          QC
-## TQC_9           QC          QC          QC
-## TQC_10          QC          QC          QC
-## TQC_11          QC          QC          QC
-## TQC_12          QC          QC          QC</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">d_qc</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 12 rows and 3 columns</span>
+<span class="co">##              group        Diet    BileAcid</span>
+<span class="co">##        &lt;character&gt; &lt;character&gt; &lt;character&gt;</span>
+<span class="co">## TQC_1           QC          QC          QC</span>
+<span class="co">## TQC_2           QC          QC          QC</span>
+<span class="co">## TQC_3           QC          QC          QC</span>
+<span class="co">## TQC_4           QC          QC          QC</span>
+<span class="co">## TQC_5           QC          QC          QC</span>
+<span class="co">## ...            ...         ...         ...</span>
+<span class="co">## TQC_8           QC          QC          QC</span>
+<span class="co">## TQC_9           QC          QC          QC</span>
+<span class="co">## TQC_10          QC          QC          QC</span>
+<span class="co">## TQC_11          QC          QC          QC</span>
+<span class="co">## TQC_12          QC          QC          QC</span></code></pre>
 <p>Note that we leave rows index empty (<code>d[,cols]</code>) to select all lipids. We can also subset based on lipid annotations, selecting a specific class for example.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pc_lipids</span> <span class="op">=</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">$</span><span class="va">Class</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PC"</span>, <span class="st">"PCO"</span>, <span class="st">"PCP"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pc_lipids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">$</span><span class="va">Class</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC"</span>, <span class="st">"PCO"</span>, <span class="st">"PCP"</span><span class="op">)</span>
 <span class="va">d_pc</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span><span class="va">pc_lipids</span>,<span class="op">]</span>
-<span class="fu">rowData</span><span class="op">(</span><span class="va">d_pc</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 82 rows and 26 columns
-##        filename         Molecule Precursor.Mz Precursor.Charge Product.Mz
-##     &lt;character&gt;      &lt;character&gt;    &lt;numeric&gt;        &lt;integer&gt;  &lt;numeric&gt;
-## 160 F1_data.csv          PC 30:0        706.5                1      184.1
-## 161 F1_data.csv          PC 30:1        704.5                1      184.1
-## 162 F1_data.csv          PC 30:2        702.5                1      184.1
-## 163 F1_data.csv          PC 32:0        734.6                1      184.1
-## 164 F1_data.csv          PC 32:1        732.6                1      184.1
-## ...         ...              ...          ...              ...        ...
-## 275 F2_data.csv       PC(P-40:3)      824.600                1     184.10
-## 276 F2_data.csv       PC(P-40:4)      822.600                1     184.10
-## 277 F2_data.csv       PC(P-40:5)      820.600                1     184.10
-## 278 F2_data.csv       PC(P-40:6)      818.600                1     184.10
-## 279 F2_data.csv 15:0-18:1(d7) PC      753.615                1     184.07
-##     Product.Charge       clean_name     ambig not_matched      istd  class_stub
-##          &lt;integer&gt;         &lt;factor&gt; &lt;logical&gt;   &lt;logical&gt; &lt;logical&gt; &lt;character&gt;
-## 160              1          PC 30:0     FALSE       FALSE     FALSE          PC
-## 161              1          PC 30:1     FALSE       FALSE     FALSE          PC
-## 162              1          PC 30:2     FALSE       FALSE     FALSE          PC
-## 163              1          PC 32:0     FALSE       FALSE     FALSE          PC
-## 164              1          PC 32:1     FALSE       FALSE     FALSE          PC
-## ...            ...              ...       ...         ...       ...         ...
-## 275              1 PCP-40:3             FALSE       FALSE     FALSE         PCP
-## 276              1 PCP-40:4             FALSE       FALSE     FALSE         PCP
-## 277              1 PCP-40:5             FALSE       FALSE     FALSE         PCP
-## 278              1 PCP-40:6             FALSE       FALSE     FALSE         PCP
-## 279              1 PC 15:0-18:1(d7)     FALSE       FALSE      TRUE          PC
-##          chain1       l_1       s_1      chain2       l_2       s_2      chain3
-##     &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;
-## 160        30:0        30         0                    NA        NA            
-## 161        30:1        30         1                    NA        NA            
-## 162        30:2        30         2                    NA        NA            
-## 163        32:0        32         0                    NA        NA            
-## 164        32:1        32         1                    NA        NA            
-## ...         ...       ...       ...         ...       ...       ...         ...
-## 275        40:3        40         3                    NA        NA            
-## 276        40:4        40         4                    NA        NA            
-## 277        40:5        40         5                    NA        NA            
-## 278        40:6        40         6                    NA        NA            
-## 279        15:0        15         0        18:1        18         1            
-##           l_3       s_3      chain4       l_4       s_4  total_cl  total_cs
-##     &lt;logical&gt; &lt;logical&gt; &lt;character&gt; &lt;logical&gt; &lt;logical&gt; &lt;integer&gt; &lt;integer&gt;
-## 160        NA        NA                    NA        NA        30         0
-## 161        NA        NA                    NA        NA        30         1
-## 162        NA        NA                    NA        NA        30         2
-## 163        NA        NA                    NA        NA        32         0
-## 164        NA        NA                    NA        NA        32         1
-## ...       ...       ...         ...       ...       ...       ...       ...
-## 275        NA        NA                    NA        NA        40         3
-## 276        NA        NA                    NA        NA        40         4
-## 277        NA        NA                    NA        NA        40         5
-## 278        NA        NA                    NA        NA        40         6
-## 279        NA        NA                    NA        NA        33         1
-##           Class
-##     &lt;character&gt;
-## 160          PC
-## 161          PC
-## 162          PC
-## 163          PC
-## 164          PC
-## ...         ...
-## 275          PC
-## 276          PC
-## 277          PC
-## 278          PC
-## 279          PC</code></pre>
+<span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d_pc</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 82 rows and 26 columns</span>
+<span class="co">##        filename         Molecule Precursor.Mz Precursor.Charge Product.Mz</span>
+<span class="co">##     &lt;character&gt;      &lt;character&gt;    &lt;numeric&gt;        &lt;integer&gt;  &lt;numeric&gt;</span>
+<span class="co">## 160 F1_data.csv          PC 30:0        706.5                1      184.1</span>
+<span class="co">## 161 F1_data.csv          PC 30:1        704.5                1      184.1</span>
+<span class="co">## 162 F1_data.csv          PC 30:2        702.5                1      184.1</span>
+<span class="co">## 163 F1_data.csv          PC 32:0        734.6                1      184.1</span>
+<span class="co">## 164 F1_data.csv          PC 32:1        732.6                1      184.1</span>
+<span class="co">## ...         ...              ...          ...              ...        ...</span>
+<span class="co">## 275 F2_data.csv       PC(P-40:3)      824.600                1     184.10</span>
+<span class="co">## 276 F2_data.csv       PC(P-40:4)      822.600                1     184.10</span>
+<span class="co">## 277 F2_data.csv       PC(P-40:5)      820.600                1     184.10</span>
+<span class="co">## 278 F2_data.csv       PC(P-40:6)      818.600                1     184.10</span>
+<span class="co">## 279 F2_data.csv 15:0-18:1(d7) PC      753.615                1     184.07</span>
+<span class="co">##     Product.Charge       clean_name     ambig not_matched      istd  class_stub</span>
+<span class="co">##          &lt;integer&gt;         &lt;factor&gt; &lt;logical&gt;   &lt;logical&gt; &lt;logical&gt; &lt;character&gt;</span>
+<span class="co">## 160              1          PC 30:0     FALSE       FALSE     FALSE          PC</span>
+<span class="co">## 161              1          PC 30:1     FALSE       FALSE     FALSE          PC</span>
+<span class="co">## 162              1          PC 30:2     FALSE       FALSE     FALSE          PC</span>
+<span class="co">## 163              1          PC 32:0     FALSE       FALSE     FALSE          PC</span>
+<span class="co">## 164              1          PC 32:1     FALSE       FALSE     FALSE          PC</span>
+<span class="co">## ...            ...              ...       ...         ...       ...         ...</span>
+<span class="co">## 275              1 PCP-40:3             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 276              1 PCP-40:4             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 277              1 PCP-40:5             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 278              1 PCP-40:6             FALSE       FALSE     FALSE         PCP</span>
+<span class="co">## 279              1 PC 15:0-18:1(d7)     FALSE       FALSE      TRUE          PC</span>
+<span class="co">##          chain1       l_1       s_1      chain2       l_2       s_2      chain3</span>
+<span class="co">##     &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;</span>
+<span class="co">## 160        30:0        30         0                    NA        NA            </span>
+<span class="co">## 161        30:1        30         1                    NA        NA            </span>
+<span class="co">## 162        30:2        30         2                    NA        NA            </span>
+<span class="co">## 163        32:0        32         0                    NA        NA            </span>
+<span class="co">## 164        32:1        32         1                    NA        NA            </span>
+<span class="co">## ...         ...       ...       ...         ...       ...       ...         ...</span>
+<span class="co">## 275        40:3        40         3                    NA        NA            </span>
+<span class="co">## 276        40:4        40         4                    NA        NA            </span>
+<span class="co">## 277        40:5        40         5                    NA        NA            </span>
+<span class="co">## 278        40:6        40         6                    NA        NA            </span>
+<span class="co">## 279        15:0        15         0        18:1        18         1            </span>
+<span class="co">##           l_3       s_3      chain4       l_4       s_4  total_cl  total_cs</span>
+<span class="co">##     &lt;logical&gt; &lt;logical&gt; &lt;character&gt; &lt;logical&gt; &lt;logical&gt; &lt;integer&gt; &lt;integer&gt;</span>
+<span class="co">## 160        NA        NA                    NA        NA        30         0</span>
+<span class="co">## 161        NA        NA                    NA        NA        30         1</span>
+<span class="co">## 162        NA        NA                    NA        NA        30         2</span>
+<span class="co">## 163        NA        NA                    NA        NA        32         0</span>
+<span class="co">## 164        NA        NA                    NA        NA        32         1</span>
+<span class="co">## ...       ...       ...         ...       ...       ...       ...       ...</span>
+<span class="co">## 275        NA        NA                    NA        NA        40         3</span>
+<span class="co">## 276        NA        NA                    NA        NA        40         4</span>
+<span class="co">## 277        NA        NA                    NA        NA        40         5</span>
+<span class="co">## 278        NA        NA                    NA        NA        40         6</span>
+<span class="co">## 279        NA        NA                    NA        NA        33         1</span>
+<span class="co">##           Class</span>
+<span class="co">##     &lt;character&gt;</span>
+<span class="co">## 160          PC</span>
+<span class="co">## 161          PC</span>
+<span class="co">## 162          PC</span>
+<span class="co">## 163          PC</span>
+<span class="co">## 164          PC</span>
+<span class="co">## ...         ...</span>
+<span class="co">## 275          PC</span>
+<span class="co">## 276          PC</span>
+<span class="co">## 277          PC</span>
+<span class="co">## 278          PC</span>
+<span class="co">## 279          PC</span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">colData</span><span class="op">(</span><span class="va">d_pc</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 58 rows and 3 columns
-##                   group        Diet    BileAcid
-##             &lt;character&gt; &lt;character&gt; &lt;character&gt;
-## S1A    NormalDiet_water      Normal       water
-## S2A    NormalDiet_water      Normal       water
-## S3A    NormalDiet_water      Normal       water
-## S4A    NormalDiet_water      Normal       water
-## S5A    NormalDiet_water      Normal       water
-## ...                 ...         ...         ...
-## TQC_8                QC          QC          QC
-## TQC_9                QC          QC          QC
-## TQC_10               QC          QC          QC
-## TQC_11               QC          QC          QC
-## TQC_12               QC          QC          QC</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">d_pc</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 58 rows and 3 columns</span>
+<span class="co">##                   group        Diet    BileAcid</span>
+<span class="co">##             &lt;character&gt; &lt;character&gt; &lt;character&gt;</span>
+<span class="co">## S1A    NormalDiet_water      Normal       water</span>
+<span class="co">## S2A    NormalDiet_water      Normal       water</span>
+<span class="co">## S3A    NormalDiet_water      Normal       water</span>
+<span class="co">## S4A    NormalDiet_water      Normal       water</span>
+<span class="co">## S5A    NormalDiet_water      Normal       water</span>
+<span class="co">## ...                 ...         ...         ...</span>
+<span class="co">## TQC_8                QC          QC          QC</span>
+<span class="co">## TQC_9                QC          QC          QC</span>
+<span class="co">## TQC_10               QC          QC          QC</span>
+<span class="co">## TQC_11               QC          QC          QC</span>
+<span class="co">## TQC_12               QC          QC          QC</span></code></pre>
 <p>For demonstration purposes, we select only 3 lipids classes, Ceramides (<code>Cer</code>), PhosphatidylCholines (<code>PC</code>) and LysoPhosphatidylCholines (<code>LPC</code>). We also <code>BileAcid</code> treated group from our dataset.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lipid_classes</span> <span class="op">=</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">$</span><span class="va">Class</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Cer"</span>, <span class="st">"PC"</span>, <span class="st">"LPC"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">lipid_classes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">$</span><span class="va">Class</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Cer"</span>, <span class="st">"PC"</span>, <span class="st">"LPC"</span><span class="op">)</span>
 <span class="va">groups</span> <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">BileAcid</span> <span class="op">!=</span> <span class="st">"DCA"</span>
 <span class="va">d</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span><span class="va">lipid_classes</span>, <span class="va">groups</span><span class="op">]</span>
 
@@ -474,14 +476,14 @@
 <span class="va">d_qc</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>, <span class="va">d</span><span class="op">$</span><span class="va">group</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span></code></pre></div>
 </div>
 </div>
-<div id="raw-data-quality-check" class="section level2">
-<h2 class="hasAnchor">
-<a href="#raw-data-quality-check" class="anchor"></a>Raw Data Quality Check</h2>
+<div class="section level3">
+<h3 id="raw-data-quality-check">Raw Data Quality Check<a class="anchor" aria-label="anchor" href="#raw-data-quality-check"></a>
+</h3>
 <p>To ensure data quality, we can look at total lipid intensity as bar chart or distribution of samples as a boxplot.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_samples.html">plot_samples</a></span><span class="op">(</span><span class="va">d</span>, type <span class="op">=</span> <span class="st">"tic"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
-<p>We can also look at intensity and retention time distributions for each lipid molecule using <code><a href="../reference/plot_molecules.html">plot_molecules(type = boxplot)</a></code>. It is recommended to assess the variation across quality control samples.</p>
+<p>We can also look at intensity and retention time distributions for each lipid molecule using <code>plot_molecules(type = boxplot)</code>. It is recommended to assess the variation across quality control samples.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_molecules.html">plot_molecules</a></span><span class="op">(</span><span class="va">d_qc</span>, <span class="st">"sd"</span>, measure <span class="op">=</span> <span class="st">"Retention Time"</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
@@ -492,25 +494,25 @@
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_lipidclass.html">plot_lipidclass</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"boxplot"</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
-<div id="interactive-plots" class="section level3">
-<h3 class="hasAnchor">
-<a href="#interactive-plots" class="anchor"></a>Interactive plots</h3>
-<p>All <code>lipidr</code> plots can be displayed interactive mode if <code>plotly</code> package is installed. Plot interactivity is disabled by default. To enable interactivity, simple call <code><a href="../reference/use_interactive_graphics.html">use_interactive_graphics()</a></code>. You can turn interactivity back off by <code><a href="../reference/use_interactive_graphics.html">use_interactive_graphics(interactive=FALSE)</a></code>.</p>
+<div class="section level4">
+<h4 id="interactive-plots">Interactive plots<a class="anchor" aria-label="anchor" href="#interactive-plots"></a>
+</h4>
+<p>All <code>lipidr</code> plots can be displayed interactive mode if <code>plotly</code> package is installed. Plot interactivity is disabled by default. To enable interactivity, simple call <code><a href="../reference/use_interactive_graphics.html">use_interactive_graphics()</a></code>. You can turn interactivity back off by <code>use_interactive_graphics(interactive=FALSE)</code>.</p>
 </div>
 </div>
-<div id="summarizing-transitions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summarizing-transitions" class="anchor"></a>Summarizing transitions</h2>
+<div class="section level3">
+<h3 id="summarizing-transitions">Summarizing transitions<a class="anchor" aria-label="anchor" href="#summarizing-transitions"></a>
+</h3>
 <p>This step is important when more than one transition is measured per lipid molecule. Multiple transitions are summarized into a single value by either taking the average intensity or the one with highest intensity.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_summarized</span> <span class="op">=</span> <span class="fu"><a href="../reference/summarize_transitions.html">summarize_transitions</a></span><span class="op">(</span><span class="va">d</span>, method <span class="op">=</span> <span class="st">"average"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="normalization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#normalization" class="anchor"></a>Normalization</h2>
-<div id="probabilistic-quotient-normalization-pqn" class="section level3">
-<h3 class="hasAnchor">
-<a href="#probabilistic-quotient-normalization-pqn" class="anchor"></a>Probabilistic Quotient Normalization (PQN)</h3>
+<div class="section level3">
+<h3 id="normalization">Normalization<a class="anchor" aria-label="anchor" href="#normalization"></a>
+</h3>
+<div class="section level4">
+<h4 id="probabilistic-quotient-normalization-pqn">Probabilistic Quotient Normalization (PQN)<a class="anchor" aria-label="anchor" href="#probabilistic-quotient-normalization-pqn"></a>
+</h4>
 <p>The PQN method determines a dilution factor for each sample by comparing the distribution of quotients between samples and a reference spectrum, followed by sample normalization using this dilution factor.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_normalized</span> <span class="op">=</span> <span class="fu"><a href="../reference/normalize_pqn.html">normalize_pqn</a></span><span class="op">(</span><span class="va">d_summarized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -518,29 +520,29 @@
 <p><img src="workflow_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
 <p>By specifying <code>exclude = "blank"</code>, blank runs are automatically detected and excluded from the normalization process.</p>
 </div>
-<div id="internal-standard-normalization" class="section level3">
-<h3 class="hasAnchor">
-<a href="#internal-standard-normalization" class="anchor"></a>Internal standard normalization</h3>
+<div class="section level4">
+<h4 id="internal-standard-normalization">Internal standard normalization<a class="anchor" aria-label="anchor" href="#internal-standard-normalization"></a>
+</h4>
 <p>Internal standard normalization corrects lipid class-specific variations between samples. Lipid classes are normalized using corresponding internal standard(s) of the same lipid class. If no corresponding internal standard is found the average of all measured internal standards is used instead.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_normalized_istd</span> <span class="op">=</span> <span class="fu"><a href="../reference/normalize_istd.html">normalize_istd</a></span><span class="op">(</span><span class="va">d_summarized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="multivariate-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#multivariate-analysis" class="anchor"></a>Multivariate analysis</h2>
+<div class="section level3">
+<h3 id="multivariate-analysis">Multivariate analysis<a class="anchor" aria-label="anchor" href="#multivariate-analysis"></a>
+</h3>
 <p>You can investigate sample variation using either PCA or PCoA (classical MDS).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mvaresults</span> <span class="op">=</span> <span class="fu"><a href="../reference/mva.html">mva</a></span><span class="op">(</span><span class="va">d_normalized</span>, measure<span class="op">=</span><span class="st">"Area"</span>, method<span class="op">=</span><span class="st">"PCA"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/mva.html">plot_mva</a></span><span class="op">(</span><span class="va">mvaresults</span>, color_by<span class="op">=</span><span class="st">"group"</span>, components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/mva.html">plot_mva</a></span><span class="op">(</span><span class="va">mvaresults</span>, color_by<span class="op">=</span><span class="st">"group"</span>, components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
 <p>Plotting other components is possible by specifying <code>components</code> argument. For example <code>components = c(2,3)</code> plots second and third components.</p>
-<div id="supervised-multivariate-analysis" class="section level3">
-<h3 class="hasAnchor">
-<a href="#supervised-multivariate-analysis" class="anchor"></a>Supervised multivariate analysis</h3>
+<div class="section level4">
+<h4 id="supervised-multivariate-analysis">Supervised multivariate analysis<a class="anchor" aria-label="anchor" href="#supervised-multivariate-analysis"></a>
+</h4>
 <p>Supervised multivariate analyses, such as OPLS and OPLS-DA can be performed to determine which lipids are associated with a group (y-variable) of interest. In this example we use “Diet” as grouping, and display the results in a scores plot.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mvaresults</span> <span class="op">=</span> <span class="fu"><a href="../reference/mva.html">mva</a></span><span class="op">(</span><span class="va">d_normalized</span>, method <span class="op">=</span> <span class="st">"OPLS-DA"</span>, group_col <span class="op">=</span> <span class="st">"Diet"</span>, groups<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"HighFat"</span>, <span class="st">"Normal"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">mvaresults</span> <span class="op">=</span> <span class="fu"><a href="../reference/mva.html">mva</a></span><span class="op">(</span><span class="va">d_normalized</span>, method <span class="op">=</span> <span class="st">"OPLS-DA"</span>, group_col <span class="op">=</span> <span class="st">"Diet"</span>, groups<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HighFat"</span>, <span class="st">"Normal"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/mva.html">plot_mva</a></span><span class="op">(</span><span class="va">mvaresults</span>, color_by<span class="op">=</span><span class="st">"group"</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
 <p>We can also plot the loadings and display important lipids contributing to the separation between different (Diet) groups.</p>
@@ -549,44 +551,44 @@
 <p>Alternatively, we can extract top <em>N</em> lipids along with their annotations.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/mva.html">top_lipids</a></span><span class="op">(</span><span class="va">mvaresults</span>, top.n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
-<pre><code>##       filename        Molecule Precursor.Mz Precursor.Charge    clean_name
-## 1  F1_data.csv Cer d18:1/C18:0        566.7                1 Cer 18:1/18:0
-## 2  F1_data.csv Cer d18:0/C20:0        596.7                1 Cer 18:0/20:0
-## 3  F1_data.csv Cer d18:1/C20:0        594.7                1 Cer 18:1/20:0
-## 4  F1_data.csv Cer d18:1/C16:0        538.7                1 Cer 18:1/16:0
-## 5  F1_data.csv Cer d18:1/C20:1        592.7                1 Cer 18:1/20:1
-## 6  F2_data.csv      PC(P-36:5)        764.6                1      PCP-36:5
-## 7  F2_data.csv      PC(O-40:1)        830.6                1      PCO-40:1
-## 8  F2_data.csv      PC(P-40:0)        830.6                1      PCP-40:0
-## 9  F1_data.csv Cer d18:1/C22:3        616.7                1 Cer 18:1/22:3
-## 10 F1_data.csv Cer d18:1/C20:2        590.7                1 Cer 18:1/20:2
-##    ambig not_matched  istd class_stub chain1 l_1 s_1 chain2 l_2 s_2 chain3 l_3
-## 1  FALSE       FALSE FALSE        Cer   18:1  18   1   18:0  18   0         NA
-## 2  FALSE       FALSE FALSE        Cer   18:0  18   0   20:0  20   0         NA
-## 3  FALSE       FALSE FALSE        Cer   18:1  18   1   20:0  20   0         NA
-## 4  FALSE       FALSE FALSE        Cer   18:1  18   1   16:0  16   0         NA
-## 5  FALSE       FALSE FALSE        Cer   18:1  18   1   20:1  20   1         NA
-## 6  FALSE       FALSE FALSE        PCP   36:5  36   5         NA  NA         NA
-## 7  FALSE       FALSE FALSE        PCO   40:1  40   1         NA  NA         NA
-## 8  FALSE       FALSE FALSE        PCP   40:0  40   0         NA  NA         NA
-## 9  FALSE       FALSE FALSE        Cer   18:1  18   1   22:3  22   3         NA
-## 10 FALSE       FALSE FALSE        Cer   18:1  18   1   20:2  20   2         NA
-##    s_3 chain4 l_4 s_4 total_cl total_cs Class molrank
-## 1   NA         NA  NA       36        1   Cer     1.0
-## 2   NA         NA  NA       38        0   Cer     2.0
-## 3   NA         NA  NA       38        1   Cer     3.0
-## 4   NA         NA  NA       34        1   Cer     4.0
-## 5   NA         NA  NA       38        2   Cer     5.0
-## 6   NA         NA  NA       36        5    PC     6.0
-## 7   NA         NA  NA       40        1    PC     7.5
-## 8   NA         NA  NA       40        0    PC     7.5
-## 9   NA         NA  NA       40        4   Cer     9.0
-## 10  NA         NA  NA       38        3   Cer    10.0</code></pre>
+<pre><code><span class="co">##       filename        Molecule Precursor.Mz Precursor.Charge    clean_name</span>
+<span class="co">## 1  F1_data.csv Cer d18:1/C18:0        566.7                1 Cer 18:1/18:0</span>
+<span class="co">## 2  F1_data.csv Cer d18:0/C20:0        596.7                1 Cer 18:0/20:0</span>
+<span class="co">## 3  F1_data.csv Cer d18:1/C20:0        594.7                1 Cer 18:1/20:0</span>
+<span class="co">## 4  F1_data.csv Cer d18:1/C16:0        538.7                1 Cer 18:1/16:0</span>
+<span class="co">## 5  F1_data.csv Cer d18:1/C20:1        592.7                1 Cer 18:1/20:1</span>
+<span class="co">## 6  F2_data.csv      PC(P-36:5)        764.6                1      PCP-36:5</span>
+<span class="co">## 7  F2_data.csv      PC(O-40:1)        830.6                1      PCO-40:1</span>
+<span class="co">## 8  F2_data.csv      PC(P-40:0)        830.6                1      PCP-40:0</span>
+<span class="co">## 9  F1_data.csv Cer d18:1/C22:3        616.7                1 Cer 18:1/22:3</span>
+<span class="co">## 10 F1_data.csv Cer d18:1/C20:2        590.7                1 Cer 18:1/20:2</span>
+<span class="co">##    ambig not_matched  istd class_stub chain1 l_1 s_1 chain2 l_2 s_2 chain3 l_3</span>
+<span class="co">## 1  FALSE       FALSE FALSE        Cer   18:1  18   1   18:0  18   0         NA</span>
+<span class="co">## 2  FALSE       FALSE FALSE        Cer   18:0  18   0   20:0  20   0         NA</span>
+<span class="co">## 3  FALSE       FALSE FALSE        Cer   18:1  18   1   20:0  20   0         NA</span>
+<span class="co">## 4  FALSE       FALSE FALSE        Cer   18:1  18   1   16:0  16   0         NA</span>
+<span class="co">## 5  FALSE       FALSE FALSE        Cer   18:1  18   1   20:1  20   1         NA</span>
+<span class="co">## 6  FALSE       FALSE FALSE        PCP   36:5  36   5         NA  NA         NA</span>
+<span class="co">## 7  FALSE       FALSE FALSE        PCO   40:1  40   1         NA  NA         NA</span>
+<span class="co">## 8  FALSE       FALSE FALSE        PCP   40:0  40   0         NA  NA         NA</span>
+<span class="co">## 9  FALSE       FALSE FALSE        Cer   18:1  18   1   22:3  22   3         NA</span>
+<span class="co">## 10 FALSE       FALSE FALSE        Cer   18:1  18   1   20:2  20   2         NA</span>
+<span class="co">##    s_3 chain4 l_4 s_4 total_cl total_cs Class molrank</span>
+<span class="co">## 1   NA         NA  NA       36        1   Cer     1.0</span>
+<span class="co">## 2   NA         NA  NA       38        0   Cer     2.0</span>
+<span class="co">## 3   NA         NA  NA       38        1   Cer     3.0</span>
+<span class="co">## 4   NA         NA  NA       34        1   Cer     4.0</span>
+<span class="co">## 5   NA         NA  NA       38        2   Cer     5.0</span>
+<span class="co">## 6   NA         NA  NA       36        5    PC     6.0</span>
+<span class="co">## 7   NA         NA  NA       40        1    PC     7.5</span>
+<span class="co">## 8   NA         NA  NA       40        0    PC     7.5</span>
+<span class="co">## 9   NA         NA  NA       40        4   Cer     9.0</span>
+<span class="co">## 10  NA         NA  NA       38        3   Cer    10.0</span></code></pre>
 </div>
 </div>
-<div id="differential-analysis-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#differential-analysis-1" class="anchor"></a>Differential analysis</h2>
+<div class="section level3">
+<h3 id="differential-analysis-1">Differential analysis<a class="anchor" aria-label="anchor" href="#differential-analysis-1"></a>
+</h3>
 <p>This step of the workflow requires the <code>limma</code> package to be installed.</p>
 <p>Normalized and log transformed data should be used.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
@@ -595,50 +597,50 @@
   <span class="va">HighFat_water</span> <span class="op">-</span> <span class="va">NormalDiet_water</span>,
   measure<span class="op">=</span><span class="st">"Area"</span>
 <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">de_results</span><span class="op">)</span></code></pre></div>
-<pre><code>##          Molecule Class total_cl total_cs  istd MoleculeId
-## 1 Cer d18:0/C16:0   Cer       34        0 FALSE          1
-## 2 Cer d18:0/C18:0   Cer       36        0 FALSE          2
-## 3 Cer d18:0/C20:0   Cer       38        0 FALSE          3
-## 4 Cer d18:0/C22:0   Cer       40        0 FALSE          4
-## 5 Cer d18:0/C24:0   Cer       42        0 FALSE          5
-## 6 Cer d18:0/C24:1   Cer       42        1 FALSE          6
-##                           contrast    logFC   AveExpr         t      P.Value
-## 1 HighFat_water - NormalDiet_water 1.699691 11.957712  9.884937 1.823247e-10
-## 2 HighFat_water - NormalDiet_water 2.143217 10.376157 14.761687 1.902992e-14
-## 3 HighFat_water - NormalDiet_water 1.997993  9.825952 21.336335 1.976278e-18
-## 4 HighFat_water - NormalDiet_water 1.390828 12.497122 12.851894 5.102948e-13
-## 5 HighFat_water - NormalDiet_water 1.081816 11.884280  9.303129 6.547053e-10
-## 6 HighFat_water - NormalDiet_water 1.356113 12.054596 11.452936 7.184205e-12
-##      adj.P.Val        B
-## 1 6.003375e-10 13.57936
-## 2 1.417631e-13 22.91345
-## 3 1.362707e-16 32.17804
-## 4 2.460350e-12 19.56839
-## 5 1.733044e-09 12.27716
-## 6 2.852552e-11 16.87467</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">de_results</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##          Molecule Class total_cl total_cs  istd MoleculeId</span>
+<span class="co">## 1 Cer d18:0/C16:0   Cer       34        0 FALSE          1</span>
+<span class="co">## 2 Cer d18:0/C18:0   Cer       36        0 FALSE          2</span>
+<span class="co">## 3 Cer d18:0/C20:0   Cer       38        0 FALSE          3</span>
+<span class="co">## 4 Cer d18:0/C22:0   Cer       40        0 FALSE          4</span>
+<span class="co">## 5 Cer d18:0/C24:0   Cer       42        0 FALSE          5</span>
+<span class="co">## 6 Cer d18:0/C24:1   Cer       42        1 FALSE          6</span>
+<span class="co">##                           contrast    logFC   AveExpr         t      P.Value</span>
+<span class="co">## 1 HighFat_water - NormalDiet_water 1.699691 11.957712  9.884937 1.823247e-10</span>
+<span class="co">## 2 HighFat_water - NormalDiet_water 2.143217 10.376157 14.761687 1.902992e-14</span>
+<span class="co">## 3 HighFat_water - NormalDiet_water 1.997993  9.825952 21.336335 1.976278e-18</span>
+<span class="co">## 4 HighFat_water - NormalDiet_water 1.390828 12.497122 12.851894 5.102948e-13</span>
+<span class="co">## 5 HighFat_water - NormalDiet_water 1.081816 11.884280  9.303129 6.547053e-10</span>
+<span class="co">## 6 HighFat_water - NormalDiet_water 1.356113 12.054596 11.452936 7.184205e-12</span>
+<span class="co">##      adj.P.Val        B</span>
+<span class="co">## 1 6.003375e-10 13.57936</span>
+<span class="co">## 2 1.417631e-13 22.91345</span>
+<span class="co">## 3 1.362707e-16 32.17804</span>
+<span class="co">## 4 2.460350e-12 19.56839</span>
+<span class="co">## 5 1.733044e-09 12.27716</span>
+<span class="co">## 6 2.852552e-11 16.87467</span></code></pre>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/de_analysis.html">significant_molecules</a></span><span class="op">(</span><span class="va">de_results</span><span class="op">)</span></code></pre></div>
-<pre><code>## $`HighFat_water - NormalDiet_water`
-##  [1] Cer d18:0/C16:0 Cer d18:0/C18:0 Cer d18:0/C20:0 Cer d18:0/C22:0
-##  [5] Cer d18:0/C24:0 Cer d18:0/C24:1 Cer d18:1/C16:0 Cer d18:1/C16:1
-##  [9] Cer d18:1/C18:0 Cer d18:1/C18:1 Cer d18:1/C20:0 Cer d18:1/C20:1
-## [13] Cer d18:1/C20:2 Cer d18:1/C22:0 Cer d18:1/C22:1 Cer d18:1/C22:2
-## [17] Cer d18:1/C22:3 Cer d18:1/C22:5 Cer d18:1/C22:6 Cer d18:1/C24:1
-## [21] Cer d18:1/C26:0 Cer d18:2/C20:0 PC 36:5         PC 36:6        
-## [25] PC 40:2         PC 40:3         PC 40:8         LPC 20:0       
-## [29] LPC 20:4        LPC 22:0        LPC 26:0        PC(O-34:2)     
-## [33] PC(O-34:3)      PC(O-38:2)      PC(O-40:1)      PC(P-34:1)     
-## [37] PC(P-34:2)      PC(P-34:3)      PC(P-36:5)      PC(P-38:0)     
-## [41] PC(P-38:1)      PC(P-40:0)     
-## 134 Levels: Cer d18:0/C16:0 Cer d18:0/C18:0 Cer d18:0/C20:0 ... PC(P-40:6)</code></pre>
+<pre><code><span class="co">## $`HighFat_water - NormalDiet_water`</span>
+<span class="co">##  [1] Cer d18:0/C16:0 Cer d18:0/C18:0 Cer d18:0/C20:0 Cer d18:0/C22:0</span>
+<span class="co">##  [5] Cer d18:0/C24:0 Cer d18:0/C24:1 Cer d18:1/C16:0 Cer d18:1/C16:1</span>
+<span class="co">##  [9] Cer d18:1/C18:0 Cer d18:1/C18:1 Cer d18:1/C20:0 Cer d18:1/C20:1</span>
+<span class="co">## [13] Cer d18:1/C20:2 Cer d18:1/C22:0 Cer d18:1/C22:1 Cer d18:1/C22:2</span>
+<span class="co">## [17] Cer d18:1/C22:3 Cer d18:1/C22:5 Cer d18:1/C22:6 Cer d18:1/C24:1</span>
+<span class="co">## [21] Cer d18:1/C26:0 Cer d18:2/C20:0 PC 36:5         PC 36:6        </span>
+<span class="co">## [25] PC 40:2         PC 40:3         PC 40:8         LPC 20:0       </span>
+<span class="co">## [29] LPC 20:4        LPC 22:0        LPC 26:0        PC(O-34:2)     </span>
+<span class="co">## [33] PC(O-34:3)      PC(O-38:2)      PC(O-40:1)      PC(P-34:1)     </span>
+<span class="co">## [37] PC(P-34:2)      PC(P-34:3)      PC(P-36:5)      PC(P-38:0)     </span>
+<span class="co">## [41] PC(P-38:1)      PC(P-40:0)     </span>
+<span class="co">## 134 Levels: Cer d18:0/C16:0 Cer d18:0/C18:0 Cer d18:0/C20:0 ... PC(P-40:6)</span></code></pre>
 <p>We can visualize differential analysis results using volcano plots. In this instance we turn off labeling, due to the large number of significantly altered lipids between conditions.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/de_analysis.html">plot_results_volcano</a></span><span class="op">(</span><span class="va">de_results</span>, show.labels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-18-1.png" width="768"></p>
-<div id="complex-experimental-designs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#complex-experimental-designs" class="anchor"></a>Complex experimental designs</h3>
+<div class="section level4">
+<h4 id="complex-experimental-designs">Complex experimental designs<a class="anchor" aria-label="anchor" href="#complex-experimental-designs"></a>
+</h4>
 <p>For more complex experimental designs, where one might deal with factor adjustment or interactions, it is recommended to use the <code>de_design</code> function. Users can either provide a design matrix, or a formula to create one.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Using formula</span>
@@ -649,24 +651,24 @@
   measure<span class="op">=</span><span class="st">"Area"</span><span class="op">)</span>
 
 <span class="co"># Using design matrix</span>
-<span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">group</span>, data<span class="op">=</span><span class="fu">colData</span><span class="op">(</span><span class="va">d_normalized</span><span class="op">)</span><span class="op">)</span>
+<span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">group</span>, data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">d_normalized</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/de_analysis.html">de_design</a></span><span class="op">(</span>
   data<span class="op">=</span><span class="va">d_normalized</span>,
   design <span class="op">=</span> <span class="va">design</span>,
   coef<span class="op">=</span><span class="st">"groupHighFat_water"</span>,
   measure<span class="op">=</span><span class="st">"Area"</span><span class="op">)</span></code></pre></div>
-<p>For more details on creating design matrices for different experimental designs, refer to (Limma User Guide)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf" class="uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf</a>] and (edgeR tutorial)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf" class="uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf</a>].</p>
+<p>For more details on creating design matrices for different experimental designs, refer to (Limma User Guide)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf" class="external-link uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf</a>] and (edgeR tutorial)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf" class="external-link uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf</a>].</p>
 </div>
 </div>
-<div id="enrichment-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#enrichment-analysis" class="anchor"></a>Enrichment analysis</h2>
+<div class="section level3">
+<h3 id="enrichment-analysis">Enrichment analysis<a class="anchor" aria-label="anchor" href="#enrichment-analysis"></a>
+</h3>
 <p><code>lipidr</code> automatically generates sets of lipids based on lipid class, total chain length and unsaturation. Measured lipids are then ranked by their fold change, or p-value using results from differential analysis.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">enrich_results</span> <span class="op">=</span> <span class="fu"><a href="../reference/lsea.html">lsea</a></span><span class="op">(</span><span class="va">de_results</span>, rank.by <span class="op">=</span> <span class="st">"logFC"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/lsea.html">significant_lipidsets</a></span><span class="op">(</span><span class="va">enrich_results</span><span class="op">)</span></code></pre></div>
-<pre><code>## $`HighFat_water - NormalDiet_water`
-## [1] "Class_Cer" "Class_PC"</code></pre>
+<pre><code><span class="co">## $`HighFat_water - NormalDiet_water`</span>
+<span class="co">## [1] "Class_Cer" "Class_PC"</span></code></pre>
 <p>Visualization of enrichment analysis results. The enriched lipid classes and chain unsaturations are highlighted.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/lsea.html">plot_enrichment</a></span><span class="op">(</span><span class="va">de_results</span>, <span class="fu"><a href="../reference/lsea.html">significant_lipidsets</a></span><span class="op">(</span><span class="va">enrich_results</span><span class="op">)</span>, annotation<span class="op">=</span><span class="st">"class"</span><span class="op">)</span></code></pre></div>
@@ -680,64 +682,66 @@
 <p><img src="workflow_files/figure-html/unnamed-chunk-22-1.png" width="768"></p>
 </div>
 </div>
-<div id="session-information" class="section level1">
-<h1 class="hasAnchor">
-<a href="#session-information" class="anchor"></a>Session information</h1>
+<div class="section level2">
+<h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h2>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.0 (2021-05-18)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
-## 
-## Matrix products: default
-## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
-## 
-## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## attached base packages:
-## [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
-## [8] methods   base     
-## 
-## other attached packages:
-##  [1] ggplot2_3.3.3               lipidr_2.5.2               
-##  [3] SummarizedExperiment_1.23.0 Biobase_2.53.0             
-##  [5] GenomicRanges_1.45.0        GenomeInfoDb_1.29.0        
-##  [7] IRanges_2.27.0              S4Vectors_0.31.0           
-##  [9] BiocGenerics_0.39.0         MatrixGenerics_1.5.0       
-## [11] matrixStats_0.59.0         
-## 
-## loaded via a namespace (and not attached):
-##  [1] tidyr_1.1.3            highr_0.9              GenomeInfoDbData_1.2.6
-##  [4] yaml_2.2.1             impute_1.67.0          norm_1.0-9.5          
-##  [7] tmvtnorm_1.4-10        pillar_1.6.1           lattice_0.20-44       
-## [10] glue_1.4.2             limma_3.49.0           digest_0.6.27         
-## [13] XVector_0.33.0         colorspace_2.0-1       sandwich_3.0-1        
-## [16] htmltools_0.5.1.1      Matrix_1.3-4           pkgconfig_2.0.3       
-## [19] zlibbioc_1.39.0        purrr_0.3.4            mvtnorm_1.1-1         
-## [22] scales_1.1.1           gmm_1.6-6              BiocParallel_1.27.0   
-## [25] tibble_3.1.2           generics_0.1.0         farver_2.1.0          
-## [28] ellipsis_0.3.2         cachem_1.0.5           withr_2.4.2           
-## [31] imputeLCMD_2.0         magrittr_2.0.1         crayon_1.4.1          
-## [34] memoise_2.0.0          evaluate_0.14          fs_1.5.0              
-## [37] fansi_0.5.0            forcats_0.5.1          textshaping_0.3.4     
-## [40] ropls_1.25.0           tools_4.1.0            data.table_1.14.0     
-## [43] lifecycle_1.0.0        stringr_1.4.0          munsell_0.5.0         
-## [46] DelayedArray_0.19.0    pcaMethods_1.85.0      compiler_4.1.0        
-## [49] pkgdown_1.6.1          systemfonts_1.0.2      rlang_0.4.11          
-## [52] grid_4.1.0             RCurl_1.98-1.3         bitops_1.0-7          
-## [55] labeling_0.4.2         rmarkdown_2.8          gtable_0.3.0          
-## [58] R6_2.5.0               gridExtra_2.3          zoo_1.8-9             
-## [61] knitr_1.33             dplyr_1.0.6            fastmap_1.1.0         
-## [64] utf8_1.2.1             fastmatch_1.1-0        fgsea_1.19.0          
-## [67] rprojroot_2.0.2        ragg_1.1.2             desc_1.3.0            
-## [70] stringi_1.6.2          Rcpp_1.0.6             vctrs_0.3.8           
-## [73] tidyselect_1.1.1       xfun_0.23</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## R version 4.1.2 (2021-11-01)</span>
+<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
+<span class="co">## </span>
+<span class="co">## Matrix products: default</span>
+<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
+<span class="co">## </span>
+<span class="co">## locale:</span>
+<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
+<span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
+<span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">## </span>
+<span class="co">## attached base packages:</span>
+<span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span>
+<span class="co">## [8] base     </span>
+<span class="co">## </span>
+<span class="co">## other attached packages:</span>
+<span class="co">##  [1] ggplot2_3.3.5               lipidr_2.9.1               </span>
+<span class="co">##  [3] SummarizedExperiment_1.24.0 Biobase_2.54.0             </span>
+<span class="co">##  [5] GenomicRanges_1.46.1        GenomeInfoDb_1.30.1        </span>
+<span class="co">##  [7] IRanges_2.28.0              S4Vectors_0.32.3           </span>
+<span class="co">##  [9] BiocGenerics_0.40.0         MatrixGenerics_1.6.0       </span>
+<span class="co">## [11] matrixStats_0.61.0         </span>
+<span class="co">## </span>
+<span class="co">## loaded via a namespace (and not attached):</span>
+<span class="co">##  [1] sass_0.4.0             tidyr_1.2.0            jsonlite_1.7.3        </span>
+<span class="co">##  [4] bslib_0.3.1            highr_0.9              GenomeInfoDbData_1.2.7</span>
+<span class="co">##  [7] yaml_2.2.2             impute_1.68.0          norm_1.0-9.5          </span>
+<span class="co">## [10] tmvtnorm_1.4-10        pillar_1.7.0           lattice_0.20-45       </span>
+<span class="co">## [13] glue_1.6.1             limma_3.50.0           digest_0.6.29         </span>
+<span class="co">## [16] XVector_0.34.0         colorspace_2.0-2       sandwich_3.0-1        </span>
+<span class="co">## [19] htmltools_0.5.2        Matrix_1.4-0           pkgconfig_2.0.3       </span>
+<span class="co">## [22] zlibbioc_1.40.0        purrr_0.3.4            mvtnorm_1.1-3         </span>
+<span class="co">## [25] scales_1.1.1           gmm_1.6-6              BiocParallel_1.28.3   </span>
+<span class="co">## [28] tibble_3.1.6           farver_2.1.0           generics_0.1.2        </span>
+<span class="co">## [31] ellipsis_0.3.2         withr_2.4.3            cachem_1.0.6          </span>
+<span class="co">## [34] imputeLCMD_2.0         cli_3.1.1              magrittr_2.0.2        </span>
+<span class="co">## [37] crayon_1.4.2           memoise_2.0.1          evaluate_0.14         </span>
+<span class="co">## [40] fs_1.5.2               fansi_1.0.2            forcats_0.5.1         </span>
+<span class="co">## [43] textshaping_0.3.6      ropls_1.26.4           tools_4.1.2           </span>
+<span class="co">## [46] data.table_1.14.2      lifecycle_1.0.1        stringr_1.4.0         </span>
+<span class="co">## [49] munsell_0.5.0          DelayedArray_0.20.0    pcaMethods_1.86.0     </span>
+<span class="co">## [52] compiler_4.1.2         pkgdown_2.0.2          jquerylib_0.1.4       </span>
+<span class="co">## [55] systemfonts_1.0.4      rlang_1.0.1            grid_4.1.2            </span>
+<span class="co">## [58] RCurl_1.98-1.6         labeling_0.4.2         bitops_1.0-7          </span>
+<span class="co">## [61] rmarkdown_2.11         gtable_0.3.0           R6_2.5.1              </span>
+<span class="co">## [64] gridExtra_2.3          zoo_1.8-9              knitr_1.37            </span>
+<span class="co">## [67] dplyr_1.0.8            fastmap_1.1.0          utf8_1.2.2            </span>
+<span class="co">## [70] fastmatch_1.1-3        fgsea_1.20.0           rprojroot_2.0.2       </span>
+<span class="co">## [73] ragg_1.2.1             desc_1.4.0             stringi_1.7.6         </span>
+<span class="co">## [76] parallel_4.1.2         Rcpp_1.0.8             vctrs_0.3.8           </span>
+<span class="co">## [79] tidyselect_1.1.1       xfun_0.29</span></code></pre>
 </div>
   </div>
 
@@ -752,11 +756,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Ahmed Mohamed, Ahmed Mohamed, Jeffrey Molendijk.</p>
+  <p></p>
+<p>Developed by Ahmed Mohamed, Ahmed Mohamed, Jeffrey Molendijk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -764,6 +770,8 @@
 
   
 
+
+  
 
   </body>
 </html>
