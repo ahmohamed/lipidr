@@ -33,8 +33,8 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
   if (log) {
     measure <- .check_log(data, measure)
   }
-  if (is.null(color)) {
-    color <- ""
+  if (!is.null(color)) {
+    color <- sym(color)
   }
   #color <- sym(color)
   if (type == "tic") {
@@ -45,18 +45,18 @@ plot_samples <- function(data, type = c("tic", "boxplot"),
 }
 
 .plot_sample_tic <- function(dlong, measure, color) {
-  ggplot(dlong, aes(Sample, !!measure, fill = !!sym(color))) +
+  ggplot(dlong, aes(Sample, !!measure, fill = !!color)) +
     stat_summary(fun = mean, geom = "bar") +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    guides(size = FALSE)
+    guides(size = "none")
 }
 
 .plot_sample_boxplot <- function(dlong, measure, color) {
-  ggplot(dlong, aes(Sample, !!measure, fill = !!sym(color))) + geom_boxplot() +
+  ggplot(dlong, aes(Sample, !!measure, fill = !!color)) + geom_boxplot() +
     facet_wrap(~filename, ncol = 1, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
-    guides(size = FALSE)
+    guides(size = "none")
 }
 
 #' Informative plots to investigate lipid classes
@@ -270,8 +270,8 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
   if (log) {
     measure <- .check_log(data, measure)
   }
-  if (is.null(color)) {
-    color <- ""
+  if (!is.null(color)) {
+    color <- sym(color)
   }
   mol_dimname = metadata(data)$dimnames[[1]]
   if (type == "cv") {
@@ -287,7 +287,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 .plot_molecule_sd <- function(dlong, measure, color, mol_dimname) {
   ggplot(
     dlong,
-    aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
+    aes(!!sym(mol_dimname), !!measure, fill = !!color, color = !!color)
   ) +
     stat_summary(fun = sd, geom = "bar") +
     scale_x_discrete(labels=as.character(dlong$Molecule)) +
@@ -299,7 +299,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 .plot_molecule_cv <- function(dlong, measure, color, mol_dimname) {
   ggplot(
     dlong,
-    aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
+    aes(!!sym(mol_dimname), !!measure, fill = !!color, color = !!color)
   ) +
     stat_summary(fun = .cv, geom = "bar") + coord_flip() +
     scale_x_discrete(labels=as.character(dlong$Molecule)) +
@@ -311,7 +311,7 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 .plot_molecule_boxplot <- function(dlong, measure, color, mol_dimname) {
   ggplot(
     dlong,
-    aes(!!sym(mol_dimname), !!measure, fill = !!sym(color), color = !!sym(color))
+    aes(!!sym(mol_dimname), !!measure, fill = !!color, color = !!color)
   ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
     scale_x_discrete(labels=as.character(dlong$Molecule)) +
