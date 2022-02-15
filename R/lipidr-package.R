@@ -29,6 +29,7 @@ NULL
 #' @name lipidr-package
 #' @docType package
 #' @aliases lipidr lipidr-package
+#' @keywords internal
 #'
 NULL
 
@@ -45,6 +46,7 @@ NULL
 #'
 #' @docType data
 #' @name lipidr-data
+#' @keywords internal
 #' @family lipidr datasets
 #' @examples
 #' data(data_normalized)
@@ -56,6 +58,7 @@ NULL
 #'
 #' @docType data
 #' @name lipidDefaults
+#' @keywords internal
 #' @family lipidr datasets
 #' @usage data(lipidDefaults)
 #' @examples
@@ -74,6 +77,7 @@ NULL
 #'
 #' @docType data
 #' @name data_normalized
+#' @keywords internal
 #' @family lipidr datasets
 #' @usage data(data_normalized)
 #' @examples
@@ -87,6 +91,7 @@ NULL
 #'
 #' @docType data
 #' @name lipidnames_pattern
+#' @keywords internal
 #' @family lipidr datasets
 #' @usage data(lipidnames_pattern)
 #' @examples

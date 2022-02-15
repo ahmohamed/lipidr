@@ -27,4 +27,4 @@ Other lipidr datasets:
 \code{\link{lipidr-data}}
 }
 \concept{lipidr datasets}
-\keyword{datasets}
+\keyword{internal}

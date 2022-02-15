@@ -23,3 +23,4 @@ Other lipidr datasets:
 \code{\link{lipidnames_pattern}}
 }
 \concept{lipidr datasets}
+\keyword{internal}

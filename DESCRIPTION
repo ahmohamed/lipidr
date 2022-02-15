@@ -58,7 +58,7 @@ VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization
 Language: en-US
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/ahmohamed/lipidr
 BugReports: https://github.com/ahmohamed/lipidr/issues/
