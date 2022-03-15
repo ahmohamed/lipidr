@@ -57,7 +57,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Examples
      
     <span class="caret"></span>
@@ -93,9 +93,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Workflow</h1>
-                        <h4 data-toc-skip class="author">Ahmed Mohamed</h4>
+                        <h4 data-toc-skip class="author">Ahmed
+Mohamed</h4>
             <address class="author_afil">
-      Precision &amp; Systems Biomedicine, QIMR Berghofer, Australia<br><h4 data-toc-skip class="date">2022-02-15</h4>
+      Precision &amp; Systems Biomedicine, QIMR Berghofer,
+Australia<br><h4 data-toc-skip class="date">2022-03-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ahmohamed/lipidr/blob/HEAD/vignettes/workflow.Rmd" class="external-link"><code>vignettes/workflow.Rmd</code></a></small>
       <div class="hidden name"><code>workflow.Rmd</code></div>
@@ -108,22 +110,37 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p><code>lipidr</code> implements a series of functions to facilitate inspection, analysis and visualization of targeted lipidomics datasets. <code>lipidr</code> takes exported Skyline CSV as input, allowing for multiple methods to be analyzed together.</p>
+<p><code>lipidr</code> implements a series of functions to facilitate
+inspection, analysis and visualization of targeted lipidomics datasets.
+<code>lipidr</code> takes exported Skyline CSV as input, allowing for
+multiple methods to be analyzed together.</p>
 <div class="section level3">
 <h3 id="input">Input<a class="anchor" aria-label="anchor" href="#input"></a>
 </h3>
-<p><code>lipidr</code> represents Skyline files as SummarizedExperiment objects, which can easily be integrated with a wide variety of Bioconductor packages. Sample annotations, such as sample group or other clinical information can be loaded.</p>
+<p><code>lipidr</code> represents Skyline files as SummarizedExperiment
+objects, which can easily be integrated with a wide variety of
+Bioconductor packages. Sample annotations, such as sample group or other
+clinical information can be loaded.</p>
 </div>
 <div class="section level3">
 <h3 id="quality-control-visualization">Quality control &amp; visualization<a class="anchor" aria-label="anchor" href="#quality-control-visualization"></a>
 </h3>
-<p><code>lipidr</code> generates various plots, such as PCA score plots and box plots, for quality control of samples and measured lipids. Normalization methods with and without internal standards are also supported.</p>
+<p><code>lipidr</code> generates various plots, such as PCA score plots
+and box plots, for quality control of samples and measured lipids.
+Normalization methods with and without internal standards are also
+supported.</p>
 </div>
 <div class="section level3">
 <h3 id="differential-analysis">Differential Analysis<a class="anchor" aria-label="anchor" href="#differential-analysis"></a>
 </h3>
-<p>Differential analysis can be performed using any of the loaded clinical variables, which can be readily visualized as volcano plots. A novel lipid set enrichment analysis (LSEA) is implemented to detect preferential enrichment of certain lipid classes, total chain lengths or unsaturation patterns. Plots for the visualization of enrichment results are also implemented.</p>
-<p>This vignette provides a step by step guide for downstream analysis of targeted lipidomics data, exported from Skyline.</p>
+<p>Differential analysis can be performed using any of the loaded
+clinical variables, which can be readily visualized as volcano plots. A
+novel lipid set enrichment analysis (LSEA) is implemented to detect
+preferential enrichment of certain lipid classes, total chain lengths or
+unsaturation patterns. Plots for the visualization of enrichment results
+are also implemented.</p>
+<p>This vignette provides a step by step guide for downstream analysis
+of targeted lipidomics data, exported from Skyline.</p>
 </div>
 </div>
 <div class="section level2">
@@ -153,7 +170,12 @@
 <div class="section level3">
 <h3 id="example-study">Example Study<a class="anchor" aria-label="anchor" href="#example-study"></a>
 </h3>
-<p>In this workflow, we will use serum lipidomics data from mice fed a normal or high-fat diet. Mice were fed a normal or high-fat diet (<code>Diet</code> column) and had access to normal drinking water or drinking water containing the bile acid deoxycholic acid (<code>BileAcid</code> column). Lipid peaks were integrated using Skyline and exported as CSV files.</p>
+<p>In this workflow, we will use serum lipidomics data from mice fed a
+normal or high-fat diet. Mice were fed a normal or high-fat diet
+(<code>Diet</code> column) and had access to normal drinking water or
+drinking water containing the bile acid deoxycholic acid
+(<code>BileAcid</code> column). Lipid peaks were integrated using
+Skyline and exported as CSV files.</p>
 </div>
 <div class="section level3">
 <h3 id="data-import-manipulation">Data Import &amp; manipulation<a class="anchor" aria-label="anchor" href="#data-import-manipulation"></a>
@@ -161,13 +183,22 @@
 <div class="section level4">
 <h4 id="exporting-files-from-skyline">Exporting files from Skyline<a class="anchor" aria-label="anchor" href="#exporting-files-from-skyline"></a>
 </h4>
-<p>Integrated peaks should be exported from each Skyline file through File =&gt; Export =&gt; Report. Selecting <code>Transition Results</code> ensures that necessary information is exported from Skyline. Otherwise, you should ensure that peak <code>Area</code> or <code>Height</code> or a similar measure is exported. Regardless of the <code>measure</code> you choose for intensity, you can use <code>lipidr</code> workflow.</p>
-<p><code>Replicates</code> should either be exported, or the <code>Pivot Replicate Name</code> option must be used.</p>
+<p>Integrated peaks should be exported from each Skyline file through
+File =&gt; Export =&gt; Report. Selecting
+<code>Transition Results</code> ensures that necessary information is
+exported from Skyline. Otherwise, you should ensure that peak
+<code>Area</code> or <code>Height</code> or a similar measure is
+exported. Regardless of the <code>measure</code> you choose for
+intensity, you can use <code>lipidr</code> workflow.</p>
+<p><code>Replicates</code> should either be exported, or the
+<code>Pivot Replicate Name</code> option must be used.</p>
 </div>
 <div class="section level4">
 <h4 id="reading-files-into-r">Reading files into R<a class="anchor" aria-label="anchor" href="#reading-files-into-r"></a>
 </h4>
-<p><code>lipidr</code> can read multiple CSV files from different analysis methods together. Using our example dataset, three Skyline CSV files are used as input to <code>read.skyline</code>.</p>
+<p><code>lipidr</code> can read multiple CSV files from different
+analysis methods together. Using our example dataset, three Skyline CSV
+files are used as input to <code>read.skyline</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">datadir</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package<span class="op">=</span><span class="st">"lipidr"</span><span class="op">)</span>
 <span class="va">filelist</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"data.csv"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># all csv files</span>
@@ -182,12 +213,15 @@
 <span class="co">## rowData names(26): filename Molecule ... total_cs Class</span>
 <span class="co">## colnames(58): S1A S2A ... TQC_11 TQC_12</span>
 <span class="co">## colData names(0):</span></code></pre>
-<p>Datasets are represented in R as <code>SummarizedExperiment</code>s to facilitate integration other Bioconductor packages.</p>
+<p>Datasets are represented in R as <code>SummarizedExperiment</code>s
+to facilitate integration other Bioconductor packages.</p>
 </div>
 <div class="section level4">
 <h4 id="adding-sample-annotation">Adding sample annotation<a class="anchor" aria-label="anchor" href="#adding-sample-annotation"></a>
 </h4>
-<p>Sample annotation can be prepared in Excel and saved as CSV. The table should have at least two columns, first indicating sample names and other columns indicating clinical variables.</p>
+<p>Sample annotation can be prepared in Excel and saved as CSV. The
+table should have at least two columns, first indicating sample names
+and other columns indicating clinical variables.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clinical_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"clin.csv"</span>, package<span class="op">=</span><span class="st">"lipidr"</span><span class="op">)</span>
 
@@ -211,8 +245,13 @@
 <div class="section level4">
 <h4 id="data-subsetting">Data subsetting<a class="anchor" aria-label="anchor" href="#data-subsetting"></a>
 </h4>
-<p>It is helpful to imagine LipidomicsExperiment object as a table with lipid molecules as rows and samples as columns. We can subset this table by selecting specific rows and columns. The general syntax is <code>d[rows, cols]</code>.</p>
-<p>In the example below we select the first 10 transitions and 10 samples. We can check the <code>rowData</code> and <code>colData</code>.</p>
+<p>It is helpful to imagine LipidomicsExperiment object as a table with
+lipid molecules as rows and samples as columns. We can subset this table
+by selecting specific rows and columns. The general syntax is
+<code>d[rows, cols]</code>.</p>
+<p>In the example below we select the first 10 transitions and 10
+samples. We can check the <code>rowData</code> and
+<code>colData</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_subset</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d_subset</span><span class="op">)</span></code></pre></div>
@@ -293,7 +332,8 @@
 <span class="co">## TQC_10               QC          QC          QC</span>
 <span class="co">## TQC_11               QC          QC          QC</span>
 <span class="co">## TQC_12               QC          QC          QC</span></code></pre>
-<p>We can also apply conditional selections (<em>indexing</em>). For example, we can select all quality control samples.</p>
+<p>We can also apply conditional selections (<em>indexing</em>). For
+example, we can select all quality control samples.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_qc</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span>, <span class="va">d</span><span class="op">$</span><span class="va">group</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d_qc</span><span class="op">)</span></code></pre></div>
@@ -379,7 +419,9 @@
 <span class="co">## TQC_10          QC          QC          QC</span>
 <span class="co">## TQC_11          QC          QC          QC</span>
 <span class="co">## TQC_12          QC          QC          QC</span></code></pre>
-<p>Note that we leave rows index empty (<code>d[,cols]</code>) to select all lipids. We can also subset based on lipid annotations, selecting a specific class for example.</p>
+<p>Note that we leave rows index empty (<code>d[,cols]</code>) to select
+all lipids. We can also subset based on lipid annotations, selecting a
+specific class for example.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pc_lipids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">$</span><span class="va">Class</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PC"</span>, <span class="st">"PCO"</span>, <span class="st">"PCP"</span><span class="op">)</span>
 <span class="va">d_pc</span> <span class="op">=</span> <span class="va">d</span><span class="op">[</span><span class="va">pc_lipids</span>,<span class="op">]</span>
@@ -466,7 +508,10 @@
 <span class="co">## TQC_10               QC          QC          QC</span>
 <span class="co">## TQC_11               QC          QC          QC</span>
 <span class="co">## TQC_12               QC          QC          QC</span></code></pre>
-<p>For demonstration purposes, we select only 3 lipids classes, Ceramides (<code>Cer</code>), PhosphatidylCholines (<code>PC</code>) and LysoPhosphatidylCholines (<code>LPC</code>). We also <code>BileAcid</code> treated group from our dataset.</p>
+<p>For demonstration purposes, we select only 3 lipids classes,
+Ceramides (<code>Cer</code>), PhosphatidylCholines (<code>PC</code>) and
+LysoPhosphatidylCholines (<code>LPC</code>). We also
+<code>BileAcid</code> treated group from our dataset.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lipid_classes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">$</span><span class="va">Class</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Cer"</span>, <span class="st">"PC"</span>, <span class="st">"LPC"</span><span class="op">)</span>
 <span class="va">groups</span> <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">BileAcid</span> <span class="op">!=</span> <span class="st">"DCA"</span>
@@ -479,11 +524,15 @@
 <div class="section level3">
 <h3 id="raw-data-quality-check">Raw Data Quality Check<a class="anchor" aria-label="anchor" href="#raw-data-quality-check"></a>
 </h3>
-<p>To ensure data quality, we can look at total lipid intensity as bar chart or distribution of samples as a boxplot.</p>
+<p>To ensure data quality, we can look at total lipid intensity as bar
+chart or distribution of samples as a boxplot.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_samples.html">plot_samples</a></span><span class="op">(</span><span class="va">d</span>, type <span class="op">=</span> <span class="st">"tic"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
-<p>We can also look at intensity and retention time distributions for each lipid molecule using <code>plot_molecules(type = boxplot)</code>. It is recommended to assess the variation across quality control samples.</p>
+<p>We can also look at intensity and retention time distributions for
+each lipid molecule using <code>plot_molecules(type = boxplot)</code>.
+It is recommended to assess the variation across quality control
+samples.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_molecules.html">plot_molecules</a></span><span class="op">(</span><span class="va">d_qc</span>, <span class="st">"sd"</span>, measure <span class="op">=</span> <span class="st">"Retention Time"</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
@@ -497,13 +546,20 @@
 <div class="section level4">
 <h4 id="interactive-plots">Interactive plots<a class="anchor" aria-label="anchor" href="#interactive-plots"></a>
 </h4>
-<p>All <code>lipidr</code> plots can be displayed interactive mode if <code>plotly</code> package is installed. Plot interactivity is disabled by default. To enable interactivity, simple call <code><a href="../reference/use_interactive_graphics.html">use_interactive_graphics()</a></code>. You can turn interactivity back off by <code>use_interactive_graphics(interactive=FALSE)</code>.</p>
+<p>All <code>lipidr</code> plots can be displayed interactive mode if
+<code>plotly</code> package is installed. Plot interactivity is disabled
+by default. To enable interactivity, simple call
+<code><a href="../reference/use_interactive_graphics.html">use_interactive_graphics()</a></code>. You can turn interactivity back
+off by <code>use_interactive_graphics(interactive=FALSE)</code>.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="summarizing-transitions">Summarizing transitions<a class="anchor" aria-label="anchor" href="#summarizing-transitions"></a>
 </h3>
-<p>This step is important when more than one transition is measured per lipid molecule. Multiple transitions are summarized into a single value by either taking the average intensity or the one with highest intensity.</p>
+<p>This step is important when more than one transition is measured per
+lipid molecule. Multiple transitions are summarized into a single value
+by either taking the average intensity or the one with highest
+intensity.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_summarized</span> <span class="op">=</span> <span class="fu"><a href="../reference/summarize_transitions.html">summarize_transitions</a></span><span class="op">(</span><span class="va">d</span>, method <span class="op">=</span> <span class="st">"average"</span><span class="op">)</span></code></pre></div>
 </div>
@@ -513,17 +569,25 @@
 <div class="section level4">
 <h4 id="probabilistic-quotient-normalization-pqn">Probabilistic Quotient Normalization (PQN)<a class="anchor" aria-label="anchor" href="#probabilistic-quotient-normalization-pqn"></a>
 </h4>
-<p>The PQN method determines a dilution factor for each sample by comparing the distribution of quotients between samples and a reference spectrum, followed by sample normalization using this dilution factor.</p>
+<p>The PQN method determines a dilution factor for each sample by
+comparing the distribution of quotients between samples and a reference
+spectrum, followed by sample normalization using this dilution
+factor.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_normalized</span> <span class="op">=</span> <span class="fu"><a href="../reference/normalize_pqn.html">normalize_pqn</a></span><span class="op">(</span><span class="va">d_summarized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plot_samples.html">plot_samples</a></span><span class="op">(</span><span class="va">d_normalized</span>, <span class="st">"boxplot"</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
-<p>By specifying <code>exclude = "blank"</code>, blank runs are automatically detected and excluded from the normalization process.</p>
+<p>By specifying <code>exclude = "blank"</code>, blank runs are
+automatically detected and excluded from the normalization process.</p>
 </div>
 <div class="section level4">
 <h4 id="internal-standard-normalization">Internal standard normalization<a class="anchor" aria-label="anchor" href="#internal-standard-normalization"></a>
 </h4>
-<p>Internal standard normalization corrects lipid class-specific variations between samples. Lipid classes are normalized using corresponding internal standard(s) of the same lipid class. If no corresponding internal standard is found the average of all measured internal standards is used instead.</p>
+<p>Internal standard normalization corrects lipid class-specific
+variations between samples. Lipid classes are normalized using
+corresponding internal standard(s) of the same lipid class. If no
+corresponding internal standard is found the average of all measured
+internal standards is used instead.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_normalized_istd</span> <span class="op">=</span> <span class="fu"><a href="../reference/normalize_istd.html">normalize_istd</a></span><span class="op">(</span><span class="va">d_summarized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
@@ -531,24 +595,32 @@
 <div class="section level3">
 <h3 id="multivariate-analysis">Multivariate analysis<a class="anchor" aria-label="anchor" href="#multivariate-analysis"></a>
 </h3>
-<p>You can investigate sample variation using either PCA or PCoA (classical MDS).</p>
+<p>You can investigate sample variation using either PCA or PCoA
+(classical MDS).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mvaresults</span> <span class="op">=</span> <span class="fu"><a href="../reference/mva.html">mva</a></span><span class="op">(</span><span class="va">d_normalized</span>, measure<span class="op">=</span><span class="st">"Area"</span>, method<span class="op">=</span><span class="st">"PCA"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/mva.html">plot_mva</a></span><span class="op">(</span><span class="va">mvaresults</span>, color_by<span class="op">=</span><span class="st">"group"</span>, components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
-<p>Plotting other components is possible by specifying <code>components</code> argument. For example <code>components = c(2,3)</code> plots second and third components.</p>
+<p>Plotting other components is possible by specifying
+<code>components</code> argument. For example
+<code>components = c(2,3)</code> plots second and third components.</p>
 <div class="section level4">
 <h4 id="supervised-multivariate-analysis">Supervised multivariate analysis<a class="anchor" aria-label="anchor" href="#supervised-multivariate-analysis"></a>
 </h4>
-<p>Supervised multivariate analyses, such as OPLS and OPLS-DA can be performed to determine which lipids are associated with a group (y-variable) of interest. In this example we use “Diet” as grouping, and display the results in a scores plot.</p>
+<p>Supervised multivariate analyses, such as OPLS and OPLS-DA can be
+performed to determine which lipids are associated with a group
+(y-variable) of interest. In this example we use “Diet” as grouping, and
+display the results in a scores plot.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mvaresults</span> <span class="op">=</span> <span class="fu"><a href="../reference/mva.html">mva</a></span><span class="op">(</span><span class="va">d_normalized</span>, method <span class="op">=</span> <span class="st">"OPLS-DA"</span>, group_col <span class="op">=</span> <span class="st">"Diet"</span>, groups<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HighFat"</span>, <span class="st">"Normal"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/mva.html">plot_mva</a></span><span class="op">(</span><span class="va">mvaresults</span>, color_by<span class="op">=</span><span class="st">"group"</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
-<p>We can also plot the loadings and display important lipids contributing to the separation between different (Diet) groups.</p>
+<p>We can also plot the loadings and display important lipids
+contributing to the separation between different (Diet) groups.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/mva.html">plot_mva_loadings</a></span><span class="op">(</span><span class="va">mvaresults</span>, color_by<span class="op">=</span><span class="st">"Class"</span>, top.n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
-<p>Alternatively, we can extract top <em>N</em> lipids along with their annotations.</p>
+<p>Alternatively, we can extract top <em>N</em> lipids along with their
+annotations.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/mva.html">top_lipids</a></span><span class="op">(</span><span class="va">mvaresults</span>, top.n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##       filename        Molecule Precursor.Mz Precursor.Charge    clean_name</span>
@@ -589,7 +661,8 @@
 <div class="section level3">
 <h3 id="differential-analysis-1">Differential analysis<a class="anchor" aria-label="anchor" href="#differential-analysis-1"></a>
 </h3>
-<p>This step of the workflow requires the <code>limma</code> package to be installed.</p>
+<p>This step of the workflow requires the <code>limma</code> package to
+be installed.</p>
 <p>Normalized and log transformed data should be used.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">de_results</span> <span class="op">=</span> <span class="fu"><a href="../reference/de_analysis.html">de_analysis</a></span><span class="op">(</span>
@@ -634,14 +707,19 @@
 <span class="co">## [37] PC(P-34:2)      PC(P-34:3)      PC(P-36:5)      PC(P-38:0)     </span>
 <span class="co">## [41] PC(P-38:1)      PC(P-40:0)     </span>
 <span class="co">## 134 Levels: Cer d18:0/C16:0 Cer d18:0/C18:0 Cer d18:0/C20:0 ... PC(P-40:6)</span></code></pre>
-<p>We can visualize differential analysis results using volcano plots. In this instance we turn off labeling, due to the large number of significantly altered lipids between conditions.</p>
+<p>We can visualize differential analysis results using volcano plots.
+In this instance we turn off labeling, due to the large number of
+significantly altered lipids between conditions.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/de_analysis.html">plot_results_volcano</a></span><span class="op">(</span><span class="va">de_results</span>, show.labels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-18-1.png" width="768"></p>
 <div class="section level4">
 <h4 id="complex-experimental-designs">Complex experimental designs<a class="anchor" aria-label="anchor" href="#complex-experimental-designs"></a>
 </h4>
-<p>For more complex experimental designs, where one might deal with factor adjustment or interactions, it is recommended to use the <code>de_design</code> function. Users can either provide a design matrix, or a formula to create one.</p>
+<p>For more complex experimental designs, where one might deal with
+factor adjustment or interactions, it is recommended to use the
+<code>de_design</code> function. Users can either provide a design
+matrix, or a formula to create one.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Using formula</span>
 <span class="fu"><a href="../reference/de_analysis.html">de_design</a></span><span class="op">(</span>
@@ -657,26 +735,34 @@
   design <span class="op">=</span> <span class="va">design</span>,
   coef<span class="op">=</span><span class="st">"groupHighFat_water"</span>,
   measure<span class="op">=</span><span class="st">"Area"</span><span class="op">)</span></code></pre></div>
-<p>For more details on creating design matrices for different experimental designs, refer to (Limma User Guide)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf" class="external-link uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf</a>] and (edgeR tutorial)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf" class="external-link uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf</a>].</p>
+<p>For more details on creating design matrices for different
+experimental designs, refer to (Limma User Guide)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf" class="external-link uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/limma/inst/doc/usersguide.pdf</a>]
+and (edgeR tutorial)[<a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf" class="external-link uri">https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf</a>].</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="enrichment-analysis">Enrichment analysis<a class="anchor" aria-label="anchor" href="#enrichment-analysis"></a>
 </h3>
-<p><code>lipidr</code> automatically generates sets of lipids based on lipid class, total chain length and unsaturation. Measured lipids are then ranked by their fold change, or p-value using results from differential analysis.</p>
+<p><code>lipidr</code> automatically generates sets of lipids based on
+lipid class, total chain length and unsaturation. Measured lipids are
+then ranked by their fold change, or p-value using results from
+differential analysis.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">enrich_results</span> <span class="op">=</span> <span class="fu"><a href="../reference/lsea.html">lsea</a></span><span class="op">(</span><span class="va">de_results</span>, rank.by <span class="op">=</span> <span class="st">"logFC"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/lsea.html">significant_lipidsets</a></span><span class="op">(</span><span class="va">enrich_results</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## $`HighFat_water - NormalDiet_water`</span>
 <span class="co">## [1] "Class_Cer" "Class_PC"</span></code></pre>
-<p>Visualization of enrichment analysis results. The enriched lipid classes and chain unsaturations are highlighted.</p>
+<p>Visualization of enrichment analysis results. The enriched lipid
+classes and chain unsaturations are highlighted.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/lsea.html">plot_enrichment</a></span><span class="op">(</span><span class="va">de_results</span>, <span class="fu"><a href="../reference/lsea.html">significant_lipidsets</a></span><span class="op">(</span><span class="va">enrich_results</span><span class="op">)</span>, annotation<span class="op">=</span><span class="st">"class"</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-21-1.png" width="576"></p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/lsea.html">plot_enrichment</a></span><span class="op">(</span><span class="va">de_results</span>, <span class="fu"><a href="../reference/lsea.html">significant_lipidsets</a></span><span class="op">(</span><span class="va">enrich_results</span><span class="op">)</span>, annotation<span class="op">=</span><span class="st">"unsat"</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-21-2.png" width="576"></p>
-<p><code>lipidr</code> can also plot fold changes of lipids per class showing total chain lengths and unsaturations. Number on the plot indicate multiple lipids measured with the same chain properties.</p>
+<p><code>lipidr</code> can also plot fold changes of lipids per class
+showing total chain lengths and unsaturations. Number on the plot
+indicate multiple lipids measured with the same chain properties.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_chain_distribution.html">plot_chain_distribution</a></span><span class="op">(</span><span class="va">de_results</span><span class="op">)</span></code></pre></div>
 <p><img src="workflow_files/figure-html/unnamed-chunk-22-1.png" width="768"></p>
@@ -715,33 +801,33 @@
 <span class="co">## [11] matrixStats_0.61.0         </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] sass_0.4.0             tidyr_1.2.0            jsonlite_1.7.3        </span>
+<span class="co">##  [1] sass_0.4.0             tidyr_1.2.0            jsonlite_1.8.0        </span>
 <span class="co">##  [4] bslib_0.3.1            highr_0.9              GenomeInfoDbData_1.2.7</span>
-<span class="co">##  [7] yaml_2.2.2             impute_1.68.0          norm_1.0-9.5          </span>
+<span class="co">##  [7] yaml_2.3.5             impute_1.68.0          norm_1.0-9.5          </span>
 <span class="co">## [10] tmvtnorm_1.4-10        pillar_1.7.0           lattice_0.20-45       </span>
-<span class="co">## [13] glue_1.6.1             limma_3.50.0           digest_0.6.29         </span>
-<span class="co">## [16] XVector_0.34.0         colorspace_2.0-2       sandwich_3.0-1        </span>
+<span class="co">## [13] glue_1.6.2             limma_3.50.1           digest_0.6.29         </span>
+<span class="co">## [16] XVector_0.34.0         colorspace_2.0-3       sandwich_3.0-1        </span>
 <span class="co">## [19] htmltools_0.5.2        Matrix_1.4-0           pkgconfig_2.0.3       </span>
 <span class="co">## [22] zlibbioc_1.40.0        purrr_0.3.4            mvtnorm_1.1-3         </span>
 <span class="co">## [25] scales_1.1.1           gmm_1.6-6              BiocParallel_1.28.3   </span>
 <span class="co">## [28] tibble_3.1.6           farver_2.1.0           generics_0.1.2        </span>
-<span class="co">## [31] ellipsis_0.3.2         withr_2.4.3            cachem_1.0.6          </span>
-<span class="co">## [34] imputeLCMD_2.0         cli_3.1.1              magrittr_2.0.2        </span>
-<span class="co">## [37] crayon_1.4.2           memoise_2.0.1          evaluate_0.14         </span>
+<span class="co">## [31] ellipsis_0.3.2         cachem_1.0.6           withr_2.5.0           </span>
+<span class="co">## [34] imputeLCMD_2.0         cli_3.2.0              magrittr_2.0.2        </span>
+<span class="co">## [37] crayon_1.5.0           memoise_2.0.1          evaluate_0.15         </span>
 <span class="co">## [40] fs_1.5.2               fansi_1.0.2            forcats_0.5.1         </span>
 <span class="co">## [43] textshaping_0.3.6      ropls_1.26.4           tools_4.1.2           </span>
 <span class="co">## [46] data.table_1.14.2      lifecycle_1.0.1        stringr_1.4.0         </span>
 <span class="co">## [49] munsell_0.5.0          DelayedArray_0.20.0    pcaMethods_1.86.0     </span>
 <span class="co">## [52] compiler_4.1.2         pkgdown_2.0.2          jquerylib_0.1.4       </span>
-<span class="co">## [55] systemfonts_1.0.4      rlang_1.0.1            grid_4.1.2            </span>
+<span class="co">## [55] systemfonts_1.0.4      rlang_1.0.2            grid_4.1.2            </span>
 <span class="co">## [58] RCurl_1.98-1.6         labeling_0.4.2         bitops_1.0-7          </span>
-<span class="co">## [61] rmarkdown_2.11         gtable_0.3.0           R6_2.5.1              </span>
+<span class="co">## [61] rmarkdown_2.13         gtable_0.3.0           R6_2.5.1              </span>
 <span class="co">## [64] gridExtra_2.3          zoo_1.8-9              knitr_1.37            </span>
 <span class="co">## [67] dplyr_1.0.8            fastmap_1.1.0          utf8_1.2.2            </span>
 <span class="co">## [70] fastmatch_1.1-3        fgsea_1.20.0           rprojroot_2.0.2       </span>
-<span class="co">## [73] ragg_1.2.1             desc_1.4.0             stringi_1.7.6         </span>
+<span class="co">## [73] ragg_1.2.2             desc_1.4.1             stringi_1.7.6         </span>
 <span class="co">## [76] parallel_4.1.2         Rcpp_1.0.8             vctrs_0.3.8           </span>
-<span class="co">## [79] tidyselect_1.1.1       xfun_0.29</span></code></pre>
+<span class="co">## [79] tidyselect_1.1.2       xfun_0.30</span></code></pre>
 </div>
   </div>
 
@@ -762,7 +848,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>
