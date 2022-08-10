@@ -285,36 +285,39 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
 }
 
 .plot_molecule_sd <- function(dlong, measure, color, mol_dimname) {
+  molecule_names = setNames(dlong$Molecule, as.character(dlong[[mol_dimname]]))
   ggplot(
     dlong,
     aes(!!sym(mol_dimname), !!measure, fill = !!color, color = !!color)
   ) +
     stat_summary(fun = sd, geom = "bar") +
-    scale_x_discrete(labels=as.character(dlong$Molecule)) +
+    scale_x_discrete(labels= ~ molecule_names[as.character(.x)]) +
     facet_wrap(~filename, scales = "free_y") + coord_flip() +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("SD of", as_label(measure)))
 }
 
 .plot_molecule_cv <- function(dlong, measure, color, mol_dimname) {
+  molecule_names = setNames(dlong$Molecule, as.character(dlong[[mol_dimname]]))
   ggplot(
     dlong,
     aes(!!sym(mol_dimname), !!measure, fill = !!color, color = !!color)
   ) +
     stat_summary(fun = .cv, geom = "bar") + coord_flip() +
-    scale_x_discrete(labels=as.character(dlong$Molecule)) +
+    scale_x_discrete(labels= ~ molecule_names[as.character(.x)]) +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5)) +
     ylab(paste("%CV of", as_label(measure)))
 }
 
 .plot_molecule_boxplot <- function(dlong, measure, color, mol_dimname) {
+  molecule_names = setNames(dlong$Molecule, as.character(dlong[[mol_dimname]]))
   ggplot(
     dlong,
     aes(!!sym(mol_dimname), !!measure, fill = !!color, color = !!color)
   ) +
     geom_boxplot(outlier.size = 0.5, outlier.alpha = 0.3) + coord_flip() +
-    scale_x_discrete(labels=as.character(dlong$Molecule)) +
+    scale_x_discrete(labels= ~ molecule_names[as.character(.x)]) +
     facet_wrap(~filename, scales = "free_y") +
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 }
