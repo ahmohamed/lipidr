@@ -69,21 +69,25 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">impute_na</span><span class="op">(</span>
-  <span class="va">data</span>,
-  measure <span class="op">=</span> <span class="st">"Area"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"knn"</span>, <span class="st">"svd"</span>, <span class="st">"mle"</span>, <span class="st">"QRILC"</span>, <span class="st">"minDet"</span>, <span class="st">"minProb"</span>, <span class="st">"zero"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">impute_na</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  measure <span class="op">=</span> <span class="st">"Area"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"knn"</span>, <span class="st">"svd"</span>, <span class="st">"mle"</span>, <span class="st">"QRILC"</span>, <span class="st">"minDet"</span>, <span class="st">"minProb"</span>, <span class="st">"zero"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>LipidomicsExperiment object.</p></dd>
+
+
 <dt>measure</dt>
 <dd><p>Which measure to use as intensity, usually Area,
 Area Normalized or Height. Default is <code>Area</code>.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>The imputation method to use. All methods are wrappers for
 <code>imputeLCMD</code> package. These include</p><ul><li><p>knn    Wraps <code><a href="https://rdrr.io/pkg/imputeLCMD/man/impute.wrapper.KNN.html" class="external-link">imputeLCMD::impute.wrapper.KNN()</a></code>. Default. This requires an
@@ -95,20 +99,25 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 <li><p>minProb    Wraps <code><a href="https://rdrr.io/pkg/imputeLCMD/man/impute.MinProb.html" class="external-link">imputeLCMD::impute.MinProb()</a></code>,</p></li>
 <li><p>zero    Wraps <code><a href="https://rdrr.io/pkg/imputeLCMD/man/impute.ZERO.html" class="external-link">imputeLCMD::impute.ZERO()</a></code>,</p></li>
 </ul></dd>
+
+
 <dt>...</dt>
 <dd><p>Other arguments passed to the imputation method.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>LipidomicsExperiment object with missing values imputed.</p>
+    
+
+<p>LipidomicsExperiment object with missing values imputed.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Replace with values calculated using K-nearest neighbors</span></span>
-<span class="r-in"><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"knn"</span>, <span class="fl">10</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Replace with values calculated using K-nearest neighbors</span></span></span>
+<span class="r-in"><span><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"knn"</span>, <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: LipidomicsExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 278 56 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): summarized dimnames</span>
@@ -117,9 +126,9 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(24): filename Molecule ... total_cs Class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(56): S1A S2A ... TQC_11 TQC_12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(3): group Diet BileAcid</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Replace with values calculated from the first K principal components</span></span>
-<span class="r-in"><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"svd"</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Replace with values calculated from the first K principal components</span></span></span>
+<span class="r-in"><span><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"svd"</span>, <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: LipidomicsExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 278 56 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): summarized dimnames</span>
@@ -128,9 +137,9 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(24): filename Molecule ... total_cs Class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(56): S1A S2A ... TQC_11 TQC_12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(3): group Diet BileAcid</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Replace with Maximum likelihood estimates</span></span>
-<span class="r-in"><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"mle"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Replace with Maximum likelihood estimates</span></span></span>
+<span class="r-in"><span><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"mle"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: LipidomicsExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 278 56 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): summarized dimnames</span>
@@ -139,9 +148,9 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(24): filename Molecule ... total_cs Class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(56): S1A S2A ... TQC_11 TQC_12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(3): group Diet BileAcid</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Replace with randomly drawn values from a truncated distribution</span></span>
-<span class="r-in"><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"QRILC"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Replace with randomly drawn values from a truncated distribution</span></span></span>
+<span class="r-in"><span><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"QRILC"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: LipidomicsExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 278 56 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): summarized dimnames</span>
@@ -150,9 +159,9 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(24): filename Molecule ... total_cs Class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(56): S1A S2A ... TQC_11 TQC_12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(3): group Diet BileAcid</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Replace with a minimal value</span></span>
-<span class="r-in"><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"minDet"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Replace with a minimal value</span></span></span>
+<span class="r-in"><span><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"minDet"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: LipidomicsExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 278 56 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): summarized dimnames</span>
@@ -161,10 +170,10 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(24): filename Molecule ... total_cs Class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(56): S1A S2A ... TQC_11 TQC_12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(3): group Diet BileAcid</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Replace with randomly drawn values from a Gaussian distribution</span></span>
-<span class="r-in"><span class="co"># cerntered around a minimal value</span></span>
-<span class="r-in"><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"minProb"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Replace with randomly drawn values from a Gaussian distribution</span></span></span>
+<span class="r-in"><span><span class="co"># cerntered around a minimal value</span></span></span>
+<span class="r-in"><span><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"minProb"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4174013</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: LipidomicsExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 278 56 </span>
@@ -174,9 +183,9 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(24): filename Molecule ... total_cs Class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames(56): S1A S2A ... TQC_11 TQC_12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(3): group Diet BileAcid</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Replace with zero (not recommended)</span></span>
-<span class="r-in"><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"zero"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Replace with zero (not recommended)</span></span></span>
+<span class="r-in"><span><span class="fu">impute_na</span><span class="op">(</span><span class="va">data_normalized</span>, <span class="st">"Area"</span>, <span class="st">"zero"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: LipidomicsExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 278 56 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): summarized dimnames</span>
@@ -199,8 +208,7 @@ additional argument <code>K</code> (Number of principal components to use).</p><
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

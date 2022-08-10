@@ -69,7 +69,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">LipidomicsExperiment</span><span class="op">(</span><span class="va">assay_list</span>, <span class="va">metadata</span>, colData <span class="op">=</span> <span class="cn">NULL</span>, rowData <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">LipidomicsExperiment</span><span class="op">(</span><span class="va">assay_list</span>, <span class="va">metadata</span>, colData <span class="op">=</span> <span class="cn">NULL</span>, rowData <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -77,24 +77,33 @@
     <dl><dt>assay_list</dt>
 <dd><p>A list or SimpleList of matrix-like elements,
 or a matrix-like object. Passed to <code>SummarizedExperiment()</code>.</p></dd>
+
+
 <dt>metadata</dt>
 <dd><p>A list containing arbitrary information about the experiment.
 It should at least contain 2 elements:</p><ul><li><p>dimnames    2-element character vector with dimension names</p></li>
 <li><p>summarized   Has transitions been summarized?</p></li>
 </ul></dd>
+
+
 <dt>colData</dt>
 <dd><p>An optional DataFrame describing the samples (contains
 clinical information). Row names, if present, become the column names of
 the LipidomicsExperiment.</p></dd>
+
+
 <dt>rowData</dt>
 <dd><p>A DataFrame object describing the rows (contains generated
 lipid annotations). Row names, if present, become the row names of the
 SummarizedExperiment object. The number of rows of the DataFrame
 must be equal to the number of rows of the matrices in assays.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>LipidomicsExperiment object</p>
+    
+
+<p>LipidomicsExperiment object</p>
     </div>
 
   </div>
@@ -109,8 +118,7 @@ must be equal to the number of rows of the matrices in assays.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

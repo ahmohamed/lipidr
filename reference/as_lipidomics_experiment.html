@@ -69,7 +69,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_lipidomics_experiment</span><span class="op">(</span><span class="va">df</span>, logged <span class="op">=</span> <span class="cn">FALSE</span>, normalized <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as_lipidomics_experiment</span><span class="op">(</span><span class="va">df</span>, logged <span class="op">=</span> <span class="cn">FALSE</span>, normalized <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -80,14 +80,21 @@ are samples. Lipid names should be provided in the first column
 or in rownames of <code>df</code>. Measurements should be numeric.
 The data is considered <code>summarized</code> unless at least one lipid
 is duplicated (has &gt; 1 row).</p></dd>
+
+
 <dt>logged</dt>
 <dd><p>Whether the data is log-transformed</p></dd>
+
+
 <dt>normalized</dt>
 <dd><p>Whether the data is normalized</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>LipidomicsExperiment</p>
+    
+
+<p>LipidomicsExperiment</p>
     </div>
 
   </div>
@@ -102,8 +109,7 @@ is duplicated (has &gt; 1 row).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

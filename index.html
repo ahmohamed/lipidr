@@ -103,9 +103,7 @@
 
 <div class="section level1">
 <div class="page-header"><h1 id="lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r-">
-<em>lipidr</em>: Data Mining and Analysis of Lipidomics Datasets in
-R
-<img src="reference/figures/logo.png" align="right" alt="" width="120"><a class="anchor" aria-label="anchor" href="#lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r-"></a>
+<em>lipidr</em>: Data Mining and Analysis of Lipidomics Datasets in R <img src="reference/figures/logo.png" align="right" alt="" width="120"><a class="anchor" aria-label="anchor" href="#lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r-"></a>
 </h1></div>
 
 <div class="section level2">
@@ -124,77 +122,51 @@ R
 <div class="section level3">
 <h3 id="numerical-matrix">Numerical Matrix<a class="anchor" aria-label="anchor" href="#numerical-matrix"></a>
 </h3>
-<p>To use <code>lipidr</code> for your analysis using numerical matrix
-as input, you need 2 files:</p>
+<p>To use <code>lipidr</code> for your analysis using numerical matrix as input, you need 2 files:</p>
 <ol style="list-style-type: decimal">
-<li>Numerical table where lipids are rows and samples are columns. Lipid
-names should be in the first column, and sample names are in the first
-row. (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/brca_matrix.csv" class="external-link">see
-example here</a>)</li>
-<li>A table with the sample annotation / groups, where the sample names
-are in first column. Note the sample names must be identical in the two
-files. (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/brca_clin.csv" class="external-link">see
-example here</a>)</li>
+<li>Numerical table where lipids are rows and samples are columns. Lipid names should be in the first column, and sample names are in the first row. (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/brca_matrix.csv" class="external-link">see example here</a>)</li>
+<li>A table with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/brca_clin.csv" class="external-link">see example here</a>)</li>
 </ol>
 <p><img src="reference/figures/num_matrix.png" width="800"></p>
-<p><code>lipidr</code> can convert these 2 files to
-<code>LipidomicsExperiment</code> as follows:</p>
+<p><code>lipidr</code> can convert these 2 files to <code>LipidomicsExperiment</code> as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_lipidomics_experiment.html">as_lipidomics_experiment</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"data_matrix.csv"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_lipidomics_experiment.html">as_lipidomics_experiment</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"data_matrix.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="export-from-skyline">Export from Skyline<a class="anchor" aria-label="anchor" href="#export-from-skyline"></a>
 </h3>
 <p>Here <code>lipidr</code> also requires 2 files:</p>
 <ol style="list-style-type: decimal">
-<li>Results exported from Skyline as CSV file (see image below). (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/A1_data.csv" class="external-link">see
-example here</a>)</li>
-<li>A table / CSV file with the sample annotation / groups, where the
-sample names are in first column. Note the sample names must be
-identical in the two files. (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/clin.csv" class="external-link">see
-example here</a>)</li>
+<li>Results exported from Skyline as CSV file (see image below). (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/A1_data.csv" class="external-link">see example here</a>)</li>
+<li>A table / CSV file with the sample annotation / groups, where the sample names are in first column. Note the sample names must be identical in the two files. (<a href="https://github.com/ahmohamed/lipidr/tree/master/inst/extdata/clin.csv" class="external-link">see example here</a>)</li>
 </ol>
 <p><img src="reference/figures/skyline_export.png" width="800"></p>
 <p>In <code>lipidr</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="st">"Skyline_export.csv"</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="st">"Skyline_export.csv"</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="lipidomicsexperiment-object">LipidomicsExperiment Object<a class="anchor" aria-label="anchor" href="#lipidomicsexperiment-object"></a>
 </h2>
-<p><code>lipidr</code> represents lipidomics datasets as a
-LipidomicsExperiment, which extends <a href="http://bioconductor.org/packages/SummarizedExperiment/" class="external-link">SummarizedExperiment</a>,
-to facilitate integration with other Bioconductor packages.</p>
+<p><code>lipidr</code> represents lipidomics datasets as a LipidomicsExperiment, which extends <a href="http://bioconductor.org/packages/SummarizedExperiment/" class="external-link">SummarizedExperiment</a>, to facilitate integration with other Bioconductor packages.</p>
 </div>
 <div class="section level2">
 <h2 id="quality-control--plotting">Quality control &amp; plotting<a class="anchor" aria-label="anchor" href="#quality-control--plotting"></a>
 </h2>
-<p><code>lipidr</code> generates various plots, such as box plots or
-PCA, for quality control of samples and measured lipids. Lipids can be
-filtered by their %CV. Normalization methods with and without internal
-standards are also supported.</p>
+<p><code>lipidr</code> generates various plots, such as box plots or PCA, for quality control of samples and measured lipids. Lipids can be filtered by their %CV. Normalization methods with and without internal standards are also supported.</p>
 </div>
 <div class="section level2">
 <h2 id="univariate-analysis">Univariate Analysis<a class="anchor" aria-label="anchor" href="#univariate-analysis"></a>
 </h2>
-<p>Univariate analysis can be performed using any of the loaded clinical
-variables, which can be readily visualized as volcano plots. Multi-group
-comparisons and adjusting for confounding variables is also supported
-(refer to examples on <a href="https://www.lipidr.org/" class="external-link">www.lipidr.org</a>). A novel lipid set
-enrichment analysis is implemented to detect preferential regulation of
-certain lipid classes, total chain lengths or unsaturation patterns.
-Plots for visualization of enrichment results are also implemented.</p>
+<p>Univariate analysis can be performed using any of the loaded clinical variables, which can be readily visualized as volcano plots. Multi-group comparisons and adjusting for confounding variables is also supported (refer to examples on <a href="https://www.lipidr.org/" class="external-link">www.lipidr.org</a>). A novel lipid set enrichment analysis is implemented to detect preferential regulation of certain lipid classes, total chain lengths or unsaturation patterns. Plots for visualization of enrichment results are also implemented.</p>
 </div>
 <div class="section level2">
 <h2 id="multivariate-analysis">Multivariate Analysis<a class="anchor" aria-label="anchor" href="#multivariate-analysis"></a>
 </h2>
-<p><code>lipidr</code> implements PCA, PCoA and OPLS(DA) to reveal
-patterns in data and discover variables related to an outcome of
-interest. Top associated lipids as well as scores and loadings plots can
-be interactively investigated using <code>lipidr</code>.</p>
+<p><code>lipidr</code> implements PCA, PCoA and OPLS(DA) to reveal patterns in data and discover variables related to an outcome of interest. Top associated lipids as well as scores and loadings plots can be interactively investigated using <code>lipidr</code>.</p>
 </div>
 </div>
 <div class="section level1">
@@ -206,37 +178,30 @@ be interactively investigated using <code>lipidr</code>.</p>
 </h2>
 <p>In R console, type:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="install-development-version-from-github">Install development version from GitHub<a class="anchor" aria-label="anchor" href="#install-development-version-from-github"></a>
 </h2>
 <p>In R console, type:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>   
-<span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>   </span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="using-docker">Using Docker<a class="anchor" aria-label="anchor" href="#using-docker"></a>
 </h2>
-<p>You can use <code>lipidr</code> in a containerized form by pulling
-the image from docker hub.</p>
+<p>You can use <code>lipidr</code> in a containerized form by pulling the image from docker hub.</p>
 <pre><code>docker pull ahmohamed/lipidr
 docker run -e PASSWORD=bioc -p 8787:8787 ahmohamed/lipidr:latest</code></pre>
-<p>In your browser, navigate to RStudio will be available on your web
-browser at <code>http://localhost:8787</code>. The USER is fixed to
-always being <code>rstudio</code>. The password in the above command is
-given as <code>bioc</code> but it can be set to anything. For more
-information on how-to-use, refer to <a href="https://www.bioconductor.org/help/docker/" class="external-link">Bioconductor help
-page</a>.</p>
+<p>In your browser, navigate to RStudio will be available on your web browser at <code>http://localhost:8787</code>. The USER is fixed to always being <code>rstudio</code>. The password in the above command is given as <code>bioc</code> but it can be set to anything. For more information on how-to-use, refer to <a href="https://www.bioconductor.org/help/docker/" class="external-link">Bioconductor help page</a>.</p>
 <p>You can access your local files by mapping to the container:</p>
 <pre><code>docker run -e PASSWORD=bioc -p 8787:8787 \
   -v "path/to/data_folder":"/home/rstudio/data_folder" \
   ahmohamed/lipidr:latest</code></pre>
-<p>You should see <code>data_folder</code> in your working
-directory.</p>
+<p>You should see <code>data_folder</code> in your working directory.</p>
 </div>
 </div>
 
@@ -297,8 +262,7 @@ directory.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
