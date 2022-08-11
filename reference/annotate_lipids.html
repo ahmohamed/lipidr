@@ -37,7 +37,7 @@ where zz:z indicates the combined chain length and unsaturation information."><m
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Examples
      
     <span class="caret"></span>
@@ -111,17 +111,15 @@ are given in a column named "Molecule".</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">annotate_lipids</span><span class="op">(</span><span class="va">lipid_list</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 21</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Molecule   clean…¹ ambig not_m…² istd  class…³ chain1   l_1   s_1 chain2   l_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Lyso PE 1… LPE 18… FALSE FALSE   TRUE  LPE     18:1      18     1 <span style="color: #949494;">""</span>        <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> PE(32:0)   PE 32:0 FALSE FALSE   FALSE PE      32:0      32     0 <span style="color: #949494;">""</span>        <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Cer(d18:0… Cer 18… FALSE FALSE   FALSE Cer     18:0      18     0 <span style="color: #949494;">"</span>22:0<span style="color: #949494;">"</span>    22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> TG(16:0/1… TG 16:… FALSE FALSE   FALSE TG      16:0      16     0 <span style="color: #949494;">"</span>18:1<span style="color: #949494;">"</span>    18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 10 more variables: s_2 &lt;int&gt;, chain3 &lt;chr&gt;, l_3 &lt;int&gt;, s_3 &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   chain4 &lt;chr&gt;, l_4 &lt;lgl&gt;, s_4 &lt;lgl&gt;, total_cl &lt;int&gt;, total_cs &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Class &lt;chr&gt;, and abbreviated variable names ¹​clean_name, ²​not_matched,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​class_stub</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `colnames()` to see all variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Molecule    clean_name   ambig not_matched istd  class_stub chain1   l_1   s_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Lyso PE 18… LPE 18:1(d7) FALSE FALSE       TRUE  LPE        18:1      18     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> PE(32:0)    PE 32:0      FALSE FALSE       FALSE PE         32:0      32     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Cer(d18:0/… Cer 18:0/22… FALSE FALSE       FALSE Cer        18:0      18     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> TG(16:0/18… TG 16:0/18:… FALSE FALSE       FALSE TG         16:0      16     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 12 more variables: chain2 &lt;chr&gt;, l_2 &lt;int&gt;, s_2 &lt;int&gt;, chain3 &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   l_3 &lt;int&gt;, s_3 &lt;int&gt;, chain4 &lt;chr&gt;, l_4 &lt;lgl&gt;, s_4 &lt;lgl&gt;, total_cl &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   total_cs &lt;int&gt;, Class &lt;chr&gt;</span></span>
 </code></pre></div>
     </div>
   </div>

@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Examples
      
     <span class="caret"></span>
@@ -173,6 +173,7 @@ or <code>Adj.P.Val</code>.</p></li>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There are ties in the preranked stats (5.78% of the list).</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> The order of those tied genes will be arbitrary, which may produce unexpected results.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>For some pathways, in reality P-values are less than 1e-10. You can set the `eps` argument to zero for better estimation.</span>
 <span class="r-in"><span><span class="va">sig_lipidsets</span> <span class="op">&lt;-</span> <span class="fu">significant_lipidsets</span><span class="op">(</span><span class="va">enrich_results</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">plot_enrichment</span><span class="op">(</span><span class="va">de_results</span>, <span class="va">sig_lipidsets</span>, annotation<span class="op">=</span><span class="st">"class"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="lsea-1.png" alt="" width="700" height="433"></span>
