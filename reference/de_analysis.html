@@ -36,7 +36,7 @@ possible confounding variables."><meta property="og:image" content="/logo.png"><
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Examples
      
     <span class="caret"></span>
@@ -77,13 +77,13 @@ possible confounding variables.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">de_analysis</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, group_col <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">de_design</span><span class="op">(</span><span class="va">data</span>, <span class="va">design</span>, <span class="va">...</span>, coef <span class="op">=</span> <span class="cn">NULL</span>, measure <span class="op">=</span> <span class="st">"Area"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">significant_molecules</span><span class="op">(</span><span class="va">de.results</span>, p.cutoff <span class="op">=</span> <span class="fl">0.05</span>, logFC.cutoff <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">plot_results_volcano</span><span class="op">(</span><span class="va">de.results</span>, show.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">de_analysis</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, group_col <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="fu">de_design</span><span class="op">(</span><span class="va">data</span>, <span class="va">design</span>, <span class="va">...</span>, coef <span class="op">=</span> <span class="cn">NULL</span>, measure <span class="op">=</span> <span class="st">"Area"</span><span class="op">)</span>
+
+<span class="fu">significant_molecules</span><span class="op">(</span><span class="va">de.results</span>, p.cutoff <span class="op">=</span> <span class="fl">0.05</span>, logFC.cutoff <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+
+<span class="fu">plot_results_volcano</span><span class="op">(</span><span class="va">de.results</span>, show.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -160,32 +160,32 @@ results.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># type ?normalize_pqn to see how to normalize and log2-transform your data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Specifying contrasts</span></span></span>
-<span class="r-in"><span><span class="va">de_results</span> <span class="op">&lt;-</span> <span class="fu">de_analysis</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">data_normalized</span>,</span></span>
-<span class="r-in"><span>  <span class="va">HighFat_water</span> <span class="op">-</span> <span class="va">NormalDiet_water</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="st">"Area"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># Using formula</span></span></span>
-<span class="r-in"><span><span class="va">de_results_formula</span> <span class="op">&lt;-</span> <span class="fu">de_design</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">data_normalized</span>,</span></span>
-<span class="r-in"><span>  design <span class="op">=</span> <span class="op">~</span><span class="va">group</span>,</span></span>
-<span class="r-in"><span>  coef <span class="op">=</span> <span class="st">"groupHighFat_water"</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="st">"Area"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using design matrix</span></span></span>
-<span class="r-in"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span><span class="va">group</span>, data <span class="op">=</span> <span class="fu">colData</span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">de_results_design</span> <span class="op">&lt;-</span> <span class="fu">de_design</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">data_normalized</span>,</span></span>
-<span class="r-in"><span>  design <span class="op">=</span> <span class="va">design</span>,</span></span>
-<span class="r-in"><span>  coef <span class="op">=</span> <span class="st">"groupHighFat_water"</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="st">"Area"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">significant_molecules</span><span class="op">(</span><span class="va">de_results</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># type ?normalize_pqn to see how to normalize and log2-transform your data</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Specifying contrasts</span></span>
+<span class="r-in"><span class="va">de_results</span> <span class="op">&lt;-</span> <span class="fu">de_analysis</span><span class="op">(</span></span>
+<span class="r-in">  <span class="va">data_normalized</span>,</span>
+<span class="r-in">  <span class="va">HighFat_water</span> <span class="op">-</span> <span class="va">NormalDiet_water</span>,</span>
+<span class="r-in">  measure <span class="op">=</span> <span class="st">"Area"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="co"># Using formula</span></span>
+<span class="r-in"><span class="va">de_results_formula</span> <span class="op">&lt;-</span> <span class="fu">de_design</span><span class="op">(</span></span>
+<span class="r-in">  data <span class="op">=</span> <span class="va">data_normalized</span>,</span>
+<span class="r-in">  design <span class="op">=</span> <span class="op">~</span><span class="va">group</span>,</span>
+<span class="r-in">  coef <span class="op">=</span> <span class="st">"groupHighFat_water"</span>,</span>
+<span class="r-in">  measure <span class="op">=</span> <span class="st">"Area"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Using design matrix</span></span>
+<span class="r-in"><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span><span class="va">group</span>, data <span class="op">=</span> <span class="fu">colData</span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">de_results_design</span> <span class="op">&lt;-</span> <span class="fu">de_design</span><span class="op">(</span></span>
+<span class="r-in">  data <span class="op">=</span> <span class="va">data_normalized</span>,</span>
+<span class="r-in">  design <span class="op">=</span> <span class="va">design</span>,</span>
+<span class="r-in">  coef <span class="op">=</span> <span class="st">"groupHighFat_water"</span>,</span>
+<span class="r-in">  measure <span class="op">=</span> <span class="st">"Area"</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="fu">significant_molecules</span><span class="op">(</span><span class="va">de_results</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`HighFat_water - NormalDiet_water`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] PE 32:1         PE 32:2         PE 34:2         PE 34:3        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] PE 36:5         PE 38:2         PE(O-34:2)      PE(O-38:4)     </span>
@@ -210,7 +210,7 @@ results.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [81] PC(P-38:0)      PC(P-38:1)      PC(P-40:0)     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 277 Levels: PE 32:0 PE 32:1 PE 32:2 PE 34:1 PE 34:1 NEG PE 34:2 ... PC(P-40:6)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">plot_results_volcano</span><span class="op">(</span><span class="va">de_results</span>, show.labels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span class="fu">plot_results_volcano</span><span class="op">(</span><span class="va">de_results</span>, show.labels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="de_analysis-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -226,7 +226,7 @@ results.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

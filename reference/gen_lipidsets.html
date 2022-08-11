@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Examples
      
     <span class="caret"></span>
@@ -69,7 +69,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_lipidsets</span><span class="op">(</span><span class="va">molecules</span>, min_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gen_lipidsets</span><span class="op">(</span><span class="va">molecules</span>, min_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -92,9 +92,9 @@ in enrichment.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">molecules</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span><span class="op">$</span><span class="va">Molecule</span></span></span>
-<span class="r-in"><span><span class="fu">gen_lipidsets</span><span class="op">(</span><span class="va">molecules</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">molecules</span> <span class="op">&lt;-</span> <span class="fu">rowData</span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span><span class="op">$</span><span class="va">Molecule</span></span>
+<span class="r-in"><span class="fu">gen_lipidsets</span><span class="op">(</span><span class="va">molecules</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Class_Cer</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cer d18:0/C16:0" "Cer d18:0/C18:0" "Cer d18:0/C20:0" "Cer d18:0/C22:0"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Cer d18:0/C24:0" "Cer d18:0/C24:1" "Cer d18:0/C24:2" "Cer d18:1/C16:0"</span>
@@ -374,7 +374,7 @@ in enrichment.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
