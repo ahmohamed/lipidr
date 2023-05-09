@@ -220,11 +220,11 @@ to_df <- function(d, dim = "row") {
   }
 }
 .join_wrapper <- function(f) {
-  return(function(r, l, by = NULL, ...) {
+  return(function(r, l, by = NULL, copy, suffix, ..., keep) {
     r %>%
       as.data.frame() %>%
       rownames_to_column() %>%
-      f(l, by, ...) %>%
+      f(l, by, copy = copy, suffix = suffix, ..., keep = keep) %>%
       toDataFrame()
   })
 }
