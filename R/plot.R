@@ -322,67 +322,6 @@ plot_molecules <- function(data, type = c("cv", "sd", "boxplot"),
     theme(axis.text.x = element_text(angle = -90, vjust = 0.5))
 }
 
-#' Plot an annotated heatmap
-#' Plots a hierarchically clustered heatmap showing selected sample and
-#' lipid molecule annotations.
-#'
-#' @param data LipidomicsExperiment object.
-#' @param measure Which measure to plot the distribution of: usually Area,
-#'   Area Normalized, Height or Retention Time. Default is `Area`.
-#' @param molecule_annotation The column name for lipid annotation, default to `Class`.
-#' @param sample_annotation The column name for sample annotation, default to `all`.
-#' @param cluster_cols "none","hclust", or "k-means" for no clustering,
-#'   hierarchical clustering, and k-means clustering of rows respectively.
-#'   Default is "hclust".
-#' @param cluster_rows "none","hclust", or "k-means" for no clustering,
-#'   hierarchical clustering, and k-means clustering of rows respectively.
-#'   Default is "hclust".
-#' @param scale character indicating if the values should be centered and
-#'   scaled in either the row direction or the column direction, or none.
-#'   Corresponding values are "row", "cols" and "none".
-#' @param ... Additional parameters passed to [iheatmapr::iheatmap()].
-#'
-#' @return A heatmap plot
-#' @export
-#'
-#' @examples
-#' data(data_normalized)
-#' plot_heatmap(data_normalized, sample_annotation = "group")
-plot_heatmap <- function(data, measure = "Area",
-  molecule_annotation = "Class", sample_annotation = "all",
-  cluster_cols = "hclust", cluster_rows = "hclust",
-  scale = "rows", ...) {
-  if (!requireNamespace("iheatmapr", quietly = TRUE)) {
-    stop("Package 'iheatmapr' must be installed for heatmap plots")
-  }
-  col_annotation <- colData(data) %>% as.data.frame() %>% fix_all_na()
-  row_annotation <- rowData(data) %>% as.data.frame() %>% fix_all_na()
-  check_na <- function(c) is.numeric(c) && any(is.na(c))
-  if (!"all" %in% sample_annotation) {
-    if (is.null(sample_annotation) || FALSE %in% sample_annotation) {
-      col_annotation <- NULL
-    } else {
-      col_annotation <- col_annotation[, sample_annotation, drop=FALSE] %>%
-        mutate_if(check_na, as.character)
-    }
-  }
-  if (!"all" %in% molecule_annotation) {
-    if (is.null(molecule_annotation) || FALSE %in% molecule_annotation) {
-      row_annotation <- NULL
-    } else {
-      row_annotation <- row_annotation[, molecule_annotation, drop=FALSE] #%>%
-        # mutate_if(check_na, as.character)
-    }
-  }
-  dim_names <- metadata(data)$dimnames
-  iheatmapr::iheatmap(assay(data, measure), y=as.character(rowData(data)$Molecule),
-    row_title = dim_names[[1]], col_title = dim_names[[2]],
-    cluster_cols = cluster_cols, cluster_rows = cluster_rows,
-    row_annotation = row_annotation, col_annotation = col_annotation,
-    scale = scale, ...
-  )
-}
-
 .display_plot <- function(p) {
   if (.myDataEnv$interactive) {
     p <- plotly::ggplotly(p)

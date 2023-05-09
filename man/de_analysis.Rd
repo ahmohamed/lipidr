@@ -61,13 +61,13 @@ possible confounding variables.
 }
 \section{Functions}{
 \itemize{
-\item \code{significant_molecules}: gets a list of significantly changed lipids for
+\item \code{significant_molecules()}: gets a list of significantly changed lipids for
 each contrast.
 
-\item \code{plot_results_volcano}: plots a volcano chart for differential analysis
+\item \code{plot_results_volcano()}: plots a volcano chart for differential analysis
 results.
-}}
 
+}}
 \examples{
 # type ?normalize_pqn to see how to normalize and log2-transform your data
 data(data_normalized)

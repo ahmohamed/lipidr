@@ -37,20 +37,20 @@ mining of publicly available lipidomics datasets.
 }
 \section{Functions}{
 \itemize{
-\item \code{list_mw_studies}: retrieves a list of lipidomics studies from Metabolomics
+\item \code{list_mw_studies()}: retrieves a list of lipidomics studies from Metabolomics
 Workbench.
 
-\item \code{fetch_mw_study}: downloads and parse full data for a study from Metabolomics
+\item \code{fetch_mw_study()}: downloads and parse full data for a study from Metabolomics
 Workbench using a study ID. The function returns a LipidomicsExperiment
 where users can directly apply \code{lipidr} analysis workflow.
 
-\item \code{read_mwTab}: parses mwTab file into a LipidomicsExperiment.
+\item \code{read_mwTab()}: parses mwTab file into a LipidomicsExperiment.
 
-\item \code{read_mw_datamatrix}: parses a Metabolomics Workbench data matrix into a
+\item \code{read_mw_datamatrix()}: parses a Metabolomics Workbench data matrix into a
 LipidomicsExperiment. Data matrix downloaded from Metabolomics Workbench are parsed into
 a LipidomicsExperiment object to enable \code{lipidr} workflow analysis.
-}}
 
+}}
 \examples{
 \dontrun{
 list_mw_studies()

@@ -51,14 +51,13 @@ Suggests:
     BiocStyle,
     ggrepel,
     plotly,
-    iheatmapr,
     spelling,
     testthat
 VignetteBuilder: knitr
 biocViews: Lipidomics, MassSpectrometry, Normalization, QualityControl,
     Visualization
 Language: en-US
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/ahmohamed/lipidr
 BugReports: https://github.com/ahmohamed/lipidr/issues/

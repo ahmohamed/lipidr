@@ -96,15 +96,15 @@ Missing data are imputed using average lipid intensity across all samples.
 }
 \section{Functions}{
 \itemize{
-\item \code{plot_mva}: plots a multivariate scatterplot of sample scores to investigate
+\item \code{plot_mva()}: plots a multivariate scatterplot of sample scores to investigate
 sample clustering.
 
-\item \code{plot_mva_loadings}: Plot a multivariate scatterplot of feature loadings
+\item \code{plot_mva_loadings()}: Plot a multivariate scatterplot of feature loadings
 to investigate feature importance.
 
-\item \code{top_lipids}: extracts top lipids from OPLS-DA results
-}}
+\item \code{top_lipids()}: extracts top lipids from OPLS-DA results
 
+}}
 \examples{
 data(data_normalized)
 
