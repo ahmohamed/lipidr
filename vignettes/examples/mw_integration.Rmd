@@ -29,14 +29,8 @@ knit_print.data.frame = function(x, ...) {
 knit_print.DataFrame = function(x, ...) {
   knit_print(as.data.frame(x))
 }
-knit_print.Iheatmap = function(x, ...) {
-  knit_print(frameWidget(iheatmapr::to_widget(x), height = 800))
-}
-
 registerS3method("knit_print", "data.frame", knit_print.data.frame)
 registerS3method("knit_print", "DataFrame", knit_print.DataFrame)
-registerS3method("knit_print", "Iheatmap", knit_print.Iheatmap)
-registerS3method("knit_print", "IheatmapHorizontal", knit_print.Iheatmap)
 ```
 # Introduction
 Through integration with Metabolomics Workbench API, `lipidr` allows users,
@@ -252,11 +246,6 @@ plot_enrichment(two_group, significant_lipidsets(enrich_results), annotation="le
 # Lipid chain analysis
 ```{r}
 plot_trend(two_group)
-```
-
-# Clustering
-```{r}
-plot_heatmap(d, cluster_rows="none")
 ```
 
 # Session information

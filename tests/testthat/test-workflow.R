@@ -10,8 +10,6 @@ test_workflow <- function(d, clin_file=NULL, measure="Area", group_col=NULL, gro
   p <- plot_molecules(d, "boxplot", measure, color="Class")
   p <- plot_lipidclass(d, "boxplot", measure)
   p <- plot_lipidclass(d, "sd", measure)
-  p <- plot_heatmap(d, measure, sample_annotation = group_col, molecule_annotation = "Class")
-  p <- plot_heatmap(d, measure, sample_annotation = "all", molecule_annotation = "Class")
 
   if (!is_summarized(d)) {
     summarize_transitions(d, method = "max")

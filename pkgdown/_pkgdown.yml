@@ -61,10 +61,6 @@ reference:
     - '`lsea`'
     - '`plot_enrichment`'
     - '`gen_lipidsets`'
-  - title: Clustring analysis
-    desc: ~
-    contents:
-    - '`plot_heatmap`'
   - title: Lipid-centric analysis
     desc: ~
     contents:
