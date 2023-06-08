@@ -19,7 +19,6 @@ resource_files:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8)
 library(knitr)
-library(widgetframe)
 library(rmarkdown)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8, fig.path = "figure/")
 knitr::opts_chunk$set(widgetframe_isolate_widgets = TRUE)
