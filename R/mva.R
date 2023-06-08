@@ -483,14 +483,12 @@ gg_circle <- function(rx, ry, xc, yc, color = "black", fill = NA, ...) {
       color_by <- "Sample"
     }
   }
-  if ( (!is.character(color_by) && length(color_by) == 1) ||  color_by != "Sample") {
-    col_data <- mvaresults$col_data %>%
-      as.data.frame() %>%
-      rownames_to_column("Sample")
+  col_data <- mvaresults$col_data %>%
+    as.data.frame() %>%
+    rownames_to_column("Sample")
 
-    mds_matrix <- mds_matrix %>%
-      .left_join_silent(col_data)
-  }
-  mds_matrix %>% fix_all_na()
+  mds_matrix <- mds_matrix %>%
+    .left_join_silent(col_data)
+  mds_matrix <- mds_matrix %>% fix_all_na()
   return(list(mds_matrix = mds_matrix, color_by = color_by))
 }
