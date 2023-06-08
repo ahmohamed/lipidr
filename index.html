@@ -50,7 +50,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.11.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.15.0</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
 <div class="page-header"><h1 id="lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r-">
 <em>lipidr</em>: Data Mining and Analysis of Lipidomics Datasets in R <img src="reference/figures/logo.png" align="right" alt="" width="120"><a class="anchor" aria-label="anchor" href="#lipidr-data-mining-and-analysis-of-lipidomics-datasets-in-r-"></a>
 </h1></div>
-
+<p><a href="https://github.com/ahmohamed/lipidr/actions" class="external-link"><img src="https://github.com/ahmohamed/lipidr/workflows/BiocCheck/badge.svg" alt="R-CMD-check"></a> <a href="https://codecov.io/github/ahmohamed/lipidr?branch=master" class="external-link"><img src="https://codecov.io/gh/ahmohamed/lipidr/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://bioconductor.org/packages/lipidr/" class="external-link"><img src="https://bioconductor.org/shields/years-in-bioc/lipidr.svg" alt="BioC status"></a></p>
 <div class="section level2">
 <h2 id="see-full-guide-at-lipidrorg">See full guide at <a href="https://www.lipidr.org/" class="external-link">lipidr.org</a>
 <a class="anchor" aria-label="anchor" href="#see-full-guide-at-lipidrorg"></a>
@@ -130,8 +130,8 @@
 <p><img src="reference/figures/num_matrix.png" width="800"></p>
 <p><code>lipidr</code> can convert these 2 files to <code>LipidomicsExperiment</code> as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_lipidomics_experiment.html">as_lipidomics_experiment</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"data_matrix.csv"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_lipidomics_experiment.html">as_lipidomics_experiment</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"data_matrix.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="export-from-skyline">Export from Skyline<a class="anchor" aria-label="anchor" href="#export-from-skyline"></a>
@@ -144,8 +144,8 @@
 <p><img src="reference/figures/skyline_export.png" width="800"></p>
 <p>In <code>lipidr</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="st">"Skyline_export.csv"</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="st">"Skyline_export.csv"</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"data_clin.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -178,17 +178,17 @@
 </h2>
 <p>In R console, type:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"lipidr"</span><span class="op">)</span>  </span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="install-development-version-from-github">Install development version from GitHub<a class="anchor" aria-label="anchor" href="#install-development-version-from-github"></a>
 </h2>
 <p>In R console, type:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>   
-<span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>   </span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ahmohamed/lipidr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="using-docker">Using Docker<a class="anchor" aria-label="anchor" href="#using-docker"></a>
@@ -242,14 +242,7 @@ docker run -e PASSWORD=bioc -p 8787:8787 ahmohamed/lipidr:latest</code></pre>
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/ahmohamed/lipidr/actions" class="external-link"><img src="https://github.com/ahmohamed/lipidr/workflows/BiocCheck/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/github/ahmohamed/lipidr?branch=master" class="external-link"><img src="https://codecov.io/gh/ahmohamed/lipidr/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://bioconductor.org/packages/lipidr/" class="external-link"><img src="https://bioconductor.org/shields/years-in-bioc/lipidr.svg" alt="BioC status"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
@@ -262,7 +255,7 @@ docker run -e PASSWORD=bioc -p 8787:8787 ahmohamed/lipidr:latest</code></pre>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

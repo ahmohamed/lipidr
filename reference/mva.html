@@ -23,7 +23,7 @@ Missing data are imputed using average lipid intensity across all samples."><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.11.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.15.0</span>
       </span>
     </div>
 
@@ -81,31 +81,31 @@ Missing data are imputed using average lipid intensity across all samples.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mva</span><span class="op">(</span>
-  <span class="va">data</span>,
-  measure <span class="op">=</span> <span class="st">"Area"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PCA"</span>, <span class="st">"PCoA"</span>, <span class="st">"OPLS"</span>, <span class="st">"OPLS-DA"</span><span class="op">)</span>,
-  group_col <span class="op">=</span> <span class="cn">NULL</span>,
-  groups <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">plot_mva</span><span class="op">(</span>
-  <span class="va">mvaresults</span>,
-  components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
-  color_by <span class="op">=</span> <span class="cn">NULL</span>,
-  ellipse <span class="op">=</span> <span class="cn">TRUE</span>,
-  hotelling <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="fu">plot_mva_loadings</span><span class="op">(</span>
-  <span class="va">mvaresults</span>,
-  components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
-  color_by <span class="op">=</span> <span class="cn">NULL</span>,
-  top.n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mvaresults</span><span class="op">$</span><span class="va">loadings</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">top_lipids</span><span class="op">(</span><span class="va">mvaresults</span>, top.n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mva</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  measure <span class="op">=</span> <span class="st">"Area"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PCA"</span>, <span class="st">"PCoA"</span>, <span class="st">"OPLS"</span>, <span class="st">"OPLS-DA"</span><span class="op">)</span>,</span>
+<span>  group_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plot_mva</span><span class="op">(</span></span>
+<span>  <span class="va">mvaresults</span>,</span>
+<span>  components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  color_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ellipse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  hotelling <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">plot_mva_loadings</span><span class="op">(</span></span>
+<span>  <span class="va">mvaresults</span>,</span>
+<span>  components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  color_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  top.n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mvaresults</span><span class="op">$</span><span class="va">loadings</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">top_lipids</span><span class="op">(</span><span class="va">mvaresults</span>, top.n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -190,39 +190,49 @@ their annotations.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>plot_mva</code>: plots a multivariate scatterplot of sample scores to investigate
+<ul><li><p><code>plot_mva()</code>: plots a multivariate scatterplot of sample scores to investigate
 sample clustering.</p></li>
-<li><p><code>plot_mva_loadings</code>: Plot a multivariate scatterplot of feature loadings
+<li><p><code>plot_mva_loadings()</code>: Plot a multivariate scatterplot of feature loadings
 to investigate feature importance.</p></li>
-<li><p><code>top_lipids</code>: extracts top lipids from OPLS-DA results</p></li>
+<li><p><code>top_lipids()</code>: extracts top lipids from OPLS-DA results</p></li>
 </ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># PCA</span></span>
-<span class="r-in"><span class="va">mvaresults</span> <span class="op">&lt;-</span> <span class="fu">mva</span><span class="op">(</span><span class="va">data_normalized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, method <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plot_mva</span><span class="op">(</span><span class="va">mvaresults</span>, color_by <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_normalized</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># PCA</span></span></span>
+<span class="r-in"><span><span class="va">mvaresults</span> <span class="op">&lt;-</span> <span class="fu">mva</span><span class="op">(</span><span class="va">data_normalized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, method <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_mva</span><span class="op">(</span><span class="va">mvaresults</span>, color_by <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The following aesthetics were dropped during statistical transformation: <span style="color: #00BB00;">label</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> This can happen when ggplot fails to infer the correct grouping structure in</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   the data.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Did you forget to specify a `group` aesthetic or to convert a numerical</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   variable into a factor?</span>
 <span class="r-plt img"><img src="mva-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co"># NOT RUN</span></span>
-<span class="r-in"><span class="co"># plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># PCoA</span></span>
-<span class="r-in"><span class="va">mvaresults</span> <span class="op">&lt;-</span> <span class="fu">mva</span><span class="op">(</span><span class="va">data_normalized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, method <span class="op">=</span> <span class="st">"PCoA"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># NOT RUN</span></span>
-<span class="r-in"><span class="co"># plot_mva(mvaresults, color_by = "group")</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># OPLS-DA</span></span>
-<span class="r-in"><span class="va">mvaresults</span> <span class="op">&lt;-</span> <span class="fu">mva</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">data_normalized</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="st">"OPLS-DA"</span>, group_col <span class="op">=</span> <span class="st">"Diet"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HighFat"</span>, <span class="st">"Normal"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plot_mva</span><span class="op">(</span><span class="va">mvaresults</span>, color_by <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># NOT RUN</span></span></span>
+<span class="r-in"><span><span class="co"># plot_mva(mvaresults, color_by = "Diet", components = c(2, 3))</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># PCoA</span></span></span>
+<span class="r-in"><span><span class="va">mvaresults</span> <span class="op">&lt;-</span> <span class="fu">mva</span><span class="op">(</span><span class="va">data_normalized</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, method <span class="op">=</span> <span class="st">"PCoA"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># NOT RUN</span></span></span>
+<span class="r-in"><span><span class="co"># plot_mva(mvaresults, color_by = "group")</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># OPLS-DA</span></span></span>
+<span class="r-in"><span><span class="va">mvaresults</span> <span class="op">&lt;-</span> <span class="fu">mva</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data_normalized</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"OPLS-DA"</span>, group_col <span class="op">=</span> <span class="st">"Diet"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HighFat"</span>, <span class="st">"Normal"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_mva</span><span class="op">(</span><span class="va">mvaresults</span>, color_by <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The following aesthetics were dropped during statistical transformation: <span style="color: #00BB00;">label</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> This can happen when ggplot fails to infer the correct grouping structure in</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   the data.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Did you forget to specify a `group` aesthetic or to convert a numerical</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   variable into a factor?</span>
 <span class="r-plt img"><img src="mva-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">plot_mva_loadings</span><span class="op">(</span><span class="va">mvaresults</span>, color_by <span class="op">=</span> <span class="st">"Class"</span>, top.n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">plot_mva_loadings</span><span class="op">(</span><span class="va">mvaresults</span>, color_by <span class="op">=</span> <span class="st">"Class"</span>, top.n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="mva-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">top_lipids</span><span class="op">(</span><span class="va">mvaresults</span>, top.n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">top_lipids</span><span class="op">(</span><span class="va">mvaresults</span>, top.n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       filename        Molecule Precursor.Mz Precursor.Charge    clean_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  F1_data.csv Cer d18:1/C16:0        538.7                1 Cer 18:1/16:0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  F1_data.csv Cer d18:1/C18:0        566.7                1 Cer 18:1/18:0</span>
@@ -270,7 +280,7 @@ to investigate feature importance.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

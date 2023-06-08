@@ -22,7 +22,7 @@ samples (excluding blanks)."><meta property="og:image" content="/logo.png"><!-- 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lipidr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.11.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.15.0</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@ samples (excluding blanks).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">normalize_pqn</span><span class="op">(</span><span class="va">data</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normalize_pqn</span><span class="op">(</span><span class="va">data</span>, measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -120,20 +120,20 @@ Analytical chemistry, 78(13), 4281-4290.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"lipidr"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">filelist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"data.csv"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="va">filelist</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"lipidr"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">filelist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"data.csv"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_skyline.html">read_skyline</a></span><span class="op">(</span><span class="va">filelist</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Successfully read 3 methods.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your data contain 58 samples, 10 lipid classes, 277 lipid molecules.</span>
-<span class="r-in"><span class="va">clinical_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"clin.csv"</span>, package <span class="op">=</span> <span class="st">"lipidr"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">clinical_file</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d_summarized</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_transitions.html">summarize_transitions</a></span><span class="op">(</span><span class="va">d</span>, method <span class="op">=</span> <span class="st">"average"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Normalize data that have been summarized (single value per molecule).</span></span>
-<span class="r-in"><span class="va">data_normalized</span> <span class="op">&lt;-</span> <span class="fu">normalize_pqn</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">d_summarized</span>,</span>
-<span class="r-in">  measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">clinical_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"clin.csv"</span>, package <span class="op">=</span> <span class="st">"lipidr"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_sample_annotation.html">add_sample_annotation</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">clinical_file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d_summarized</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_transitions.html">summarize_transitions</a></span><span class="op">(</span><span class="va">d</span>, method <span class="op">=</span> <span class="st">"average"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Normalize data that have been summarized (single value per molecule).</span></span></span>
+<span class="r-in"><span><span class="va">data_normalized</span> <span class="op">&lt;-</span> <span class="fu">normalize_pqn</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">d_summarized</span>,</span></span>
+<span class="r-in"><span>  measure <span class="op">=</span> <span class="st">"Area"</span>, exclude <span class="op">=</span> <span class="st">"blank"</span>, log <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Area contains missing/non-finite values. Replacing with mimnum detected value.</span>
 </code></pre></div>
     </div>
@@ -149,7 +149,7 @@ Analytical chemistry, 78(13), 4281-4290.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
