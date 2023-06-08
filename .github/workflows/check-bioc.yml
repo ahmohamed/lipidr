@@ -279,7 +279,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ahmohamed/visse_server_rpkg
+            ahmohamed/lipidr
           tags: |
             type=ref,event=branch
       - name: Set up QEMU
